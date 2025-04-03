@@ -19,8 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
-using Windows.Devices.Enumeration;
-using Windows.Devices.PointOfService;
+using Microsoft.PointOfService;
 using static ABT.Test.TestLib.Data;
 // TODO:  Eventually; evaluate Keysight OpenTAP as potential option in addition to TestExec/TestLib/TestPlan.  https://opentap.io/.
 // - Briefly evaluated previously; time for reevaluation.
@@ -221,7 +220,7 @@ namespace ABT.Test.TestExec {
                 return GetMailItem();
             } catch {
                 _ = MessageBox.Show(ActiveForm, "Could not open Microsoft 365 Outlook.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Logger.LogError("Could not open Microsoft 365 Outlook.");
+                Logging.Logger.LogError("Could not open Microsoft 365 Outlook.");
                 throw new NotImplementedException("Outlook not good...");
             }
         }
@@ -385,23 +384,23 @@ namespace ABT.Test.TestExec {
         private void TSMI_Feedback_CritiqueImprovementRequest_Click(Object sender, EventArgs e) { SendMailMessageWithAttachment($"Improvement Request from {UserName} for {testPlanDefinition.UUT.Number}, {testPlanDefinition.UUT.Description}."); }
 
         private async void TSMI_System_BarcodeScannerDiscovery_Click(Object sender, EventArgs e) {
-            DeviceInformationCollection deviceInformationCollectionic = await DeviceInformation.FindAllAsync(BarcodeScanner.GetDeviceSelector(PosConnectionTypes.Local));
-            StringBuilder stringBuilder = new StringBuilder();
-            _ = stringBuilder.AppendLine($"Discovering Microsoft supported, corded Barcode Scanner(s):{Environment.NewLine}");
-            _ = stringBuilder.AppendLine($"  - See https://learn.microsoft.com/en-us/windows/uwp/devices-sensors/pos-device-support.");
-            _ = stringBuilder.AppendLine($"  - Note that only corded Barcode Scanners are discovered; cordless BlueTooth & Wireless scanners are ignored.");
-            _ = stringBuilder.AppendLine($"  - Note that cameras are also discovered; cameras are digital imagers, just as many bar-code readers are.");
-            _ = stringBuilder.AppendLine($"  - Modify ConfigurationTestExec to use a discovered Barcode Scanner.");
-            _ = stringBuilder.AppendLine($"  - Scanners must be programmed into USB-HID mode to function properly:");
-            _ = stringBuilder.AppendLine(@"    - See: file:///P:/Test/Engineers/Equipment_Manuals/Honeywell/Honeywell_Voyager_1200G_User's_Guide_ReadMe.pdf");
-            _ = stringBuilder.AppendLine($"    - Or:  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/ppr/en-us/public/products/barcode-scanners/general-purpose-handheld/1200g/documents/sps-ppr-vg1200-ug.pdf{Environment.NewLine}{Environment.NewLine}");
-            foreach (DeviceInformation deviceInformation in deviceInformationCollectionic) {
-                _ = stringBuilder.AppendLine($"Name: '{deviceInformation.Name}'.");
-                _ = stringBuilder.AppendLine($"Kind: '{deviceInformation.Kind}'.");
-                _ = stringBuilder.AppendLine($"ID  : '{deviceInformation.Id}'.{Environment.NewLine}");
-            }
+            //DeviceInformationCollection deviceInformationCollectionic = await DeviceInformation.FindAllAsync(BarcodeScanner.GetDeviceSelector(PosConnectionTypes.Local));
+            //StringBuilder stringBuilder = new StringBuilder();
+            //_ = stringBuilder.AppendLine($"Discovering Microsoft supported, corded Barcode Scanner(s):{Environment.NewLine}");
+            //_ = stringBuilder.AppendLine($"  - See https://learn.microsoft.com/en-us/windows/uwp/devices-sensors/pos-device-support.");
+            //_ = stringBuilder.AppendLine($"  - Note that only corded Barcode Scanners are discovered; cordless BlueTooth & Wireless scanners are ignored.");
+            //_ = stringBuilder.AppendLine($"  - Note that cameras are also discovered; cameras are digital imagers, just as many bar-code readers are.");
+            //_ = stringBuilder.AppendLine($"  - Modify ConfigurationTestExec to use a discovered Barcode Scanner.");
+            //_ = stringBuilder.AppendLine($"  - Scanners must be programmed into USB-HID mode to function properly:");
+            //_ = stringBuilder.AppendLine(@"    - See: file:///P:/Test/Engineers/Equipment_Manuals/Honeywell/Honeywell_Voyager_1200G_User's_Guide_ReadMe.pdf");
+            //_ = stringBuilder.AppendLine($"    - Or:  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/ppr/en-us/public/products/barcode-scanners/general-purpose-handheld/1200g/documents/sps-ppr-vg1200-ug.pdf{Environment.NewLine}{Environment.NewLine}");
+            //foreach (DeviceInformation deviceInformation in deviceInformationCollectionic) {
+            //    _ = stringBuilder.AppendLine($"Name: '{deviceInformation.Name}'.");
+            //    _ = stringBuilder.AppendLine($"Kind: '{deviceInformation.Kind}'.");
+            //    _ = stringBuilder.AppendLine($"ID  : '{deviceInformation.Id}'.{Environment.NewLine}");
+            //}
 
-            CustomMessageBox.Show(Title: $"Microsoft supported, corded Barcode Scanner(s)", Message: stringBuilder.ToString());
+            //CustomMessageBox.Show(Title: $"Microsoft supported, corded Barcode Scanner(s)", Message: stringBuilder.ToString());
         }
         private void TSMI_System_ColorCode_Click(Object sender, EventArgs e) {
             CustomMessageBox customMessageBox = new CustomMessageBox {
@@ -494,7 +493,7 @@ namespace ABT.Test.TestExec {
         private void MethodsPreRun() {
             testSequence.PreRun();
             TestIndices.Nullify();
-            Logger.Start(ref rtfResults);
+            Logging.Logger.Start(ref rtfResults);
             SystemReset();
         }
 
@@ -531,7 +530,7 @@ namespace ABT.Test.TestExec {
                         if (CT_EmergencyStop.IsCancellationRequested) method.Event = EVENTS.EMERGENCY_STOP;
                         else if (CT_Cancel.IsCancellationRequested) method.Event = EVENTS.CANCEL;
                         // NOTE:  Both CT_Cancel.IsCancellationRequested & CT_EmergencyStop.IsCancellationRequested could be true; prioritize CT_EmergencyStop.
-                        Logger.LogMethod(ref rtfResults, method);
+                        Logging.Logger.LogMethod(ref rtfResults, method);
                     }
                     if (method.Event != EVENTS.PASS && method.CancelNotPassed) return;
                 }
@@ -548,7 +547,7 @@ namespace ABT.Test.TestExec {
             TextTest.BackColor = EventColors[testSequence.Event];
             testPlanDefinition.TestSpace.Statistics.Update(testSequence.Event);
             StatusStatisticsUpdate(null, null);
-            Logger.Stop(ref rtfResults);
+            Logging.Logger.Stop(ref rtfResults);
         }
 
         private Boolean EventSet(Int32 aggregatedEvents, EVENTS events) { return ((aggregatedEvents & (Int32)events) == (Int32)events); }
