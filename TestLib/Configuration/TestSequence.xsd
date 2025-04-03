@@ -1,0 +1,803 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:simpleType name="ValidCSharpIdentifier">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z_][a-zA-Z0-9_]{1,1023}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ValidCSharpNamespace">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        <![CDATA[
+          ValidCSharpNamespace simpleType:
+          - RegEx to validate a C# namespace; for example, "ABT.Test.TestLib.Configuration".
+          - Type: xs:string.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="^(?:[A-Za-z_][A-Za-z0-9_]*)(?:\.[A-Za-z_][A-Za-z0-9_]*)*$"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ValidWindowsPath">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        <![CDATA[
+          ValidWindowsPath simpleType:
+          - RegEx to validate a Windows Path name; for example, "C:\Windows" or "C:\Windows\notepad.exe".
+          - Type: xs:string.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[^&lt;&gt;&quot;\/|?*]{1,255}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ValidWindowsFile">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        <![CDATA[
+          ValidWindowsFile simpleType:
+          - RegEx to validate a Windows file name; for example, "Solitaire.exe".
+          - Type: xs:string.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[^&lt;&gt;:&quot;\/\\|?*]{1,255}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:attribute name="Description" type="xs:string">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        <![CDATA[
+            Description attribute:
+            - Required.
+            - Type: xs:string.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+
+  <xs:attribute name="Folder" type="ValidWindowsPath"/>
+
+  <xs:attribute name="File" type="ValidWindowsFile"/>
+
+  <xs:complexType name="Customer">
+    <xs:attribute name="Name" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+          Name attribute:
+          - Required.
+          - Type: xs:string.
+        ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Division" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+          Division attribute:
+          - Optional.
+          - Type: xs:string.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Location" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+          Location attribute:
+          - Optional.
+          - Type: xs:string.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="TestSpecification">
+    <xs:attribute name="Document" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+          Document attribute:
+          - Required.
+          - Type: xs:string.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Revision" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+          Revision attribute:
+          - Required.
+          - Type: xs:string.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Title" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+          Title attribute:
+          - Optional.
+          - Type: xs:string.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Date" type="xs:date" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+          Date attribute:
+          - Optional.
+          - Type: xs:date.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="Documentation">
+    <xs:attribute ref="Folder" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="Method">
+    <xs:sequence>
+      <xs:element name="Value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="Event" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="LogString" type="xs:string" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="Name" type="ValidCSharpIdentifier" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+            Name attribute:
+            - Required.
+            - Method Names must be unique within their TestGroup, and must also differ from their parent Classnames.
+            - Type: ValidCSharpIdentifier.
+
+            Method Names are analogous to a leaf in a root/trunk/branch/leaf hierarchy.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute ref="Description" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="MethodCustom">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        <![CDATA[
+          MethodCustom complexType:
+          - Optional, 0 or more occurrences.
+          - Type: MethodCustom.
+          - Returns: an EVENT enum member converted to System.String.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Method">
+        <xs:sequence>
+          <xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">
+                <![CDATA[
+              Parameter element:
+              - Optional, 0 or more occurrences.
+              - Type: xs:string.
+            ]]>
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:attribute name="Key" type="xs:string" use="required">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">
+                    <![CDATA[
+                  Key attribute:
+                  - Required.
+                  - Type: xs:string.
+                  - Restriction: Key must be unique within it's MethodCustom.
+                      
+                  Parameter's Key of it's Key/Value pair.
+                ]]>
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="Value" type="xs:string" use="required">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">
+                    <![CDATA[
+                  Value attribute:
+                  - Required.
+                  - Type: xs:string.
+                      
+                  Parameter's Value of it's Key/Value pair.
+                  - Values can be duplicated.
+                ]]>
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="MethodInterval">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        <![CDATA[
+          MethodInterval complexType:
+          - Optional, 0 or more occurrences.
+          - Type: MethodInterval.
+          - Returns: System.Double converted to System.String.
+                      
+          Tests numbers against their Low & High limits.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Method">
+        <xs:attribute name="LowComparator" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+            LowComparator attribute:
+            - Required.
+            - Type: xs:string.
+          ]]>
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="GToE">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">GToE is ≥</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="GT">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">GT is &gt;</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="Low" type="xs:double" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+            Low attribute:
+            - Required.
+            - Type: xs:double.
+                      
+            Low limit, must be ≤ High.
+            - Scientific notation permitted; for example, Low="-1.5E-2" for -0.015.
+            - Low="-INF" disables lower limit; "-INF" = -∞.
+          ]]>
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="High" type="xs:double" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+            High attribute:
+            - Required.
+            - Type: xs:double.
+                      
+            High limit, must be ≥ Low.
+            - Scientific notation permitted; for example, High="1.5E2" for 150.
+            - High="INF" disables upper limit; "INF" = +∞.
+          ]]>
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="HighComparator" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+            HighComparator attribute:
+            - Required.
+            - Type: xs:string.
+          ]]>
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="LToE">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">LToE is ≤</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="LT">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">LT is &lt;</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="FractionalDigits" type="xs:nonNegativeInteger" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+            FractionalDigits attribute:
+            - Required.
+            - Type: xs:nonNegativeInteger.
+                      
+            Fractional Digits, method's rounding precision.
+            - FractionalDigits="2" rounds 1.555 to 1.56.
+            - FractionalDigits="1" rounds 1.555 to 1.6.
+            - FractionalDigits="0" rounds 1.555 to 2.
+          ]]>
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="UnitPrefix" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+            UnitPrefix attribute:
+            - Required.
+            - Type: xs:string.
+                      
+            Subset of relevant System International prefixes from 1E+15 to 1E-15.
+          ]]>
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="peta"/>
+              <xs:enumeration value="tera"/>
+              <xs:enumeration value="giga"/>
+              <xs:enumeration value="mega"/>
+              <xs:enumeration value="kilo"/>
+              <xs:enumeration value="NONE"/>
+              <xs:enumeration value="milli"/>
+              <xs:enumeration value="micro"/>
+              <xs:enumeration value="nano"/>
+              <xs:enumeration value="pico"/>
+              <xs:enumeration value="femto"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="Units" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+            Units attribute:
+            - Required.
+            - Type: xs:string.
+                      
+            Subset of relevant System International derived units, incorrectly but usefully capitalized.
+          ]]>
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="NONE"/>
+              <xs:enumeration value="Amperes"/>
+              <xs:enumeration value="Celcius"/>
+              <xs:enumeration value="Farads"/>
+              <xs:enumeration value="Henries"/>
+              <xs:enumeration value="Hertz"/>
+              <xs:enumeration value="Ohms"/>
+              <xs:enumeration value="Seconds"/>
+              <xs:enumeration value="Siemens"/>
+              <xs:enumeration value="Volts"/>
+              <xs:enumeration value="VoltAmperes"/>
+              <xs:enumeration value="Watts"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="UnitSuffix" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+            UnitSuffix attribute:
+            - Required.
+            - Type: xs:string.
+                      
+            Relevant to Volt/Ampere Units.
+          ]]>
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="NONE"/>
+              <xs:enumeration value="AC"/>
+              <xs:enumeration value="DC"/>
+              <xs:enumeration value="Peak"/>
+              <xs:enumeration value="PP"/>
+              <xs:enumeration value="RMS"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <!-- <xs:assert test="@Low le @High"/> Without XSD 1.1, xs:assert won't process.  Perform this validation downstream in C# validation method.-->
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="MethodProcess">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        <![CDATA[
+          MethodProcess complexType:
+          - Optional, 0 or more occurrences.
+          - Type: MethodProcess.
+          - Returns: System.Diagnostics.Process result as a System.String
+                      
+          Invokes a .Net System.Diagnostics.Process.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Method">
+        <xs:attribute ref="Folder" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+            Folder attribute:
+            - Required.
+            - Type: ValidWindowsPath.
+                      
+            External Process' executable Windows Folder path, less file name.
+          ]]>
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute ref="File" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+            File attribute:
+            - Required.
+            - Type: ValidWindowsFile.
+                      
+            External Process' executable Windows File name, less Folder path.
+          ]]>
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Parameters" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+            Parameters attribute:
+            - Required.
+            - Type: xs:string.
+                      
+            External Process' parameters. Enter Parameters="" if inapplicable.
+          ]]>
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Expected" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+            Expected attribute:
+            - Required.
+            - Type: xs:string.
+                      
+            External Process' expected return value.  Enter Expected="" if inapplicable.
+          ]]>
+            </xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="MethodTextual">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        <![CDATA[
+          MethodTextual complexType:
+          - Optional, 0 or more occurrences.
+          - Type: MethodTextual.
+          - Returns: System.String.
+                      
+          Tests textual results against their expected values.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Method">
+        <xs:attribute name="Text" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="TestGroup">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        <![CDATA[
+          TestGroup complexType:
+          - Required, 1 or more occurrences.
+          - Type: TestGroup.
+          - Restriction: name must be unique within it's TestOperation.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="MethodCustom" type="MethodCustom">
+        <xs:unique name="uniqueKey">
+          <xs:selector xpath="Parameter"/>
+          <xs:field xpath="@Key"/>
+        </xs:unique>
+      </xs:element>
+      <xs:element name="MethodInterval" type="MethodInterval"/>
+      <xs:element name="MethodProcess" type="MethodProcess"/>
+      <xs:element name="MethodTextual" type="MethodTextual"/>
+    </xs:choice>
+    <xs:attribute name="Classname" type="ValidCSharpIdentifier" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+            Classname attribute:
+          - Required, 1 or more occurrences.
+            - Classnames must be unique within their TestOperation, and must also differ from their child Method Names.
+            - Type: ValidCSharpIdentifier.
+            
+            A class is analogous to a branch in a root/trunk/branch/leaf hierarchy.         
+            - Note, Classnames are not Windows File names, even if both can be identically named and are often conflated.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute ref="Description" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="TestOperation">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        <![CDATA[
+          TestOperation complexType:
+          - Required, 1 or more occurrences.
+          - Type: TestOperation.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="TestGroup" type="TestGroup" minOccurs="1" maxOccurs="unbounded">
+        <xs:unique name="UniqueMethod">
+          <xs:selector xpath="MethodCustom | MethodInterval | MethodProcess | MethodTextual"/>
+          <xs:field xpath="@Name"/>
+        </xs:unique>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="NamespaceTrunk" type="ValidCSharpNamespace" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+            NamespaceTrunk attribute:
+            - Required.
+            - NamespaceTrunks must be unique within their TestSpace.  They can be identical to their child TestGroup Classes, but it's not recommended.
+            - Type: ValidCSharpNamespace.
+          
+            NamespaceTrunk is analogous to a trunk in a root/trunk/branch/leaf hierarchy.
+            - Note, namespaces are not Windows paths, even if both can be similarly named and are often conflated.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute ref="Description" use="required"/>
+  </xs:complexType>
+
+
+  <xs:element name="TestSequence">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        <![CDATA[
+          TestSequence root element.
+          - Required, 1 occurence.
+          - Type: xs:element.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="UUT" minOccurs="1" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+                UUT element.
+                - Required, 1 occurence.
+                - Type: xs:element.
+              ]]>
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Customer" type="Customer" minOccurs="1" maxOccurs="1">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">
+                    <![CDATA[
+                    Customer element.
+                    - Required, 1 occurence.
+                    - Type: Customer.
+                  ]]>
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="TestSpecification" type="TestSpecification" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">
+                    <![CDATA[
+                    TestSpecification element.
+                    - Required, 1 or more occurences.
+                    - Type: TestSpecification.
+                  ]]>
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="Documentation" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">
+                    <![CDATA[
+                    Documentation element.
+                    - Optional, 0 or more occurences.
+                    - Type: Documentation.
+                  ]]>
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Number" type="xs:string" use="required">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">
+                  <![CDATA[
+                    Number attribute.
+                    - Required.
+                    - Type: xs:string.
+                  ]]>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Description" type="xs:string" use="required">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">
+                  <![CDATA[
+                    Description attribute.
+                    - Required.
+                    - Type: xs:string.
+                  ]]>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Revision" type="xs:string" use="required">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">
+                  <![CDATA[
+                    Revision attribute.
+                    - Required.
+                    - Type: xs:string.
+                  ]]>
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Category" use="required">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">
+                  <![CDATA[
+                    Category attribute:
+                    - Required.
+                    - Type: xs:enumeration.
+                  ]]>
+                </xs:documentation>
+              </xs:annotation>
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="Component">
+                    <xs:annotation>
+                      <xs:documentation xml:lang="en">
+                        <![CDATA[
+                          Component:
+                          - Discrete electrical, mechanical or electro-mechanical part.                          
+                          - Typically purchased, not fabricated.
+                        ]]>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="CircuitCard">
+                    <xs:annotation>
+                      <xs:documentation xml:lang="en">
+                        <![CDATA[
+                        <![CDATA[
+                          Circuit Card:
+                          - Rigid, Flexible or Rigid/Flexible Printed Circuit Board populated with Components.
+                          - Typically assembled, not purchased.
+                        ]]>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="Harness">
+                    <xs:annotation>
+                      <xs:documentation xml:lang="en">
+                        <![CDATA[
+                        <![CDATA[
+                          Harness:
+                          - Wired electro-mechanical Interconnect, potentially including Circuit Cards.
+                          - Typically assembled, not purchased.
+                        ]]>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="Unit">
+                    <xs:annotation>
+                      <xs:documentation xml:lang="en">
+                        <![CDATA[
+                        <![CDATA[
+                          Unit:
+                          - Multiple electro-mechanically interconnected Components, Harnesses or Circuit Cards.
+                          - May have custom container box.
+                          - Typically assembled, not purchased.
+                        ]]>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                  <xs:enumeration value="System">
+                    <xs:annotation>
+                      <xs:documentation xml:lang="en">
+                        <![CDATA[
+                        <![CDATA[
+                          System:
+                          - Multiple electro-mechanically interconnected Units.
+                          - Typically assembled, not purchased.
+                        ]]>
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:enumeration>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+          </xs:complexType>
+          <xs:unique name="UniqueTestSpecification">
+            <xs:selector xpath="TestSpecification"/>
+            <xs:field xpath="@Document"/>
+          </xs:unique>
+          <xs:unique name="UniqueDocumentation">
+            <xs:selector xpath="Documentation"/>
+            <xs:field xpath="@Folder"/>
+          </xs:unique>
+        </xs:element>
+        <xs:element name="TestOperation" type="TestOperation" minOccurs="1" maxOccurs="1">
+          <xs:unique name="UniqueClass">
+            <xs:selector xpath="TestGroup"/>
+            <xs:field xpath="@Classname"/>
+          </xs:unique>
+        </xs:element>
+        <xs:element name="Computer" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="SerialNumber" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="Operator" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="TimeStart" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="TimeEnd" type="xs:dateTime" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="TimeTotal" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="Event" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:unique name="UniqueNamespaceTrunk">
+      <xs:selector xpath=".//TestOperation"/>
+      <xs:field xpath="@NamespaceTrunk"/>
+    </xs:unique>
+  </xs:element>
+</xs:schema>

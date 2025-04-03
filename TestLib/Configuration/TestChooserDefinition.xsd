@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:simpleType name="ValidWindowsPath">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">
+        <![CDATA[
+          ValidWindowsPath simpleType:
+          - RegEx to validate a Windows Path name; for example, "C:\Windows" or "C:\Windows\notepad.exe".
+          - Type: xs:string.
+        ]]>
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[^&lt;&gt;&quot;\/|?*]{1,255}" />
+    </xs:restriction>
+  </xs:simpleType>
+   
+  <xs:complexType name="OpenFileDialog">
+    <xs:attribute name="InitialDirectory" type="ValidWindowsPath" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+            InitialDirectory attribute:
+            - Required.
+            - Type: ValidWindowsPath.
+            
+            Example: "C:\Program Files\ABT\Test\TestPlans\"
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Filter" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+            Filter attribute:
+            - Required.
+            - Type: xs:string.
+                
+            Example: "TestPlan Programs|*.exe"
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+
+
+  <xs:element name="TestChooserDefinition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="OpenFileDialog" type="OpenFileDialog" minOccurs="1" maxOccurs="1" >
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+                OpenFileDialog element:
+                - Required, 1 occurence.
+                - Type: OpenFileDialog.
+              ]]>
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
