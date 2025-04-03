@@ -1,4 +1,4 @@
-TestExecutive is a minimalist functional test sequencer/test executive.
+#TestExecutive is a minimalist functional test sequencer/test executive.
 
 Sibling project TestPlan is both a demonstration program and a functional test of TestExec.
 
