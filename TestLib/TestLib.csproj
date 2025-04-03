@@ -179,11 +179,6 @@
     <Compile Include="Configuration\TestPlanDefinitionValidator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Diagnostics.DiagnosticSource">
-      <Version>9.0.3</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Miscellaneous\InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -243,6 +238,11 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.DiagnosticSource">
+      <Version>9.0.3</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
