@@ -234,7 +234,6 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="App.config" />
-    <None Include="PhillipSmelt.pfx" />
     <None Include="Configuration\TestSequence.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -244,6 +243,7 @@
     <Content Include="Configuration\TestChooserDefinition.xsd">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="PhillipSmelt.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Configuration\TestExecDefinition.xml" />

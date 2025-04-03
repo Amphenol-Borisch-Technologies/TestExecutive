@@ -31,10 +31,11 @@ namespace ABT.Test.TestExec.Logging {
             StringBuilder stringBuilder = new StringBuilder(((IFormat)method).Format());
             stringBuilder.AppendLine(FormatMessage(MESSAGE_TEST_EVENT, method.Event.ToString()));
             stringBuilder.Append($"{SPACES_2}{method.Log}");
-            Int32 startFind = rtfResults.TextLength;
+            //Int32 startFind = rtfResults.TextLength;
             Log.Information(stringBuilder.ToString());
-            SetBackColors(ref rtfResults, startFind, EVENTS.FAIL.ToString(), EventColors[EVENTS.FAIL]);
-            SetBackColors(ref rtfResults, startFind, EVENTS.PASS.ToString(), EventColors[EVENTS.PASS]);
+            // TODO: Soon; unneeded?  Should be performed in RichTextBoxSink.Emit() instead.
+            //SetBackColors(ref rtfResults, startFind, EVENTS.FAIL.ToString(), EventColors[EVENTS.FAIL]);
+            //SetBackColors(ref rtfResults, startFind, EVENTS.PASS.ToString(), EventColors[EVENTS.PASS]);
         }
 
         public static void Start(ref RichTextBox rtfResults) {
@@ -77,12 +78,9 @@ namespace ABT.Test.TestExec.Logging {
         #region Private Methods
         private static void ReplaceString(ref RichTextBox richTextBox, Int32 startFind, String findString, String replacementString) {
             Int32 selectionStart = richTextBox.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
-            if (selectionStart == -1) Log.Error($"Rich Text '{findString}' not found after character '{startFind}', cannot replace with '{replacementString}'.");
-            else {
-                richTextBox.SelectionStart = selectionStart;
-                richTextBox.SelectionLength = findString.Length;
-                richTextBox.SelectedText = replacementString;
-            }
+            richTextBox.SelectionStart = selectionStart;
+            richTextBox.SelectionLength = findString.Length;
+            richTextBox.SelectedText = replacementString;
         }
 
         private static void ReplaceStrings(ref RichTextBox richTextBox, Int32 startFind, String findString, String replacementString) {
@@ -100,12 +98,9 @@ namespace ABT.Test.TestExec.Logging {
 
         private static void SetBackColor(ref RichTextBox richTextBox, Int32 startFind, String findString, Color backColor) {
             Int32 selectionStart = richTextBox.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
-            if (selectionStart == -1) Log.Error($"Rich Text '{findString}' not found after character '{startFind}', cannot highlight with '{backColor.Name}'.");
-            else {
-                richTextBox.SelectionStart = selectionStart;
-                richTextBox.SelectionLength = findString.Length;
-                richTextBox.SelectionBackColor = backColor;
-            }
+            richTextBox.SelectionStart = selectionStart;
+            richTextBox.SelectionLength = findString.Length;
+            richTextBox.SelectionBackColor = backColor;
         }
 
         private static void SetBackColors(ref RichTextBox richTextBox, Int32 startFind, String findString, Color backColor) {
