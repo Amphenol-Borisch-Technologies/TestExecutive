@@ -75,11 +75,11 @@
   <ItemGroup>
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\RTFSink.cs" />
-    <Compile Include="Logging\SerialNumberDialog.cs">
+    <Compile Include="Logging\SerialNumberDialogOPOS.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Logging\SerialNumberDialog.Designer.cs">
-      <DependentUpon>SerialNumberDialog.cs</DependentUpon>
+    <Compile Include="Logging\SerialNumberDialogOPOS.Designer.cs">
+      <DependentUpon>SerialNumberDialogOPOS.cs</DependentUpon>
     </Compile>
     <Compile Include="Miscellaneous\MessageBoxMonoSpaced.cs">
       <SubType>Form</SubType>
@@ -101,8 +101,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Logging\SerialNumberDialog.resx">
-      <DependentUpon>SerialNumberDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Logging\SerialNumberDialogOPOS.resx">
+      <DependentUpon>SerialNumberDialogOPOS.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Miscellaneous\MessageBoxMonoSpaced.resx">
@@ -165,6 +165,10 @@
       <HintPath>..\..\..\..\..\..\..\Program Files\IVI Foundation\VISA\Microsoft.NET\Framework64\v2.0.50727\VISA.NET Shared Components 7.2.0\Ivi.Visa.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.PointOfService, Version=1.14.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Point Of Service\SDK\Microsoft.PointOfService.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -228,9 +232,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell">
       <Version>1.1.5</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Windows.SDK.Contracts">
-      <Version>10.0.26100.1742</Version>
     </PackageReference>
     <PackageReference Include="Serilog.Sinks.File">
       <Version>6.0.0</Version>
