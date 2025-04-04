@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<TestChooserDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file://C://Program Files//ABT//Test//TestExec//TestChooserDefinition.xsd">
+<TestChooserDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file://C://Program Files//ABT//Test//TestExecutive//TestChooserDefinition.xsd">
 
   <OpenFileDialog InitialDirectory="C:\Program Files\ABT\Test\TestPlans\" Filter="TestPlan Programs|*.exe" />
 </TestChooserDefinition>
