@@ -74,8 +74,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>..\Shared\Amphenol.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>ABD2F020F71B04C2CC4FDE4ADEBD205F3D8AB767</ManifestCertificateThumbprint>
@@ -125,7 +124,13 @@
     <ProjectReference Include="..\TestLib\TestLib.csproj">
       <Project>{24d5e99e-185c-4507-81f0-132d8cb8164e}</Project>
       <Name>TestLib</Name>
+      <Private>True</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Shared\Amphenol.ico">
+      <Link>Amphenol.ico</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -16,29 +16,6 @@
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>MixedRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>
-    </DocumentationFile>
-  </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>
     </ApplicationIcon>
@@ -72,6 +49,12 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>PhillipSmelt.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <AppConfigFile>App.config</AppConfigFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\RTFSink.cs" />
