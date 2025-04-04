@@ -119,8 +119,17 @@ namespace ABT.Test.TestExec.Logging {
             const String _xml = ".xml";
             String xmlFolder = $"{((TextFiles)testExecDefinition.TestData.Item).Folder}\\{testPlanDefinition.UUT.Number}\\{testSequence.TestOperation.NamespaceTrunk}";
             String xmlBaseName = $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}";
-            String[] xmlFileNames = Directory.GetFiles(xmlFolder, $"{xmlBaseName}_*{_xml}", SearchOption.TopDirectoryOnly);
-            // NOTE:  Will fail if invalid path.  Don't catch resulting Exception though; this has to be fixed in TestPlanDefinitionXML.
+            String[] xmlFileNames;
+            try {
+                xmlFileNames = Directory.GetFiles(xmlFolder, $"{xmlBaseName}_*{_xml}", SearchOption.TopDirectoryOnly);
+            } catch {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine($"Logging error:");
+                stringBuilder.AppendLine($"   Folder         : '{xmlFolder}'.");
+                stringBuilder.AppendLine($"   Base File Name : '{xmlBaseName}_*{_xml}'.");
+                MessageBox.Show(stringBuilder.ToString(), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                throw;
+            }
             Int32 maxNumber = 0; String s;
             foreach (String xmlFileName in xmlFileNames) {
                 s = xmlFileName;
