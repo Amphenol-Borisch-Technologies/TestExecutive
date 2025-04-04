@@ -53,9 +53,6 @@
     <AppConfigFile>App.config</AppConfigFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\RTFSink.cs" />
     <Compile Include="Logging\SerialNumberDialogOPOS.cs">
