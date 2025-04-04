@@ -122,12 +122,13 @@ namespace ABT.Test.TestExec.Logging {
             String[] xmlFileNames;
             try {
                 xmlFileNames = Directory.GetFiles(xmlFolder, $"{xmlBaseName}_*{_xml}", SearchOption.TopDirectoryOnly);
-            } catch {
+            } catch (Exception e) {
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.AppendLine($"Logging error:");
                 stringBuilder.AppendLine($"   Folder         : '{xmlFolder}'.");
                 stringBuilder.AppendLine($"   Base File Name : '{xmlBaseName}_*{_xml}'.");
                 MessageBox.Show(stringBuilder.ToString(), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                MessageBox.Show(e.ToString(), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 throw;
             }
             Int32 maxNumber = 0; String s;
