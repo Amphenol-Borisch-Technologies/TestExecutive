@@ -8,7 +8,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -150,9 +149,10 @@ namespace ABT.Test.TestLib {
             return instrumentDrivers;
         }
 
-        public static String GetTestLibExecutionDirectory() { return Path.GetDirectoryName(GetPathOfInvokingFile()); }
-
-        public static String GetPathOfInvokingFile([CallerFilePath] String filePath = "") { return filePath; }
+        public static String GetTestLibExecutionDirectory() {
+            var assemblyLocation = Assembly.GetExecutingAssembly().Location;
+            return Path.GetDirectoryName(assemblyLocation);
+        }
 
         public static String GetTestPlansFolder() { return XElement.Load(testChooserDefinitionXML).Element("OpenFileDialog").Attribute("InitialDirectory").Value; }
 
