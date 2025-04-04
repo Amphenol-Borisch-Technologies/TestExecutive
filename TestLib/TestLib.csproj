@@ -48,9 +48,6 @@
     <AppConfigFile>App.config</AppConfigFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="Ag34401_11, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\ProgramData\Keysight\Command Expert\ScpiNetDrivers\Ag34401_11.dll</HintPath>
