@@ -19,7 +19,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
-using Microsoft.PointOfService;
 using static ABT.Test.TestLib.Data;
 // TODO:  Eventually; evaluate Keysight OpenTAP as potential option in addition to TestExec/TestLib/TestPlan.  https://opentap.io/.
 // - Briefly evaluated previously; time for reevaluation.
@@ -198,7 +197,6 @@ namespace ABT.Test.TestExec {
             ButtonRunReset(enabled: false);
             TSMI_TestPlan.Enabled = false;
             TSMI_System_SelfTests.Enabled = false;
-            TSMI_System_BarcodeScannerDiscovery.Enabled = false;
             TSMI_UUT_Statistics.Enabled = false;
             StatusModeUpdate(MODES.Running);
         }
@@ -210,7 +208,6 @@ namespace ABT.Test.TestExec {
             ButtonSelect.Enabled = true;
             ButtonRunReset(enabled: testSequence != null);
             TSMI_System_SelfTests.Enabled = true;
-            TSMI_System_BarcodeScannerDiscovery.Enabled = true;
             TSMI_UUT_Statistics.Enabled = true;
             StatusModeUpdate(MODES.Waiting);
         }
@@ -382,30 +379,6 @@ namespace ABT.Test.TestExec {
         private void TSMI_Feedback_ComplimentsMoney_Click(Object sender, EventArgs e) { _ = MessageBox.Show(this, $"Prefer ₿itcoin donations!", $"₿₿₿", MessageBoxButtons.OK, MessageBoxIcon.Information); }
         private void TSMI_Feedback_CritiqueBugReport_Click(Object sender, EventArgs e) { SendMailMessageWithAttachment($"Bug Report from {UserName} for {testPlanDefinition.UUT.Number}, {testPlanDefinition.UUT.Description}."); }
         private void TSMI_Feedback_CritiqueImprovementRequest_Click(Object sender, EventArgs e) { SendMailMessageWithAttachment($"Improvement Request from {UserName} for {testPlanDefinition.UUT.Number}, {testPlanDefinition.UUT.Description}."); }
-
-        private void TSMI_System_BarcodeScannerDiscovery_Click(object sender, EventArgs e) {
-            PosExplorer posExplorer = new PosExplorer();
-            DeviceCollection deviceCollection = posExplorer.GetDevices(DeviceType.Scanner);
-
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"Discovering Microsoft supported, corded Barcode Scanner(s):{Environment.NewLine}");
-            stringBuilder.AppendLine($"  - See https://learn.microsoft.com/en-us/windows/uwp/devices-sensors/pos-device-support.");
-            stringBuilder.AppendLine($"  - Note that only corded Barcode Scanners are discovered; cordless Bluetooth & Wireless scanners are ignored.");
-            stringBuilder.AppendLine($"  - Note that cameras are also discovered; cameras are digital imagers, just as many bar-code readers are.");
-            stringBuilder.AppendLine($"  - Modify ConfigurationTestExec to use a discovered Barcode Scanner.");
-            stringBuilder.AppendLine($"  - Scanners must be programmed into USB-HID mode to function properly:");
-            stringBuilder.AppendLine(@"    - See: file:///P:/Test/Engineers/Equipment_Manuals/Honeywell/Honeywell_Voyager_1200G_User's_Guide_ReadMe.pdf");
-            stringBuilder.AppendLine($"    - Or:  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/ppr/en-us/public/products/barcode-scanners/general-purpose-handheld/1200g/documents/sps-ppr-vg1200-ug.pdf{Environment.NewLine}{Environment.NewLine}");
-
-            foreach (DeviceInfo deviceInfo in deviceCollection) {
-                stringBuilder.AppendLine($"Name: '{deviceInfo.ServiceObjectName}'.");
-                stringBuilder.AppendLine($"Type: '{deviceInfo.Type}'.");
-                foreach (String logicalName in deviceInfo.LogicalNames) stringBuilder.AppendLine($"LogicalName: '{logicalName}'.");
-                stringBuilder.AppendLine();
-            }
-
-            MessageBox.Show(stringBuilder.ToString(), "Microsoft supported, corded Barcode Scanner(s)");
-        }
 
         private void TSMI_System_ColorCode_Click(Object sender, EventArgs e) {
             CustomMessageBox customMessageBox = new CustomMessageBox {

@@ -9,7 +9,7 @@ namespace ABT.Test.TestLib.Configuration {
     public static class TestPlanGenerator {
 
         public static void GenerateTestPlan(String TestPlanDefinitionXML) {
-            // TODO:  Eventually; add option to generate method invocations to Keysight VEE.  Need this.
+            // TODO:  Soon; add option to generate method invocations to Keysight VEE.  Need this.
             //        - Also add capability for VEE programs to access the TestExec & TestLib DLL libraries. 
             // NOTE:  Won't add an option to generate method invocations for Python:
             //        - I think C# is a better technical option than Python for TestPlans.

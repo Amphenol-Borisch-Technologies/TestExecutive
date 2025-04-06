@@ -4,10 +4,7 @@
   <Development Released="2025-04-01">
     <Developer Name="Phillip Smelt" Language="CSharp" Comment="Also XML &amp; XSD." />
     <Documentation Folder="P:\Test\Engineers\Equipment_Manuals\TestExec" />
-    <Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestExec" />
-    <Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestChooser" />
-    <Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestLib" />
-    <Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestPlan" />
+    <Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestExecutive" />
   </Development>
   
   <TestData>

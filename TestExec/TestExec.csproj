@@ -55,11 +55,11 @@
   <ItemGroup>
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\RTFSink.cs" />
-    <Compile Include="Logging\SerialNumberDialogOPOS.cs">
+    <Compile Include="Logging\SerialNumberDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Logging\SerialNumberDialogOPOS.Designer.cs">
-      <DependentUpon>SerialNumberDialogOPOS.cs</DependentUpon>
+    <Compile Include="Logging\SerialNumberDialog.Designer.cs">
+      <DependentUpon>SerialNumberDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Miscellaneous\MessageBoxMonoSpaced.cs">
       <SubType>Form</SubType>
@@ -81,8 +81,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Logging\SerialNumberDialogOPOS.resx">
-      <DependentUpon>SerialNumberDialogOPOS.cs</DependentUpon>
+    <EmbeddedResource Include="Logging\SerialNumberDialog.resx">
+      <DependentUpon>SerialNumberDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Miscellaneous\MessageBoxMonoSpaced.resx">
