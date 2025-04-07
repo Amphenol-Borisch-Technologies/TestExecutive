@@ -10,7 +10,7 @@ namespace ABT.Test.TestLib.Configuration {
         public static T DeserializeFromFile<T>(String xmlFile, String xPath = null) {
             if (!File.Exists(xmlFile)) throw new ArgumentException($"XML File '{xmlFile}' does not exist.");
             T t;
-            using (FileStream fileStream = new FileStream(xmlFile, FileMode.Open)) {
+            using (FileStream fileStream = new FileStream(xmlFile, FileMode.Open, FileAccess.Read)) {
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(fileStream);
                 if (xPath is null) xPath = $"//{typeof(T).Name}";
