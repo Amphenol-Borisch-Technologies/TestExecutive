@@ -77,7 +77,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>PhillipSmelt.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>ABT_Test.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -86,8 +86,10 @@
   <ItemGroup>
     <Compile Include="TestChooser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="App.config" />
-    <None Include="PhillipSmelt.pfx" />
+    <None Include="..\Shared\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="ABT_Test.pfx" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">

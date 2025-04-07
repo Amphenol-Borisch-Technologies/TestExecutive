@@ -47,7 +47,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>PhillipSmelt.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>ABT_Test.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <AppConfigFile>App.config</AppConfigFile>
@@ -218,8 +218,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="PhillipSmelt.pfx" />
+    <None Include="..\Shared\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="ABT_Test.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TestLib\TestLib.csproj">

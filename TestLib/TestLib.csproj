@@ -42,7 +42,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>PhillipSmelt.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>ABT_Test.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <AppConfigFile>App.config</AppConfigFile>
@@ -180,7 +180,10 @@
     <Content Include="Configuration\TestExecDefinition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="App.config" />
+    <None Include="..\Shared\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="ABT_Test.pfx" />
     <None Include="Configuration\TestSequence.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -190,7 +193,6 @@
     <Content Include="Configuration\TestChooserDefinition.xsd">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="PhillipSmelt.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Configuration\TestExecDefinition.xml" />

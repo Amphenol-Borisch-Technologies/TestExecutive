@@ -31,7 +31,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>PhillipSmelt.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>ABT_Test.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.PointOfService, Version=1.14.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -51,8 +51,10 @@
       <DependentUpon>TestDev.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="App.config" />
-    <None Include="PhillipSmelt.pfx" />
+    <None Include="..\Shared\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="ABT_Test.pfx" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestDev.resx">
