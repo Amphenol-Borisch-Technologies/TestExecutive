@@ -14,6 +14,7 @@ namespace TestDev {
         public TestDev() { InitializeComponent(); }
         private void TSMI_BarcodeScanner_Click(Object sender, EventArgs e) {
             PosExplorer posExplorer = new PosExplorer();
+            posExplorer.Refresh();
             DeviceCollection deviceCollection = posExplorer.GetDevices(DeviceType.Scanner);
 
             StringBuilder stringBuilder = new StringBuilder();
