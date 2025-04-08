@@ -1,4 +1,5 @@
 ﻿using ABT.Test.TestLib.Configuration;
+using ABT.Test.TestLib.Miscellaneous;
 using Microsoft.PointOfService;
 using System;
 using System.Diagnostics;
@@ -32,7 +33,7 @@ namespace TestDev {
                 stringBuilder.AppendLine();
             }
 
-            MessageBox.Show(stringBuilder.ToString(), "Microsoft supported, corded Barcode Scanner(s)");
+            CustomMessageBox.Show("Microsoft supported, corded Barcode Scanner(s)", stringBuilder.ToString());
         }
 
         private void TSMI_TestDefinitions_TestChooser_Click(Object sender, EventArgs e) {
