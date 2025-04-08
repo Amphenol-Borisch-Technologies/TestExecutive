@@ -1,7 +1,5 @@
-﻿using System.Windows.Forms;
-
-namespace ABT.Test.TestExec {
-    public abstract partial class TestExec : Form {
+﻿namespace ABT.Test.TestExec {
+    public abstract partial class TestExec : System.Windows.Forms.Form {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -534,43 +532,43 @@ namespace ABT.Test.TestExec {
         private System.Windows.Forms.Label LabelEvent;
         private System.Windows.Forms.RichTextBox rtfResults;
         private System.Windows.Forms.Button ButtonSelect;
-        private Button ButtonEmergencyStop;
-        private MenuStrip MS;
-        private ToolStripMenuItem TSMI_TestPlan;
-        private ToolStripMenuItem TSMI_TestPlan_SaveResults;
-        private ToolStripMenuItem TSMI_System;
-        private ToolStripMenuItem TSMI_System_SelfTests;
-        private ToolStripMenuItem TSMI_System_DiagnosticsInstruments;
-        private ToolStripMenuItem TSMI_UUT;
-        private ToolStripMenuItem TSMI_UUT_eDocs;
-        private ToolStripMenuItem TSMI_UUT_TestData;
-        private ToolStripMenuItem TSMI_UUT_TestDataP_DriveTDR_Folder;
-        private ToolStripMenuItem TSMI_UUT_TestDataSQL_ReportingAndQuerying;
-        private ToolStripMenuItem TSMI_UUT_Manuals;
-        private ToolStripMenuItem TSMI_System_Manuals;
-        private ToolStripMenuItem TSMI_System_ManualsBarcodeScanner;
-        private ToolStripMenuItem TSMI_System_ManualsInstruments;
-        private ToolStripMenuItem TSMI_Feedback;
-        private ToolStripMenuItem TSMI_Feedback_Compliments;
-        private ToolStripMenuItem TSMI_Feedback_ComplimentsPraiseεPlaudits;
-        private ToolStripMenuItem TSMI_Feedback_ComplimentsMoney;
-        private ToolStripMenuItem TSMI_Feedback_Critiques;
-        private ToolStripMenuItem TSMI_Feedback_CritiquesBugReport;
-        private ToolStripMenuItem TSMI_Feedback_CritiquesImprovementRequest;
-        private StatusStrip StatusStrip;
-        private ToolStripStatusLabel StatusStatisticsLabel;
-        private ToolStripStatusLabel StatusCustomLabel;
-        private ToolStripStatusLabel StatusTimeLabel;
-        private ToolStripStatusLabel StatusModeLabel;
-        private ToolStripMenuItem TSMI_TestPlan_Exit;
-        private ToolStripSeparator TSMI_File_Separator;
-        private ToolStripMenuItem TSMI_UUT_Statistics;
-        private ToolStripMenuItem TSMI_UUT_StatisticsDisplay;
-        private ToolStripMenuItem TSMI_UUT_StatisticsReset;
-        private ToolStripMenuItem TSMI_System_ColorCode;
-        private ToolStripMenuItem TSMI_About;
-        private ToolStripMenuItem TSMI_About_TestExec;
-        private ToolStripMenuItem TSMI_About_TestPlan;
-        private ToolStripMenuItem TSMI_TestPlan_Choose;
+        private System.Windows.Forms.Button ButtonEmergencyStop;
+        private System.Windows.Forms.MenuStrip MS;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_TestPlan;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_TestPlan_SaveResults;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_System;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_System_SelfTests;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_System_DiagnosticsInstruments;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_UUT;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_UUT_eDocs;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_UUT_TestData;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_UUT_TestDataP_DriveTDR_Folder;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_UUT_TestDataSQL_ReportingAndQuerying;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_UUT_Manuals;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_System_Manuals;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_System_ManualsBarcodeScanner;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_System_ManualsInstruments;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback_Compliments;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback_ComplimentsPraiseεPlaudits;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback_ComplimentsMoney;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback_Critiques;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback_CritiquesBugReport;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback_CritiquesImprovementRequest;
+        private System.Windows.Forms.StatusStrip StatusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel StatusStatisticsLabel;
+        private System.Windows.Forms.ToolStripStatusLabel StatusCustomLabel;
+        private System.Windows.Forms.ToolStripStatusLabel StatusTimeLabel;
+        private System.Windows.Forms.ToolStripStatusLabel StatusModeLabel;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_TestPlan_Exit;
+        private System.Windows.Forms.ToolStripSeparator TSMI_File_Separator;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_UUT_Statistics;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_UUT_StatisticsDisplay;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_UUT_StatisticsReset;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_System_ColorCode;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_About;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_About_TestExec;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_About_TestPlan;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_TestPlan_Choose;
     }
 }
