@@ -58,10 +58,10 @@
     <ApplicationIcon>..\Shared\Amphenol.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>ABD2F020F71B04C2CC4FDE4ADEBD205F3D8AB767</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>61C7CFAC492918A2077AF8CECA564FDE28D3D5E4</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>TestChooser_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ABT_Test.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
