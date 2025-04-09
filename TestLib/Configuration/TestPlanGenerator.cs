@@ -38,25 +38,24 @@ namespace ABT.Test.TestLib.Configuration {
                         AddMethod(codeTypeDeclaration, testSpace.TestOperations[testOperation], testGroup, method);
                     }
                 }
-            }
+                CSharpCodeProvider cSharpCodeProvider = new CSharpCodeProvider();
+                CodeGeneratorOptions codeGeneratorOptions = new CodeGeneratorOptions {
+                    BlankLinesBetweenMembers = true,
+                    BracingStyle = "Block",
+                    IndentString = "    "
+                };
 
-            CSharpCodeProvider cSharpCodeProvider = new CSharpCodeProvider();
-            CodeGeneratorOptions codeGeneratorOptions = new CodeGeneratorOptions {
-                BlankLinesBetweenMembers = true,
-                BracingStyle = "Block",
-                IndentString = "    "
-            };
+                SaveFileDialog saveFileDialog = new SaveFileDialog {
+                    Filter = "C# files (*.cs)|*.cs",
+                    Title = "Save the generated C# TestPlan file",
+                    DefaultExt = "cs",
+                    FileName = "TestPlan.cs",
+                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\"
+                };
 
-            SaveFileDialog saveFileDialog = new SaveFileDialog {
-                Filter = "C# files (*.cs)|*.cs",
-                Title = "Save the generated C# TestPlan file",
-                DefaultExt = "cs",
-                FileName = "TestPlan.cs",
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\"
-            };
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK) {
-                using (StreamWriter streamWriter = new StreamWriter(saveFileDialog.FileName)) { cSharpCodeProvider.GenerateCodeFromCompileUnit(codeCompileUnit, streamWriter, codeGeneratorOptions); }
+                if (saveFileDialog.ShowDialog() == DialogResult.OK) {
+                    using (StreamWriter streamWriter = new StreamWriter(saveFileDialog.FileName)) { cSharpCodeProvider.GenerateCodeFromCompileUnit(codeCompileUnit, streamWriter, codeGeneratorOptions); }
+                }
             }
         }
 

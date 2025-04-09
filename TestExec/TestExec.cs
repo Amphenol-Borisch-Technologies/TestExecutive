@@ -438,12 +438,12 @@ namespace ABT.Test.TestExec {
         }
         private void TSMI_About_TestExec_Click(Object sender, EventArgs e) {
             Development development = Serializing.DeserializeFromFile<Development>(TestExecDefinitionXML);
-            ShowAbout(Assembly.GetExecutingAssembly(), development);
+            ShowAbout(Assembly.GetExecutingAssembly(), development, isTestPlan: false);
         }
         private void TSMI_About_TestPlan_Click(Object sender, EventArgs e) {
             ShowAbout(Assembly.GetEntryAssembly(), testPlanDefinition.Development, isTestPlan: true);
         }
-        private void ShowAbout(Assembly assembly, Development development, Boolean isTestPlan = false) {
+        private void ShowAbout(Assembly assembly, Development development, Boolean isTestPlan) {
             StringBuilder stringBuilder = new StringBuilder();
             const Int32 PR = 16;
             stringBuilder.AppendLine($"{nameof(Assembly)}:");
