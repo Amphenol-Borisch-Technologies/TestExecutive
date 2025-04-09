@@ -27,9 +27,9 @@ namespace ABT.Test.TestLib.Configuration {
             //          - And if Python is preferred, invoking it from C#, and accessing .Net, TestExec & TestLib from Python are easily coded manually.
             //            - No need to auto-generate such code; CoPilot can easily help with that.
             TestSpace testSpace = Serializing.DeserializeFromFile<TestSpace>(TestPlanDefinitionXML);
-            CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
 
             for (Int32 testOperation = 0; testOperation < testSpace.TestOperations.Count; testOperation++) {
+                CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
                 CodeNamespace codeNamespace = GetNamespace(testSpace, testOperation);
                 _ = codeCompileUnit.Namespaces.Add(codeNamespace);
                 for (Int32 testGroup = 0; testGroup < testSpace.TestOperations[testOperation].TestGroups.Count; testGroup++) {
@@ -49,7 +49,7 @@ namespace ABT.Test.TestLib.Configuration {
                     Filter = "C# files (*.cs)|*.cs",
                     Title = "Save the generated C# TestPlan file",
                     DefaultExt = "cs",
-                    FileName = "TestPlan.cs",
+                    FileName = $"{testSpace.TestOperations[testOperation].NamespaceTrunk}.cs",
                     InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\"
                 };
 
