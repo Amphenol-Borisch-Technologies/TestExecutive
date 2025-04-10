@@ -31,8 +31,8 @@ namespace ABT.Test.TestExecutive.TestLib.Miscellaneous {
                 } else {
                     MessageBox.Show("Unsupported link type: " + e.LinkText);
                 }
-            } catch (Exception ex) {
-                MessageBox.Show("Error opening link: " + ex.Message);
+            } catch (Exception exception) {
+                MessageBox.Show("Error opening link: " + exception.Message);
             }
         }
     }

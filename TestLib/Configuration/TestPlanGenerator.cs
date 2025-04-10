@@ -118,10 +118,10 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             codeNamespace.Types.Add(codeTypeDeclaration);
             try {
                 foreach (InstrumentInfo instrumentInfo in testPlanDefinition.InstrumentsTestPlan.GetInfo()) codeTypeDeclaration.Members.Add(CreateField(instrumentInfo));
-            } catch (ArgumentException ae) {
+            } catch (ArgumentException argumentException) {
                 // Handle the case where an instrument alias is duplicated in the TestPlanDefinition.
                 // This can happen if the same instrument is defined more than once in the XML file.
-                MessageBox.Show($"{ae.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"{argumentException.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

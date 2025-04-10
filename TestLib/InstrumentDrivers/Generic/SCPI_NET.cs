@@ -20,8 +20,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic {
             Int32 result;
             try {
                 SCPI.TST.Query(out result);
-            } catch (Exception e) {
-                Instruments.SelfTestFailure(this, e);
+            } catch (Exception exception) {
+                Instruments.SelfTestFailure(this, exception);
                 return SELF_TEST_RESULTS.FAIL;
             }
             return (SELF_TEST_RESULTS)result;

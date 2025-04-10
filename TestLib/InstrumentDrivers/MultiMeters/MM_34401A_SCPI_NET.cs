@@ -24,8 +24,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters {
             Boolean result;
             try {
                 SCPI.TST.Query(out result);
-            } catch (Exception e) {
-                Instruments.SelfTestFailure(this, e);
+            } catch (Exception exception) {
+                Instruments.SelfTestFailure(this, exception);
                 return SELF_TEST_RESULTS.FAIL;
             }
             return result ? SELF_TEST_RESULTS.FAIL : SELF_TEST_RESULTS.PASS; // Ag34401 returns 0 for passed, 1 for fail, opposite of C#'s Convert.ToBoolean(Int32).

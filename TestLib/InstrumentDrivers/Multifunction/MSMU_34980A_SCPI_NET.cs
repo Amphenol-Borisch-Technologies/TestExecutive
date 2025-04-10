@@ -42,8 +42,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             Int32 result;
             try {
                 SCPI.TST.Query(out result);
-            } catch (Exception e) {
-                Instruments.SelfTestFailure(this, e);
+            } catch (Exception exception) {
+                Instruments.SelfTestFailure(this, exception);
                 return SELF_TEST_RESULTS.FAIL;
             }
             return (SELF_TEST_RESULTS)result; // Ag34980 returns 0 for passed, 1 for fail.

@@ -17,8 +17,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             String TestMessage = String.Empty;
             try {
                 UtilityEx.SelfTest(ref TestResult, ref TestMessage);
-            } catch (Exception e) {
-                Instruments.SelfTestFailure(this, e);
+            } catch (Exception exception) {
+                Instruments.SelfTestFailure(this, exception);
                 return SELF_TEST_RESULTS.FAIL;
             }
             return (SELF_TEST_RESULTS)TestResult; // Tkdpo2k3k4kClass returns 0 for passed, 1 for fail.

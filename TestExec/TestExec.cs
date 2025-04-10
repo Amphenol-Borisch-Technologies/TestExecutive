@@ -489,17 +489,17 @@ namespace ABT.Test.TestExecutive.TestExec {
                             SystemReset();
                             return;
                         }
-                    } catch (Exception e) {
+                    } catch (Exception exception) {
                         SystemReset();
-                        if (e.ToString().Contains(typeof(OperationCanceledException).Name)) {
+                        if (exception.ToString().Contains(typeof(OperationCanceledException).Name)) {
                             method.Event = EVENTS.CANCEL;// NOTE:  May be altered to EVENTS.EMERGENCY_STOP in finally block.
-                            while (!(e is OperationCanceledException) && (e.InnerException != null)) e = e.InnerException; // No fluff, just stuff.
-                            _ = method.Log.AppendLine($"{Environment.NewLine}{typeof(OperationCanceledException).Name}:{Environment.NewLine}{e.Message}");
+                            while (!(exception is OperationCanceledException) && (exception.InnerException != null)) exception = exception.InnerException; // No fluff, just stuff.
+                            _ = method.Log.AppendLine($"{Environment.NewLine}{typeof(OperationCanceledException).Name}:{Environment.NewLine}{exception.Message}");
                         }
                         if (!CT_EmergencyStop.IsCancellationRequested && !CT_Cancel.IsCancellationRequested) {
                             method.Event = EVENTS.ERROR;
-                            _ = method.Log.AppendLine($"{Environment.NewLine}{e}");
-                            ErrorMessage(e);
+                            _ = method.Log.AppendLine($"{Environment.NewLine}{exception}");
+                            ErrorMessage(exception);
                         }
                         return;
                     } finally {

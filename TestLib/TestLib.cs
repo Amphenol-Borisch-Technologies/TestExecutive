@@ -128,7 +128,7 @@ namespace ABT.Test.TestExecutive.TestLib {
             foreach (Mobile mobile in testPlanDefinition.InstrumentsTestPlan.Mobile) try {
                     if (!testPlanDefinition.TestSpace.Simulate) instrumentDriver = Activator.CreateInstance(Type.GetType(mobile.NameSpacedClassName), new Object[] { mobile.Address, mobile.Detail });
                     instrumentDrivers.Add(mobile.ID, instrumentDriver); // instrumentDriver is null if testPlanDefinition.TestSpace.Simulate.
-                } catch (Exception e) {
+                } catch (Exception exception) {
                     StringBuilder stringBuilder = new StringBuilder().AppendLine();
                     const Int32 PR = 23;
                     stringBuilder.AppendLine($"Issue with {nameof(Mobile)}:");
@@ -136,8 +136,8 @@ namespace ABT.Test.TestExecutive.TestLib {
                     stringBuilder.AppendLine($"   {nameof(mobile.Detail)}".PadRight(PR) + $": {mobile.Detail}");
                     stringBuilder.AppendLine($"   {nameof(mobile.Address)}".PadRight(PR) + $": {mobile.Address}");
                     stringBuilder.AppendLine($"   {nameof(mobile.NameSpacedClassName)}".PadRight(PR) + $": {mobile.NameSpacedClassName}{Environment.NewLine}");
-                    stringBuilder.AppendLine($"{nameof(System.Exception)} {nameof(System.Exception.Message)}(s):");
-                    stringBuilder.AppendLine($"{e}{Environment.NewLine}");
+                    stringBuilder.AppendLine($"{nameof(Exception)} {nameof(Exception.Message)}(s):");
+                    stringBuilder.AppendLine($"{exception}{Environment.NewLine}");
                     throw new ArgumentException(stringBuilder.ToString());
                 }
             return instrumentDrivers;

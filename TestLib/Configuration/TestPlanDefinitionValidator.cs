@@ -97,10 +97,10 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
                         }
                     }
                 }
-            } catch (Exception e) {
+            } catch (Exception exception) {
                 validSpecification = false;
                 stringBuilder.AppendLine($"{nameof(Exception)}:");
-                stringBuilder.AppendLine($"\t{e.Message}".PadRight(PR) + Environment.NewLine);
+                stringBuilder.AppendLine($"\t{exception.Message}".PadRight(PR) + Environment.NewLine);
             }
 
             if (!validSpecification) {
