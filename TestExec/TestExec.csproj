@@ -67,11 +67,6 @@
     <Compile Include="Miscellaneous\MessageBoxMonoSpaced.Designer.cs">
       <DependentUpon>MessageBoxMonoSpaced.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="TestExec.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,11 +82,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Miscellaneous\MessageBoxMonoSpaced.resx">
       <DependentUpon>MessageBoxMonoSpaced.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="TestExec.resx">
