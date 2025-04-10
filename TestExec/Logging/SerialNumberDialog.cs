@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.PointOfService;
 
-namespace ABT.Test.TestExec.Logging {
+namespace ABT.Test.TestExecutive.TestExec.Logging {
     public sealed partial class SerialNumberDialog : Form {
         private PosExplorer _posExplorer;
         private Scanner _scanner = null;

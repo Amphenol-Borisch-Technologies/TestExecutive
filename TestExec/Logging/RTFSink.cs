@@ -1,4 +1,4 @@
-﻿using ABT.Test.TestLib;
+﻿using ABT.Test.TestExecutive.TestLib;
 using Serilog.Core; // Install Serilog via NuGet Package Manager.  Site is https://serilog.net/.
 using Serilog.Events;
 using Serilog.Formatting;
@@ -7,7 +7,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ABT.Test.TestExec.Logging {
+namespace ABT.Test.TestExecutive.TestExec.Logging {
     public class RichTextBoxSink : ILogEventSink {
         private readonly RichTextBox richTextBox;
         private readonly ITextFormatter formatter;

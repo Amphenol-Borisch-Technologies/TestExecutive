@@ -1,8 +1,8 @@
-﻿using ABT.Test.TestExec.Logging;
-using ABT.Test.TestLib;
-using ABT.Test.TestLib.Configuration;
-using ABT.Test.TestLib.InstrumentDrivers.Interfaces;
-using ABT.Test.TestLib.Miscellaneous;
+﻿using ABT.Test.TestExecutive.TestExec.Logging;
+using ABT.Test.TestExecutive.TestLib;
+using ABT.Test.TestExecutive.TestLib.Configuration;
+using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
+using ABT.Test.TestExecutive.TestLib.Miscellaneous;
 using Microsoft.VisualBasic;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using System;
@@ -19,7 +19,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
-using static ABT.Test.TestLib.Data;
+using static ABT.Test.TestExecutive.TestLib.Data;
 // TODO:  Eventually; evaluate Keysight OpenTAP as potential option in addition to TestExec/TestLib/TestPlan.  https://opentap.io/.
 // - Briefly evaluated previously; time for reevaluation.
 // TODO:  Eventually; GitHub automated workflows; CI/CD including automated deployment to subscribed TestExec PCs (assuming its possible).
@@ -63,7 +63,7 @@ using static ABT.Test.TestLib.Data;
 //        - https://stackoverflow.com/questions/27087483/how-to-resolve-git-pull-fatal-unable-to-access-https-github-com-empty
 //        - FYI, synchronizing with Tests repository doesn't error out, as it doesn't utilize a Git server.
 
-namespace ABT.Test.TestExec {
+namespace ABT.Test.TestExecutive.TestExec {
     /// <remarks>
     ///  <b>References:</b>
     /// <item>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace ABT.Test.TestLib.Configuration {
+namespace ABT.Test.TestExecutive.TestLib.Configuration {
     [XmlRoot(nameof(TestExecDefinition))]
     public class TestExecDefinition {
         [XmlElement(nameof(Development))] public Development Development { get; set; }

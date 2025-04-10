@@ -1,4 +1,4 @@
-﻿namespace ABT.Test.TestLib.Miscellaneous {
+﻿namespace ABT.Test.TestExecutive.TestLib.Miscellaneous {
     partial class InputForm {
         /// <summary>
         /// Required designer variable.

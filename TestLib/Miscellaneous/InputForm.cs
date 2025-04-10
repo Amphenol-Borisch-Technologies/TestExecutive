@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ABT.Test.TestLib.Miscellaneous {
+namespace ABT.Test.TestExecutive.TestLib.Miscellaneous {
     public partial class InputForm : Form {
         public InputForm() {
             InitializeComponent();

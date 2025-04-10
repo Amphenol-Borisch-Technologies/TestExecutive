@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace ABT.Test.TestLib.Configuration {
+namespace ABT.Test.TestExecutive.TestLib.Configuration {
     public partial class TestSelect : Form {
         private static TestSequence testSequence = new TestSequence();
 

@@ -5,7 +5,7 @@ using System.CodeDom.Compiler;
 using System.IO;
 using System.Windows.Forms;
 
-namespace ABT.Test.TestLib.Configuration {
+namespace ABT.Test.TestExecutive.TestLib.Configuration {
     public static class TestPlanGenerator {
 
         public static void GenerateTestPlan(String TestPlanDefinitionXML) {

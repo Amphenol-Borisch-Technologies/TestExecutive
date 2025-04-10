@@ -1,5 +1,5 @@
-﻿using ABT.Test.TestLib.Configuration;
-using ABT.Test.TestLib.Miscellaneous;
+﻿using ABT.Test.TestExecutive.TestLib.Configuration;
+using ABT.Test.TestExecutive.TestLib.Miscellaneous;
 using Microsoft.PointOfService;
 using System;
 using System.Diagnostics;
@@ -7,7 +7,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using static ABT.Test.TestLib.Data;
+using static ABT.Test.TestExecutive.TestLib.Data;
 
 namespace TestDev {
     public partial class TestDev : Form {

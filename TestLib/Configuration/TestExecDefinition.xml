@@ -55,7 +55,7 @@
     - Mobile/temporary instruments are defined in individual TestPlanDefinition.xml files.
 	- For instrument calibration or replacement, swap identical instrument with others, then update Address.
   - For additions, add InstrumentTextExec element.
-    - Add a new driver to ABT.Test.TestLib.InstrumentDrivers.* if needed.
+    - Add a new driver to ABT.Test.TestExecutive.TestLib.InstrumentDrivers.* if needed.
   - For deletions, remove or comment InstrumentTextExec element.
 
 	ID:			- Required attribute.
@@ -76,9 +76,9 @@
 	- https://www.ni.com/docs/en-US/bundle/labview/page/lvinstio/visa_resource_name_generic.html.
 	- https://www.ivifoundation.org/downloads/Architecture%20Specifications/vpp43_2022-05-19.pdf.
   -->
-    <InstrumentTestExec ID="MM1_34401A"   Detail="Agilent 34401A Digital MultiMeter"                 Address="GPIB0::11::INSTR" NameSpacedClassName="ABT.Test.TestLib.InstrumentDrivers.Generic.MM_34401A_SCPI_NET" />
-    <InstrumentTestExec ID="MSMU1_34980A" Detail="Agilent 34980A Multifunction Switch/Measure Unit"   Address="GPIB0::2::INSTR"  NameSpacedClassName="ABT.Test.TestLib.InstrumentDrivers.Multifunction.MSMU_34980A_SCPI_NET" />
-    <InstrumentTestExec ID="PS1ε2_E3649A" Detail="Agilent E3649A Dual Output DC Power Supply"         Address="GPIB0::1::INSTR"  NameSpacedClassName="ABT.Test.TestLib.InstrumentDrivers.PowerSupplies.PS_E3649A_SCPI_NET" />
-    <InstrumentTestExec ID="PS3_E3634A"   Detail="Keysight E3634A Single Ouput Power Supply"          Address="GPIB0::3::INSTR"  NameSpacedClassName="ABT.Test.TestLib.InstrumentDrivers.PowerSupplies.PS_E3634A_SCPI_NET" />
+    <InstrumentTestExec ID="MM1_34401A"   Detail="Agilent 34401A Digital MultiMeter"                 Address="GPIB0::11::INSTR" NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic.MM_34401A_SCPI_NET" />
+    <InstrumentTestExec ID="MSMU1_34980A" Detail="Agilent 34980A Multifunction Switch/Measure Unit"   Address="GPIB0::2::INSTR"  NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction.MSMU_34980A_SCPI_NET" />
+    <InstrumentTestExec ID="PS1ε2_E3649A" Detail="Agilent E3649A Dual Output DC Power Supply"         Address="GPIB0::1::INSTR"  NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.PS_E3649A_SCPI_NET" />
+    <InstrumentTestExec ID="PS3_E3634A"   Detail="Keysight E3634A Single Ouput Power Supply"          Address="GPIB0::3::INSTR"  NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.PS_E3634A_SCPI_NET" />
   </InstrumentsTestExec>
 </TestExecDefinition>

@@ -8,7 +8,7 @@
       <xs:documentation xml:lang="en">
         <![CDATA[
           ValidCSharpNamespace simpleType:
-          - RegEx to validate a C# namespace; for example, "ABT.Test.TestLib.Configuration".
+          - RegEx to validate a C# namespace; for example, "ABT.Test.TestExecutive.TestLib.Configuration".
           - Type: xs:string.
         ]]>
       </xs:documentation>

@@ -1,4 +1,4 @@
-﻿using ABT.Test.TestLib.Configuration;
+﻿using ABT.Test.TestExecutive.TestLib.Configuration;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ABT.Test.TestLib.Processes {
+namespace ABT.Test.TestExecutive.TestLib.Processes {
     public enum PROCESS_METHOD { ExitCode, Redirect }
 
     public static class ProcessExternal {

@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using static ABT.Test.TestLib.Data;
+using static ABT.Test.TestExecutive.TestLib.Data;
 
-namespace ABT.Test.TestLib.Configuration {
+namespace ABT.Test.TestExecutive.TestLib.Configuration {
     [XmlRoot(nameof(TestPlanDefinition))]
     public class TestPlanDefinition {
         [XmlElement(nameof(UUT))] public UUT UUT { get; set; }

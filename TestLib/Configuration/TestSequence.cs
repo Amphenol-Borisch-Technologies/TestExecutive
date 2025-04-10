@@ -2,7 +2,7 @@
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace ABT.Test.TestLib.Configuration {
+namespace ABT.Test.TestExecutive.TestLib.Configuration {
 
     [XmlRoot(ElementName = nameof(TestSequence), Namespace = "", IsNullable = false)]
     public class TestSequence {

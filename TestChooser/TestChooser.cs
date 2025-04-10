@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
-using static ABT.Test.TestLib.Data;
+using static ABT.Test.TestExecutive.TestLib.Data;
 
 namespace TestChooser {
     public static class TestChooser {

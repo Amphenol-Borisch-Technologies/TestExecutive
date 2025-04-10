@@ -1,9 +1,9 @@
-﻿using ABT.Test.TestLib.InstrumentDrivers.Interfaces;
+﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using Agilent.CommandExpert.ScpiNet.AgSCPI99_1_0;
 using System;
 using System.Collections.Generic;
 
-namespace ABT.Test.TestLib.InstrumentDrivers.Generic {
+namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic {
     public class SCPI_NET : AgSCPI99, IInstrument, IDiagnostics {
         public enum IDN_FIELDS { Manufacturer, Model, SerialNumber, FirmwareRevision } // Example: "Keysight Technologies,E36103B,MY61001983,1.0.2-1.02".  
 

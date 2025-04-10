@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ABT.Test.TestLib.InstrumentDrivers.Interfaces {
+namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces {
     public enum SELF_TEST_RESULTS { PASS = 0, FAIL = 1 }
 
     public interface IInstrument {

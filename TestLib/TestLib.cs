@@ -1,5 +1,5 @@
-﻿using ABT.Test.TestLib.Configuration;
-using ABT.Test.TestLib.InstrumentDrivers.Interfaces;
+﻿using ABT.Test.TestExecutive.TestLib.Configuration;
+using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace ABT.Test.TestLib {
+namespace ABT.Test.TestExecutive.TestLib {
     [Flags]
     public enum EVENTS {
         // NOTE:  EVENTS are defined in order of criticality.
