@@ -1,40 +1,36 @@
 ﻿using ABT.Test.TestExecutive.TestLib.Configuration;
 using ABT.Test.TestExecutive.TestLib.Miscellaneous;
-using Microsoft.PointOfService;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using Windows.Devices.Enumeration;
+using Windows.Devices.PointOfService;
 using static ABT.Test.TestExecutive.TestLib.Data;
 
 namespace TestDev {
     public partial class TestDev : Form {
         public TestDev() { InitializeComponent(); }
         private void TSMI_BarcodeScanner_Click(Object sender, EventArgs e) {
-            PosExplorer posExplorer = new PosExplorer();
-            posExplorer.Refresh();
-            DeviceCollection deviceCollection = posExplorer.GetDevices(DeviceType.Scanner);
-
+            DeviceInformationCollection deviceInformationCollectionic = await DeviceInformation.FindAllAsync(BarcodeScanner.GetDeviceSelector(PosConnectionTypes.Local));
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"Discovering Microsoft supported, corded Barcode Scanner(s):{Environment.NewLine}");
-            stringBuilder.AppendLine($"  - See https://learn.microsoft.com/en-us/windows/uwp/devices-sensors/pos-device-support.");
-            stringBuilder.AppendLine($"  - Note that only corded Barcode Scanners are discovered; cordless Bluetooth & Wireless scanners are ignored.");
-            stringBuilder.AppendLine($"  - Note that cameras are also discovered; cameras are digital imagers, just as many bar-code readers are.");
-            stringBuilder.AppendLine($"  - Modify ConfigurationTestExec to use a discovered Barcode Scanner.");
-            stringBuilder.AppendLine($"  - Scanners must be programmed into USB-HID mode to function properly:");
-            stringBuilder.AppendLine(@"    - See: file:///P:/Test/Engineers/Equipment_Manuals/Honeywell/Honeywell_Voyager_1200G_User's_Guide_ReadMe.pdf");
-            stringBuilder.AppendLine($"    - Or:  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/ppr/en-us/public/products/barcode-scanners/general-purpose-handheld/1200g/documents/sps-ppr-vg1200-ug.pdf{Environment.NewLine}{Environment.NewLine}");
-
-            foreach (DeviceInfo deviceInfo in deviceCollection) {
-                stringBuilder.AppendLine($"Name: '{deviceInfo.ServiceObjectName}'.");
-                stringBuilder.AppendLine($"Type: '{deviceInfo.Type}'.");
-                foreach (String logicalName in deviceInfo.LogicalNames) stringBuilder.AppendLine($"LogicalName: '{logicalName}'.");
-                stringBuilder.AppendLine();
+            _ = stringBuilder.AppendLine($"Discovering Microsoft supported, corded Barcode Scanner(s):{Environment.NewLine}");
+            _ = stringBuilder.AppendLine($"  - See https://learn.microsoft.com/en-us/windows/uwp/devices-sensors/pos-device-support.");
+            _ = stringBuilder.AppendLine($"  - Note that only corded Barcode Scanners are discovered; cordless BlueTooth & Wireless scanners are ignored.");
+            _ = stringBuilder.AppendLine($"  - Note that cameras are also discovered; cameras are digital imagers, just as many bar-code readers are.");
+            _ = stringBuilder.AppendLine($"  - Modify ConfigurationTestExec to use a discovered Barcode Scanner.");
+            _ = stringBuilder.AppendLine($"  - Scanners must be programmed into USB-HID mode to function properly:");
+            _ = stringBuilder.AppendLine(@"    - See: file:///P:/Test/Engineers/Equipment_Manuals/Honeywell/Honeywell_Voyager_1200G_User's_Guide_ReadMe.pdf");
+            _ = stringBuilder.AppendLine($"    - Or:  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/ppr/en-us/public/products/barcode-scanners/general-purpose-handheld/1200g/documents/sps-ppr-vg1200-ug.pdf{Environment.NewLine}{Environment.NewLine}");
+            foreach (DeviceInformation deviceInformation in deviceInformationCollectionic) {
+                _ = stringBuilder.AppendLine($"Name: '{deviceInformation.Name}'.");
+                _ = stringBuilder.AppendLine($"Kind: '{deviceInformation.Kind}'.");
+                _ = stringBuilder.AppendLine($"ID  : '{deviceInformation.Id}'.{Environment.NewLine}");
             }
 
-            CustomMessageBox.Show("Microsoft supported, corded Barcode Scanner(s)", stringBuilder.ToString());
+            CustomMessageBox.Show(Title: $"Microsoft supported, corded Barcode Scanner(s)", Message: stringBuilder.ToString());
         }
 
         private void TSMI_TestDefinitions_TestChooser_Click(Object sender, EventArgs e) {
