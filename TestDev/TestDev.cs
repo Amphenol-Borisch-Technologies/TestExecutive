@@ -13,7 +13,7 @@ using static ABT.Test.TestExecutive.TestLib.Data;
 namespace TestDev {
     public partial class TestDev : Form {
         public TestDev() { InitializeComponent(); }
-        private void TSMI_BarcodeScanner_Click(Object sender, EventArgs e) {
+        private async void TSMI_BarcodeScanner_Click(Object sender, EventArgs e) {
             DeviceInformationCollection deviceInformationCollectionic = await DeviceInformation.FindAllAsync(BarcodeScanner.GetDeviceSelector(PosConnectionTypes.Local));
             StringBuilder stringBuilder = new StringBuilder();
             _ = stringBuilder.AppendLine($"Discovering Microsoft supported, corded Barcode Scanner(s):{Environment.NewLine}");
