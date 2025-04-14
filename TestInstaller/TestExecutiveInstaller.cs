@@ -26,12 +26,17 @@ namespace TestInstaller {
             DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
             directorySecurity.AddAccessRule(
                 new FileSystemAccessRule(
-                    new SecurityIdentifier(WellKnownSidType.WorldSid, null),
-                        FileSystemRights.FullControl,
+                    new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null),
+                        FileSystemRights.Read | FileSystemRights.ReadAndExecute,
                         InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
                         PropagationFlags.NoPropagateInherit,
                         AccessControlType.Allow));
-            directorySecurity.AddAccessRule(new FileSystemAccessRule("Test - Engineers", FileSystemRights.Write, AccessControlType.Allow));
+            directorySecurity.AddAccessRule(
+                new FileSystemAccessRule(@"BORISCH\Test - Engineers",
+                        FileSystemRights.Modify | FileSystemRights.Read | FileSystemRights.ReadAndExecute | FileSystemRights.Write,
+                        InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
+                        PropagationFlags.NoPropagateInherit,
+                        AccessControlType.Allow));
             directoryInfo.SetAccessControl(directorySecurity);
         }
 
