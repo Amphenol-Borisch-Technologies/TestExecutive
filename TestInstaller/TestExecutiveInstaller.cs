@@ -1,4 +1,4 @@
-﻿using ABT.Test.TestExecutive.TestLib;
+﻿using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Configuration.Install;
@@ -9,6 +9,11 @@ using System.Security.Principal;
 namespace TestInstaller {
     [RunInstaller(true)]
     public partial class TestExecutiveInstaller : Installer {
+        private const String _ABT_TEST = @"\ABT\TEST";
+        private const String _BASEPATH_DATA = @"C:\ProgramData" + _ABT_TEST;
+        private const String _TEST_EXECUTIVE = @"\TestExecutive";
+        public const String TEST_EXECUTIVE_DATA = _BASEPATH_DATA + _TEST_EXECUTIVE;
+
         public TestExecutiveInstaller() {
             InitializeComponent();
         }
@@ -16,8 +21,8 @@ namespace TestInstaller {
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
         public override void Install(IDictionary stateSaver) {
             base.Install(stateSaver);
-            if (!Directory.Exists(Data.TEST_EXECUTIVE_DATA)) Directory.CreateDirectory(Data.TEST_EXECUTIVE_DATA);
-            DirectoryInfo directoryInfo = new DirectoryInfo(Data.TEST_EXECUTIVE_DATA);
+            if (!Directory.Exists(TEST_EXECUTIVE_DATA)) Directory.CreateDirectory(TEST_EXECUTIVE_DATA);
+            DirectoryInfo directoryInfo = new DirectoryInfo(TEST_EXECUTIVE_DATA);
             DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
             directorySecurity.AddAccessRule(
                 new FileSystemAccessRule(
@@ -36,7 +41,7 @@ namespace TestInstaller {
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
         public override void Rollback(IDictionary savedState) {
             base.Rollback(savedState);
-            if (Directory.Exists(Data.TEST_EXECUTIVE_DATA)) Directory.Delete(Data.TEST_EXECUTIVE_DATA, true);
+            if (Directory.Exists(TEST_EXECUTIVE_DATA)) Directory.Delete(TEST_EXECUTIVE_DATA, true);
         }
 
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
@@ -53,7 +58,7 @@ namespace TestInstaller {
             //    base.Uninstall(savedState);
             //}
             base.Uninstall(savedState);
-            if (Directory.Exists(Data.TEST_EXECUTIVE_DATA)) Directory.Delete(Data.TEST_EXECUTIVE_DATA, true);
+            if (Directory.Exists(TEST_EXECUTIVE_DATA)) Directory.Delete(TEST_EXECUTIVE_DATA, true);
         }
     }
 }
