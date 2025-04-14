@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
-using static ABT.Test.TestExecutive.TestLib.Data;
+using ABT.Test.TestExecutive.TestLib;
 
-namespace TestChooser {
+namespace ABT.Test.TestExecutive.TestChooser {
     public static class TestChooser {
         [STAThread]
         public static void Main(String[] args) {
@@ -34,8 +34,8 @@ namespace TestChooser {
             }
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
-                openFileDialog.InitialDirectory = GetTestPlansFolder();
-                openFileDialog.Filter = GetTestPlansFilter();
+                openFileDialog.InitialDirectory = Data.TEST_PLANS_PROGRAMS;
+                openFileDialog.Filter = "TestPlan Files|*.exe";
                 if (openFileDialog.ShowDialog() == DialogResult.OK) _ = Process.Start($"\"{openFileDialog.FileName}\"");
             }
         }

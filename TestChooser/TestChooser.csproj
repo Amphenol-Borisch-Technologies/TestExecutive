@@ -32,7 +32,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>TestChooser.TestChooser</StartupObject>
+    <StartupObject>ABT.Test.TestExecutive.TestChooser.TestChooser</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -83,10 +83,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="TestLib">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\ABT\Test\TestExecutive\TestLib.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TestChooser.cs" />
@@ -112,6 +108,12 @@
     <Content Include="..\Shared\Amphenol.ico">
       <Link>Amphenol.ico</Link>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TestLib\TestLib.csproj">
+      <Project>{24d5e99e-185c-4507-81f0-132d8cb8164e}</Project>
+      <Name>TestLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

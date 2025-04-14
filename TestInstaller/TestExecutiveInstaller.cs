@@ -13,8 +13,9 @@ namespace TestInstaller {
             InitializeComponent();
         }
 
-        public override void Install(IDictionary savedState) {
-            base.Install(savedState);
+        [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
+        public override void Install(IDictionary stateSaver) {
+            base.Install(stateSaver);
             if (!Directory.Exists(Data.TEST_EXECUTIVE_DATA)) Directory.CreateDirectory(Data.TEST_EXECUTIVE_DATA);
             DirectoryInfo directoryInfo = new DirectoryInfo(Data.TEST_EXECUTIVE_DATA);
             DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
@@ -29,13 +30,16 @@ namespace TestInstaller {
             directoryInfo.SetAccessControl(directorySecurity);
         }
 
+        [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
+        public override void Commit(IDictionary savedState) { base.Commit(savedState); }
+
+        [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
         public override void Rollback(IDictionary savedState) {
             base.Rollback(savedState);
             if (Directory.Exists(Data.TEST_EXECUTIVE_DATA)) Directory.Delete(Data.TEST_EXECUTIVE_DATA, true);
         }
 
-        public override void Commit(IDictionary savedState) { base.Commit(savedState); }
-
+        [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
         public override void Uninstall(IDictionary savedState) {
             //Process application = null;
             //foreach (Process process in Process.GetProcesses()) {
