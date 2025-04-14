@@ -14,7 +14,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace ABT.Test.TestExecutive.TestLib {
     [Flags]
@@ -52,23 +51,30 @@ namespace ABT.Test.TestExecutive.TestLib {
         // TODO:  Eventually; mitigate or eliminate writeable global objects.
         public static Mutex MutexTest = null;
         public const String MutexTestName = nameof(MutexTest);
+        private const String _ABT_TEST = @"\ABT\TEST";
+        private const String _BASEPATH_PROGRAMS = @"C:\Program Files" + _ABT_TEST;
+        private const String _BASEPATH_DATA = @"C:\ProgramData" + _ABT_TEST;
+        private const String _TEST_EXECUTIVE = @"\TestExecutive";
+        private const String _TEST_PLANS = @"\TestPlans";
+        public const String TEST_EXECUTIVE_PROGRAM = _BASEPATH_PROGRAMS + _TEST_EXECUTIVE;
+        public const String TEST_EXECUTIVE_DATA = _BASEPATH_DATA + _TEST_EXECUTIVE;
+        public const String TEST_PLANS_PROGRAMS = _BASEPATH_PROGRAMS + _TEST_PLANS;
+        public const String TEST_PLANS_DATA = _BASEPATH_DATA + _TEST_PLANS;
+        public const String TEST_PLAN_DEFINITION_XSD = TEST_EXECUTIVE_PROGRAM + @"\TestPlanDefinition.xsd";
+        public const String TEST_EXECUTIVE_DEFINITION_XML = TEST_EXECUTIVE_PROGRAM + @"\TestExecDefinition.xml";
         public static Dictionary<String, Object> InstrumentDrivers = null;
         public static String BaseDirectory = null;
         public static String TestPlanDefinitionXML = null;
-        public static String TestPlanDefinitionXSD = GetTestLibExecutionDirectory() + @"\TestPlanDefinition.xsd";
         public static TestPlanDefinition testPlanDefinition = null;
         public static TestSequence testSequence = null;
-        public static String TestExecDefinitionXML = GetTestLibExecutionDirectory() + @"\TestExecDefinition.xml";
-        public static TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TestExecDefinitionXML}");
+        public static TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TEST_EXECUTIVE_DEFINITION_XML}");
         public static String UserName = null;
         public static CancellationTokenSource CTS_Cancel;
         public static CancellationTokenSource CTS_EmergencyStop;
         public static CancellationToken CT_Cancel;
         public static CancellationToken CT_EmergencyStop;
-        public const String NONE = "NONE";
         public const String SPACES_2 = "  ";
         public const Int32 PAD_RIGHT = 21;
-        private static readonly String testChooserDefinitionXML = GetTestLibExecutionDirectory() + @"\TestChooserDefinition.xml";
 
         public static String FormatMessage(String Label, String Message) { return $"{SPACES_2}{Label}".PadRight(PAD_RIGHT) + $": {Message}"; }
 
@@ -153,10 +159,6 @@ namespace ABT.Test.TestExecutive.TestLib {
             var assemblyLocation = Assembly.GetExecutingAssembly().Location;
             return Path.GetDirectoryName(assemblyLocation);
         }
-
-        public static String GetTestPlansFolder() { return XElement.Load(testChooserDefinitionXML).Element("OpenFileDialog").Attribute("InitialDirectory").Value; }
-
-        public static String GetTestPlansFilter() { return XElement.Load(testChooserDefinitionXML).Element("OpenFileDialog").Attribute("Filter").Value; }
 
         public static String ConvertWindowsPathToUrl(String path) {
             String url = path.Replace(@"\", "//");

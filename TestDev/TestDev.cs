@@ -34,21 +34,21 @@ namespace TestDev {
         }
 
         private void TSMI_TestDefinitions_TestChooser_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(GetTestLibExecutionDirectory(), "TestChooser Definition File|TestChooserDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_EXECUTIVE_PROGRAM, "TestChooser Definition File|TestChooserDefinition.xml");
             if (dialogResult == DialogResult.OK) OpenApp(fileName);
         }
         private void TSMI_TestDefinitions_TestExec_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(GetTestLibExecutionDirectory(), "TestExec Definition File|TestExecDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_EXECUTIVE_PROGRAM, "TestExec Definition File|TestExecDefinition.xml");
             if (dialogResult == DialogResult.OK) OpenApp(fileName);
         }
         private void TSMI_TestDefinitions_TestPlans_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(GetTestPlansFolder(), "TestPlan Definition File|TestPlanDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_PLANS_PROGRAMS, "TestPlan Definition File|TestPlanDefinition.xml");
             if (dialogResult == DialogResult.OK) OpenApp(fileName);
         }
         private void TSMI_TestDefinitions_Validate_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(GetTestPlansFolder(), "TestPlan Definition File|TestPlanDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_PLANS_PROGRAMS, "TestPlan Definition File|TestPlanDefinition.xml");
             if (dialogResult == DialogResult.OK) {
-                if (TestPlanDefinitionValidator.ValidSpecification(GetTestLibExecutionDirectory() + @"\TestPlanDefinition.xsd", fileName)) _ = MessageBox.Show(this, "Validation passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (TestPlanDefinitionValidator.ValidSpecification(TEST_PLAN_DEFINITION_XSD, fileName)) _ = MessageBox.Show(this, "Validation passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -56,7 +56,7 @@ namespace TestDev {
         private void TSMI_Generate_InstrumentAliases_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateInstrumentAliases); }
         private void TSMI_Generate_TestPlan_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateTestPlan); }
         private void TestPlanDefinitionAction(Action<String> executeAction) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(GetTestPlansFolder(), "TestPlan Definition File|TestPlanDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_PLANS_PROGRAMS, "TestPlan Definition File|TestPlanDefinition.xml");
             if (dialogResult == DialogResult.OK) {
                 if (!TestPlanDefinitionValidator.ValidSpecification(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\TestPlanDefinition.xsd", fileName)) return;
                 executeAction?.Invoke(fileName);
@@ -81,8 +81,8 @@ namespace TestDev {
 
         private void TSMI_TestPlans_Choose_Click(Object sender, EventArgs e) {
             using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
-                openFileDialog.InitialDirectory = GetTestPlansFolder();
-                openFileDialog.Filter = GetTestPlansFilter();
+                openFileDialog.InitialDirectory = TEST_PLANS_PROGRAMS;
+                openFileDialog.Filter = "TestPlan Programs|*.exe";
                 if (openFileDialog.ShowDialog() == DialogResult.OK) _ = Process.Start($"\"{openFileDialog.FileName}\"");
             }
         }
