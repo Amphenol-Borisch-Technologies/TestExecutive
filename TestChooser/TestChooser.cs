@@ -8,6 +8,9 @@ namespace ABT.Test.TestExecutive.TestChooser {
     public static class TestChooser {
         [STAThread]
         public static void Main(String[] args) {
+            // NOTE: Below MSBuild warning is expected & desirable:
+            // WARNING: Configuration file 'C:\Users\phils\source\repos\ABT\Test\TestExecutive\TestChooser\bin\x64\Release\TestChooser.exe.config' is being used to configure all executables
+            // - Above means all executables in the TestExecutive solution are using the same configuration file, as desired.
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

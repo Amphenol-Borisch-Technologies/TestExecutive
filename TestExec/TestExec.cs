@@ -29,8 +29,8 @@ using static ABT.Test.TestExecutive.TestLib.Data;
 //          - VS Code is free for both private & commercial use:
 //            - https://code.visualstudio.com/docs/supporting/FAQ
 //            - https://code.visualstudio.com/license
-// NOTE:  Recommend using Microsoft's Visual Studio Community Edition to develop/debug open sourced TestExec:
-//        - https://github.com/Amphenol-Borisch-Technologies/TestExec/blob/master/LICENSE.txt
+// NOTE:  Recommend using Microsoft's Visual Studio Community Edition to develop/debug open sourced TestExecutive:
+//        - https://github.com/Amphenol-Borisch-Technologies/TestExecutive/blob/master/LICENSE.txt
 //        - "An unlimited number of users within an organization can use Visual Studio Community for the following scenarios:
 //           in a classroom learning environment, for academic research, or for contributing to open source projects."
 //        - Tests based projects are closed source/proprietary, which are disqualified from using VS Studio Community Edition.
@@ -53,12 +53,12 @@ using static ABT.Test.TestExecutive.TestLib.Data;
 //        - Keysight hasn't yet for their IO Libraries VISA implementation; https://community.keysight.com/forums/s/question/0D55a00009FHEIzCAP/are-the-keysight-io-libraries-compatible-with-net-or-net-core.
 // TODO:  Eventually; consider updating to WinUI or WPF instead of WinForms if beneficial.
 // NOTE:  With deep appreciation for https://learn.microsoft.com/en-us/docs/ & https://stackoverflow.com/!
-// NOTE:  ABT's Zero Trust, Cloudflare Warp enterprise security solution inhibits GitHub's security, causing below error when sychronizing with
-//        TestExec's GitHub repository at https://github.com/Amphenol-Borisch-Technologies/TestExec:
+// NOTE:  ABT's Zero Trust, Cloudflare Warp enterprise security solution inhibits GitHub's security, caused below error when sychronizing with
+//        TestExecutive's GitHub repository at https://github.com/Amphenol-Borisch-Technologies/TestExecutive:
 //             Opening repositories:
-//             P:\Test\Engineers\repos\ABT\TestExec
+//             P:\Test\Engineers\repos\ABT\Test\TestExecutive
 //             Git failed with a fatal error.
-//             unable to access 'https://github.com/Amphenol-Borisch-Technologies/TestLibrary/': schannel: CertGetCertificateChain trust error CERT_TRUST_IS_PARTIAL_CHAIN
+//             unable to access 'https://github.com/Amphenol-Borisch-Technologies/TestExecutive': schannel: CertGetCertificateChain trust error CERT_TRUST_IS_PARTIAL_CHAIN
 //        - Temporarily disabling Zero Trust by "pausing" it resolves above error.
 //        - https://stackoverflow.com/questions/27087483/how-to-resolve-git-pull-fatal-unable-to-access-https-github-com-empty
 //        - FYI, synchronizing with Tests repository doesn't error out, as it doesn't utilize a Git server.
@@ -67,8 +67,7 @@ namespace ABT.Test.TestExecutive.TestExec {
     /// <remarks>
     ///  <b>References:</b>
     /// <item>
-    ///  <description><a href="https://github.com/Amphenol-Borisch-Technologies/TestExec">TestExec</a></description>
-    ///  <description><a href="https://github.com/Amphenol-Borisch-Technologies/TestLib">TestLib</a></description>
+    ///  <description><a href="https://github.com/Amphenol-Borisch-Technologies/TestExecutive">TestExecutive</a></description>
     ///  <description><a href="https://github.com/Amphenol-Borisch-Technologies/TestPlan">TestPlan</a></description>
     ///  </item>
     ///  </remarks>
