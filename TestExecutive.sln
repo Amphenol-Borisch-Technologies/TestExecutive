@@ -29,6 +29,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TestExecutiveInstaller", "P
 		{E1E886F9-03A3-44D1-8797-BC68D8E2AA23} = {E1E886F9-03A3-44D1-8797-BC68D8E2AA23}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestInstaller", "TestInstaller\TestInstaller.csproj", "{144AB20E-D4E5-433A-B36B-79CAF2E29930}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -54,6 +56,10 @@ Global
 		{65733812-7523-4A3B-9AC0-CD8723B45801}.Debug|x64.ActiveCfg = Debug
 		{65733812-7523-4A3B-9AC0-CD8723B45801}.Release|x64.ActiveCfg = Release
 		{65733812-7523-4A3B-9AC0-CD8723B45801}.Release|x64.Build.0 = Release
+		{144AB20E-D4E5-433A-B36B-79CAF2E29930}.Debug|x64.ActiveCfg = Debug|x64
+		{144AB20E-D4E5-433A-B36B-79CAF2E29930}.Debug|x64.Build.0 = Debug|x64
+		{144AB20E-D4E5-433A-B36B-79CAF2E29930}.Release|x64.ActiveCfg = Release|x64
+		{144AB20E-D4E5-433A-B36B-79CAF2E29930}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
