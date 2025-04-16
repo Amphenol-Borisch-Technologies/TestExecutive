@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Shared\Amphenol.ico = Shared\Amphenol.ico
 		Shared\App.config = Shared\App.config
 		Shared\Raytheon.ico = Shared\Raytheon.ico
+		Shared\TestExecutive Dependencies.docx = Shared\TestExecutive Dependencies.docx
 	EndProjectSection
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "TestExecutiveInstaller", "P:\Test\Engineers\repos\ABT\Installers\TestExecutiveInstaller\TestExecutiveInstaller.vdproj", "{65733812-7523-4A3B-9AC0-CD8723B45801}"
