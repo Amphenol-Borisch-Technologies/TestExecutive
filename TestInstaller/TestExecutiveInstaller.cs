@@ -6,12 +6,11 @@ using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using ABT.Test.TestExecutive.TestLib;
-using Microsoft.SqlServer.Server;
 
 namespace TestInstaller {
     [RunInstaller(true)]
     public partial class TestExecutiveInstaller : Installer {
-        // The below C:\Windows\System32\MSIexec.exe error:
+        // Consider the below C:\Windows\System32\MSIexec.exe error:
         //   === Logging started: 4/15/2025  10:47:52 ===
         //   Error 1001. Error 1001. Exception occurred while initializing the installation:
         //   System.BadImageFormatException: Could not load file or assembly 'file:///C:\Program Files\ABT\Test\TestExecutive\TestInstaller.dll' or one of its dependencies.
@@ -49,7 +48,7 @@ namespace TestInstaller {
                         PropagationFlags.NoPropagateInherit,
                         AccessControlType.Allow));
             directorySecurity.AddAccessRule(
-                new FileSystemAccessRule(@"BORISCH\Test - Engineers",
+                new FileSystemAccessRule(Data.TEST_EXECUTIVE_ADMINISTRATORS,
                         FileSystemRights.Modify | FileSystemRights.Read | FileSystemRights.ReadAndExecute | FileSystemRights.Write,
                         InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
                         PropagationFlags.NoPropagateInherit,

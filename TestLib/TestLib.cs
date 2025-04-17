@@ -62,6 +62,7 @@ namespace ABT.Test.TestExecutive.TestLib {
         public const String TEST_PLANS_DATA = _BASEPATH_DATA + _TEST_PLANS;
         public const String TEST_PLAN_DEFINITION_XSD = TEST_EXECUTIVE_PROGRAM + @"\TestPlanDefinition.xsd";
         public const String TEST_EXECUTIVE_DEFINITION_XML = TEST_EXECUTIVE_PROGRAM + @"\TestExecDefinition.xml";
+        public const String TEST_EXECUTIVE_ADMINISTRATORS = @"BORISCH\Test - Engineers";
         public static Dictionary<String, Object> InstrumentDrivers = null;
         public static String BaseDirectory = null;
         public static String TestPlanDefinitionXML = null;
