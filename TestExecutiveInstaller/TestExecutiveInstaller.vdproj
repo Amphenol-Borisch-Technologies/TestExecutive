@@ -63,6 +63,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_2BDEDA88A77941649361726066BE1D3A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_2F3B94B36D3B0ADEA17E0D9DD9E46F81"
         "OwnerKey" = "8:_A5D61720BC6DA3E8BD3BF0B78E9932C0"
         "MsmSig" = "8:_UNDEFINED"
@@ -94,13 +100,13 @@
         "Entry"
         {
         "MsmKey" = "8:_3270A19668A265D42A64E03AFC560725"
-        "OwnerKey" = "8:_BC154E60073D459CBEFFDEB631AEF972"
+        "OwnerKey" = "8:_1FD86D2B6F9239DC63CE806644C78985"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_3270A19668A265D42A64E03AFC560725"
-        "OwnerKey" = "8:_1FD86D2B6F9239DC63CE806644C78985"
+        "OwnerKey" = "8:_BC154E60073D459CBEFFDEB631AEF972"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -208,13 +214,13 @@
         "Entry"
         {
         "MsmKey" = "8:_B542A6317574BD00A971BF359E348CEA"
-        "OwnerKey" = "8:_BC154E60073D459CBEFFDEB631AEF972"
+        "OwnerKey" = "8:_1FD86D2B6F9239DC63CE806644C78985"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_B542A6317574BD00A971BF359E348CEA"
-        "OwnerKey" = "8:_1FD86D2B6F9239DC63CE806644C78985"
+        "OwnerKey" = "8:_BC154E60073D459CBEFFDEB631AEF972"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -570,7 +576,7 @@
         {
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_037B03F08B3E48D88DA4CD2AF5BD4AE3"
             {
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\TestLib\\Configuration\\TestSequence.xsd"
+            "SourcePath" = "8:..\\TestLib\\Configuration\\TestSequence.xsd"
             "TargetName" = "8:TestSequence.xsd"
             "Tag" = "8:"
             "Folder" = "8:_317A2B418F3C4FAB85585E3DDE352B78"
@@ -601,7 +607,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\TestChooser\\bin\\x64\\Release\\TestChooser.exe"
+            "SourcePath" = "8:..\\TestChooser\\bin\\x64\\Release\\TestChooser.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
@@ -683,7 +689,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1CF815598D24421795A969E967D8B50C"
             {
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\TestExec\\bin\\x64\\Release\\TestExec.dll.config"
+            "SourcePath" = "8:..\\TestExec\\bin\\x64\\Release\\TestExec.dll.config"
             "TargetName" = "8:TestExec.dll.config"
             "Tag" = "8:"
             "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
@@ -732,6 +738,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2BDEDA88A77941649361726066BE1D3A"
+            {
+            "SourcePath" = "8:..\\Shared\\LICENSE.txt"
+            "TargetName" = "8:LICENSE.txt"
+            "Tag" = "8:"
+            "Folder" = "8:_E228D47198B64A4D9A6E0149B39C3C76"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2F3B94B36D3B0ADEA17E0D9DD9E46F81"
             {
             "AssemblyRegister" = "3:1"
@@ -776,7 +802,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\TestExec\\bin\\x64\\Release\\TestExec.dll"
+            "SourcePath" = "8:..\\TestExec\\bin\\x64\\Release\\TestExec.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
@@ -900,7 +926,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\TestLib\\bin\\x64\\Release\\TestLib.dll"
+            "SourcePath" = "8:..\\TestLib\\bin\\x64\\Release\\TestLib.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
@@ -951,7 +977,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6BAE2FD7B35943C18A999D880779C3B9"
             {
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\TestChooser\\bin\\x64\\Release\\TestChooser.exe.config"
+            "SourcePath" = "8:..\\TestChooser\\bin\\x64\\Release\\TestChooser.exe.config"
             "TargetName" = "8:TestChooser.exe.config"
             "Tag" = "8:"
             "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
@@ -971,7 +997,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_70FCFD4DDFE1484A9CB0353681A00A63"
             {
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\TestLib\\Configuration\\TestExecDefinition.xml"
+            "SourcePath" = "8:..\\TestLib\\Configuration\\TestExecDefinition.xml"
             "TargetName" = "8:TestExecDefinition.xml"
             "Tag" = "8:"
             "Folder" = "8:_317A2B418F3C4FAB85585E3DDE352B78"
@@ -991,7 +1017,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_827B7E6F25824729B244C99ABAF1126C"
             {
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\Shared\\Raytheon.ico"
+            "SourcePath" = "8:..\\Shared\\Raytheon.ico"
             "TargetName" = "8:Raytheon.ico"
             "Tag" = "8:"
             "Folder" = "8:_E228D47198B64A4D9A6E0149B39C3C76"
@@ -1011,7 +1037,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_95919B43A4894D2B82A9FCB3E2A1DD49"
             {
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\Shared\\App.config"
+            "SourcePath" = "8:..\\Shared\\App.config"
             "TargetName" = "8:App.config"
             "Tag" = "8:"
             "Folder" = "8:_E228D47198B64A4D9A6E0149B39C3C76"
@@ -1031,7 +1057,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A48F8DB6C49F46C7A420887E77C8B817"
             {
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\Shared\\Amphenol.ico"
+            "SourcePath" = "8:..\\Shared\\Amphenol.ico"
             "TargetName" = "8:Amphenol.ico"
             "Tag" = "8:"
             "Folder" = "8:_E228D47198B64A4D9A6E0149B39C3C76"
@@ -1093,7 +1119,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\TestDev\\bin\\x64\\Release\\TestDev.exe"
+            "SourcePath" = "8:..\\TestDev\\bin\\x64\\Release\\TestDev.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
@@ -1206,7 +1232,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BC3E282A74AC42BA84E3338D3CACB6F1"
             {
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\TestLib\\Configuration\\TestPlanDefinition.xsd"
+            "SourcePath" = "8:..\\TestLib\\Configuration\\TestPlanDefinition.xsd"
             "TargetName" = "8:TestPlanDefinition.xsd"
             "Tag" = "8:"
             "Folder" = "8:_317A2B418F3C4FAB85585E3DDE352B78"
@@ -1226,7 +1252,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CB83EDDC47A94222B0AE36300C2C3A4D"
             {
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\TestLib\\bin\\x64\\Release\\TestLib.dll.config"
+            "SourcePath" = "8:..\\TestLib\\bin\\x64\\Release\\TestLib.dll.config"
             "TargetName" = "8:TestLib.dll.config"
             "Tag" = "8:"
             "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
@@ -1277,7 +1303,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CFA38C050E674B1A97797CE07B6F9CD7"
             {
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\Shared\\TestExecutive Dependencies.docx"
+            "SourcePath" = "8:..\\Shared\\TestExecutive Dependencies.docx"
             "TargetName" = "8:TestExecutive Dependencies.docx"
             "Tag" = "8:"
             "Folder" = "8:_E228D47198B64A4D9A6E0149B39C3C76"
@@ -1297,7 +1323,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F1A53EA4D6CF4529B8DD9F5AEF8783C8"
             {
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\TestLib\\Configuration\\TestExecDefinition.xsd"
+            "SourcePath" = "8:..\\TestLib\\Configuration\\TestExecDefinition.xsd"
             "TargetName" = "8:TestExecDefinition.xsd"
             "Tag" = "8:"
             "Folder" = "8:_317A2B418F3C4FAB85585E3DDE352B78"
@@ -1328,7 +1354,7 @@
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\TestExec\\bin\\x64\\Release\\log4net.dll"
+            "SourcePath" = "8:..\\TestExec\\bin\\x64\\Release\\log4net.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
@@ -1437,14 +1463,14 @@
         "MsiBootstrapper"
         {
         "LangId" = "3:1033"
-        "RequiresElevation" = "11:FALSE"
+        "RequiresElevation" = "11:TRUE"
         }
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TestExecutive"
         "ProductCode" = "8:{02CAC3DF-09B2-4740-BE84-110605BBE813}"
-        "PackageCode" = "8:{6B179766-2BC5-4959-BCE0-2495D27FA9E2}"
+        "PackageCode" = "8:{9F91D9AA-CB48-4C44-9C5A-AF616BBEA64E}"
         "UpgradeCode" = "8:{4F1CC228-B14D-4021-BCB8-14DDE00DC07D}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -1630,8 +1656,8 @@
                             "Type" = "3:3"
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
-                            "Setting" = "3:1"
-                            "Value" = "8:#1202"
+                            "Setting" = "3:2"
+                            "Value" = "8:Freely distributed under MIT License, copyright © Amphenol Borisch Technologies."
                             "DefaultValue" = "8:#1202"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -1709,8 +1735,8 @@
                             "Type" = "3:3"
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
-                            "Setting" = "3:1"
-                            "Value" = "8:#1202"
+                            "Setting" = "3:2"
+                            "Value" = "8:Freely distributed under MIT License, copyright © Amphenol Borisch Technologies."
                             "DefaultValue" = "8:#1202"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -1936,7 +1962,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_BC154E60073D459CBEFFDEB631AEF972"
             {
-            "SourcePath" = "8:C:\\Users\\phils\\source\\repos\\ABT\\Test\\TestExecutive\\TestInstaller\\obj\\x86\\TestExecutive\\TestInstaller.dll"
+            "SourcePath" = "8:..\\TestInstaller\\obj\\x86\\TestExecutive\\TestInstaller.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
