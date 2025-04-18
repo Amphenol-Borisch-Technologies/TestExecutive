@@ -13,12 +13,12 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
 
     public class MSMU_34980A_SCPI_NET : Ag34980, IInstrument, IRelay, IDiagnostics {
         public enum SLOTS { S1 = 1, S2 = 2, S3 = 3, S4 = 4, S5 = 5, S6 = 6, S7 = 7, S8 = 8 }
-        public struct Modules {
-            public const String M34921A = "34921A";
-            public const String M34932A = "34932A";
-            public const String M34938A = "34938A";
-            public const String M34939A = "34939A";
-            public const String M34952A = "34952A";
+        public readonly struct Modules {
+            public static readonly String M34921A = "34921A";
+            public static readonly String M34932A = "34932A";
+            public static readonly String M34938A = "34938A";
+            public static readonly String M34939A = "34939A";
+            public static readonly String M34952A = "34952A";
         }
         public enum TEMPERATURE_UNITS { C, F, K }
         public enum RELAY_STATES { opened, CLOSED }
@@ -66,19 +66,19 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
                     Data.CT_Cancel.ThrowIfCancellationRequested();
                     if (String.Equals(module, SystemType(slot)) || String.Equals(module, String.Empty)) {
                         switch (SystemType(slot)) {
-                            case Modules.M34921A:
+                            case String s when s == Modules.M34921A:
                                 result_Slot = Diagnostic_34921A(slot, Parameters);
                                 break;
-                            case Modules.M34932A:
+                            case String s when s == Modules.M34932A:
                                 result_Slot = Diagnostic_34932A(slot, Parameters);
                                 break;
-                            case Modules.M34938A:
+                            case String s when s == Modules.M34938A:
                                 result_Slot = Diagnostic_34938A(slot, Parameters);
                                 break;
-                            case Modules.M34939A:
+                            case String s when s == Modules.M34939A:
                                 result_Slot = Diagnostic_34939A(slot, Parameters);
                                 break;
-                            case Modules.M34952A:
+                            case String s when s == Modules.M34952A:
                                 result_Slot = Diagnostic_34952A(slot, Parameters);
                                 break;
                             case "0":
@@ -464,9 +464,9 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         public void InstrumentDMM_Set(STATES State) { SCPI.INSTrument.DMM.STATe.Command(State == STATES.ON); }
         public (Int32 Min, Int32 Max) ModuleChannels(SLOTS Slot) {
             switch (SystemType(Slot)) {
-                case Modules.M34921A: return (Min: 1, Max: 44);
-                case Modules.M34939A: return (Min: 1, Max: 68);
-                case Modules.M34952A: return (Min: 1, Max: 7);
+                case String s when s == Modules.M34921A: return (Min: 1, Max: 44);
+                case String s when s == Modules.M34939A: return (Min: 1, Max: 68);
+                case String s when s == Modules.M34952A: return (Min: 1, Max: 7);
                 default: throw new NotImplementedException($"Module Type '{SystemType(Slot)}' not implemented.");
             }
         }

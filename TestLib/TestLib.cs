@@ -50,19 +50,19 @@ namespace ABT.Test.TestExecutive.TestLib {
 
         // TODO:  Eventually; mitigate or eliminate writeable global objects.
         public static Mutex MutexTest = null;
-        public const String MutexTestName = nameof(MutexTest);
-        private const String _ABT_TEST = @"\ABT\TEST";
-        private const String _BASEPATH_PROGRAMS = @"C:\Program Files" + _ABT_TEST;
-        private const String _BASEPATH_DATA = @"C:\ProgramData" + _ABT_TEST;
-        private const String _TEST_EXECUTIVE = @"\TestExecutive";
-        private const String _TEST_PLANS = @"\TestPlans";
-        public const String TEST_EXECUTIVE_PROGRAM = _BASEPATH_PROGRAMS + _TEST_EXECUTIVE;
-        public const String TEST_EXECUTIVE_DATA = _BASEPATH_DATA + _TEST_EXECUTIVE;
-        public const String TEST_PLANS_PROGRAMS = _BASEPATH_PROGRAMS + _TEST_PLANS;
-        public const String TEST_PLANS_DATA = _BASEPATH_DATA + _TEST_PLANS;
-        public const String TEST_PLAN_DEFINITION_XSD = TEST_EXECUTIVE_PROGRAM + @"\TestPlanDefinition.xsd";
-        public const String TEST_EXECUTIVE_DEFINITION_XML = TEST_EXECUTIVE_PROGRAM + @"\TestExecDefinition.xml";
-        public const String TEST_EXECUTIVE_ADMINISTRATORS = @"BORISCH\Test - TestExecutive Administrators";
+        public static readonly String MutexTestName = nameof(MutexTest);
+        private static readonly String _ABT_TEST = @"\ABT\TEST";
+        private static readonly String _BASEPATH_PROGRAMS = @"C:\Program Files" + _ABT_TEST;
+        private static readonly String _BASEPATH_DATA = @"C:\ProgramData" + _ABT_TEST;
+        private static readonly String _TEST_EXECUTIVE = @"\TestExecutive";
+        private static readonly String _TEST_PLANS = @"\TestPlans";
+        public static readonly String TEST_EXECUTIVE_PROGRAM = _BASEPATH_PROGRAMS + _TEST_EXECUTIVE;
+        public static readonly String TEST_EXECUTIVE_DATA = _BASEPATH_DATA + _TEST_EXECUTIVE;
+        public static readonly String TEST_PLANS_PROGRAMS = _BASEPATH_PROGRAMS + _TEST_PLANS;
+        public static readonly String TEST_PLANS_DATA = _BASEPATH_DATA + _TEST_PLANS;
+        public static readonly String TEST_PLAN_DEFINITION_XSD = TEST_EXECUTIVE_PROGRAM + @"\TestPlanDefinition.xsd";
+        public static readonly String TEST_EXECUTIVE_DEFINITION_XML = TEST_EXECUTIVE_PROGRAM + @"\TestExecDefinition.xml";
+        public static readonly String TEST_EXECUTIVE_ADMINISTRATORS = @"BORISCH\Test - TestExecutive Administrators";
         public static Dictionary<String, Object> InstrumentDrivers = null;
         public static String BaseDirectory = null;
         public static String TestPlanDefinitionXML = null;
@@ -74,8 +74,8 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static CancellationTokenSource CTS_EmergencyStop;
         public static CancellationToken CT_Cancel;
         public static CancellationToken CT_EmergencyStop;
-        public const String SPACES_2 = "  ";
-        public const Int32 PAD_RIGHT = 21;
+        public static readonly String SPACES_2 = "  ";
+        public static readonly Int32 PAD_RIGHT = 21;
 
         public static String FormatMessage(String Label, String Message) { return $"{SPACES_2}{Label}".PadRight(PAD_RIGHT) + $": {Message}"; }
 

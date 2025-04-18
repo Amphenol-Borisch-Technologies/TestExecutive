@@ -29,7 +29,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         [XmlAttribute(nameof(Description))] public String Description { get; set; }
         [XmlAttribute(nameof(Revision))] public String Revision { get; set; }
         [XmlAttribute(nameof(Category))] public Category Category { get; set; }
-        internal const String DIVIDER = "|";
+        internal static String DIVIDER = "|";
 
         public UUT() { }
 
@@ -179,7 +179,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         public Statistics Statistics { get; set; } = new Statistics();
 
         public String StatisticsDisplay() {
-            const Int32 L = 6; Int32 PR = 17;
+            const Int32 L = 6, PR = 17;
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($"{nameof(Statistics.EmergencyStopped)}".PadRight(PR) + $": {Statistics.EmergencyStopped,L}, {Statistics.FractionEmergencyStopped(),L:P1}");
             stringBuilder.AppendLine($"{nameof(Statistics.Errored)}".PadRight(PR) + $": {Statistics.Errored,L}, {Statistics.FractionErrored(),L:P1}");
@@ -273,8 +273,8 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         public EVENTS Event { get; set; }
         [XmlIgnore] public StringBuilder Log { get; set; } = new StringBuilder();
         public String LogString { get; set; } = String.Empty;
-        internal const String EXPECTED = "Expected";
-        internal const String ACTUAL = "Actual";
+        internal static readonly String EXPECTED = "Expected";
+        internal static readonly String ACTUAL = "Actual";
 
         public Method() { }
 
