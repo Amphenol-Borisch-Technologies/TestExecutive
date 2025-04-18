@@ -97,9 +97,6 @@
   <ItemGroup>
     <Compile Include="TestChooser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="..\Shared\App.config">
-      <Link>App.config</Link>
-    </None>
     <None Include="ABT_Test.pfx" />
   </ItemGroup>
   <ItemGroup>

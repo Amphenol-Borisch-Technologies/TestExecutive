@@ -38,21 +38,33 @@ namespace TestInstaller {
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
         public override void Install(IDictionary stateSaver) {
             base.Install(stateSaver);
-            DirectoryInfo directoryInfo = new DirectoryInfo(Data.TEST_EXECUTIVE_DATA);
+            SetDirectoryPermissions(Data.TEST_EXECUTIVE_DATA, WellKnownSidType.BuiltinUsersSid, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(Data.TEST_EXECUTIVE_PROGRAM, WellKnownSidType.BuiltinUsersSid, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(Data.TEST_EXECUTIVE_DATA, Data.TEST_EXECUTIVE_ADMINISTRATORS, FileSystemRights.Modify | FileSystemRights.Write); // FileSystemRights.Modify includes FileSystemRights.ReadAndExecute.
+            SetDirectoryPermissions(Data.TEST_EXECUTIVE_PROGRAM, Data.TEST_EXECUTIVE_ADMINISTRATORS, FileSystemRights.Modify | FileSystemRights.Write);
+        }
+        private void SetDirectoryPermissions(String directory, WellKnownSidType wellKnownSidType, FileSystemRights fileSystemRights) {
+            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
             DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
             directorySecurity.AddAccessRule(
                 new FileSystemAccessRule(
-                    new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null),
-                        FileSystemRights.Read | FileSystemRights.ReadAndExecute,
+                    new SecurityIdentifier(wellKnownSidType, null),
+                        fileSystemRights,
                         InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
                         PropagationFlags.NoPropagateInherit,
                         AccessControlType.Allow));
+            directoryInfo.SetAccessControl(directorySecurity);
+        }
+
+        private void SetDirectoryPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
+            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
+            DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
             directorySecurity.AddAccessRule(
-                new FileSystemAccessRule(Data.TEST_EXECUTIVE_ADMINISTRATORS,
-                        FileSystemRights.Modify | FileSystemRights.Read | FileSystemRights.ReadAndExecute | FileSystemRights.Write,
-                        InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
-                        PropagationFlags.NoPropagateInherit,
-                        AccessControlType.Allow));
+                new FileSystemAccessRule(identity,
+                    fileSystemRights,
+                    InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
+                    PropagationFlags.NoPropagateInherit,
+                    AccessControlType.Allow));
             directoryInfo.SetAccessControl(directorySecurity);
         }
 
