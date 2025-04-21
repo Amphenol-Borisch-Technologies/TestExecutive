@@ -1,6 +1,6 @@
 ﻿#undef VERBOSE
-using ABT.Test.TestExecutive.TestLib;
-using ABT.Test.TestExecutive.TestLib.Configuration;
+using ABT.Test.TestLibrary.TestLib;
+using ABT.Test.TestLibrary.TestLib.Configuration;
 using Serilog; // Install Serilog via NuGet Package Manager.  Site is https://serilog.net/.
 using System;
 using System.Data.SqlClient;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
-using static ABT.Test.TestExecutive.TestLib.Data;
+using static ABT.Test.TestLibrary.TestLib.Data;
 
 namespace ABT.Test.TestExecutive.TestExec.Logging {
     public static class Logger {

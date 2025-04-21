@@ -7,8 +7,8 @@
     <ProjectGuid>{144AB20E-D4E5-433A-B36B-79CAF2E29930}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestInstaller</RootNamespace>
-    <AssemblyName>TestInstaller</AssemblyName>
+    <RootNamespace>TestExecInstaller</RootNamespace>
+    <AssemblyName>TestExecInstaller</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -87,7 +87,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
@@ -109,15 +109,18 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="TestLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_64\TestLib\v4.0_1.0.0.0__69d5d3b8c136adcf\TestLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TestExecutiveInstaller.cs">
+    <Compile Include="TestExecInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TestExecutiveInstaller.Designer.cs">
-      <DependentUpon>TestExecutiveInstaller.cs</DependentUpon>
+    <Compile Include="TestExecInstaller.Designer.cs">
+      <DependentUpon>TestExecInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -125,11 +128,15 @@
     <None Include="ABT_Test.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TestLib\TestLib.csproj">
+    <ProjectReference Include="..\TestExec\TestExec.csproj">
       <Project>{24d5e99e-185c-4507-81f0-132d8cb8164e}</Project>
-      <Name>TestLib</Name>
-      <Private>True</Private>
+      <Name>TestExec</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

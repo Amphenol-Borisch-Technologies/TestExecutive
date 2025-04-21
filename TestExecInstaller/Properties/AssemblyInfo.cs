@@ -1,14 +1,16 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TestLib")]
-[assembly: AssemblyDescription("https://github.com/Amphenol-Borisch-Technologies/TestExecutive/tree/master/TestLib")]
+[assembly: AssemblyTitle("TestExecInstaller")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Amphenol Borisch Technologies")]
-[assembly: AssemblyProduct("TestLib")]
-[assembly: AssemblyCopyright("Copyright © Amphenol Borisch Technologies 2024")]
+[assembly: AssemblyProduct("TestExecInstaller")]
+[assembly: AssemblyCopyright("Copyright © Amphenol Borisch Technologies 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -18,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("24d5e99e-185c-4507-81f0-132d8cb8164e")]
+[assembly: Guid("144ab20e-d4e5-433a-b36b-79caf2e29930")]
 
 // Version information for an assembly consists of the following four values:
 //
