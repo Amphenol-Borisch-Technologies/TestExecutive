@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestExec", "TestExec\TestExec.csproj", "{314614CB-6E17-4B74-A9F9-CE4699F78C9B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6B87D429-1DE2-4B67-BF1E-BCF6855397BB} = {6B87D429-1DE2-4B67-BF1E-BCF6855397BB}
+		{E1E886F9-03A3-44D1-8797-BC68D8E2AA23} = {E1E886F9-03A3-44D1-8797-BC68D8E2AA23}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestChooser", "TestChooser\TestChooser.csproj", "{6B87D429-1DE2-4B67-BF1E-BCF6855397BB}"
 EndProject
