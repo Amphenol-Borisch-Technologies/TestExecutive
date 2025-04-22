@@ -38,14 +38,16 @@
             this.TSMI_Generate_TestPlan = new System.Windows.Forms.ToolStripMenuItem();
             this.TSMI_Generate_Separator = new System.Windows.Forms.ToolStripSeparator();
             this.TSMI_Generate_Project = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Keysight = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Keysight_CommandExpert = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Keysight_ConnectionExpert = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Microsoft = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Microsoft_SQL_ServerManagementStudio = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Microsoft_VisualStudio = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Microsoft_VisualStudioCode = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Microsoft_XML_Notepad = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMI_Apps = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMI_Apps_Keysight = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMI_Apps_Microsoft = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMI_Apps_Keysight_CommandExpert = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMI_Apps_Keysight_ConnectionExpert = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMI_Apps_Microsoft_SQLServerManagementStudio = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMI_Apps_Microsoft_VisualStudio = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMI_Apps_Microsoft_VisualStudioCode = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMI_Apps_Microsoft_XMLNotepad = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMI_SetPermissions = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,16 +55,16 @@
             // 
             this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TSMI_Apps,
             this.TSMI_BarcodeScanner,
+            this.TSMI_Generate,
             this.TSMI_TestDefinitions,
             this.TSMI_TestPlans,
-            this.TSMI_Generate,
-            this.TSMI_Keysight,
-            this.TSMI_Microsoft});
+            this.TSMI_SetPermissions});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(648, 28);
+            this.menuStrip.Size = new System.Drawing.Size(666, 28);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -143,7 +145,7 @@
             // TSMI_Generate_InstrumentAliases
             // 
             this.TSMI_Generate_InstrumentAliases.Name = "TSMI_Generate_InstrumentAliases";
-            this.TSMI_Generate_InstrumentAliases.Size = new System.Drawing.Size(212, 26);
+            this.TSMI_Generate_InstrumentAliases.Size = new System.Drawing.Size(224, 26);
             this.TSMI_Generate_InstrumentAliases.Text = "&Instrument Aliases";
             this.TSMI_Generate_InstrumentAliases.ToolTipText = "Generate C# Instrument Aliases";
             this.TSMI_Generate_InstrumentAliases.Click += new System.EventHandler(this.TSMI_Generate_InstrumentAliases_Click);
@@ -151,7 +153,7 @@
             // TSMI_Generate_TestPlan
             // 
             this.TSMI_Generate_TestPlan.Name = "TSMI_Generate_TestPlan";
-            this.TSMI_Generate_TestPlan.Size = new System.Drawing.Size(212, 26);
+            this.TSMI_Generate_TestPlan.Size = new System.Drawing.Size(224, 26);
             this.TSMI_Generate_TestPlan.Text = "&TestPlan";
             this.TSMI_Generate_TestPlan.ToolTipText = "Generate C# TestDefinition Classes & Methods";
             this.TSMI_Generate_TestPlan.Click += new System.EventHandler(this.TSMI_Generate_TestPlan_Click);
@@ -159,93 +161,103 @@
             // TSMI_Generate_Separator
             // 
             this.TSMI_Generate_Separator.Name = "TSMI_Generate_Separator";
-            this.TSMI_Generate_Separator.Size = new System.Drawing.Size(209, 6);
+            this.TSMI_Generate_Separator.Size = new System.Drawing.Size(221, 6);
             // 
             // TSMI_Generate_Project
             // 
             this.TSMI_Generate_Project.Name = "TSMI_Generate_Project";
-            this.TSMI_Generate_Project.Size = new System.Drawing.Size(212, 26);
+            this.TSMI_Generate_Project.Size = new System.Drawing.Size(224, 26);
             this.TSMI_Generate_Project.Text = "&Project";
             this.TSMI_Generate_Project.ToolTipText = "Generate new C# TestPlan Project";
             this.TSMI_Generate_Project.Click += new System.EventHandler(this.TSMI_Generate_Project_Click);
             // 
-            // TSMI_Keysight
+            // TSMI_Apps
             // 
-            this.TSMI_Keysight.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TSMI_Keysight_CommandExpert,
-            this.TSMI_Keysight_ConnectionExpert});
-            this.TSMI_Keysight.Name = "TSMI_Keysight";
-            this.TSMI_Keysight.Size = new System.Drawing.Size(79, 24);
-            this.TSMI_Keysight.Text = "&Keysight";
+            this.TSMI_Apps.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TSMI_Apps_Keysight,
+            this.TSMI_Apps_Microsoft});
+            this.TSMI_Apps.Name = "TSMI_Apps";
+            this.TSMI_Apps.Size = new System.Drawing.Size(57, 24);
+            this.TSMI_Apps.Text = "&Apps";
             // 
-            // TSMI_Keysight_CommandExpert
+            // TSMI_Apps_Keysight
             // 
-            this.TSMI_Keysight_CommandExpert.Name = "TSMI_Keysight_CommandExpert";
-            this.TSMI_Keysight_CommandExpert.Size = new System.Drawing.Size(213, 26);
-            this.TSMI_Keysight_CommandExpert.Text = "Co&mmand Expert";
-            this.TSMI_Keysight_CommandExpert.ToolTipText = "Open Keysight Command Expert";
-            this.TSMI_Keysight_CommandExpert.Click += new System.EventHandler(this.TSMI_Keysight_CommandExpert_Click);
+            this.TSMI_Apps_Keysight.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TSMI_Apps_Keysight_CommandExpert,
+            this.TSMI_Apps_Keysight_ConnectionExpert});
+            this.TSMI_Apps_Keysight.Name = "TSMI_Apps_Keysight";
+            this.TSMI_Apps_Keysight.Size = new System.Drawing.Size(224, 26);
+            this.TSMI_Apps_Keysight.Text = "&Keysight";
             // 
-            // TSMI_Keysight_ConnectionExpert
+            // TSMI_Apps_Microsoft
             // 
-            this.TSMI_Keysight_ConnectionExpert.Name = "TSMI_Keysight_ConnectionExpert";
-            this.TSMI_Keysight_ConnectionExpert.Size = new System.Drawing.Size(213, 26);
-            this.TSMI_Keysight_ConnectionExpert.Text = "Co&nnection Expert";
-            this.TSMI_Keysight_ConnectionExpert.ToolTipText = "Open Keysight Connection Expert";
-            this.TSMI_Keysight_ConnectionExpert.Click += new System.EventHandler(this.TSMI_Keysight_ConnectionExpert_Click);
+            this.TSMI_Apps_Microsoft.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TSMI_Apps_Microsoft_SQLServerManagementStudio,
+            this.TSMI_Apps_Microsoft_VisualStudio,
+            this.TSMI_Apps_Microsoft_VisualStudioCode,
+            this.TSMI_Apps_Microsoft_XMLNotepad});
+            this.TSMI_Apps_Microsoft.Name = "TSMI_Apps_Microsoft";
+            this.TSMI_Apps_Microsoft.Size = new System.Drawing.Size(224, 26);
+            this.TSMI_Apps_Microsoft.Text = "&Microsoft";
             // 
-            // TSMI_Microsoft
+            // TSMI_Apps_Keysight_CommandExpert
             // 
-            this.TSMI_Microsoft.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TSMI_Microsoft_SQL_ServerManagementStudio,
-            this.TSMI_Microsoft_VisualStudio,
-            this.TSMI_Microsoft_VisualStudioCode,
-            this.TSMI_Microsoft_XML_Notepad});
-            this.TSMI_Microsoft.Name = "TSMI_Microsoft";
-            this.TSMI_Microsoft.Size = new System.Drawing.Size(86, 24);
-            this.TSMI_Microsoft.Text = "&Microsoft";
+            this.TSMI_Apps_Keysight_CommandExpert.Name = "TSMI_Apps_Keysight_CommandExpert";
+            this.TSMI_Apps_Keysight_CommandExpert.Size = new System.Drawing.Size(224, 26);
+            this.TSMI_Apps_Keysight_CommandExpert.Text = "&Command Expert";
+            this.TSMI_Apps_Keysight_CommandExpert.Click += new System.EventHandler(this.TSMI_Apps_Keysight_CommandExpert_Click);
             // 
-            // TSMI_Microsoft_SQL_ServerManagementStudio
+            // TSMI_Apps_Keysight_ConnectionExpert
             // 
-            this.TSMI_Microsoft_SQL_ServerManagementStudio.Name = "TSMI_Microsoft_SQL_ServerManagementStudio";
-            this.TSMI_Microsoft_SQL_ServerManagementStudio.Size = new System.Drawing.Size(302, 26);
-            this.TSMI_Microsoft_SQL_ServerManagementStudio.Text = "&SQL Server Management Studio";
-            this.TSMI_Microsoft_SQL_ServerManagementStudio.ToolTipText = "Open SQL Server Management Studio";
-            this.TSMI_Microsoft_SQL_ServerManagementStudio.Click += new System.EventHandler(this.TSMI_Microsoft_SQL_ServerManagementStudio_Click);
+            this.TSMI_Apps_Keysight_ConnectionExpert.Name = "TSMI_Apps_Keysight_ConnectionExpert";
+            this.TSMI_Apps_Keysight_ConnectionExpert.Size = new System.Drawing.Size(224, 26);
+            this.TSMI_Apps_Keysight_ConnectionExpert.Text = "Connection &Expert";
+            this.TSMI_Apps_Keysight_ConnectionExpert.Click += new System.EventHandler(this.TSMI_Apps_Keysight_ConnectionExpert_Click);
             // 
-            // TSMI_Microsoft_VisualStudio
+            // TSMI_Apps_Microsoft_SQLServerManagementStudio
             // 
-            this.TSMI_Microsoft_VisualStudio.Name = "TSMI_Microsoft_VisualStudio";
-            this.TSMI_Microsoft_VisualStudio.Size = new System.Drawing.Size(302, 26);
-            this.TSMI_Microsoft_VisualStudio.Text = "&Visual Studio";
-            this.TSMI_Microsoft_VisualStudio.ToolTipText = "Open Visual Studio";
-            this.TSMI_Microsoft_VisualStudio.Click += new System.EventHandler(this.TSMI_Microsoft_VisualStudio_Click);
+            this.TSMI_Apps_Microsoft_SQLServerManagementStudio.Name = "TSMI_Apps_Microsoft_SQLServerManagementStudio";
+            this.TSMI_Apps_Microsoft_SQLServerManagementStudio.Size = new System.Drawing.Size(302, 26);
+            this.TSMI_Apps_Microsoft_SQLServerManagementStudio.Text = "&SQL Server Management Studio";
+            this.TSMI_Apps_Microsoft_SQLServerManagementStudio.Click += new System.EventHandler(this.TSMI_Apps_Microsoft_SQLServerManagementStudio_Click);
             // 
-            // TSMI_Microsoft_VisualStudioCode
+            // TSMI_Apps_Microsoft_VisualStudio
             // 
-            this.TSMI_Microsoft_VisualStudioCode.Name = "TSMI_Microsoft_VisualStudioCode";
-            this.TSMI_Microsoft_VisualStudioCode.Size = new System.Drawing.Size(302, 26);
-            this.TSMI_Microsoft_VisualStudioCode.Text = "Visual Studio &Code";
-            this.TSMI_Microsoft_VisualStudioCode.ToolTipText = "Open Visual Studio Code";
-            this.TSMI_Microsoft_VisualStudioCode.Click += new System.EventHandler(this.TSMI_Microsoft_VisualStudioCode_Click);
+            this.TSMI_Apps_Microsoft_VisualStudio.Name = "TSMI_Apps_Microsoft_VisualStudio";
+            this.TSMI_Apps_Microsoft_VisualStudio.Size = new System.Drawing.Size(302, 26);
+            this.TSMI_Apps_Microsoft_VisualStudio.Text = "&Visual Studio";
+            this.TSMI_Apps_Microsoft_VisualStudio.Click += new System.EventHandler(this.TSMI_Apps_Microsoft_VisualStudio_Click);
             // 
-            // TSMI_Microsoft_XML_Notepad
+            // TSMI_Apps_Microsoft_VisualStudioCode
             // 
-            this.TSMI_Microsoft_XML_Notepad.Name = "TSMI_Microsoft_XML_Notepad";
-            this.TSMI_Microsoft_XML_Notepad.Size = new System.Drawing.Size(302, 26);
-            this.TSMI_Microsoft_XML_Notepad.Text = "&XML Notepad";
-            this.TSMI_Microsoft_XML_Notepad.ToolTipText = "Open XML Notepad";
-            this.TSMI_Microsoft_XML_Notepad.Click += new System.EventHandler(this.TSMI_Microsoft_XML_Notepad_Click);
+            this.TSMI_Apps_Microsoft_VisualStudioCode.Name = "TSMI_Apps_Microsoft_VisualStudioCode";
+            this.TSMI_Apps_Microsoft_VisualStudioCode.Size = new System.Drawing.Size(302, 26);
+            this.TSMI_Apps_Microsoft_VisualStudioCode.Text = "Visual Studio &Code";
+            this.TSMI_Apps_Microsoft_VisualStudioCode.Click += new System.EventHandler(this.TSMI_Apps_Microsoft_VisualStudioCode_Click);
+            // 
+            // TSMI_Apps_Microsoft_XMLNotepad
+            // 
+            this.TSMI_Apps_Microsoft_XMLNotepad.Name = "TSMI_Apps_Microsoft_XMLNotepad";
+            this.TSMI_Apps_Microsoft_XMLNotepad.Size = new System.Drawing.Size(302, 26);
+            this.TSMI_Apps_Microsoft_XMLNotepad.Text = "&XML Notpad";
+            this.TSMI_Apps_Microsoft_XMLNotepad.Click += new System.EventHandler(this.TSMI_Apps_Microsoft_XMLNotepad_Click);
+            // 
+            // TSMI_SetPermissions
+            // 
+            this.TSMI_SetPermissions.Name = "TSMI_SetPermissions";
+            this.TSMI_SetPermissions.Size = new System.Drawing.Size(124, 24);
+            this.TSMI_SetPermissions.Text = "&Set Permissions";
+            this.TSMI_SetPermissions.Click += new System.EventHandler(this.TSMI_SetPermissions_Click);
             // 
             // TestDev
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(648, 37);
+            this.ClientSize = new System.Drawing.Size(666, 28);
             this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "TestDev";
             this.Text = "TestDev";
@@ -267,19 +279,21 @@
         private System.Windows.Forms.ToolStripMenuItem TSMI_TestDefinitions_Validate;
         private System.Windows.Forms.ToolStripMenuItem TSMI_Generate_Project;
         private System.Windows.Forms.ToolStripMenuItem TSMI_Generate_InstrumentAliases;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Keysight;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Keysight_CommandExpert;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Keysight_ConnectionExpert;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Microsoft;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Microsoft_SQL_ServerManagementStudio;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Microsoft_VisualStudio;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Microsoft_VisualStudioCode;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Microsoft_XML_Notepad;
         private System.Windows.Forms.ToolStripMenuItem TSMI_TestPlans;
         private System.Windows.Forms.ToolStripSeparator TSMI_Definitions_Separator;
         private System.Windows.Forms.ToolStripSeparator TSMI_Generate_Separator;
         private System.Windows.Forms.ToolStripMenuItem TSMI_TestPlans_Choose;
         private System.Windows.Forms.ToolStripMenuItem TSMI_BarcodeScanner;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Apps;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_Keysight;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_Keysight_CommandExpert;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_Keysight_ConnectionExpert;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_Microsoft;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_Microsoft_SQLServerManagementStudio;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_Microsoft_VisualStudio;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_Microsoft_VisualStudioCode;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_Microsoft_XMLNotepad;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_SetPermissions;
     }
 }
 

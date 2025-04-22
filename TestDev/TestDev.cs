@@ -1,9 +1,12 @@
-﻿using ABT.Test.TestLibrary.TestLib.Configuration;
+﻿using ABT.Test.TestLibrary.TestLib;
+using ABT.Test.TestLibrary.TestLib.Configuration;
 using ABT.Test.TestLibrary.TestLib.Miscellaneous;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text;
 using System.Windows.Forms;
 using Windows.Devices.Enumeration;
@@ -13,6 +16,13 @@ using static ABT.Test.TestLibrary.TestLib.Data;
 namespace TestDev {
     public partial class TestDev : Form {
         public TestDev() { InitializeComponent(); }
+        private void TSMI_Apps_Keysight_CommandExpert_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Keysight.CommandExpert); }
+        private void TSMI_Apps_Keysight_ConnectionExpert_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Keysight.ConnectionExpert); }
+        private void TSMI_Apps_Microsoft_SQLServerManagementStudio_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.SQLServerManagementStudio); }
+        private void TSMI_Apps_Microsoft_VisualStudio_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.VisualStudio); }
+        private void TSMI_Apps_Microsoft_VisualStudioCode_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.VisualStudioCode); }
+        private void TSMI_Apps_Microsoft_XMLNotepad_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.XMLNotepad); }
+
         private async void TSMI_BarcodeScanner_Click(Object sender, EventArgs e) {
             DeviceInformationCollection deviceInformationCollectionic = await DeviceInformation.FindAllAsync(BarcodeScanner.GetDeviceSelector(PosConnectionTypes.Local));
             StringBuilder stringBuilder = new StringBuilder();
@@ -32,6 +42,16 @@ namespace TestDev {
 
             CustomMessageBox.Show(Title: $"Microsoft supported, corded Barcode Scanner(s)", Message: stringBuilder.ToString());
         }
+        private void TSMI_Generate_Project_Click(Object sender, EventArgs e) { }
+        private void TSMI_Generate_InstrumentAliases_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateInstrumentAliases); }
+        private void TSMI_Generate_TestPlan_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateTestPlan); }
+        private void TestPlanDefinitionAction(Action<String> executeAction) {
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_PLANS_PROGRAMS, "TestPlan Definition File|TestPlanDefinition.xml");
+            if (dialogResult == DialogResult.OK) {
+                if (!TestPlanDefinitionValidator.ValidSpecification(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\TestPlanDefinition.xsd", fileName)) return;
+                executeAction?.Invoke(fileName);
+            }
+        }
 
         private void TSMI_TestDefinitions_TestExec_Click(Object sender, EventArgs e) {
             (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_LIBRARY_DATA, "TestExec Definition File|TestExecDefinition.xml");
@@ -48,16 +68,6 @@ namespace TestDev {
             }
         }
 
-        private void TSMI_Generate_Project_Click(Object sender, EventArgs e) { }
-        private void TSMI_Generate_InstrumentAliases_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateInstrumentAliases); }
-        private void TSMI_Generate_TestPlan_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateTestPlan); }
-        private void TestPlanDefinitionAction(Action<String> executeAction) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_PLANS_PROGRAMS, "TestPlan Definition File|TestPlanDefinition.xml");
-            if (dialogResult == DialogResult.OK) {
-                if (!TestPlanDefinitionValidator.ValidSpecification(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\TestPlanDefinition.xsd", fileName)) return;
-                executeAction?.Invoke(fileName);
-            }
-        }
         private (DialogResult, String) GetTestDefinitionFile(String InitialDirectory, String Filter) {
             using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
                 openFileDialog.InitialDirectory = InitialDirectory;
@@ -67,20 +77,44 @@ namespace TestDev {
             return (DialogResult.Cancel, null);
         }
 
-        private void TSMI_Keysight_CommandExpert_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Keysight.CommandExpert); }
-        private void TSMI_Keysight_ConnectionExpert_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Keysight.ConnectionExpert); }
-
-        private void TSMI_Microsoft_SQL_ServerManagementStudio_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.SQLServerManagementStudio); }
-        private void TSMI_Microsoft_VisualStudio_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.VisualStudio); }
-        private void TSMI_Microsoft_VisualStudioCode_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.VisualStudioCode); }
-        private void TSMI_Microsoft_XML_Notepad_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.XMLNotepad); }
-
         private void TSMI_TestPlans_Choose_Click(Object sender, EventArgs e) {
             using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
                 openFileDialog.InitialDirectory = TEST_PLANS_PROGRAMS;
                 openFileDialog.Filter = "TestPlan Programs|*.exe";
                 if (openFileDialog.ShowDialog() == DialogResult.OK) _ = Process.Start($"\"{openFileDialog.FileName}\"");
             }
+        }
+
+        private void TSMI_SetPermissions_Click(Object sender, EventArgs e) {
+            SetDirectoryPermissions(Data.TEST_EXECUTIVE_PROGRAM, WellKnownSidType.BuiltinUsersSid, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(Data.TEST_EXECUTIVE_PROGRAM, Data.TEST_EXECUTIVE_ADMINISTRATORS, FileSystemRights.Modify | FileSystemRights.Write);
+            SetDirectoryPermissions(Data.TEST_LIBRARY_DATA, WellKnownSidType.BuiltinUsersSid, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(Data.TEST_LIBRARY_DATA, Data.TEST_EXECUTIVE_ADMINISTRATORS, FileSystemRights.Modify | FileSystemRights.Write); // FileSystemRights.Modify includes FileSystemRights.ReadAndExecute.
+            SetDirectoryPermissions(Data.TEST_PLANS_PROGRAMS, WellKnownSidType.BuiltinUsersSid, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(Data.TEST_PLANS_PROGRAMS, Data.TEST_EXECUTIVE_ADMINISTRATORS, FileSystemRights.Modify | FileSystemRights.Write); // FileSystemRights.Modify includes FileSystemRights.ReadAndExecute.
+        }
+        private static void SetDirectoryPermissions(String directory, WellKnownSidType wellKnownSidType, FileSystemRights fileSystemRights) {
+            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
+            DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
+            directorySecurity.AddAccessRule(
+                new FileSystemAccessRule(
+                    new SecurityIdentifier(wellKnownSidType, null),
+                        fileSystemRights,
+                        InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
+                        PropagationFlags.NoPropagateInherit,
+                        AccessControlType.Allow));
+            directoryInfo.SetAccessControl(directorySecurity);
+        }
+        private static void SetDirectoryPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
+            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
+            DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
+            directorySecurity.AddAccessRule(
+                new FileSystemAccessRule(identity,
+                    fileSystemRights,
+                    InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
+                    PropagationFlags.NoPropagateInherit,
+                    AccessControlType.Allow));
+            directoryInfo.SetAccessControl(directorySecurity);
         }
     }
 }
