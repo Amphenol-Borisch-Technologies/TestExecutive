@@ -33,12 +33,8 @@ namespace TestDev {
             CustomMessageBox.Show(Title: $"Microsoft supported, corded Barcode Scanner(s)", Message: stringBuilder.ToString());
         }
 
-        private void TSMI_TestDefinitions_TestChooser_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_EXECUTIVE_PROGRAM, "TestChooser Definition File|TestChooserDefinition.xml");
-            if (dialogResult == DialogResult.OK) OpenApp(fileName);
-        }
         private void TSMI_TestDefinitions_TestExec_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_EXECUTIVE_PROGRAM, "TestExec Definition File|TestExecDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_LIBRARY_DATA, "TestExec Definition File|TestExecDefinition.xml");
             if (dialogResult == DialogResult.OK) OpenApp(fileName);
         }
         private void TSMI_TestDefinitions_TestPlans_Click(Object sender, EventArgs e) {
