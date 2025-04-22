@@ -29,33 +29,24 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Release|x64 = Release|x64
-		TestExecutive|x64 = TestExecutive|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{314614CB-6E17-4B74-A9F9-CE4699F78C9B}.Debug|x64.ActiveCfg = Debug|x64
 		{314614CB-6E17-4B74-A9F9-CE4699F78C9B}.Debug|x64.Build.0 = Debug|x64
 		{314614CB-6E17-4B74-A9F9-CE4699F78C9B}.Release|x64.ActiveCfg = Release|x64
 		{314614CB-6E17-4B74-A9F9-CE4699F78C9B}.Release|x64.Build.0 = Release|x64
-		{314614CB-6E17-4B74-A9F9-CE4699F78C9B}.TestExecutive|x64.ActiveCfg = TestExecutive|x64
-		{314614CB-6E17-4B74-A9F9-CE4699F78C9B}.TestExecutive|x64.Build.0 = TestExecutive|x64
 		{6B87D429-1DE2-4B67-BF1E-BCF6855397BB}.Debug|x64.ActiveCfg = Debug|x64
 		{6B87D429-1DE2-4B67-BF1E-BCF6855397BB}.Debug|x64.Build.0 = Debug|x64
 		{6B87D429-1DE2-4B67-BF1E-BCF6855397BB}.Release|x64.ActiveCfg = Release|x64
 		{6B87D429-1DE2-4B67-BF1E-BCF6855397BB}.Release|x64.Build.0 = Release|x64
-		{6B87D429-1DE2-4B67-BF1E-BCF6855397BB}.TestExecutive|x64.ActiveCfg = TestExecutive|x64
-		{6B87D429-1DE2-4B67-BF1E-BCF6855397BB}.TestExecutive|x64.Build.0 = TestExecutive|x64
 		{E1E886F9-03A3-44D1-8797-BC68D8E2AA23}.Debug|x64.ActiveCfg = Debug|x64
 		{E1E886F9-03A3-44D1-8797-BC68D8E2AA23}.Debug|x64.Build.0 = Debug|x64
 		{E1E886F9-03A3-44D1-8797-BC68D8E2AA23}.Release|x64.ActiveCfg = Release|x64
 		{E1E886F9-03A3-44D1-8797-BC68D8E2AA23}.Release|x64.Build.0 = Release|x64
-		{E1E886F9-03A3-44D1-8797-BC68D8E2AA23}.TestExecutive|x64.ActiveCfg = TestExecutive|x64
-		{E1E886F9-03A3-44D1-8797-BC68D8E2AA23}.TestExecutive|x64.Build.0 = TestExecutive|x64
 		{35DDAEB3-6486-47D1-7BC1-5648C7111961}.Debug|x64.ActiveCfg = Debug
 		{35DDAEB3-6486-47D1-7BC1-5648C7111961}.Debug|x64.Build.0 = Debug
 		{35DDAEB3-6486-47D1-7BC1-5648C7111961}.Release|x64.ActiveCfg = Release
 		{35DDAEB3-6486-47D1-7BC1-5648C7111961}.Release|x64.Build.0 = Release
-		{35DDAEB3-6486-47D1-7BC1-5648C7111961}.TestExecutive|x64.ActiveCfg = TestExecutive
-		{35DDAEB3-6486-47D1-7BC1-5648C7111961}.TestExecutive|x64.Build.0 = TestExecutive
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
