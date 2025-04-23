@@ -147,10 +147,6 @@
       <HintPath>C:\Program Files\IVI Foundation\IVI\Bin\Primary Interop Assemblies\Tektronix.Tkdpo2k3k4k.Interop.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="TestLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_64\TestLib\v4.0_1.0.0.0__69d5d3b8c136adcf\TestLib.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\EmergencyStop.png">
@@ -211,6 +207,12 @@
       <Link>App.config</Link>
     </None>
     <None Include="ABT_Test.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TestLib\TestLib.csproj">
+      <Project>{24d5e99e-185c-4507-81f0-132d8cb8164e}</Project>
+      <Name>TestLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

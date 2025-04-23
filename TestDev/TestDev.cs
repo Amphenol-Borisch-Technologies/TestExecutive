@@ -1,6 +1,6 @@
-﻿using ABT.Test.TestLibrary.TestLib;
-using ABT.Test.TestLibrary.TestLib.Configuration;
-using ABT.Test.TestLibrary.TestLib.Miscellaneous;
+﻿using ABT.Test.TestExecutive.TestLib;
+using ABT.Test.TestExecutive.TestLib.Configuration;
+using ABT.Test.TestExecutive.TestLib.Miscellaneous;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -11,7 +11,7 @@ using System.Text;
 using System.Windows.Forms;
 using Windows.Devices.Enumeration;
 using Windows.Devices.PointOfService;
-using static ABT.Test.TestLibrary.TestLib.Data;
+using static ABT.Test.TestExecutive.TestLib.Data;
 
 namespace TestDev {
     public partial class TestDev : Form {
@@ -46,7 +46,7 @@ namespace TestDev {
         private void TSMI_Generate_InstrumentAliases_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateInstrumentAliases); }
         private void TSMI_Generate_TestPlan_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateTestPlan); }
         private void TestPlanDefinitionAction(Action<String> executeAction) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_PLANS_PROGRAMS, "TestPlan Definition File|TestPlanDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(GetTestExecutiveDirectory(), "TestPlan Definition File|TestPlanDefinition.xml");
             if (dialogResult == DialogResult.OK) {
                 if (!TestPlanDefinitionValidator.ValidSpecification(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\TestPlanDefinition.xsd", fileName)) return;
                 executeAction?.Invoke(fileName);
@@ -54,15 +54,15 @@ namespace TestDev {
         }
 
         private void TSMI_TestDefinitions_TestExec_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_LIBRARY_DATA, "TestExec Definition File|TestExecDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(GetTestExecutiveDirectory(), "TestExec Definition File|TestExecDefinition.xml");
             if (dialogResult == DialogResult.OK) OpenApp(fileName);
         }
         private void TSMI_TestDefinitions_TestPlans_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_PLANS_PROGRAMS, "TestPlan Definition File|TestPlanDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(GetTestExecutiveDirectory(), "TestPlan Definition File|TestPlanDefinition.xml");
             if (dialogResult == DialogResult.OK) OpenApp(fileName);
         }
         private void TSMI_TestDefinitions_Validate_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TEST_PLANS_PROGRAMS, "TestPlan Definition File|TestPlanDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(GetTestExecutiveDirectory(), "TestPlan Definition File|TestPlanDefinition.xml");
             if (dialogResult == DialogResult.OK) {
                 if (TestPlanDefinitionValidator.ValidSpecification(TEST_PLAN_DEFINITION_XSD, fileName)) _ = MessageBox.Show(this, "Validation passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -79,19 +79,15 @@ namespace TestDev {
 
         private void TSMI_TestPlans_Choose_Click(Object sender, EventArgs e) {
             using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
-                openFileDialog.InitialDirectory = TEST_PLANS_PROGRAMS;
+                openFileDialog.InitialDirectory = GetTestExecutiveDirectory();
                 openFileDialog.Filter = "TestPlan Programs|*.exe";
                 if (openFileDialog.ShowDialog() == DialogResult.OK) _ = Process.Start($"\"{openFileDialog.FileName}\"");
             }
         }
 
         private void TSMI_SetPermissions_Click(Object sender, EventArgs e) {
-            SetDirectoryPermissions(Data.TEST_EXECUTIVE_PROGRAM, WellKnownSidType.BuiltinUsersSid, FileSystemRights.ReadAndExecute);
-            SetDirectoryPermissions(Data.TEST_EXECUTIVE_PROGRAM, Data.TEST_EXECUTIVE_ADMINISTRATORS, FileSystemRights.Modify | FileSystemRights.Write);
-            SetDirectoryPermissions(Data.TEST_LIBRARY_DATA, WellKnownSidType.BuiltinUsersSid, FileSystemRights.ReadAndExecute);
-            SetDirectoryPermissions(Data.TEST_LIBRARY_DATA, Data.TEST_EXECUTIVE_ADMINISTRATORS, FileSystemRights.Modify | FileSystemRights.Write); // FileSystemRights.Modify includes FileSystemRights.ReadAndExecute.
-            SetDirectoryPermissions(Data.TEST_PLANS_PROGRAMS, WellKnownSidType.BuiltinUsersSid, FileSystemRights.ReadAndExecute);
-            SetDirectoryPermissions(Data.TEST_PLANS_PROGRAMS, Data.TEST_EXECUTIVE_ADMINISTRATORS, FileSystemRights.Modify | FileSystemRights.Write); // FileSystemRights.Modify includes FileSystemRights.ReadAndExecute.
+            SetDirectoryPermissions(GetTestExecutiveDirectory(), WellKnownSidType.BuiltinUsersSid, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(GetTestExecutiveDirectory(), TEST_EXECUTIVE_ADMINISTRATORS, FileSystemRights.Modify | FileSystemRights.Write);
         }
         private static void SetDirectoryPermissions(String directory, WellKnownSidType wellKnownSidType, FileSystemRights fileSystemRights) {
             DirectoryInfo directoryInfo = new DirectoryInfo(directory);
