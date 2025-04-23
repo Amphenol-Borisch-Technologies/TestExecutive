@@ -1,12 +1,9 @@
-﻿using ABT.Test.TestExecutive.TestLib;
-using ABT.Test.TestExecutive.TestLib.Configuration;
+﻿using ABT.Test.TestExecutive.TestLib.Configuration;
 using ABT.Test.TestExecutive.TestLib.Miscellaneous;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using System.Text;
 using System.Windows.Forms;
 using Windows.Devices.Enumeration;
@@ -83,34 +80,6 @@ namespace TestDev {
                 openFileDialog.Filter = "TestPlan Programs|*.exe";
                 if (openFileDialog.ShowDialog() == DialogResult.OK) _ = Process.Start($"\"{openFileDialog.FileName}\"");
             }
-        }
-
-        private void TSMI_SetPermissions_Click(Object sender, EventArgs e) {
-            SetDirectoryPermissions(GetTestExecutiveDirectory(), WellKnownSidType.BuiltinUsersSid, FileSystemRights.ReadAndExecute);
-            SetDirectoryPermissions(GetTestExecutiveDirectory(), TEST_EXECUTIVE_ADMINISTRATORS, FileSystemRights.Modify | FileSystemRights.Write);
-        }
-        private static void SetDirectoryPermissions(String directory, WellKnownSidType wellKnownSidType, FileSystemRights fileSystemRights) {
-            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
-            DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
-            directorySecurity.AddAccessRule(
-                new FileSystemAccessRule(
-                    new SecurityIdentifier(wellKnownSidType, null),
-                        fileSystemRights,
-                        InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
-                        PropagationFlags.NoPropagateInherit,
-                        AccessControlType.Allow));
-            directoryInfo.SetAccessControl(directorySecurity);
-        }
-        private static void SetDirectoryPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
-            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
-            DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
-            directorySecurity.AddAccessRule(
-                new FileSystemAccessRule(identity,
-                    fileSystemRights,
-                    InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
-                    PropagationFlags.NoPropagateInherit,
-                    AccessControlType.Allow));
-            directoryInfo.SetAccessControl(directorySecurity);
         }
     }
 }

@@ -53,7 +53,6 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static readonly String MutexTestName = nameof(MutexTest);
         public static readonly String TEST_PLAN_DEFINITION_XSD = GetTestExecutiveDirectory() + @"\TestPlanDefinition.xsd";
         public static readonly String TEST_EXECUTIVE_DEFINITION_XML = GetTestExecutiveDirectory() + @"\TestExecDefinition.xml";
-        public static readonly String TEST_EXECUTIVE_ADMINISTRATORS = @"BORISCH\Test - TestExecutive Administrators";
         public static Dictionary<String, Object> InstrumentDrivers = null;
         public static String BaseDirectory = null;
         public static String TestPlanDefinitionXML = null;
