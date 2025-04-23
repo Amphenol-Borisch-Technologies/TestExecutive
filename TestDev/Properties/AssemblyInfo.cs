@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TestDev")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("https://github.com/Amphenol-Borisch-Technologies/TestExecutive")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Amphenol Borisch Technologies")]
 [assembly: AssemblyProduct("TestDev")]

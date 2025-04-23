@@ -5,7 +5,6 @@
     <Developer Name="Phillip Smelt" Language="CSharp" Comment="Also XML &amp; XSD." />
     <Documentation Folder="P:\Test\Engineers\Equipment_Manuals\TestExec" />
     <Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestExecutive" />
-    <Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestLibrary" />
     <Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestPlan" />
   </Development>
   
