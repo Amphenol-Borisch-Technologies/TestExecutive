@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<TestExecDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file://C://ProgramData//ABT//Test//TestLibrary//TestExecDefinition.xsd">
+<TestExecDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file://C://Program Files//ABT//Test//TestExecutive//TestExecDefinition.xsd">
 
   <Development Released="2025-04-01">
     <Developer Name="Phillip Smelt" Language="CSharp" Comment="Also XML &amp; XSD." />
