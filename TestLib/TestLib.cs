@@ -185,23 +185,6 @@ namespace ABT.Test.TestExecutive.TestLib {
             } else InvalidPathError(folderPath);
         }
 
-        public static void TSMI_TestChooser(String CurrentProcessID = "") {
-            // NOTE: Canonical method to load/unload DLLs in .Net Framework is AppDomain.
-            // - But AppDomains require marshalling across process boundaries, as AppDomains are their own separate processes.
-            // - Further, AppDomains aren't supported in .Net, just .Net Framework.
-            // - .Net instead provides AssemblyLoadContext which would be perfect for TestExec...but isn't available in .Net Framework.
-            // - Thus this compromise.
-            ProcessStartInfo processStartInfo = new ProcessStartInfo(testExecDefinition.Apps.ABT.TestChooser) {
-                Arguments = CurrentProcessID,
-                CreateNoWindow = false,
-                UseShellExecute = false,
-                RedirectStandardError = false,
-                RedirectStandardOutput = false
-            };
-            _ = Process.Start(processStartInfo);
-            Application.Exit();
-        }
-
         public static Boolean RegexInvalid(String RegularExpression) {
             if (String.IsNullOrWhiteSpace(RegularExpression)) return true;
             try {

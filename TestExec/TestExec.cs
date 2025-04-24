@@ -359,7 +359,22 @@ namespace ABT.Test.TestExecutive.TestExec {
         #endregion Form Command Buttons
 
         #region Form Tool Strip Menu Items
-        private void TSMI_TestPlan_Choose_Click(Object sender, EventArgs e) { TSMI_TestChooser(Convert.ToString(Process.GetCurrentProcess().Id)); }
+        private void TSMI_TestPlan_Choose_Click(Object sender, EventArgs e) {
+            // NOTE: Canonical method to load/unload DLLs in .Net Framework is AppDomain.
+            // - But AppDomains require marshalling across process boundaries, as AppDomains are their own separate processes.
+            // - Further, AppDomains aren't supported in .Net, just .Net Framework.
+            // - .Net instead provides AssemblyLoadContext which would be perfect for TestExec...but isn't available in .Net Framework.
+            // - Thus this compromise.
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(testExecDefinition.Apps.ABT.TestChooser) {
+                Arguments = Convert.ToString(Process.GetCurrentProcess().Id),
+                CreateNoWindow = false,
+                UseShellExecute = false,
+                RedirectStandardError = false,
+                RedirectStandardOutput = false
+            };
+            _ = Process.Start(processStartInfo);
+            Application.Exit();            
+        }
         private void TSMI_TestPlan_SaveResults_Click(Object sender, EventArgs e) {
             SaveFileDialog saveFileDialog = new SaveFileDialog {
                 Title = "Save Test Results",
