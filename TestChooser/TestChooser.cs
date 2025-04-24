@@ -34,7 +34,7 @@ namespace ABT.Test.TestExecutive.TestChooser {
             }
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
-                openFileDialog.InitialDirectory = Data.TestExecutiveFolder;
+                openFileDialog.InitialDirectory = Data.TestPlansFolder;
                 openFileDialog.Filter = "TestPlan Files|*.exe";
                 if (openFileDialog.ShowDialog() == DialogResult.OK) _ = Process.Start($"\"{openFileDialog.FileName}\"");
             }

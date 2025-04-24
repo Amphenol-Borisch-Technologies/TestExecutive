@@ -35,7 +35,7 @@
   -->
   <Apps>
     <ABT>
-      <TestChooser>TestChooser.exe</TestChooser>
+      <TestChooser>TestChooser.exe</TestChooser> <!-- Installation folder for TestChooser.exe is pre-pended in TestExecDefinition.cs. -->
     </ABT>
     <Keysight>
       <CommandExpert>C:\Program Files\Keysight\Command Expert\CommandExpert.exe</CommandExpert>
