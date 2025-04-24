@@ -14,8 +14,8 @@ namespace ABT.Test.TestExecutive.TestExecInstaller {
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
         public override void Install(IDictionary stateSaver) {
             base.Install(stateSaver);
-            SetDirectoryPermissions(@"C:\Program Files\ABT\Test\TestExecutive", WellKnownSidType.BuiltinUsersSid, FileSystemRights.ReadAndExecute);
-            SetDirectoryPermissions(@"C:\Program Files\ABT\Test\TestExecutive", @"BORISCH\Test - TestExecutive Administrators", FileSystemRights.Modify | FileSystemRights.Write);
+            SetDirectoryPermissions(Context.Parameters["targetdir"], WellKnownSidType.BuiltinUsersSid, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(Context.Parameters["targetdir"], @"BORISCH\Test - TestExecutive Administrators", FileSystemRights.Modify | FileSystemRights.Write);
         }
         private void SetDirectoryPermissions(String directory, WellKnownSidType wellKnownSidType, FileSystemRights fileSystemRights) {
             DirectoryInfo directoryInfo = new DirectoryInfo(directory);
