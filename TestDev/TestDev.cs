@@ -43,7 +43,7 @@ namespace TestDev {
         private void TSMI_Generate_InstrumentAliases_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateInstrumentAliases); }
         private void TSMI_Generate_TestPlan_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateTestPlan); }
         private void TestPlanDefinitionAction(Action<String> executeAction) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(GetTestExecutiveDirectory(), "TestPlan Definition File|TestPlanDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TestExecutiveFolder, "TestPlan Definition File|TestPlanDefinition.xml");
             if (dialogResult == DialogResult.OK) {
                 if (!TestPlanDefinitionValidator.ValidSpecification(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\TestPlanDefinition.xsd", fileName)) return;
                 executeAction?.Invoke(fileName);
@@ -51,17 +51,17 @@ namespace TestDev {
         }
 
         private void TSMI_TestDefinitions_TestExec_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(GetTestExecutiveDirectory(), "TestExec Definition File|TestExecDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TestExecutiveFolder, "TestExec Definition File|TestExecDefinition.xml");
             if (dialogResult == DialogResult.OK) OpenApp(fileName);
         }
         private void TSMI_TestDefinitions_TestPlans_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(GetTestExecutiveDirectory(), "TestPlan Definition File|TestPlanDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TestPlansFolder, "TestPlan Definition File|TestPlanDefinition.xml");
             if (dialogResult == DialogResult.OK) OpenApp(fileName);
         }
         private void TSMI_TestDefinitions_Validate_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(GetTestExecutiveDirectory(), "TestPlan Definition File|TestPlanDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TestPlansFolder, "TestPlan Definition File|TestPlanDefinition.xml");
             if (dialogResult == DialogResult.OK) {
-                if (TestPlanDefinitionValidator.ValidSpecification(TEST_PLAN_DEFINITION_XSD, fileName)) _ = MessageBox.Show(this, "Validation passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (TestPlanDefinitionValidator.ValidSpecification(TestPlanDefinitionXSD, fileName)) _ = MessageBox.Show(this, "Validation passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -76,7 +76,7 @@ namespace TestDev {
 
         private void TSMI_TestPlans_Choose_Click(Object sender, EventArgs e) {
             using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
-                openFileDialog.InitialDirectory = GetTestExecutiveDirectory();
+                openFileDialog.InitialDirectory = TestExecutiveFolder;
                 openFileDialog.Filter = "TestPlan Programs|*.exe";
                 if (openFileDialog.ShowDialog() == DialogResult.OK) _ = Process.Start($"\"{openFileDialog.FileName}\"");
             }

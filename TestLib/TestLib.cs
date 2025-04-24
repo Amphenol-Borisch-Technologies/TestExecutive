@@ -3,6 +3,7 @@ using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using Outlook = Microsoft.Office.Interop.Outlook;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -48,25 +49,28 @@ namespace ABT.Test.TestExecutive.TestLib {
             { EVENTS.INFORMATION, Color.White }
         };
 
-        // TODO:  Eventually; mitigate or eliminate writeable global objects.
-        public static Mutex MutexTest = null;
+        private static readonly System.Configuration.Configuration configuration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+        public static readonly String TestExecutiveFolder = configuration.AppSettings.Settings[nameof(TestExecutiveFolder)].Value;
+        public static readonly String TestPlansFolder = configuration.AppSettings.Settings[nameof(TestPlansFolder)].Value;
+        public static readonly String TestPlanDefinitionXSD = TestExecutiveFolder + @"\TestPlanDefinition.xsd";
+        public static readonly String TestExecutiveDefinitionXML = TestExecutiveFolder + @"\TestExecDefinition.xml";
+        public static readonly String SPACES_2 = "  ";
+        public static readonly Int32 PAD_RIGHT = 21;
+        internal static readonly String TestExecutive = nameof(TestExecutive);
         public static readonly String MutexTestName = nameof(MutexTest);
-        public static readonly String TEST_PLAN_DEFINITION_XSD = GetTestExecutiveDirectory() + @"\TestPlanDefinition.xsd";
-        public static readonly String TEST_EXECUTIVE_DEFINITION_XML = GetTestExecutiveDirectory() + @"\TestExecDefinition.xml";
+        // TODO:  Eventually; mitigate or eliminate writeable global objects; use passed parameters instead.
+        public static Mutex MutexTest = null;
         public static Dictionary<String, Object> InstrumentDrivers = null;
-        public static String BaseDirectory = null;
+        public static String TestPlanFolder = null;
         public static String TestPlanDefinitionXML = null;
         public static TestPlanDefinition testPlanDefinition = null;
         public static TestSequence testSequence = null;
-        public static TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TEST_EXECUTIVE_DEFINITION_XML}");
+        public static TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TestExecutiveDefinitionXML}");
         public static String UserName = null;
         public static CancellationTokenSource CTS_Cancel;
         public static CancellationTokenSource CTS_EmergencyStop;
         public static CancellationToken CT_Cancel;
         public static CancellationToken CT_EmergencyStop;
-        public static readonly String SPACES_2 = "  ";
-        public static readonly Int32 PAD_RIGHT = 21;
-        internal static readonly String TestExecutive = nameof(TestExecutive);
 
         public static String FormatMessage(String Label, String Message) { return $"{SPACES_2}{Label}".PadRight(PAD_RIGHT) + $": {Message}"; }
 
@@ -145,11 +149,6 @@ namespace ABT.Test.TestExecutive.TestLib {
             Dictionary<String, Object> instrumentDrivers = GetInstrumentDriversTestExecDefinition();
             foreach (Stationary stationary in testPlanDefinition.InstrumentsTestPlan.Stationary) if (!instrumentDrivers.ContainsKey(stationary.ID)) instrumentDrivers.Remove(stationary.ID);
             return instrumentDrivers;
-        }
-
-        public static String GetTestExecutiveDirectory() {
-            var assemblyLocation = Assembly.GetExecutingAssembly().Location;
-            return Path.GetDirectoryName(assemblyLocation);
         }
 
         public static String ConvertWindowsPathToUrl(String path) {

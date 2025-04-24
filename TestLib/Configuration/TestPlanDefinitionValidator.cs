@@ -12,11 +12,11 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         private static XmlReader xmlReader;
         private const Int32 PR = 14;
 
-        public static Boolean ValidSpecification(String TEST_PLAN_DEFINITION_XSD, String TestPlanDefinitionXML) {
-            if (!File.Exists(TEST_PLAN_DEFINITION_XSD)) throw new ArgumentException($"XSD Test Specification File '{TEST_PLAN_DEFINITION_XSD}' does not exist.");
+        public static Boolean ValidSpecification(String TestPlanDefinitionXSD, String TestPlanDefinitionXML) {
+            if (!File.Exists(TestPlanDefinitionXSD)) throw new ArgumentException($"XSD Test Specification File '{TestPlanDefinitionXSD}' does not exist.");
             if (!File.Exists(TestPlanDefinitionXML)) throw new ArgumentException($"XML Test Specification File '{TestPlanDefinitionXML}' does not exist.");
             XmlSchemaSet xmlSchemaSet = new XmlSchemaSet();
-            xmlSchemaSet.Add(null, TEST_PLAN_DEFINITION_XSD);
+            xmlSchemaSet.Add(null, TestPlanDefinitionXSD);
             XmlReaderSettings xmlReaderSettings = new XmlReaderSettings { ValidationType = ValidationType.Schema, Schemas = xmlSchemaSet };
             xmlReaderSettings.ValidationEventHandler += ValidationCallback;
 
