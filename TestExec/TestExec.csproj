@@ -204,6 +204,10 @@
     <None Include="ABT_Test.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TestChooser\TestChooser.csproj">
+      <Project>{6b87d429-1de2-4b67-bf1e-bcf6855397bb}</Project>
+      <Name>TestChooser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestLib\TestLib.csproj">
       <Project>{24d5e99e-185c-4507-81f0-132d8cb8164e}</Project>
       <Name>TestLib</Name>

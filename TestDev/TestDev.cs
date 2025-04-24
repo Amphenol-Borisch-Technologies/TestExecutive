@@ -12,6 +12,7 @@ using static ABT.Test.TestExecutive.TestLib.Data;
 namespace TestDev {
     public partial class TestDev : Form {
         public TestDev() { InitializeComponent(); }
+        private void TSMI_Apps_ABT_TestChooser_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.ABT.TestChooser); }
         private void TSMI_Apps_Keysight_CommandExpert_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Keysight.CommandExpert); }
         private void TSMI_Apps_Keysight_ConnectionExpert_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Keysight.ConnectionExpert); }
         private void TSMI_Apps_Microsoft_SQLServerManagementStudio_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.SQLServerManagementStudio); }

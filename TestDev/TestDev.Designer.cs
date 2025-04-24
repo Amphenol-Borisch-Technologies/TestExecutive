@@ -45,6 +45,8 @@
             this.TSMI_TestDefinitions_TestPlans = new System.Windows.Forms.ToolStripMenuItem();
             this.TSMI_Definitions_Separator = new System.Windows.Forms.ToolStripSeparator();
             this.TSMI_TestDefinitions_Validate = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMI_Apps_ABT = new System.Windows.Forms.ToolStripMenuItem();
+            this.TSMI_Apps_ABT_TestChooser = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,6 +68,7 @@
             // TSMI_Apps
             // 
             this.TSMI_Apps.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TSMI_Apps_ABT,
             this.TSMI_Apps_Keysight,
             this.TSMI_Apps_Microsoft});
             this.TSMI_Apps.Name = "TSMI_Apps";
@@ -84,14 +87,14 @@
             // TSMI_Apps_Keysight_CommandExpert
             // 
             this.TSMI_Apps_Keysight_CommandExpert.Name = "TSMI_Apps_Keysight_CommandExpert";
-            this.TSMI_Apps_Keysight_CommandExpert.Size = new System.Drawing.Size(213, 26);
+            this.TSMI_Apps_Keysight_CommandExpert.Size = new System.Drawing.Size(224, 26);
             this.TSMI_Apps_Keysight_CommandExpert.Text = "&Command Expert";
             this.TSMI_Apps_Keysight_CommandExpert.Click += new System.EventHandler(this.TSMI_Apps_Keysight_CommandExpert_Click);
             // 
             // TSMI_Apps_Keysight_ConnectionExpert
             // 
             this.TSMI_Apps_Keysight_ConnectionExpert.Name = "TSMI_Apps_Keysight_ConnectionExpert";
-            this.TSMI_Apps_Keysight_ConnectionExpert.Size = new System.Drawing.Size(213, 26);
+            this.TSMI_Apps_Keysight_ConnectionExpert.Size = new System.Drawing.Size(224, 26);
             this.TSMI_Apps_Keysight_ConnectionExpert.Text = "Connection &Expert";
             this.TSMI_Apps_Keysight_ConnectionExpert.Click += new System.EventHandler(this.TSMI_Apps_Keysight_ConnectionExpert_Click);
             // 
@@ -221,6 +224,21 @@
             this.TSMI_TestDefinitions_Validate.ToolTipText = "Validate a TestPlan Definition";
             this.TSMI_TestDefinitions_Validate.Click += new System.EventHandler(this.TSMI_TestDefinitions_Validate_Click);
             // 
+            // TSMI_Apps_ABT
+            // 
+            this.TSMI_Apps_ABT.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TSMI_Apps_ABT_TestChooser});
+            this.TSMI_Apps_ABT.Name = "TSMI_Apps_ABT";
+            this.TSMI_Apps_ABT.Size = new System.Drawing.Size(224, 26);
+            this.TSMI_Apps_ABT.Text = "&ABT";
+            // 
+            // TSMI_Apps_ABT_TestChooser
+            // 
+            this.TSMI_Apps_ABT_TestChooser.Name = "TSMI_Apps_ABT_TestChooser";
+            this.TSMI_Apps_ABT_TestChooser.Size = new System.Drawing.Size(224, 26);
+            this.TSMI_Apps_ABT_TestChooser.Text = "&TestChooser";
+            this.TSMI_Apps_ABT_TestChooser.Click += new System.EventHandler(this.TSMI_Apps_ABT_TestChooser_Click);
+            // 
             // TestDev
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -229,7 +247,7 @@
             this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "TestDev";
             this.Text = "TestDev";
@@ -263,6 +281,8 @@
         private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_Microsoft_VisualStudio;
         private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_Microsoft_VisualStudioCode;
         private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_Microsoft_XMLNotepad;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_ABT;
+        private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_ABT_TestChooser;
     }
 }
 

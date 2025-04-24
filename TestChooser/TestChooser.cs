@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using ABT.Test.TestExecutive.TestLib;
@@ -7,36 +8,47 @@ using ABT.Test.TestExecutive.TestLib;
 namespace ABT.Test.TestExecutive.TestChooser {
     public static class TestChooser {
         [STAThread]
-        public static void Main(String[] args) {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            Int32 testPlanOldPID = 0;
-            if (args.Length > 0) try { testPlanOldPID = Convert.ToInt32(args[0]); } catch { }
-            if (testPlanOldPID != 0) {
-                Process testPlanOld = null;
-                try {
-                    Cursor.Current = Cursors.WaitCursor;
-                    testPlanOld = Process.GetProcessById(testPlanOldPID);
-                    Int32 iterations = 0, iterationsMax = 60;
-                    while (!testPlanOld.HasExited && iterations <= iterationsMax) {
-                        Thread.Sleep(500);
-                        testPlanOld.Refresh();
-                        iterations++; // 60 iterations with 0.5 second sleeps = 30 seconds max.
-                    }
-                } finally {
-                    Cursor.Current = Cursors.Default;
-                }
-                if (testPlanOld != null && !testPlanOld.HasExited) {
-                    _ = MessageBox.Show($"Old TestPlan hasn't exited.{Environment.NewLine}{Environment.NewLine}Please contact Test Engineering.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Application.Exit();
-                }
-            }
-
+        public static void Main() {
             using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
                 openFileDialog.InitialDirectory = Data.TestPlansFolder;
                 openFileDialog.Filter = "TestPlan Files|*.exe";
                 if (openFileDialog.ShowDialog() == DialogResult.OK) _ = Process.Start($"\"{openFileDialog.FileName}\"");
+            }
+        }
+
+        public static void Launch(String TestPlanPath) {
+            CheckTestPlanPath(TestPlanPath);
+            _ = Process.Start($"\"{TestPlanPath}\"");
+        }
+
+        public static void Launch(String NewTestPlanPath, Int32 CurrentTestPlanProcessID) {
+            CheckTestPlanPath(NewTestPlanPath);
+
+            Process testPlanCurrent = null;
+            try {
+                Cursor.Current = Cursors.WaitCursor;
+                testPlanCurrent = Process.GetProcessById(CurrentTestPlanProcessID);
+                Int32 iterations = 0, iterationsMax = 60;
+                while (!testPlanCurrent.HasExited && iterations <= iterationsMax) {
+                    Thread.Sleep(500);
+                    testPlanCurrent.Refresh();
+                    iterations++; // 60 iterations with 0.5 second sleeps = 30 seconds max.
+                }
+            } finally {
+                Cursor.Current = Cursors.Default;
+            }
+            if (testPlanCurrent != null && !testPlanCurrent.HasExited) {
+                _ = MessageBox.Show($"Current TestPlan hasn't exited.{Environment.NewLine}{Environment.NewLine}Please contact Test Engineering.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
+
+            _ = Process.Start($"\"{NewTestPlanPath}\"");
+        }
+
+        private static void CheckTestPlanPath(String testPlanPath) {
+            if (!File.Exists(testPlanPath)) {
+                _ = MessageBox.Show($"TestPlan '{testPlanPath}' not found.{Environment.NewLine}{Environment.NewLine}Please contact Test Engineering.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
             }
         }
     }

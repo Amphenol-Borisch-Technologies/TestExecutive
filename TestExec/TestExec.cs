@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 using static ABT.Test.TestExecutive.TestLib.Data;
+
 // TODO:  Eventually; evaluate Keysight OpenTAP as potential option in addition to TestExec/TestLib/TestPlan.  https://opentap.io/.
 // - Briefly evaluated previously; time for reevaluation.
 // TODO:  Eventually; GitHub automated workflows; CI/CD including automated deployment to subscribed TestExec PCs (assuming its possible).
@@ -365,15 +366,14 @@ namespace ABT.Test.TestExecutive.TestExec {
             // - Further, AppDomains aren't supported in .Net, just .Net Framework.
             // - .Net instead provides AssemblyLoadContext which would be perfect for TestExec...but isn't available in .Net Framework.
             // - Thus this compromise.
-            ProcessStartInfo processStartInfo = new ProcessStartInfo(testExecDefinition.Apps.ABT.TestChooser) {
-                Arguments = Convert.ToString(Process.GetCurrentProcess().Id),
-                CreateNoWindow = false,
-                UseShellExecute = false,
-                RedirectStandardError = false,
-                RedirectStandardOutput = false
-            };
-            _ = Process.Start(processStartInfo);
-            Application.Exit();            
+            using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
+                openFileDialog.InitialDirectory = TestPlansFolder;
+                openFileDialog.Filter = "TestPlan Files|*.exe";
+                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+                    TestChooser.TestChooser.Launch(openFileDialog.FileName, Process.GetCurrentProcess().Id);
+                    Application.Exit();   
+                }
+            }
         }
         private void TSMI_TestPlan_SaveResults_Click(Object sender, EventArgs e) {
             SaveFileDialog saveFileDialog = new SaveFileDialog {
