@@ -45,8 +45,6 @@
             this.TSMI_TestDefinitions_TestPlans = new System.Windows.Forms.ToolStripMenuItem();
             this.TSMI_Definitions_Separator = new System.Windows.Forms.ToolStripSeparator();
             this.TSMI_TestDefinitions_Validate = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_TestPlans = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_TestPlans_Choose = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,12 +55,11 @@
             this.TSMI_Apps,
             this.TSMI_BarcodeScanner,
             this.TSMI_Generate,
-            this.TSMI_TestDefinitions,
-            this.TSMI_TestPlans});
+            this.TSMI_TestDefinitions});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(399, 28);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            this.menuStrip.Size = new System.Drawing.Size(449, 28);
             this.menuStrip.TabIndex = 0;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -81,7 +78,7 @@
             this.TSMI_Apps_Keysight_CommandExpert,
             this.TSMI_Apps_Keysight_ConnectionExpert});
             this.TSMI_Apps_Keysight.Name = "TSMI_Apps_Keysight";
-            this.TSMI_Apps_Keysight.Size = new System.Drawing.Size(155, 26);
+            this.TSMI_Apps_Keysight.Size = new System.Drawing.Size(224, 26);
             this.TSMI_Apps_Keysight.Text = "&Keysight";
             // 
             // TSMI_Apps_Keysight_CommandExpert
@@ -106,7 +103,7 @@
             this.TSMI_Apps_Microsoft_VisualStudioCode,
             this.TSMI_Apps_Microsoft_XMLNotepad});
             this.TSMI_Apps_Microsoft.Name = "TSMI_Apps_Microsoft";
-            this.TSMI_Apps_Microsoft.Size = new System.Drawing.Size(155, 26);
+            this.TSMI_Apps_Microsoft.Size = new System.Drawing.Size(224, 26);
             this.TSMI_Apps_Microsoft.Text = "&Microsoft";
             // 
             // TSMI_Apps_Microsoft_SQLServerManagementStudio
@@ -224,30 +221,15 @@
             this.TSMI_TestDefinitions_Validate.ToolTipText = "Validate a TestPlan Definition";
             this.TSMI_TestDefinitions_Validate.Click += new System.EventHandler(this.TSMI_TestDefinitions_Validate_Click);
             // 
-            // TSMI_TestPlans
-            // 
-            this.TSMI_TestPlans.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TSMI_TestPlans_Choose});
-            this.TSMI_TestPlans.Name = "TSMI_TestPlans";
-            this.TSMI_TestPlans.Size = new System.Drawing.Size(83, 24);
-            this.TSMI_TestPlans.Text = "Test&Plans";
-            // 
-            // TSMI_TestPlans_Choose
-            // 
-            this.TSMI_TestPlans_Choose.Name = "TSMI_TestPlans_Choose";
-            this.TSMI_TestPlans_Choose.Size = new System.Drawing.Size(141, 26);
-            this.TSMI_TestPlans_Choose.Text = "&Choose";
-            this.TSMI_TestPlans_Choose.ToolTipText = "Choose & Start a TestPlan";
-            this.TSMI_TestPlans_Choose.Click += new System.EventHandler(this.TSMI_TestPlans_Choose_Click);
-            // 
             // TestDev
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(399, 23);
+            this.ClientSize = new System.Drawing.Size(449, 28);
             this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "TestDev";
             this.Text = "TestDev";
@@ -269,10 +251,8 @@
         private System.Windows.Forms.ToolStripMenuItem TSMI_TestDefinitions_Validate;
         private System.Windows.Forms.ToolStripMenuItem TSMI_Generate_Project;
         private System.Windows.Forms.ToolStripMenuItem TSMI_Generate_InstrumentAliases;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_TestPlans;
         private System.Windows.Forms.ToolStripSeparator TSMI_Definitions_Separator;
         private System.Windows.Forms.ToolStripSeparator TSMI_Generate_Separator;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_TestPlans_Choose;
         private System.Windows.Forms.ToolStripMenuItem TSMI_BarcodeScanner;
         private System.Windows.Forms.ToolStripMenuItem TSMI_Apps;
         private System.Windows.Forms.ToolStripMenuItem TSMI_Apps_Keysight;

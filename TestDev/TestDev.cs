@@ -1,7 +1,6 @@
 ﻿using ABT.Test.TestExecutive.TestLib.Configuration;
 using ABT.Test.TestExecutive.TestLib.Miscellaneous;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -73,7 +72,5 @@ namespace TestDev {
             }
             return (DialogResult.Cancel, null);
         }
-
-        private void TSMI_TestPlans_Choose_Click(Object sender, EventArgs e) { TSMI_TestChooser(); }
     }
 }
