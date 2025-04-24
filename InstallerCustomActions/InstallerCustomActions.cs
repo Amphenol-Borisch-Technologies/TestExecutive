@@ -6,10 +6,10 @@ using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
 
-namespace ABT.Test.TestExecutive.TestExecInstaller {
+namespace ABT.Test.TestExecutive.InstallerCustomActions {
     [RunInstaller(true)]
-    public partial class TestExecInstaller : Installer {
-        public TestExecInstaller() { InitializeComponent(); }
+    public partial class InstallerCustomActions : Installer {
+        public InstallerCustomActions() { InitializeComponent(); }
 
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
         public override void Install(IDictionary stateSaver) {

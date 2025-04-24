@@ -1,5 +1,5 @@
-﻿namespace ABT.Test.TestExecutive.TestExecInstaller {
-    partial class TestExecInstaller {
+﻿namespace ABT.Test.TestExecutive.InstallerCustomActions {
+    partial class InstallerCustomActions {
         /// <summary>
         /// Required designer variable.
         /// </summary>

@@ -35,7 +35,7 @@
   -->
   <Apps>
     <ABT>
-      <TestChooser>C:\Program Files\ABT\Test\TestExecutive\TestChooser.exe</TestChooser>
+      <TestChooser>TestChooser.exe</TestChooser>
     </ABT>
     <Keysight>
       <CommandExpert>C:\Program Files\Keysight\Command Expert\CommandExpert.exe</CommandExpert>

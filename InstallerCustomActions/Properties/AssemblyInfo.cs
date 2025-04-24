@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TestExecInstaller")]
+[assembly: AssemblyTitle("InstallerCustomActions")]
 [assembly: AssemblyDescription("https://github.com/Amphenol-Borisch-Technologies/TestExecutive")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Amphenol Borisch Technologies")]
-[assembly: AssemblyProduct("TestExecInstaller")]
+[assembly: AssemblyProduct("InstallerCustomActions")]
 [assembly: AssemblyCopyright("Copyright © Amphenol Borisch Technologies 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

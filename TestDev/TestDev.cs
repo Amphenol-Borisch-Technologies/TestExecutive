@@ -74,12 +74,6 @@ namespace TestDev {
             return (DialogResult.Cancel, null);
         }
 
-        private void TSMI_TestPlans_Choose_Click(Object sender, EventArgs e) {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
-                openFileDialog.InitialDirectory = TestExecutiveFolder;
-                openFileDialog.Filter = "TestPlan Programs|*.exe";
-                if (openFileDialog.ShowDialog() == DialogResult.OK) _ = Process.Start($"\"{openFileDialog.FileName}\"");
-            }
-        }
+        private void TSMI_TestPlans_Choose_Click(Object sender, EventArgs e) { TSMI_TestChooser(); }
     }
 }

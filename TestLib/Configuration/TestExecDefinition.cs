@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace ABT.Test.TestExecutive.TestLib.Configuration {
+    // TODO: Eventually; Move TestDev specific classes to TestDev project.
+    // Classes Apps, ABT, Keysight & Microsoft.
+    // In TestExecDefinition.xml, move <Apps> element/sub-elements to a TestDeveDefinition.xml file.
+    // In TestExecDefinition.xsd, move <Apps> element/sub-elements to a TestDevDefinition.xsd file.
+    // In TestExec.cs, address OpenApp(testExecDefinition.Apps.Microsoft.SQLServerManagementStudio);
     [XmlRoot(nameof(TestExecDefinition))]
     public class TestExecDefinition {
         [XmlElement(nameof(Development))] public Development Development { get; set; }
@@ -46,7 +51,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
 
     public class ABT {
         [XmlElement(nameof(TestChooser))] public String TestChooser { get; set; }
-        public ABT() { }
+        public ABT() { TestChooser = Data.TestExecutiveFolder + @"\" + TestChooser; }
     }
 
     public class Keysight {
