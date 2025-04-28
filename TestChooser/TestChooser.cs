@@ -16,13 +16,11 @@ namespace ABT.Test.TestExecutive.TestChooser {
             }
         }
 
-        public static void Launch(String TestPlanPath) {
-            CheckTestPlanPath(TestPlanPath);
-            _ = Process.Start($"\"{TestPlanPath}\"");
-        }
-
         public static void Launch(String NewTestPlanPath, Int32 CurrentTestPlanProcessID) {
-            CheckTestPlanPath(NewTestPlanPath);
+            if (!File.Exists(NewTestPlanPath)) {
+                _ = MessageBox.Show($"TestPlan '{NewTestPlanPath}' not found.{Environment.NewLine}{Environment.NewLine}Please contact Test Engineering.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
 
             Process testPlanCurrent = null;
             try {
@@ -43,13 +41,6 @@ namespace ABT.Test.TestExecutive.TestChooser {
             }
 
             _ = Process.Start($"\"{NewTestPlanPath}\"");
-        }
-
-        private static void CheckTestPlanPath(String testPlanPath) {
-            if (!File.Exists(testPlanPath)) {
-                _ = MessageBox.Show($"TestPlan '{testPlanPath}' not found.{Environment.NewLine}{Environment.NewLine}Please contact Test Engineering.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
-            }
         }
     }
 }
