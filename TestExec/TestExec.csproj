@@ -7,7 +7,7 @@
     <ProjectGuid>{314614CB-6E17-4B74-A9F9-CE4699F78C9B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ABT.Test.TestExec</RootNamespace>
+    <RootNamespace>ABT.Test.TestExecutive.TestExec</RootNamespace>
     <AssemblyName>TestExec</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6B87D429-1DE2-4B67-BF1E-BCF6855397BB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>TestChooser</RootNamespace>
+    <RootNamespace>ABT.Test.TestExecutive.TestChooser</RootNamespace>
     <AssemblyName>TestChooser</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
