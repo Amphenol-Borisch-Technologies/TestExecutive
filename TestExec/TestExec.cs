@@ -128,13 +128,12 @@ namespace ABT.Test.TestExecutive.TestExec {
         public readonly String TestPlanFolder;
         private readonly SerialNumberDialog _serialNumberDialog = null;
 
-        protected TestExec(Icon icon, String testPlanFolder) {
+        protected TestExec(String testPlanFolder) {
             InitializeComponent();
-            Icon = icon; // NOTE:  https://stackoverflow.com/questions/40933304/how-to-create-an-icon-for-visual-studio-with-just-mspaint-and-visual-studio
             TestPlanDefinitionXML = testPlanFolder + @"\TestPlanDefinition.xml";
             if (TestPlanDefinitionValidator.ValidSpecification(TestPlanDefinitionXSD, TestPlanDefinitionXML)) testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(xmlFile: $"{TestPlanDefinitionXML}");
             else throw new ArgumentException($"Invalid XML '{TestPlanDefinitionXML}'; doesn't comply with XSD '{TestPlanDefinitionXSD}'.");
-
+            InstrumentDrivers = GetInstrumentDriversTestPlanDefinition();
             UserName = GetUserPrincipal();
             _ = Task.Run(() => LoadDeveloperAddresses());
 
@@ -146,7 +145,6 @@ namespace ABT.Test.TestExecutive.TestExec {
 
                 if (RegexInvalid(testPlanDefinition.SerialNumberEntry.RegularEx)) throw new ArgumentException($"Invalid {nameof(SerialNumberEntry.RegularEx)} '{testPlanDefinition.SerialNumberEntry.RegularEx}' in file '{TestPlanDefinitionXML}'.");
                 if (testPlanDefinition.SerialNumberEntry.EntryType is SerialNumberEntryType.Barcode) _serialNumberDialog = new SerialNumberDialog(testPlanDefinition.SerialNumberEntry.RegularEx, testPlanDefinition.SerialNumberEntry.Format, testExecDefinition.BarcodeReader.ID);
-
             }
 
             StatusTimer.Elapsed += StatusTimeUpdate;

@@ -57,11 +57,11 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static readonly TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TestExecutiveDefinitionXML}");
         public static readonly String SPACES_2 = "  ";
         public static readonly Int32 PAD_RIGHT = 21;
-        public static readonly Dictionary<String, Object> InstrumentDrivers = GetInstrumentDriversTestPlanDefinition();
         internal static readonly String TestExecutive = nameof(TestExecutive);
         // TODO:  Eventually; mitigate or eliminate writeable global objects; use passed parameters instead.
         public static String TestPlanDefinitionXML = null;
         public static TestPlanDefinition testPlanDefinition = null;
+        public static Dictionary<String, Object> InstrumentDrivers = null;
         public static TestSequence testSequence = null;
         public static String UserName = null;
         public static CancellationTokenSource CTS_Cancel;
@@ -81,8 +81,21 @@ namespace ABT.Test.TestExecutive.TestLib {
 
             Object instrumentDriver = null;
             foreach (InstrumentTestExec instrumentTestExec in testExecDefinition.InstrumentsTestExec.InstrumentTestExec) {
-                if (!testPlanDefinition.TestSpace.Simulate) instrumentDriver = Activator.CreateInstance(Type.GetType(instrumentTestExec.NameSpacedClassName), new Object[] { instrumentTestExec.Address, instrumentTestExec.Detail });
-                instrumentDrivers.Add(instrumentTestExec.ID, instrumentDriver); // instrumentDriver is null if testPlanDefinition.TestSpace.Simulate.
+                try {
+                    if (!testPlanDefinition.TestSpace.Simulate) instrumentDriver = Activator.CreateInstance(Type.GetType(instrumentTestExec.NameSpacedClassName), new Object[] { instrumentTestExec.Address, instrumentTestExec.Detail });
+                    instrumentDrivers.Add(instrumentTestExec.ID, instrumentDriver); // instrumentDriver is null if testPlanDefinition.TestSpace.Simulate.
+                } catch (Exception e) {
+                    StringBuilder stringBuilder = new StringBuilder().AppendLine();
+                    const Int32 PR = 23;
+                    stringBuilder.AppendLine($"Issue with {nameof(InstrumentTestExec)}:");
+                    stringBuilder.AppendLine($"   {nameof(instrumentTestExec.ID)}".PadRight(PR) + $": {instrumentTestExec.ID}");
+                    stringBuilder.AppendLine($"   {nameof(instrumentTestExec.Detail)}".PadRight(PR) + $": {instrumentTestExec.Detail}");
+                    stringBuilder.AppendLine($"   {nameof(instrumentTestExec.Address)}".PadRight(PR) + $": {instrumentTestExec.Address}");
+                    stringBuilder.AppendLine($"   {nameof(instrumentTestExec.NameSpacedClassName)}".PadRight(PR) + $": {instrumentTestExec.NameSpacedClassName}{Environment.NewLine}");
+                    stringBuilder.AppendLine($"{nameof(Exception)} {nameof(Exception.Message)}(s):");
+                    stringBuilder.AppendLine($"{e}{Environment.NewLine}");
+                    throw new ArgumentException(stringBuilder.ToString());
+                }
             }
             return instrumentDrivers;
         }
