@@ -128,7 +128,9 @@ namespace ABT.Test.TestExecutive.TestExec {
         public readonly String TestPlanFolder;
         private readonly SerialNumberDialog _serialNumberDialog = null;
 
-        protected TestExec(String testPlanFolder) {
+        protected TestExec(Icon icon, String testPlanFolder) {
+            InitializeComponent();
+            Icon = icon; // NOTE:  https://stackoverflow.com/questions/40933304/how-to-create-an-icon-for-visual-studio-with-just-mspaint-and-visual-studio
             InitializeComponent();
             TestPlanDefinitionXML = testPlanFolder + @"\TestPlanDefinition.xml";
             if (TestPlanDefinitionValidator.ValidSpecification(TestPlanDefinitionXSD, TestPlanDefinitionXML)) testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(xmlFile: $"{TestPlanDefinitionXML}");
