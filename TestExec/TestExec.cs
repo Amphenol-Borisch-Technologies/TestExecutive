@@ -18,7 +18,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Windows.Forms;
 using static ABT.Test.TestExecutive.TestLib.Data;
 
 // TODO:  Eventually; evaluate Keysight OpenTAP as potential option in addition to TestExec/TestLib/TestPlan.  https://opentap.io/.
@@ -123,7 +122,7 @@ namespace ABT.Test.TestExecutive.TestExec {
     ///        inside the Exec.MethodsRun() loop.
     /// </para>
     /// </summary>
-    public abstract partial class TestExec : Form {
+    public abstract partial class TestExec : System.Windows.Forms.Form {
         public static System.Timers.Timer StatusTimer = new System.Timers.Timer(10000);
         public readonly String TestPlanFolder;
         private readonly SerialNumberDialog _serialNumberDialog = null;
@@ -168,7 +167,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             return UserName;
         }
 
-        private void Form_Closing(Object sender, FormClosingEventArgs e) {
+        private void Form_Closing(Object sender, System.Windows.Forms.FormClosingEventArgs e) {
             SystemReset();
             _serialNumberDialog?.Close();
         }
@@ -212,7 +211,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             try {
                 return GetMailItem();
             } catch {
-                _ = MessageBox.Show(ActiveForm, "Could not open Microsoft 365 Outlook.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _ = System.Windows.Forms.MessageBox.Show(ActiveForm, "Could not open Microsoft 365 Outlook.", "Error!", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                 Logging.Logger.LogError("Could not open Microsoft 365 Outlook.");
                 throw new NotImplementedException("Outlook not good...");
             }
@@ -255,7 +254,7 @@ namespace ABT.Test.TestExecutive.TestExec {
                 _ = mailItem.Attachments.Add(rtfTempFile, Outlook.OlAttachmentType.olByValue, 1, $"{testPlanDefinition.UUT.Number}.rtf");
                 mailItem.Display();
             } catch {
-                _ = MessageBox.Show(this, $"Sorry, cannot E-Mail presently.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                _ = System.Windows.Forms.MessageBox.Show(this, $"Sorry, cannot E-Mail presently.", "Information", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information, System.Windows.Forms. MessageBoxDefaultButton.Button1, System.Windows.Forms.MessageBoxOptions.DefaultDesktopOnly);
             }
         }
         #endregion Form Miscellaneous
@@ -322,7 +321,7 @@ namespace ABT.Test.TestExecutive.TestExec {
                 String serialNumber;
                 if (testPlanDefinition.SerialNumberEntry.EntryType is SerialNumberEntryType.Barcode) {
                     _serialNumberDialog.Set(testSequence.SerialNumber);
-                    serialNumber = _serialNumberDialog.ShowDialog(this).Equals(DialogResult.OK) ? _serialNumberDialog.Get() : String.Empty;
+                    serialNumber = _serialNumberDialog.ShowDialog(this).Equals(System.Windows.Forms.DialogResult.OK) ? _serialNumberDialog.Get() : String.Empty;
                     _serialNumberDialog.Hide();
                 } else {
                     serialNumber = Interaction.InputBox(
@@ -362,17 +361,17 @@ namespace ABT.Test.TestExecutive.TestExec {
             // - Further, AppDomains aren't supported in .Net, just .Net Framework.
             // - .Net instead provides AssemblyLoadContext which would be perfect for TestExec...but isn't available in .Net Framework.
             // - Thus this compromise.
-            using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
+            using (System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog()) {
                 openFileDialog.InitialDirectory = TestPlansFolder;
                 openFileDialog.Filter = "TestPlan Files|*.exe";
-                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+                if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                     TestChooser.TestChooser.Launch(openFileDialog.FileName, Process.GetCurrentProcess().Id);
-                    Application.Exit();   
+                    System.Windows.Forms.Application.Exit();   
                 }
             }
         }
         private void TSMI_TestPlan_SaveResults_Click(Object sender, EventArgs e) {
-            SaveFileDialog saveFileDialog = new SaveFileDialog {
+            System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog {
                 Title = "Save Test Results",
                 Filter = "Rich Text Format|*.rtf",
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
@@ -381,12 +380,12 @@ namespace ABT.Test.TestExecutive.TestExec {
                 CreatePrompt = false,
                 OverwritePrompt = true
             };
-            if (saveFileDialog.ShowDialog() == DialogResult.OK) rtfResults.SaveFile(saveFileDialog.FileName);
+            if (saveFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) rtfResults.SaveFile(saveFileDialog.FileName);
         }
-        private void TSMI_TestPlan_Exit_Click(Object sender, EventArgs e) { Application.Exit(); }
+        private void TSMI_TestPlan_Exit_Click(Object sender, EventArgs e) { System.Windows.Forms.Application.Exit(); }
 
-        private void TSMI_Feedback_ComplimentsPraiseεPlaudits_Click(Object sender, EventArgs e) { _ = MessageBox.Show(this, $"You are a kind person, {UserName}.", $"Thank you!", MessageBoxButtons.OK, MessageBoxIcon.Information); }
-        private void TSMI_Feedback_ComplimentsMoney_Click(Object sender, EventArgs e) { _ = MessageBox.Show(this, $"Prefer ₿itcoin donations!", $"₿₿₿", MessageBoxButtons.OK, MessageBoxIcon.Information); }
+        private void TSMI_Feedback_ComplimentsPraiseεPlaudits_Click(Object sender, EventArgs e) { _ = System.Windows.Forms.MessageBox.Show(this, $"You are a kind person, {UserName}.", $"Thank you!", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information); }
+        private void TSMI_Feedback_ComplimentsMoney_Click(Object sender, EventArgs e) { _ = System.Windows.Forms.MessageBox.Show(this, $"Prefer ₿itcoin donations!", $"₿₿₿", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information); }
         private void TSMI_Feedback_CritiqueBugReport_Click(Object sender, EventArgs e) { SendMailMessageWithAttachment($"Bug Report from {UserName} for {testPlanDefinition.UUT.Number}, {testPlanDefinition.UUT.Description}."); }
         private void TSMI_Feedback_CritiqueImprovementRequest_Click(Object sender, EventArgs e) { SendMailMessageWithAttachment($"Improvement Request from {UserName} for {testPlanDefinition.UUT.Number}, {testPlanDefinition.UUT.Description}."); }
 
@@ -395,14 +394,14 @@ namespace ABT.Test.TestExecutive.TestExec {
                 Icon = SystemIcons.Information,
                 Text = "Event Color Codes"
             };
-            RichTextBox richTextBox = (RichTextBox)customMessageBox.Controls["richTextBox"];
+            System.Windows.Forms.RichTextBox richTextBox = (System.Windows.Forms.RichTextBox)customMessageBox.Controls["richTextBox"];
             richTextBox.Font = new Font(richTextBox.Font.FontFamily, 12);
             richTextBox.Text = String.Empty;
             foreach (EVENTS Event in Enum.GetValues(typeof(EVENTS))) richTextBox.Text += $"{nameof(EVENTS)}.{Event}{Environment.NewLine}{Environment.NewLine}";
 
             foreach (EVENTS Event in Enum.GetValues(typeof(EVENTS))) {
                 String s = $"{nameof(EVENTS)}.{Event}";
-                richTextBox.SelectionStart = richTextBox.Find(s, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+                richTextBox.SelectionStart = richTextBox.Find(s, System.Windows.Forms.RichTextBoxFinds.MatchCase | System.Windows.Forms.RichTextBoxFinds.WholeWord);
                 richTextBox.SelectionLength = s.Length;
                 if (EventColors.ContainsKey(Event)) richTextBox.SelectionBackColor = EventColors[Event];
                 else throw new InvalidOperationException($"Test Engineering needs to update '{nameof(EventColors)}', associating '{nameof(EVENTS)}.{Event}' with a color!");
@@ -413,7 +412,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             UseWaitCursor = true;
             Boolean passed = true;
             foreach (KeyValuePair<String, Object> kvp in InstrumentDrivers) passed &= ((IInstrument)kvp.Value).SelfTests() is SELF_TEST_RESULTS.PASS;
-            if (passed) _ = MessageBox.Show(this, "SCPI VISA Instrument Self-Tests all passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (passed) _ = System.Windows.Forms.MessageBox.Show(this, "SCPI VISA Instrument Self-Tests all passed.", "Information", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
             UseWaitCursor = false;
         }
         private void TSMI_System_ManualsBarcodeScanner_Click(Object sender, EventArgs e) { OpenFolder(testExecDefinition.BarcodeReader.Folder); }
@@ -426,7 +425,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             foreach (Documentation documentation in testPlanDefinition.Development.Documentation) OpenFolder(documentation.Folder);
         }
         private void TSMI_UUT_StatisticsDisplay_Click(Object sender, EventArgs e) {
-            Form statistics = new Miscellaneous.MessageBoxMonoSpaced(
+            System.Windows.Forms.Form statistics = new Miscellaneous.MessageBoxMonoSpaced(
                 Title: $"{testSequence.UUT.Number}, {testSequence.TestOperation.NamespaceTrunk}, {testPlanDefinition.TestSpace.StatusTime()}",
                 Text: testPlanDefinition.TestSpace.StatisticsDisplay(),
                 Link: String.Empty

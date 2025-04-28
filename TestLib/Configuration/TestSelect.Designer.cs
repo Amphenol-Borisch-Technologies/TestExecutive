@@ -1,12 +1,9 @@
-﻿using System.ComponentModel;
-using System.Windows.Forms;
-
-namespace ABT.Test.TestExecutive.TestLib.Configuration {
+﻿namespace ABT.Test.TestExecutive.TestLib.Configuration {
     partial class TestSelect {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private IContainer components = null;
+        private System.ComponentModel.IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -116,10 +113,10 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
 
         }
         #endregion
-        private Button OK;
-        private ListView TestList;
-        private GroupBox Tests;
-        private RadioButton TestGroups;
-        private RadioButton TestOperations;
+        private System.Windows.Forms.Button OK;
+        private System.Windows.Forms.ListView TestList;
+        private System.Windows.Forms.GroupBox Tests;
+        private System.Windows.Forms.RadioButton TestGroups;
+        private System.Windows.Forms.RadioButton TestOperations;
     }
 }
