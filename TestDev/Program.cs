@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace TestDev {
+namespace ABT.Test.TestExecutive.TestDev {
     internal static class Program {
         /// <summary>
         /// The main entry point for the application.

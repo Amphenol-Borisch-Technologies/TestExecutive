@@ -9,7 +9,7 @@ using Windows.Devices.Enumeration;
 using Windows.Devices.PointOfService;
 using static ABT.Test.TestExecutive.TestLib.Data;
 
-namespace TestDev {
+namespace ABT.Test.TestExecutive.TestDev {
     public partial class TestDev : Form {
         public TestDev() { InitializeComponent(); }
         private void TSMI_Apps_ABT_TestChooser_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.ABT.TestChooser); }

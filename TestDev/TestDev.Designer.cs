@@ -1,4 +1,4 @@
-﻿namespace TestDev {
+﻿namespace ABT.Test.TestExecutive.TestDev {
     partial class TestDev {
         /// <summary>
         /// Required designer variable.
