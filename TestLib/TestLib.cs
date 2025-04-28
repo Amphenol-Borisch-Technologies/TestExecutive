@@ -54,18 +54,15 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static readonly String TestPlansFolder = configuration.AppSettings.Settings[nameof(TestPlansFolder)].Value;
         public static readonly String TestPlanDefinitionXSD = TestExecutiveFolder + @"\TestPlanDefinition.xsd";
         public static readonly String TestExecutiveDefinitionXML = TestExecutiveFolder + @"\TestExecDefinition.xml";
+        public static readonly TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TestExecutiveDefinitionXML}");
         public static readonly String SPACES_2 = "  ";
         public static readonly Int32 PAD_RIGHT = 21;
+        public static readonly Dictionary<String, Object> InstrumentDrivers = GetInstrumentDriversTestPlanDefinition();
         internal static readonly String TestExecutive = nameof(TestExecutive);
-        public static readonly String MutexTestName = nameof(MutexTest);
         // TODO:  Eventually; mitigate or eliminate writeable global objects; use passed parameters instead.
-        public static Mutex MutexTest = null;
-        public static Dictionary<String, Object> InstrumentDrivers = null;
-        public static String TestPlanFolder = null;
         public static String TestPlanDefinitionXML = null;
         public static TestPlanDefinition testPlanDefinition = null;
         public static TestSequence testSequence = null;
-        public static TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TestExecutiveDefinitionXML}");
         public static String UserName = null;
         public static CancellationTokenSource CTS_Cancel;
         public static CancellationTokenSource CTS_EmergencyStop;

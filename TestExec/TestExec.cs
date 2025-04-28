@@ -125,20 +125,18 @@ namespace ABT.Test.TestExecutive.TestExec {
     /// </summary>
     public abstract partial class TestExec : Form {
         public static System.Timers.Timer StatusTimer = new System.Timers.Timer(10000);
+        public readonly String TestPlanFolder;
         private readonly SerialNumberDialog _serialNumberDialog = null;
 
         protected TestExec(Icon icon, String testPlanFolder) {
             InitializeComponent();
             Icon = icon; // NOTE:  https://stackoverflow.com/questions/40933304/how-to-create-an-icon-for-visual-studio-with-just-mspaint-and-visual-studio
-            TestPlanFolder = testPlanFolder;
-            TestPlanDefinitionXML = TestPlanFolder + @"\TestPlanDefinition.xml";
+            TestPlanDefinitionXML = testPlanFolder + @"\TestPlanDefinition.xml";
             if (TestPlanDefinitionValidator.ValidSpecification(TestPlanDefinitionXSD, TestPlanDefinitionXML)) testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(xmlFile: $"{TestPlanDefinitionXML}");
             else throw new ArgumentException($"Invalid XML '{TestPlanDefinitionXML}'; doesn't comply with XSD '{TestPlanDefinitionXSD}'.");
 
             UserName = GetUserPrincipal();
             _ = Task.Run(() => LoadDeveloperAddresses());
-
-            InstrumentDrivers = GetInstrumentDriversTestPlanDefinition();
 
             TSMI_UUT_TestData.Enabled = testPlanDefinition.SerialNumberEntry.IsEnabled();
             if (TSMI_UUT_TestData.Enabled) {
@@ -173,8 +171,6 @@ namespace ABT.Test.TestExecutive.TestExec {
         private void Form_Closing(Object sender, FormClosingEventArgs e) {
             SystemReset();
             _serialNumberDialog?.Close();
-            MutexTest?.ReleaseMutex();
-            MutexTest?.Dispose();
         }
 
         private void Form_Shown(Object sender, EventArgs e) { ButtonSelect_Click(sender, e); }
