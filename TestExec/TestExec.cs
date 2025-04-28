@@ -188,9 +188,9 @@ namespace ABT.Test.TestExecutive.TestExec {
         private void FormModeRun() {
             ButtonCancelReset(enabled: true);
             ButtonEmergencyStopReset(enabled: true);
+            TSMI_TestPlan.Enabled = false;
             ButtonSelect.Enabled = false;
             ButtonRunReset(enabled: false);
-            TSMI_TestPlan.Enabled = false;
             TSMI_System_SelfTests.Enabled = false;
             TSMI_UUT_Statistics.Enabled = false;
             StatusModeUpdate(MODES.Running);
