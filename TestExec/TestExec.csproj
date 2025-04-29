@@ -110,6 +110,7 @@
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\..\..\..\..\..\..\Program Files\IVI Foundation\IVI\Bin\Primary Interop Assemblies\Agilent.Agilent34952A.Interop.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="AgSCPI99_1_0">
       <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgSCPI99_1_0.dll</HintPath>
@@ -143,7 +144,7 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Tektronix.Tkdpo2k3k4k.Interop, Version=1.5.0.0, Culture=neutral, PublicKeyToken=65cff6f5578f3c89, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>C:\Program Files\IVI Foundation\IVI\Bin\Primary Interop Assemblies\Tektronix.Tkdpo2k3k4k.Interop.dll</HintPath>
       <Private>False</Private>
     </Reference>

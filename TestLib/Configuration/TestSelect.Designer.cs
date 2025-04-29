@@ -1,5 +1,5 @@
 ﻿namespace ABT.Test.TestExecutive.TestLib.Configuration {
-    partial class TestSelect {
+    public partial class TestSelect : System.Windows.Forms.Form {
         /// <summary>
         /// Required designer variable.
         /// </summary>
