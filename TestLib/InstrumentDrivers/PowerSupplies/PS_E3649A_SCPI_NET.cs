@@ -79,7 +79,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
                 Configuration.Parameter parameter = Parameters.Find(p => p.Name == "Accuracy_E3649A_VDC") ?? new Configuration.Parameter { Name = "Accuracy_E3649A_VDC", Value = "0.1" };
                 Double limit = Convert.ToDouble(parameter.Value);
 
-                MSMU_34980A_SCPI_NET MSMU = ((MSMU_34980A_SCPI_NET)(Data.InstrumentDrivers["MSMU1_34980A"]));
+                MSMU_34980A_SCPI_NET MSMU = ((MSMU_34980A_SCPI_NET)(TestLib.InstrumentDrivers["MSMU1_34980A"]));
 
                 String message =
                     $"Please connect BMC6030-5 from {Detail}/{Address} Output 1{Environment.NewLine}{Environment.NewLine}" +

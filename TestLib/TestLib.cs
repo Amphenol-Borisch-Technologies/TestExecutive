@@ -38,7 +38,7 @@ namespace ABT.Test.TestExecutive.TestLib {
     // NOTE:  If modifying EVENTS, update EventColors correspondingly.
     // - Every EVENT requires an associated Color.
 
-    public static class Data {
+    public static class TestLib {
         public static readonly Dictionary<EVENTS, Color> EventColors = new Dictionary<EVENTS, Color> {
             { EVENTS.EMERGENCY_STOP, Color.Fuchsia },
             { EVENTS.ERROR, Color.Aqua },

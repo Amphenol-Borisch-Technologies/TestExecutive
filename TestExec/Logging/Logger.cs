@@ -10,7 +10,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
-using static ABT.Test.TestExecutive.TestLib.Data;
+using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestExec.Logging {
     public static class Logger {

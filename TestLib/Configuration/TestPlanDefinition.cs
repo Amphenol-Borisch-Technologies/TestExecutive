@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
-using static ABT.Test.TestExecutive.TestLib.Data;
+using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.Configuration {
     [XmlRoot(nameof(TestPlanDefinition))]
@@ -210,7 +210,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
 
         public String Assertion() {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append($"if ({nameof(Data)}.{nameof(Data.testSequence)}.{nameof(Data.testSequence.IsOperation)}) Debug.Assert({nameof(TestIndices)}.{nameof(TestIndices.TestOperation)}.Assert(");
+            stringBuilder.Append($"if ({nameof(TestLib)}.{nameof(TestLib.testSequence)}.{nameof(TestLib.testSequence.IsOperation)}) Debug.Assert({nameof(TestIndices)}.{nameof(TestIndices.TestOperation)}.Assert(");
             stringBuilder.Append($"{nameof(NamespaceTrunk)}: {UUT.EF(GetType().GetProperty(nameof(NamespaceTrunk)).GetValue(this))}, ");
             stringBuilder.Append($"{nameof(ProductionTest)}: {UUT.EF(GetType().GetProperty(nameof(ProductionTest)).GetValue(this).ToString().ToLower())}, ");
             stringBuilder.Append($"{nameof(Description)}: {UUT.EF(GetType().GetProperty(nameof(Description)).GetValue(this))}, ");

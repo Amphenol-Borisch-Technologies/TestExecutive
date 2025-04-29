@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Windows.Devices.Enumeration;
 using Windows.Devices.PointOfService;
-using static ABT.Test.TestExecutive.TestLib.Data;
+using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestDev {
     public partial class TestDev : Form {

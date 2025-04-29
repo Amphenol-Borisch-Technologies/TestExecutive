@@ -3,14 +3,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using ABT.Test.TestExecutive.TestLib;
+using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestChooser {
     public static class TestChooser {
         [STAThread]
         public static void Main() {
             using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
-                openFileDialog.InitialDirectory = Data.TestPlansFolder;
+                openFileDialog.InitialDirectory = TestPlansFolder;
                 openFileDialog.Filter = "TestPlan Files|*.exe";
                 if (openFileDialog.ShowDialog() == DialogResult.OK) _ = Process.Start($"\"{openFileDialog.FileName}\"");
             }

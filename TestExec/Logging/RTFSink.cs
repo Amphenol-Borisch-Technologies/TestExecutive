@@ -1,4 +1,4 @@
-﻿using ABT.Test.TestExecutive.TestLib;
+﻿using static ABT.Test.TestExecutive.TestLib.TestLib;
 using Serilog.Core; // Install Serilog via NuGet Package Manager.  Site is https://serilog.net/.
 using Serilog.Events;
 using Serilog.Formatting;
@@ -27,12 +27,12 @@ namespace ABT.Test.TestExecutive.TestExec.Logging {
             richTextBox.InvokeIfRequired(() => richTextBox.AppendText(logMessage));
 
             Int32 selectionStart;
-            foreach (EVENTS Event in Enum.GetValues(typeof(EVENTS))) {
+            foreach (TestLib.EVENTS Event in Enum.GetValues(typeof(TestLib.EVENTS))) {
                 if (logMessage.Contains(Event.ToString())) {
                     selectionStart = richTextBox.Find(Event.ToString(), startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
                     richTextBox.SelectionStart = selectionStart;
                     richTextBox.SelectionLength = Event.ToString().Length;
-                    richTextBox.SelectionBackColor = Data.EventColors[Event];
+                    richTextBox.SelectionBackColor = EventColors[Event];
                 }
             }
         }

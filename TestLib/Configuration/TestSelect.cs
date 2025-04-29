@@ -30,7 +30,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
                 Text = $"Select {nameof(TestOperation)}";
                 TestList.Columns.Add(nameof(TestOperation));
                 TestList.Columns.Add(nameof(TestGroup));
-                foreach (TestOperation testOperation in Data.testPlanDefinition.TestSpace.TestOperations)
+                foreach (TestOperation testOperation in TestLib.testPlanDefinition.TestSpace.TestOperations)
                     if (testOperation.ProductionTest) TestList.Items.Add(new ListViewItem(new String[] { testOperation.NamespaceTrunk, testOperation.Description }));
             } else {
                 TestOperations.Checked = false;
@@ -38,7 +38,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
                 TestList.Columns.Add(nameof(TestOperation));
                 TestList.Columns.Add(nameof(TestGroup));
                 TestList.Columns.Add(nameof(TestGroup.Description));
-                foreach (TestOperation testOperation in Data.testPlanDefinition.TestSpace.TestOperations) {
+                foreach (TestOperation testOperation in TestLib.testPlanDefinition.TestSpace.TestOperations) {
                     foreach (TestGroup testGroup in testOperation.TestGroups)
                         if (testGroup.Independent) TestList.Items.Add(new ListViewItem(new String[] { testOperation.NamespaceTrunk, testGroup.Classname, testGroup.Description }));
                 }
@@ -59,9 +59,9 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
 
             testSequence.IsOperation = TestOperations.Checked;
             TestOperation selectedOperation = null;
-            if (testSequence.IsOperation) selectedOperation = Data.testPlanDefinition.TestSpace.TestOperations[TestList.SelectedItems[0].Index];
-            else selectedOperation = Data.testPlanDefinition.TestSpace.TestOperations.Find(nt => nt.NamespaceTrunk.Equals(TestList.SelectedItems[0].SubItems[0].Text));
-            testSequence.TestOperation = Serializing.DeserializeFromFile<TestOperation>(xmlFile: Data.TestPlanDefinitionXML, xPath: $"//TestOperation[@NamespaceTrunk='{selectedOperation.NamespaceTrunk}']");
+            if (testSequence.IsOperation) selectedOperation = TestLib.testPlanDefinition.TestSpace.TestOperations[TestList.SelectedItems[0].Index];
+            else selectedOperation = TestLib.testPlanDefinition.TestSpace.TestOperations.Find(nt => nt.NamespaceTrunk.Equals(TestList.SelectedItems[0].SubItems[0].Text));
+            testSequence.TestOperation = Serializing.DeserializeFromFile<TestOperation>(xmlFile: TestLib.TestPlanDefinitionXML, xPath: $"//TestOperation[@NamespaceTrunk='{selectedOperation.NamespaceTrunk}']");
             if (!testSequence.IsOperation) {
                 TestGroup selectedGroup = selectedOperation.TestGroups.Find(tg => tg.Classname.Equals(TestList.SelectedItems[0].SubItems[1].Text));
                 _ = testSequence.TestOperation.TestGroups.RemoveAll(tg => tg.Classname != selectedGroup.Classname);

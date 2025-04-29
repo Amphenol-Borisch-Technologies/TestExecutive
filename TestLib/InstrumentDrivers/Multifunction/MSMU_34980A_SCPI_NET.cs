@@ -35,8 +35,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
 
         public SELF_TEST_RESULTS SelfTests() {
             if (DialogResult.Cancel == MessageBox.Show($"Please disconnect Address Bus DB9 & all Module/Slot terminal blocks/connectors from {Detail}/{Address}.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
-                Data.CTS_Cancel.Cancel();
-                Data.CT_Cancel.ThrowIfCancellationRequested();
+                TestLib.CTS_Cancel.Cancel();
+                TestLib.CT_Cancel.ThrowIfCancellationRequested();
             }
 
             Int32 result;
@@ -62,8 +62,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
                 String module = (parameter != null) ? parameter.Value : String.Empty;
 
                 foreach (SLOTS slot in Enum.GetValues(typeof(SLOTS))) {
-                    Data.CT_EmergencyStop.ThrowIfCancellationRequested();
-                    Data.CT_Cancel.ThrowIfCancellationRequested();
+                    TestLib.CT_EmergencyStop.ThrowIfCancellationRequested();
+                    TestLib.CT_Cancel.ThrowIfCancellationRequested();
                     if (String.Equals(module, SystemType(slot)) || String.Equals(module, String.Empty)) {
                         switch (SystemType(slot)) {
                             case String s when s == Modules.M34921A:
@@ -111,8 +111,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34921A(SLOTS Slot, List<Configuration.Parameter> Parameters) {
             String S = ((Int32)Slot).ToString("D1");
             if (DialogResult.Cancel == MessageBox.Show($"Please connect BMC6030-1 diagnostic terminal block to {_34980A} SLOT {S}.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
-                Data.CTS_Cancel.Cancel();
-                Data.CT_Cancel.ThrowIfCancellationRequested();
+                TestLib.CTS_Cancel.Cancel();
+                TestLib.CT_Cancel.ThrowIfCancellationRequested();
             }
 
             SCPI.ROUTe.OPEN.ALL.Command(null);
@@ -124,7 +124,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             String D = nameof(Diagnostic_34921A);
 
             // NOTE: Can't get this code to measure current reliably; varies from 0.02A to 0.12A.
-            //PS_E3634A_SCPI_NET PS3_E3634A = ((PS_E3634A_SCPI_NET)(Data.InstrumentDrivers["PS3_E3634A"]));
+            //PS_E3634A_SCPI_NET PS3_E3634A = ((PS_E3634A_SCPI_NET)(TestLib.InstrumentDrivers["PS3_E3634A"]));
             //String message = $"Please connect BMC6030-1 DB9 to{Environment.NewLine}" +
             //    $"BMC6030-5 & {PS3_E3634A.Detail}/{PS3_E3634A.Address}.{Environment.NewLine}{Environment.NewLine}" +
             //    $"Click Cancel to skip optional current testing with BMC6030-5 & {PS3_E3634A.Detail}.";
@@ -234,8 +234,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34932A(SLOTS Slot, List<Configuration.Parameter> Parameters) {
             String S = ((Int32)Slot).ToString("D1");
             if (DialogResult.Cancel == MessageBox.Show($"Please connect BMC6030-2 diagnostic terminal block to {_34980A} SLOT {S} and Analog Busses.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
-                Data.CTS_Cancel.Cancel();
-                Data.CT_Cancel.ThrowIfCancellationRequested();
+                TestLib.CTS_Cancel.Cancel();
+                TestLib.CT_Cancel.ThrowIfCancellationRequested();
             }
 
             SCPI.ROUTe.OPEN.ALL.Command(null);
@@ -284,8 +284,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34938A(SLOTS Slot, List<Configuration.Parameter> Parameters) {
             String S = ((Int32)Slot).ToString("D1");
             if (DialogResult.Cancel == MessageBox.Show($"Please connect BMC6030-3 diagnostic terminal block to {_34980A} SLOT {S} and Analog Busses.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
-                Data.CTS_Cancel.Cancel();
-                Data.CT_Cancel.ThrowIfCancellationRequested();
+                TestLib.CTS_Cancel.Cancel();
+                TestLib.CT_Cancel.ThrowIfCancellationRequested();
             }
 
             SCPI.ROUTe.OPEN.ALL.Command(null);
@@ -319,8 +319,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34939A(SLOTS Slot, List<Configuration.Parameter> Parameters) {
             String S = ((Int32)Slot).ToString("D1");
             if (DialogResult.Cancel == MessageBox.Show($"Please connect BMC6030-TBD diagnostic terminal block to {_34980A} SLOT {S} and Analog Busses.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
-                Data.CTS_Cancel.Cancel();
-                Data.CT_Cancel.ThrowIfCancellationRequested();
+                TestLib.CTS_Cancel.Cancel();
+                TestLib.CT_Cancel.ThrowIfCancellationRequested();
             }
 
             SCPI.ROUTe.OPEN.ALL.Command(null);
@@ -354,8 +354,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34952A(SLOTS Slot, List<Configuration.Parameter> Parameters) {
             String S = ((Int32)Slot).ToString("D1");
             if (DialogResult.Cancel == MessageBox.Show($"Please connect BMC6030-4 diagnostic terminal block to {_34980A} SLOT {S} and its DAC1 to Analog Busses.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
-                Data.CTS_Cancel.Cancel();
-                Data.CT_Cancel.ThrowIfCancellationRequested();
+                TestLib.CTS_Cancel.Cancel();
+                TestLib.CT_Cancel.ThrowIfCancellationRequested();
             }
 
             SCPI.ROUTe.OPEN.ALL.Command(null);

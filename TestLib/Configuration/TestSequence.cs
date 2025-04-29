@@ -8,12 +8,12 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
     public class TestSequence {
         [XmlAttribute("noNamespaceSchemaLocation", Namespace = "http://www.w3.org/2001/XMLSchema-instance")]
         public String NoNamespaceSchemaLocation { get; set; } = "file://C://Program Files//ABT//Test//TestExecutive//TestSequence.xsd";
-        public UUT UUT { get; set; } = Serializing.DeserializeFromFile<UUT>(xmlFile: Data.TestPlanDefinitionXML);
+        public UUT UUT { get; set; } = Serializing.DeserializeFromFile<UUT>(xmlFile: TestLib.TestPlanDefinitionXML);
         public TestOperation TestOperation { get; set; }
         [XmlIgnore] public Boolean IsOperation { get; set; } = false;
         public String Computer { get; set; } = Environment.MachineName;
         public String SerialNumber { get; set; } = String.Empty;
-        public String Operator { get; set; } = Data.UserName;
+        public String Operator { get; set; } = TestLib.UserName;
         public DateTime TimeStart { get; set; }
         public DateTime TimeEnd { get; set; }
         public String TimeTotal { get; set; } // NOTE:  XmlSerializer doesn't natively support TimeSpan, so have to serialize TimeTotal as a string.

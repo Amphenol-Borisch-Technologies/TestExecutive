@@ -51,7 +51,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
 
     public class ABT {
         [XmlElement(nameof(TestChooser))] public String TestChooser { get; set; }
-        public ABT() { TestChooser = Data.TestExecutiveFolder + @"\" + TestChooser; }
+        public ABT() { TestChooser = TestLib.TestExecutiveFolder + @"\" + TestChooser; }
     }
 
     public class Keysight {
