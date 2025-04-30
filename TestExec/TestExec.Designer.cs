@@ -77,7 +77,7 @@
             this.ButtonRun.BackColor = System.Drawing.Color.Green;
             this.ButtonRun.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonRun.Location = new System.Drawing.Point(203, 661);
-            this.ButtonRun.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ButtonRun.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonRun.Name = "ButtonRun";
             this.ButtonRun.Size = new System.Drawing.Size(117, 64);
             this.ButtonRun.TabIndex = 1;
@@ -92,7 +92,7 @@
             this.ButtonCancel.BackColor = System.Drawing.Color.Yellow;
             this.ButtonCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonCancel.Location = new System.Drawing.Point(383, 658);
-            this.ButtonCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ButtonCancel.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(117, 64);
             this.ButtonCancel.TabIndex = 2;
@@ -106,7 +106,7 @@
             // 
             this.TextTest.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.TextTest.Location = new System.Drawing.Point(741, 689);
-            this.TextTest.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.TextTest.Margin = new System.Windows.Forms.Padding(4);
             this.TextTest.Name = "TextTest";
             this.TextTest.ReadOnly = true;
             this.TextTest.Size = new System.Drawing.Size(169, 22);
@@ -119,7 +119,7 @@
             this.LabelEvent.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.LabelEvent.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LabelEvent.Location = new System.Drawing.Point(765, 661);
-            this.LabelEvent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.LabelEvent.Margin = new System.Windows.Forms.Padding(4);
             this.LabelEvent.Name = "LabelEvent";
             this.LabelEvent.Size = new System.Drawing.Size(120, 20);
             this.LabelEvent.TabIndex = 8;
@@ -135,7 +135,7 @@
             this.rtfResults.BackColor = System.Drawing.SystemColors.Window;
             this.rtfResults.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtfResults.Location = new System.Drawing.Point(31, 26);
-            this.rtfResults.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rtfResults.Margin = new System.Windows.Forms.Padding(4);
             this.rtfResults.Name = "rtfResults";
             this.rtfResults.ReadOnly = true;
             this.rtfResults.Size = new System.Drawing.Size(1511, 603);
@@ -149,7 +149,7 @@
             this.ButtonSelect.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonSelect.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.ButtonSelect.Location = new System.Drawing.Point(31, 662);
-            this.ButtonSelect.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ButtonSelect.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonSelect.Name = "ButtonSelect";
             this.ButtonSelect.Size = new System.Drawing.Size(117, 58);
             this.ButtonSelect.TabIndex = 0;
@@ -164,7 +164,7 @@
             this.ButtonEmergencyStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonEmergencyStop.Image = ((System.Drawing.Image)(resources.GetObject("ButtonEmergencyStop.Image")));
             this.ButtonEmergencyStop.Location = new System.Drawing.Point(1433, 638);
-            this.ButtonEmergencyStop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ButtonEmergencyStop.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonEmergencyStop.Name = "ButtonEmergencyStop";
             this.ButtonEmergencyStop.Size = new System.Drawing.Size(109, 102);
             this.ButtonEmergencyStop.TabIndex = 5;

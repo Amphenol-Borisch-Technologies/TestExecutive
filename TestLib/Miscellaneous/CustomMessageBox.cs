@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.Miscellaneous {
@@ -24,8 +25,8 @@ namespace ABT.Test.TestExecutive.TestLib.Miscellaneous {
             try {
                 Uri uri = new Uri(e.LinkText);
                 if (uri.Scheme == Uri.UriSchemeFile) {
-                    String filePath = uri.LocalPath;
-                    Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+                    if (Directory.Exists(uri.LocalPath)) Process.Start(new ProcessStartInfo("explorer.exe", uri.LocalPath) { UseShellExecute = true });
+                    else Process.Start(new ProcessStartInfo(uri.LocalPath) { UseShellExecute = true });
                 } else if (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps) {
                     Process.Start(new ProcessStartInfo(uri.AbsoluteUri) { UseShellExecute = true });
                 } else {
