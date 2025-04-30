@@ -231,6 +231,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_898FD5B64D1E4FF4BA81AAFDCBC7B839"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_8A69A6B9EAC44DECABFFF85132FCE16F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -382,7 +388,7 @@
         "Entry"
         {
         "MsmKey" = "8:_E3F146FF5EBFC61026E2C6EEA8D6A675"
-        "OwnerKey" = "8:_ECB47B87DD08495FA1C1CD2B45F8F961"
+        "OwnerKey" = "8:_898FD5B64D1E4FF4BA81AAFDCBC7B839"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -399,12 +405,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_ECB47B87DD08495FA1C1CD2B45F8F961"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_1A867EB1D7F448D8B534ABF4CBD9FBE9"
         "MsmSig" = "8:_UNDEFINED"
@@ -412,7 +412,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_ECB47B87DD08495FA1C1CD2B45F8F961"
+        "OwnerKey" = "8:_898FD5B64D1E4FF4BA81AAFDCBC7B839"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1251,6 +1251,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_898FD5B64D1E4FF4BA81AAFDCBC7B839"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:TestChooser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64"
+                "ScatterAssemblies"
+                {
+                    "_898FD5B64D1E4FF4BA81AAFDCBC7B839"
+                    {
+                    "Name" = "8:TestChooser.exe"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\TestChooser\\bin\\x64\\Release\\TestChooser.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8A69A6B9EAC44DECABFFF85132FCE16F"
             {
             "SourcePath" = "8:..\\TestLib\\Configuration\\TestExecDefinition.xsd"
@@ -1783,37 +1814,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_ECB47B87DD08495FA1C1CD2B45F8F961"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TestChooser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64"
-                "ScatterAssemblies"
-                {
-                    "_ECB47B87DD08495FA1C1CD2B45F8F961"
-                    {
-                    "Name" = "8:TestChooser.exe"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:..\\TestChooser\\bin\\x64\\Release\\TestChooser.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
         }
         "FileType"
         {
@@ -1911,7 +1911,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TestExecutive"
         "ProductCode" = "8:{9E7CE688-EBE2-4ADE-83DE-0C2CF5443EF5}"
-        "PackageCode" = "8:{D7834D4B-B321-4FFE-8623-6FCA63EA91DF}"
+        "PackageCode" = "8:{23C3A3F3-5F2F-42E0-96CF-FAE677C6CD55}"
         "UpgradeCode" = "8:{4F1CC228-B14D-4021-BCB8-14DDE00DC07D}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -2031,7 +2031,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_0B9384F2BB754E58BED4AA6B86FFF59F"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_8B926105579341A7841FD383EEB87045"
             {
             "Name" = "8:TestChooser"
             "Arguments" = "8:"
@@ -2039,7 +2039,7 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_ECB47B87DD08495FA1C1CD2B45F8F961"
+            "Target" = "8:_898FD5B64D1E4FF4BA81AAFDCBC7B839"
             "Folder" = "8:_2615E0DC0EBB457B8E818CD9E6679C8A"
             "WorkingFolder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
             "Icon" = "8:_A48F8DB6C49F46C7A420887E77C8B817"
