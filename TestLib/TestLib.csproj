@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -7,12 +7,35 @@
     <ProjectGuid>{24D5E99E-185C-4507-81F0-132D8CB8164E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ABT.Test.TestExecutive.TestLibrary</RootNamespace>
+    <RootNamespace>ABT.Test.TestExecutive.TestLib</RootNamespace>
     <AssemblyName>TestLib</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <Deterministic>false</Deterministic>
-    <TargetFrameworkProfile />
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>ABT_Test.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -31,16 +54,6 @@
     <PlatformTarget>x64</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>ABT_Test.pfx</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AppConfigFile>App.config</AppConfigFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ag34401_11, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
@@ -125,32 +138,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\Serializing.cs" />
     <Compile Include="Configuration\TestExecDefinition.cs">
       <DependentUpon>TestExecDefinition.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Miscellaneous\InputForm.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Configuration\TestPlanDefinition.cs">
+      <DependentUpon>TestPlanDefinition.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Miscellaneous\InputForm.Designer.cs">
-      <DependentUpon>InputForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Configuration\TestSequence.cs">
-      <DependentUpon>TestSequence.xsd</DependentUpon>
-    </Compile>
+    <Compile Include="Configuration\TestPlanDefinitionValidator.cs" />
+    <Compile Include="Configuration\TestPlanGenerator.cs" />
     <Compile Include="Configuration\TestSelect.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Configuration\TestSelect.Designer.cs">
       <DependentUpon>TestSelect.cs</DependentUpon>
     </Compile>
-    <Compile Include="Miscellaneous\CustomMessageBox.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Configuration\TestSequence.cs">
+      <DependentUpon>TestSequence.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Miscellaneous\CustomMessageBox.Designer.cs">
-      <DependentUpon>CustomMessageBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Configuration\Serializing.cs" />
-    <Compile Include="Configuration\TestPlanGenerator.cs" />
     <Compile Include="InstrumentDrivers\Generic\SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\Instruments.cs" />
     <Compile Include="InstrumentDrivers\Interfaces\IDiagnostics.cs" />
@@ -162,45 +167,50 @@
     <Compile Include="InstrumentDrivers\Oscilloscopes\MSO_3014_IVI_COM.cs" />
     <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3634A_SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3649A_SCPI_NET.cs" />
+    <Compile Include="Miscellaneous\CustomMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Miscellaneous\CustomMessageBox.Designer.cs">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Miscellaneous\InputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Miscellaneous\InputForm.Designer.cs">
+      <DependentUpon>InputForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Processes\ProcessExternal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Configuration\TestPlanDefinition.cs">
-      <DependentUpon>TestPlanDefinition.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="TestLib.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
-    <Compile Include="Configuration\TestPlanDefinitionValidator.cs" />
+    <Compile Include="TestLib.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Miscellaneous\InputForm.resx">
-      <DependentUpon>InputForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Configuration\TestSelect.resx">
-      <DependentUpon>TestSelect.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Miscellaneous\CustomMessageBox.resx">
-      <DependentUpon>CustomMessageBox.cs</DependentUpon>
-    </EmbeddedResource>
+    <Content Include="Configuration\TestExecDefinition.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Configuration\TestExecDefinition.xsd">
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="..\Shared\App.config">
       <Link>App.config</Link>
     </None>
     <None Include="ABT_Test.pfx" />
+    <None Include="Configuration\TestExecDefinition.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Configuration\TestPlanDefinition.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Configuration\TestSequence.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Configuration\TestPlanDefinition.xsd">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Configuration\TestExecDefinition.xml" />
+    <EmbeddedResource Include="Configuration\TestSelect.resx">
+      <DependentUpon>TestSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Miscellaneous\CustomMessageBox.resx">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Miscellaneous\InputForm.resx">
+      <DependentUpon>InputForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
