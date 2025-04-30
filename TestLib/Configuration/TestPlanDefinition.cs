@@ -189,7 +189,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             stringBuilder.AppendLine($"{nameof(Statistics.Passed)}".PadRight(PR) + $": {Statistics.Passed,L}, {Statistics.FractionPassed(),L:P1}");
             stringBuilder.AppendLine($"{nameof(Statistics.Informed)}".PadRight(PR) + $": {Statistics.Informed,L}, {Statistics.FractionInformed(),L:P1}");
             stringBuilder.AppendLine($"------");
-            stringBuilder.AppendLine($"Total     : {Statistics.Tested(),L}");
+            stringBuilder.AppendLine($"{nameof(Statistics.Tested)}".PadRight(PR) + $": {Statistics.Tested(),L}");
             return stringBuilder.ToString();
         }
 
