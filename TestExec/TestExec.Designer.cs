@@ -134,11 +134,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtfResults.BackColor = System.Drawing.SystemColors.Window;
             this.rtfResults.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtfResults.Location = new System.Drawing.Point(31, 26);
+            this.rtfResults.Location = new System.Drawing.Point(31, 43);
             this.rtfResults.Margin = new System.Windows.Forms.Padding(4);
             this.rtfResults.Name = "rtfResults";
             this.rtfResults.ReadOnly = true;
-            this.rtfResults.Size = new System.Drawing.Size(1511, 603);
+            this.rtfResults.Size = new System.Drawing.Size(1511, 582);
             this.rtfResults.TabIndex = 7;
             this.rtfResults.TabStop = false;
             this.rtfResults.Text = "";
@@ -163,10 +163,10 @@
             this.ButtonEmergencyStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonEmergencyStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonEmergencyStop.Image = ((System.Drawing.Image)(resources.GetObject("ButtonEmergencyStop.Image")));
-            this.ButtonEmergencyStop.Location = new System.Drawing.Point(1433, 638);
+            this.ButtonEmergencyStop.Location = new System.Drawing.Point(1453, 646);
             this.ButtonEmergencyStop.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonEmergencyStop.Name = "ButtonEmergencyStop";
-            this.ButtonEmergencyStop.Size = new System.Drawing.Size(109, 102);
+            this.ButtonEmergencyStop.Size = new System.Drawing.Size(89, 88);
             this.ButtonEmergencyStop.TabIndex = 5;
             this.ButtonEmergencyStop.TabStop = false;
             this.ButtonEmergencyStop.Text = "Emergency Stop";
