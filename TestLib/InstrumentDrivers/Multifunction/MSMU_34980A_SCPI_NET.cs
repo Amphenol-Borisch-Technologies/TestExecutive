@@ -1,6 +1,7 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic;
 using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using Agilent.CommandExpert.ScpiNet.Ag34980_2_43;
+using Ivi.Visa.Interop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -467,7 +468,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
                 case String s when s == Modules.M34921A: return (Min: 1, Max: 44);
                 case String s when s == Modules.M34939A: return (Min: 1, Max: 68);
                 case String s when s == Modules.M34952A: return (Min: 1, Max: 7);
-                default: throw new NotImplementedException($"Module Type '{SystemType(Slot)}' not implemented.");
+                default: throw new NotImplementedException(TestLib.NotImplementedMessageEnum<SLOTS>(Enum.GetName(typeof(SLOTS), Slot)));
             }
         }
         public void RouteCloseExclusive(String Channels) {

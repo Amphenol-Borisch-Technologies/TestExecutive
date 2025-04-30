@@ -246,7 +246,7 @@ namespace ABT.Test.TestExecutive.TestLib {
         }
 
         public static void ErrorMessage(Exception Ex) {
-            if (testPlanDefinition != null && testPlanDefinition.EMailGroup.Address != null) {
+            if (testPlanDefinition != null && testPlanDefinition.EMailGroup != null) {
                 if (!String.Equals(testPlanDefinition.EMailGroup.Address, String.Empty)) {
                     ErrorMessage($"'{Ex.Message}'{Environment.NewLine}{Environment.NewLine}Will attempt to E-Mail details To {testPlanDefinition.EMailGroup.Address}.{Environment.NewLine}{Environment.NewLine}Please select your Microsoft 365 Outlook profile if dialog appears.");
                     SendEMailGroupMailMessage("Exception caught!", Ex);
@@ -254,7 +254,7 @@ namespace ABT.Test.TestExecutive.TestLib {
             }
         }
 
-        public static String NotImplementedMessageEnum(Type enumType) { return $"Unimplemented Enum item; switch/case must support all items in enum '{String.Join(",", Enum.GetNames(enumType))}'."; }
+        public static String NotImplementedMessageEnum<T>(String enumName) where T : Enum { return $"Unimplemented Enum item '{enumName}'; switch/case must support all items in enum '{String.Join(",", Enum.GetNames(typeof(T)))}'."; }
 
         private static void InvalidPathError(String InvalidPath) { _ = MessageBox.Show($"Path {InvalidPath} invalid.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly); }
     }

@@ -523,7 +523,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
                 case EVENTS.FAIL: Failed++; break;
                 case EVENTS.PASS: Passed++; break;
                 case EVENTS.INFORMATION: Informed++; break;
-                default: throw new NotImplementedException($"Event '{Event}' not implemented.");
+                default: throw new NotImplementedException(NotImplementedMessageEnum<EVENTS>(Enum.GetName(typeof(EVENTS), Event)));
             }
         }
 

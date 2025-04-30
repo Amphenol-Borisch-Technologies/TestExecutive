@@ -1161,7 +1161,7 @@
                 - Optional, 0 or 1 occurences.
                 - Type: EMailGroup.
                 
-                - EMailGroup is a list of people to be EMailed if noteworthy problems occur.
+                - EMailGroup is an Outlook E-Mail Group of person(s) to be EMailed in noteworthy circumstances.
               ]]>
             </xs:documentation>
           </xs:annotation>

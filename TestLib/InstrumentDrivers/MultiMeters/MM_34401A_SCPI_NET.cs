@@ -1,5 +1,6 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using Agilent.CommandExpert.ScpiNet.Ag34401_11;
+using Ivi.Visa.Interop;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -87,7 +88,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters {
                     SCPI.MEASure.DIODe.Query(out Double diodeVoltage);
                     return diodeVoltage;
                 default:
-                    throw new NotImplementedException($"Unimplemented Enum item; switch/case must support all items in enum '{String.Join(",", Enum.GetNames(typeof(PROPERTY)))}'.");
+                    throw new NotImplementedException(TestLib.NotImplementedMessageEnum<PROPERTY>(Enum.GetName(typeof(PROPERTY), property)));
             }
         }
 
