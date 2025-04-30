@@ -136,7 +136,6 @@ namespace ABT.Test.TestExecutive.TestExec {
             else throw new ArgumentException($"Invalid XML '{TestPlanDefinitionXML}'; doesn't comply with XSD '{TestPlanDefinitionXSD}'.");
             InstrumentDrivers = GetInstrumentDriversTestPlanDefinition();
             UserName = GetUserPrincipal();
-            _ = Task.Run(() => LoadDeveloperAddresses());
 
             TSMI_UUT_TestData.Enabled = testPlanDefinition.SerialNumberEntry.IsEnabled();
             if (TSMI_UUT_TestData.Enabled) {
@@ -243,7 +242,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             try {
                 Outlook.MailItem mailItem = GetMailItem();
                 mailItem.Subject = subject;
-                mailItem.To = testPlanDefinition.Development.EMailAddresses;
+                mailItem.To = testPlanDefinition.EMailGroup.Address;
                 mailItem.Importance = Outlook.OlImportance.olImportanceHigh;
                 mailItem.Body =
                     $"Please detail desired Bug Report or Improvement Request:{Environment.NewLine}" +

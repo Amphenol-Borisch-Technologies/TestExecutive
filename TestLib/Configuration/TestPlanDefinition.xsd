@@ -164,6 +164,48 @@
     <xs:attribute ref="Folder" use="required"/>
   </xs:complexType>
 
+  <xs:simpleType name="EMailAddressType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="EMailGroup">
+    <xs:attribute name="Name" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+          Name attribute:
+          - Required.
+          - Type: xs:string.
+        ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Address" type="EMailAddressType" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+          Address attribute:
+          - Required.
+          - Type: EMailAddressType.
+        ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Comment" type="xs:string" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+          Comment attribute:
+          - Optional.
+          - Type: xs:string.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  
   <xs:complexType name="Developer">
     <xs:attribute name="Name" type="xs:string" use="required">
       <xs:annotation>
@@ -1110,6 +1152,19 @@
               </xs:annotation>
             </xs:attribute>
           </xs:complexType>
+        </xs:element>
+        <xs:element name="EMailGroup" type="EMailGroup" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+                EMailGroup element.
+                - Optional, 0 or 1 occurences.
+                - Type: EMailGroup.
+                
+                - EMailGroup is a list of people to be EMailed if noteworthy problems occur.
+              ]]>
+            </xs:documentation>
+          </xs:annotation>
         </xs:element>
         <xs:element name="Development" minOccurs="1" maxOccurs="1">
           <xs:annotation>

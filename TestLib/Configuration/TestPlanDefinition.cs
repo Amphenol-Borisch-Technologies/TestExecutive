@@ -12,9 +12,10 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
     [XmlRoot(nameof(TestPlanDefinition))]
     public class TestPlanDefinition {
         [XmlElement(nameof(UUT))] public UUT UUT { get; set; }
+        [XmlElement(nameof(SerialNumberEntry))] public SerialNumberEntry SerialNumberEntry { get; set; }
+        [XmlElement(nameof(EMailGroup))] public EMailGroup EMailGroup { get; set; }
         [XmlElement(nameof(Development))] public Development Development { get; set; }
         [XmlArray(nameof(Modifications))] public List<Modification> Modifications { get; set; }
-        [XmlElement(nameof(SerialNumberEntry))] public SerialNumberEntry SerialNumberEntry { get; set; }
         [XmlElement(nameof(InstrumentsTestPlan))] public InstrumentsTestPlan InstrumentsTestPlan { get; set; }
         [XmlElement(nameof(TestSpace))] public TestSpace TestSpace { get; set; }
 
@@ -74,12 +75,19 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
 
     public enum SerialNumberEntryType { Barcode, Keyboard, None }
 
+    public class EMailGroup {
+        [XmlAttribute(nameof(Name))] public String Name { get; set; }
+        [XmlAttribute(nameof(Address))] public String Address { get; set; }
+        [XmlAttribute(nameof(Comment))] public String Comment { get; set; }
+
+        public EMailGroup() { }
+    }
+
     public class Development {
         [XmlElement(nameof(Developer))] public List<Developer> Developer { get; set; }
         [XmlElement(nameof(Documentation))] public List<Documentation> Documentation { get; set; }
         [XmlElement(nameof(Repository))] public List<Repository> Repository { get; set; }
         [XmlAttribute(nameof(Released))] public String Released { get; set; }
-        [XmlIgnore] public String EMailAddresses { get; set; } = String.Empty;
 
         public Development() { }
     }
