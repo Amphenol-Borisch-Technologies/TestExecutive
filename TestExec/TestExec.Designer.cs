@@ -105,7 +105,7 @@
             // TextTest
             // 
             this.TextTest.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.TextTest.Location = new System.Drawing.Point(741, 689);
+            this.TextTest.Location = new System.Drawing.Point(697, 682);
             this.TextTest.Margin = new System.Windows.Forms.Padding(4);
             this.TextTest.Name = "TextTest";
             this.TextTest.ReadOnly = true;
@@ -118,7 +118,7 @@
             // 
             this.LabelEvent.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.LabelEvent.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelEvent.Location = new System.Drawing.Point(765, 661);
+            this.LabelEvent.Location = new System.Drawing.Point(721, 654);
             this.LabelEvent.Margin = new System.Windows.Forms.Padding(4);
             this.LabelEvent.Name = "LabelEvent";
             this.LabelEvent.Size = new System.Drawing.Size(120, 20);
@@ -134,11 +134,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtfResults.BackColor = System.Drawing.SystemColors.Window;
             this.rtfResults.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtfResults.Location = new System.Drawing.Point(31, 43);
+            this.rtfResults.Location = new System.Drawing.Point(13, 23);
             this.rtfResults.Margin = new System.Windows.Forms.Padding(4);
             this.rtfResults.Name = "rtfResults";
             this.rtfResults.ReadOnly = true;
-            this.rtfResults.Size = new System.Drawing.Size(1511, 582);
+            this.rtfResults.Size = new System.Drawing.Size(1547, 601);
             this.rtfResults.TabIndex = 7;
             this.rtfResults.TabStop = false;
             this.rtfResults.Text = "";
@@ -163,10 +163,10 @@
             this.ButtonEmergencyStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonEmergencyStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonEmergencyStop.Image = ((System.Drawing.Image)(resources.GetObject("ButtonEmergencyStop.Image")));
-            this.ButtonEmergencyStop.Location = new System.Drawing.Point(1453, 646);
+            this.ButtonEmergencyStop.Location = new System.Drawing.Point(1457, 642);
             this.ButtonEmergencyStop.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonEmergencyStop.Name = "ButtonEmergencyStop";
-            this.ButtonEmergencyStop.Size = new System.Drawing.Size(89, 88);
+            this.ButtonEmergencyStop.Size = new System.Drawing.Size(103, 102);
             this.ButtonEmergencyStop.TabIndex = 5;
             this.ButtonEmergencyStop.TabStop = false;
             this.ButtonEmergencyStop.Text = "Emergency Stop";
@@ -204,7 +204,7 @@
             // TSMI_TestPlan_Choose
             // 
             this.TSMI_TestPlan_Choose.Name = "TSMI_TestPlan_Choose";
-            this.TSMI_TestPlan_Choose.Size = new System.Drawing.Size(173, 26);
+            this.TSMI_TestPlan_Choose.Size = new System.Drawing.Size(228, 30);
             this.TSMI_TestPlan_Choose.Text = "&Choose";
             this.TSMI_TestPlan_Choose.ToolTipText = "Closes current TestPlan & open another.";
             this.TSMI_TestPlan_Choose.Click += new System.EventHandler(this.TSMI_TestPlan_Choose_Click);
@@ -214,7 +214,7 @@
             this.TSMI_TestPlan_SaveResults.Image = ((System.Drawing.Image)(resources.GetObject("TSMI_TestPlan_SaveResults.Image")));
             this.TSMI_TestPlan_SaveResults.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.TSMI_TestPlan_SaveResults.Name = "TSMI_TestPlan_SaveResults";
-            this.TSMI_TestPlan_SaveResults.Size = new System.Drawing.Size(173, 26);
+            this.TSMI_TestPlan_SaveResults.Size = new System.Drawing.Size(228, 30);
             this.TSMI_TestPlan_SaveResults.Text = "&Save Results";
             this.TSMI_TestPlan_SaveResults.ToolTipText = "Save UUT results.";
             this.TSMI_TestPlan_SaveResults.Click += new System.EventHandler(this.TSMI_TestPlan_SaveResults_Click);
@@ -222,12 +222,12 @@
             // TSMI_File_Separator
             // 
             this.TSMI_File_Separator.Name = "TSMI_File_Separator";
-            this.TSMI_File_Separator.Size = new System.Drawing.Size(170, 6);
+            this.TSMI_File_Separator.Size = new System.Drawing.Size(225, 6);
             // 
             // TSMI_TestPlan_Exit
             // 
             this.TSMI_TestPlan_Exit.Name = "TSMI_TestPlan_Exit";
-            this.TSMI_TestPlan_Exit.Size = new System.Drawing.Size(173, 26);
+            this.TSMI_TestPlan_Exit.Size = new System.Drawing.Size(228, 30);
             this.TSMI_TestPlan_Exit.Text = "&Exit";
             this.TSMI_TestPlan_Exit.ToolTipText = "Close TestPlan.";
             this.TSMI_TestPlan_Exit.Click += new System.EventHandler(this.TSMI_TestPlan_Exit_Click);
@@ -247,7 +247,7 @@
             this.TSMI_Feedback_ComplimentsPraiseεPlaudits,
             this.TSMI_Feedback_ComplimentsMoney});
             this.TSMI_Feedback_Compliments.Name = "TSMI_Feedback_Compliments";
-            this.TSMI_Feedback_Compliments.Size = new System.Drawing.Size(180, 26);
+            this.TSMI_Feedback_Compliments.Size = new System.Drawing.Size(224, 26);
             this.TSMI_Feedback_Compliments.Text = "&Compliments";
             // 
             // TSMI_Feedback_ComplimentsPraiseεPlaudits
@@ -272,7 +272,7 @@
             this.TSMI_Feedback_CritiquesBugReport,
             this.TSMI_Feedback_CritiquesImprovementRequest});
             this.TSMI_Feedback_Critiques.Name = "TSMI_Feedback_Critiques";
-            this.TSMI_Feedback_Critiques.Size = new System.Drawing.Size(180, 26);
+            this.TSMI_Feedback_Critiques.Size = new System.Drawing.Size(224, 26);
             this.TSMI_Feedback_Critiques.Text = "Criti&ques";
             // 
             // TSMI_Feedback_CritiquesBugReport
@@ -304,7 +304,7 @@
             // TSMI_System_ColorCode
             // 
             this.TSMI_System_ColorCode.Name = "TSMI_System_ColorCode";
-            this.TSMI_System_ColorCode.Size = new System.Drawing.Size(167, 26);
+            this.TSMI_System_ColorCode.Size = new System.Drawing.Size(224, 26);
             this.TSMI_System_ColorCode.Text = "&Color Code";
             this.TSMI_System_ColorCode.ToolTipText = "EVENTful!";
             this.TSMI_System_ColorCode.Click += new System.EventHandler(this.TSMI_System_ColorCode_Click);
@@ -315,7 +315,7 @@
             this.TSMI_System_ManualsBarcodeScanner,
             this.TSMI_System_ManualsInstruments});
             this.TSMI_System_Manuals.Name = "TSMI_System_Manuals";
-            this.TSMI_System_Manuals.Size = new System.Drawing.Size(167, 26);
+            this.TSMI_System_Manuals.Size = new System.Drawing.Size(224, 26);
             this.TSMI_System_Manuals.Text = "&Manuals";
             // 
             // TSMI_System_ManualsBarcodeScanner
@@ -339,7 +339,7 @@
             this.TSMI_System_SelfTests.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TSMI_System_DiagnosticsInstruments});
             this.TSMI_System_SelfTests.Name = "TSMI_System_SelfTests";
-            this.TSMI_System_SelfTests.Size = new System.Drawing.Size(167, 26);
+            this.TSMI_System_SelfTests.Size = new System.Drawing.Size(224, 26);
             this.TSMI_System_SelfTests.Text = "Self-&Tests";
             // 
             // TSMI_System_DiagnosticsInstruments
@@ -365,7 +365,7 @@
             // TSMI_UUT_eDocs
             // 
             this.TSMI_UUT_eDocs.Name = "TSMI_UUT_eDocs";
-            this.TSMI_UUT_eDocs.Size = new System.Drawing.Size(154, 26);
+            this.TSMI_UUT_eDocs.Size = new System.Drawing.Size(224, 26);
             this.TSMI_UUT_eDocs.Text = "&eDocs";
             this.TSMI_UUT_eDocs.ToolTipText = "UUT\'s P: drive eDocs folder.";
             this.TSMI_UUT_eDocs.Click += new System.EventHandler(this.TSMI_UUT_eDocs_Click);
@@ -373,7 +373,7 @@
             // TSMI_UUT_Manuals
             // 
             this.TSMI_UUT_Manuals.Name = "TSMI_UUT_Manuals";
-            this.TSMI_UUT_Manuals.Size = new System.Drawing.Size(154, 26);
+            this.TSMI_UUT_Manuals.Size = new System.Drawing.Size(224, 26);
             this.TSMI_UUT_Manuals.Text = "&Manuals";
             this.TSMI_UUT_Manuals.Click += new System.EventHandler(this.TSMI_UUT_Manuals_Click);
             // 
@@ -383,7 +383,7 @@
             this.TSMI_UUT_StatisticsDisplay,
             this.TSMI_UUT_StatisticsReset});
             this.TSMI_UUT_Statistics.Name = "TSMI_UUT_Statistics";
-            this.TSMI_UUT_Statistics.Size = new System.Drawing.Size(154, 26);
+            this.TSMI_UUT_Statistics.Size = new System.Drawing.Size(224, 26);
             this.TSMI_UUT_Statistics.Text = "&Statistics";
             // 
             // TSMI_UUT_StatisticsDisplay
@@ -408,7 +408,7 @@
             this.TSMI_UUT_TestDataP_DriveTDR_Folder,
             this.TSMI_UUT_TestDataSQL_ReportingAndQuerying});
             this.TSMI_UUT_TestData.Name = "TSMI_UUT_TestData";
-            this.TSMI_UUT_TestData.Size = new System.Drawing.Size(154, 26);
+            this.TSMI_UUT_TestData.Size = new System.Drawing.Size(224, 26);
             this.TSMI_UUT_TestData.Text = "&Test Data";
             // 
             // TSMI_UUT_TestDataP_DriveTDR_Folder
@@ -440,7 +440,7 @@
             // TSMI_About_TestExec
             // 
             this.TSMI_About_TestExec.Name = "TSMI_About_TestExec";
-            this.TSMI_About_TestExec.Size = new System.Drawing.Size(148, 26);
+            this.TSMI_About_TestExec.Size = new System.Drawing.Size(224, 26);
             this.TSMI_About_TestExec.Text = "Test&Exec";
             this.TSMI_About_TestExec.ToolTipText = "TestExec\'s details.";
             this.TSMI_About_TestExec.Click += new System.EventHandler(this.TSMI_About_TestExec_Click);
@@ -448,7 +448,7 @@
             // TSMI_About_TestPlan
             // 
             this.TSMI_About_TestPlan.Name = "TSMI_About_TestPlan";
-            this.TSMI_About_TestPlan.Size = new System.Drawing.Size(148, 26);
+            this.TSMI_About_TestPlan.Size = new System.Drawing.Size(224, 26);
             this.TSMI_About_TestPlan.Text = "Test&Plan";
             this.TSMI_About_TestPlan.ToolTipText = "TestPlan\'s details.";
             this.TSMI_About_TestPlan.Click += new System.EventHandler(this.TSMI_About_TestPlan_Click);
@@ -462,42 +462,46 @@
             this.StatusStatisticsLabel,
             this.StatusModeLabel,
             this.StatusCustomLabel});
-            this.StatusStrip.Location = new System.Drawing.Point(0, 747);
+            this.StatusStrip.Location = new System.Drawing.Point(0, 749);
             this.StatusStrip.Name = "StatusStrip";
             this.StatusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.StatusStrip.Size = new System.Drawing.Size(1573, 26);
+            this.StatusStrip.Size = new System.Drawing.Size(1573, 24);
             this.StatusStrip.TabIndex = 10;
             // 
             // StatusTimeLabel
             // 
             this.StatusTimeLabel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.StatusTimeLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.None;
             this.StatusTimeLabel.Name = "StatusTimeLabel";
-            this.StatusTimeLabel.Size = new System.Drawing.Size(42, 20);
+            this.StatusTimeLabel.Size = new System.Drawing.Size(0, 18);
             this.StatusTimeLabel.Text = "Time";
             this.StatusTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // StatusStatisticsLabel
             // 
             this.StatusStatisticsLabel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.StatusStatisticsLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.None;
             this.StatusStatisticsLabel.Name = "StatusStatisticsLabel";
-            this.StatusStatisticsLabel.Size = new System.Drawing.Size(67, 20);
+            this.StatusStatisticsLabel.Size = new System.Drawing.Size(0, 18);
             this.StatusStatisticsLabel.Text = "Statistics";
             this.StatusStatisticsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // StatusModeLabel
             // 
             this.StatusModeLabel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.StatusModeLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.None;
             this.StatusModeLabel.Name = "StatusModeLabel";
-            this.StatusModeLabel.Size = new System.Drawing.Size(48, 20);
+            this.StatusModeLabel.Size = new System.Drawing.Size(0, 18);
             this.StatusModeLabel.Text = "Mode";
             this.StatusModeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // StatusCustomLabel
             // 
             this.StatusCustomLabel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.StatusCustomLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.None;
             this.StatusCustomLabel.ForeColor = System.Drawing.SystemColors.ControlText;
             this.StatusCustomLabel.Name = "StatusCustomLabel";
-            this.StatusCustomLabel.Size = new System.Drawing.Size(1396, 20);
+            this.StatusCustomLabel.Size = new System.Drawing.Size(1514, 18);
             this.StatusCustomLabel.Spring = true;
             this.StatusCustomLabel.Text = "Custom";
             this.StatusCustomLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
