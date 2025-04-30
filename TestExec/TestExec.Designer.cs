@@ -134,11 +134,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtfResults.BackColor = System.Drawing.SystemColors.Window;
             this.rtfResults.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtfResults.Location = new System.Drawing.Point(13, 23);
+            this.rtfResults.Location = new System.Drawing.Point(13, 32);
             this.rtfResults.Margin = new System.Windows.Forms.Padding(4);
             this.rtfResults.Name = "rtfResults";
             this.rtfResults.ReadOnly = true;
-            this.rtfResults.Size = new System.Drawing.Size(1547, 601);
+            this.rtfResults.Size = new System.Drawing.Size(1547, 592);
             this.rtfResults.TabIndex = 7;
             this.rtfResults.TabStop = false;
             this.rtfResults.Text = "";
@@ -163,7 +163,7 @@
             this.ButtonEmergencyStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonEmergencyStop.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ButtonEmergencyStop.Image = ((System.Drawing.Image)(resources.GetObject("ButtonEmergencyStop.Image")));
-            this.ButtonEmergencyStop.Location = new System.Drawing.Point(1457, 642);
+            this.ButtonEmergencyStop.Location = new System.Drawing.Point(1457, 632);
             this.ButtonEmergencyStop.Margin = new System.Windows.Forms.Padding(4);
             this.ButtonEmergencyStop.Name = "ButtonEmergencyStop";
             this.ButtonEmergencyStop.Size = new System.Drawing.Size(103, 102);
@@ -501,7 +501,7 @@
             this.StatusCustomLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.StatusCustomLabel.ForeColor = System.Drawing.SystemColors.ControlText;
             this.StatusCustomLabel.Name = "StatusCustomLabel";
-            this.StatusCustomLabel.Size = new System.Drawing.Size(1357, 20);
+            this.StatusCustomLabel.Size = new System.Drawing.Size(1396, 20);
             this.StatusCustomLabel.Spring = true;
             this.StatusCustomLabel.Text = "Custom";
             this.StatusCustomLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;

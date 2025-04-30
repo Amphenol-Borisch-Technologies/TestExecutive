@@ -162,8 +162,9 @@ namespace ABT.Test.TestExecutive.TestLib {
         }
 
         public static String ConvertWindowsPathToUrl(String path) {
-            String url = path.Replace(@"\", "//");
-            if (!url.StartsWith("file://")) url = "file:///" + url.TrimStart('/');
+            String url = path.Replace(@"\", "/");
+            if (url.StartsWith("//")) url = "file:" + url;
+            if (!url.StartsWith("file://")) url = "file://" + url;
             return url;
         }
 
