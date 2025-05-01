@@ -124,7 +124,7 @@ namespace ABT.Test.TestExecutive.TestExec {
     /// </para>
     /// </summary>
     public abstract partial class TestExec : Form {
-        public static System.Timers.Timer StatusTimer = new System.Timers.Timer(10000);
+        public static System.Timers.Timer StatusTimer = new System.Timers.Timer(15000);
         public readonly String TestPlanFolder;
         private readonly SerialNumberDialog _serialNumberDialog = null;
 
