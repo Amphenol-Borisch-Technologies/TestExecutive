@@ -1,7 +1,5 @@
-﻿#undef VERBOSE
-using ABT.Test.TestExecutive.TestLib;
+﻿using ABT.Test.TestExecutive.TestLib;
 using ABT.Test.TestExecutive.TestLib.Configuration;
-using Serilog; // Install Serilog via NuGet Package Manager.  Site is https://serilog.net/.
 using System;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -14,44 +12,33 @@ using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestExec.Logging {
     public static class Logger {
-        public const String LOGGER_TEMPLATE = "{Message}{NewLine}";
-        private const String MESSAGE_TEST_EVENT = "Test Event";
+        private static readonly String MESSAGE_TEST_EVENT = "Test Event";
         private static readonly String MESSAGE_UUT_EVENT = (SPACES_2 + MESSAGE_TEST_EVENT).PadRight(PAD_RIGHT) + ": ";
 
         #region Public Methods
-        public static void LogError(String logMessage) { Log.Error(logMessage); }
+        public static void LogError(RichTextBox rtfResults, String logMessage) { Append(rtfResults, logMessage); }
 
-        public static void LogMessageAppend(String Message) { Log.Information(Message); }
-
-        public static void LogMessageAppendLine(String Message) { Log.Information($"{Message}{Environment.NewLine}"); }
-
-        public static void LogMethod(ref RichTextBox rtfResults, Method method) {
-            SetBackColor(ref rtfResults, 0, method.Name, EventColors[method.Event]);
+        public static void LogMethod(RichTextBox rtfResults, Method method) {
+            SetBackColor(rtfResults, 0, method.Name, EventColors[method.Event]);
             if (method.Event is EVENTS.PASS) return;
             StringBuilder stringBuilder = new StringBuilder(((IFormat)method).Format());
             stringBuilder.AppendLine(FormatMessage(MESSAGE_TEST_EVENT, method.Event.ToString()));
             stringBuilder.Append($"{SPACES_2}{method.Log}");
-            //Int32 startFind = rtfResults.TextLength;
-            Log.Information(stringBuilder.ToString());
-            // TODO: Soon; unneeded?  Should be performed in RichTextBoxSink.Emit() instead.
-            //SetBackColors(ref rtfResults, startFind, EVENTS.FAIL.ToString(), EventColors[EVENTS.FAIL]);
-            //SetBackColors(ref rtfResults, startFind, EVENTS.PASS.ToString(), EventColors[EVENTS.PASS]);
+            Int32 startFind = rtfResults.TextLength;
+            Append(rtfResults, stringBuilder.ToString());
+            SetBackColors(rtfResults, startFind, EVENTS.FAIL.ToString(), EventColors[EVENTS.FAIL]);
+            SetBackColors(rtfResults, startFind, EVENTS.PASS.ToString(), EventColors[EVENTS.PASS]);
         }
 
-        public static void Start(ref RichTextBox rtfResults) {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .WriteTo.Sink(new RichTextBoxSink(richTextBox: ref rtfResults, outputTemplate: LOGGER_TEMPLATE))
-                .CreateLogger();
-
-            Log.Information($"{nameof(UUT)}:");
-            Log.Information($"{MESSAGE_UUT_EVENT}");
-            Log.Information($"{SPACES_2}{nameof(TestSequence.SerialNumber)}".PadRight(PAD_RIGHT) + $": {testSequence.SerialNumber}");
-            Log.Information($"{SPACES_2}{nameof(UUT.Number)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Number}");
-            Log.Information($"{SPACES_2}{nameof(UUT.Revision)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Revision}");
-            Log.Information($"{SPACES_2}{nameof(UUT.Description)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Description}");
-            Log.Information($"{SPACES_2}{nameof(UUT.Category)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Category}");
-            Log.Information($"{SPACES_2}{nameof(UUT.Customer)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Customer.Name}\n");
+        public static void Start(RichTextBox rtfResults) {
+            Append(rtfResults, $"{nameof(UUT)}:");
+            Append(rtfResults, $"{MESSAGE_UUT_EVENT}");
+            Append(rtfResults, $"{SPACES_2}{nameof(TestSequence.SerialNumber)}".PadRight(PAD_RIGHT) + $": {testSequence.SerialNumber}");
+            Append(rtfResults, $"{SPACES_2}{nameof(UUT.Number)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Number}");
+            Append(rtfResults, $"{SPACES_2}{nameof(UUT.Revision)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Revision}");
+            Append(rtfResults, $"{SPACES_2}{nameof(UUT.Description)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Description}");
+            Append(rtfResults, $"{SPACES_2}{nameof(UUT.Category)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Category}");
+            Append(rtfResults, $"{SPACES_2}{nameof(UUT.Customer)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Customer.Name}\n");
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($"{nameof(TestGroup.Methods)}:");
@@ -60,57 +47,76 @@ namespace ABT.Test.TestExecutive.TestExec.Logging {
                 stringBuilder.AppendLine($"{SPACES_2}{testGroup.Classname}, {testGroup.Description}");
                 foreach (Method method in testGroup.Methods) stringBuilder.AppendLine($"{SPACING}{method.Name}".PadRight(PAD_RIGHT + SPACING.Length) + $": {method.Description}");
             }
-            Log.Information(stringBuilder.ToString());
+            Append(rtfResults, stringBuilder.ToString());
         }
 
-        public static void Stop(ref RichTextBox rtfResults) {
-            ReplaceString(ref rtfResults, 0, $"{MESSAGE_UUT_EVENT}", $"{MESSAGE_UUT_EVENT}{testSequence.Event}");
-            SetBackColor(ref rtfResults, 0, testSequence.Event.ToString(), EventColors[testSequence.Event]);
-            Log.CloseAndFlush();
+        public static void Stop(RichTextBox rtfResults) {
+            ReplaceString(rtfResults, 0, $"{MESSAGE_UUT_EVENT}", $"{MESSAGE_UUT_EVENT}{testSequence.Event}");
+            SetBackColor(rtfResults, 0, testSequence.Event.ToString(), EventColors[testSequence.Event]);
             if (testSequence.IsOperation && testPlanDefinition.SerialNumberEntry.EntryType != SerialNumberEntryType.None) {
                 if (testExecDefinition.TestData.Item is TextFiles) StopTextFiles();
                 else if (testExecDefinition.TestData.Item is SQL_DB) StopSQL_DB();
                 else throw new ArgumentException($"Unknown {nameof(TestData)} item '{testExecDefinition.TestData.Item}'.");
             }
         }
+
+        public static void Append(RichTextBox rtfResults, String message) {
+            Int32 startFind = rtfResults.TextLength;
+
+            if (rtfResults.InvokeRequired) {
+                rtfResults.BeginInvoke((MethodInvoker)(() => Append(rtfResults, message)));
+            } else {
+                rtfResults.AppendText(message + Environment.NewLine);
+            }
+
+            Int32 selectionStart;
+            foreach (EVENTS Event in Enum.GetValues(typeof(EVENTS))) {
+                if (message.Contains(Event.ToString())) {
+                    selectionStart = rtfResults.Find(Event.ToString(), startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+                    rtfResults.SelectionStart = selectionStart;
+                    rtfResults.SelectionLength = Event.ToString().Length;
+                    rtfResults.SelectionBackColor = EventColors[Event];
+                }
+            }
+        }
         #endregion Public Methods
 
         #region Private Methods
-        private static void ReplaceString(ref RichTextBox richTextBox, Int32 startFind, String findString, String replacementString) {
-            Int32 selectionStart = richTextBox.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
-            richTextBox.SelectionStart = selectionStart;
-            richTextBox.SelectionLength = findString.Length;
-            richTextBox.SelectedText = replacementString;
+        private static void ReplaceString(RichTextBox rtfResults, Int32 startFind, String findString, String replacementString) {
+            Int32 selectionStart = rtfResults.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+            rtfResults.SelectionStart = selectionStart;
+            rtfResults.SelectionLength = findString.Length;
+            rtfResults.SelectedText = replacementString;
         }
 
-        private static void ReplaceStrings(ref RichTextBox richTextBox, Int32 startFind, String findString, String replacementString) {
+        private static void ReplaceStrings(RichTextBox rtfResults, Int32 startFind, String findString, String replacementString) {
             Int32 selectionStart;
 
-            while (startFind < richTextBox.TextLength) {
-                selectionStart = richTextBox.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+            while (startFind < rtfResults.TextLength) {
+                selectionStart = rtfResults.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
                 if (selectionStart == -1) break;
-                richTextBox.SelectionStart = selectionStart;
-                richTextBox.SelectionLength = findString.Length;
-                richTextBox.SelectedText = replacementString;
+                rtfResults.SelectionStart = selectionStart;
+                rtfResults.SelectionLength = findString.Length;
+                rtfResults.SelectedText = replacementString;
                 startFind = selectionStart + findString.Length;
             }
         }
 
-        private static void SetBackColor(ref RichTextBox richTextBox, Int32 startFind, String findString, Color backColor) {
-            Int32 selectionStart = richTextBox.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
-            richTextBox.SelectionStart = selectionStart;
-            richTextBox.SelectionLength = findString.Length;
-            richTextBox.SelectionBackColor = backColor;
+        private static void SetBackColor(RichTextBox rtfResults, Int32 startFind, String findString, Color backColor) {
+            Int32 selectionStart = rtfResults.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+            rtfResults.SelectionStart = selectionStart;
+            rtfResults.SelectionLength = findString.Length;
+            rtfResults.SelectionBackColor = backColor;
         }
 
-        private static void SetBackColors(ref RichTextBox richTextBox, Int32 startFind, String findString, Color backColor) {
+        private static void SetBackColors(RichTextBox rtfResults, Int32 startFind, String findString, Color backColor) {
             Int32 selectionStart;
-            while (startFind < richTextBox.TextLength) {
-                selectionStart = richTextBox.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+            while (startFind < rtfResults.TextLength) {
+                selectionStart = rtfResults.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
                 if (selectionStart == -1) break;
-                richTextBox.SelectionStart = selectionStart;
-                richTextBox.SelectionLength = findString.Length;
-                richTextBox.SelectionBackColor = backColor;
+                rtfResults.SelectionStart = selectionStart;
+                rtfResults.SelectionLength = findString.Length;
+                rtfResults.SelectionBackColor = backColor;
                 startFind = selectionStart + findString.Length;
             }
         }

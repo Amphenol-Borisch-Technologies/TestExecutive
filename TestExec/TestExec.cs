@@ -23,7 +23,6 @@ using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 // TODO:  Eventually; evaluate Keysight OpenTAP as potential option in addition to TestExec/TestLib/TestPlan.  https://opentap.io/.
 // - Briefly evaluated previously; time for reevaluation.
-// TODO:  Eventually; GitHub automated workflows; CI/CD including automated deployment to subscribed TestExec PCs (assuming its possible).
 // NOTE:  Recommend using Microsoft's Visual Studio Code to develop/debug Tests based closed source/proprietary projects:
 //        - Visual Studio Code is a co$t free, open-source Integrated Development Environment entirely suitable for textual C# development, like Tests.
 //          - That is, it's excellent for non-GUI (WinForms/WPF/WinUI) C# development.
@@ -45,24 +44,6 @@ using static ABT.Test.TestExecutive.TestLib.TestLib;
 //        - Invoking public methods with named arguments is a superb, self-documenting coding technique, improved by PascalCasing.
 // TODO:  Eventually; add documentation per https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/documentation-comments.
 // TODO:  Eventually; update to .Net 8.0 & C# 12.0 instead of .Net FrameWork 4.8 & C# 7.3.
-//        - Currently cannot because all provider VISA.Net implementations are only compatible with the IVI Foundation's VISA.Net shared component versions 7.2 or lower.
-//          - https://github.com/vnau/IviVisaNetSample.
-//          - The IVI Foundation's VISA.NET shared components version 7.2 are .Net Framework versions that target .NET 2.0.
-//          - The IVI Foundation's VISA.NET shared components version 7.3 are available in both .Net Framework versions that target .Net 4.5, and .NET versions that target .Net 6.0 or higher.
-//          - https://www.ivifoundation.org/downloads/VISA/vpp436_2024-02-08.pdf
-//        - National Instruments is considering .Net support for their NI-VISA; https://forums.ni.com/t5/Instrument-Control-GPIB-Serial/Will-NI-release-a-NET-Standard-version-of-the-NI-VISA-NET/td-p/4115465
-//        - Keysight hasn't yet for their IO Libraries VISA implementation; https://community.keysight.com/forums/s/question/0D55a00009FHEIzCAP/are-the-keysight-io-libraries-compatible-with-net-or-net-core.
-// TODO:  Eventually; consider updating to WinUI or WPF instead of WinForms if beneficial.
-// NOTE:  With deep appreciation for https://learn.microsoft.com/en-us/docs/ & https://stackoverflow.com/!
-// NOTE:  ABT's Zero Trust, Cloudflare Warp enterprise security solution inhibits GitHub's security, caused below error when sychronizing with
-//        TestExecutive's GitHub repository at https://github.com/Amphenol-Borisch-Technologies/TestExecutive:
-//             Opening repositories:
-//             P:\Test\Engineers\repos\ABT\Test\TestExecutive
-//             Git failed with a fatal error.
-//             unable to access 'https://github.com/Amphenol-Borisch-Technologies/TestExecutive': schannel: CertGetCertificateChain trust error CERT_TRUST_IS_PARTIAL_CHAIN
-//        - Temporarily disabling Zero Trust by "pausing" it resolves above error.
-//        - https://stackoverflow.com/questions/27087483/how-to-resolve-git-pull-fatal-unable-to-access-https-github-com-empty
-//        - FYI, synchronizing with Tests repository doesn't error out, as it doesn't utilize a Git server.
 
 namespace ABT.Test.TestExecutive.TestExec {
     /// <remarks>
@@ -211,7 +192,7 @@ namespace ABT.Test.TestExecutive.TestExec {
                 return GetMailItem();
             } catch {
                 _ = MessageBox.Show(ActiveForm, "Could not open Microsoft 365 Outlook.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Logging.Logger.LogError("Could not open Microsoft 365 Outlook.");
+                Logger.Append(rtfResults, $"Could not open Microsoft 365 Outlook.{Environment.NewLine}Please contact Test Engineering.");
                 throw new NotImplementedException("Outlook not good...");
             }
         }
@@ -479,7 +460,7 @@ namespace ABT.Test.TestExecutive.TestExec {
         private void MethodsPreRun() {
             testSequence.PreRun();
             TestIndices.Nullify();
-            Logging.Logger.Start(ref rtfResults);
+            Logger.Start(rtfResults);
             SystemReset();
         }
 
@@ -516,7 +497,7 @@ namespace ABT.Test.TestExecutive.TestExec {
                         if (CT_EmergencyStop.IsCancellationRequested) method.Event = EVENTS.EMERGENCY_STOP;
                         else if (CT_Cancel.IsCancellationRequested) method.Event = EVENTS.CANCEL;
                         // NOTE:  Both CT_Cancel.IsCancellationRequested & CT_EmergencyStop.IsCancellationRequested could be true; prioritize CT_EmergencyStop.
-                        Logging.Logger.LogMethod(ref rtfResults, method);
+                        Logger.LogMethod(rtfResults, method);
                     }
                     if (method.Event != EVENTS.PASS && method.CancelNotPassed) return;
                 }
@@ -533,7 +514,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             TextTest.BackColor = EventColors[testSequence.Event];
             testPlanDefinition.TestSpace.Statistics.Update(testSequence.Event);
             StatusStatisticsUpdate(null, null);
-            Logging.Logger.Stop(ref rtfResults);
+            Logger.Stop(rtfResults);
         }
 
         private Boolean EventSet(Int32 aggregatedEvents, EVENTS events) { return ((aggregatedEvents & (Int32)events) == (Int32)events); }
