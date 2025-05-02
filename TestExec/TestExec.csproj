@@ -73,12 +73,6 @@
       <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgE364xD_1_7.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Agilent.Agilent34952A.Interop, Version=1.6.0.0, Culture=neutral, PublicKeyToken=ced78d295d1e0f2b, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\IVI Foundation\IVI\Bin\Primary Interop Assemblies\Agilent.Agilent34952A.Interop.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="AgSCPI99_1_0">
       <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgSCPI99_1_0.dll</HintPath>
       <Private>True</Private>
