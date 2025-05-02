@@ -1,7 +1,6 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic;
 using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using Agilent.CommandExpert.ScpiNet.Ag34980_2_43;
-using Ivi.Visa.Interop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
