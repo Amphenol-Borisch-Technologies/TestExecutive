@@ -128,7 +128,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         public List<InstrumentInfo> GetInfo() {
             List<InstrumentInfo> instruments = new List<InstrumentInfo>();
 
-            InstrumentsTestExec instrumentsTestExec = Serializing.DeserializeFromFile<InstrumentsTestExec>(TestExecutiveDefinitionXML);
+            InstrumentsTestExec instrumentsTestExec = Serializing.DeserializeFromFile<InstrumentsTestExec>(TestExecDefinitionXML_Path);
             InstrumentTestExec instrumentTestExec = null;
             foreach (Stationary stationary in Stationary) {
                 instrumentTestExec = instrumentsTestExec.InstrumentTestExec.Find(x => x.ID == stationary.ID) ?? throw new ArgumentException(FormatException(stationary.ID));
@@ -142,7 +142,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         private String FormatException(String stationaryID) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($"Instrument with ID '{stationaryID}' not present in file{Environment.NewLine}");
-            stringBuilder.AppendLine($"'{TestExecutiveDefinitionXML}'.");
+            stringBuilder.AppendLine($"'{TestExecDefinitionXML_Path}'.");
             return stringBuilder.ToString();
         }
     }

@@ -50,10 +50,19 @@ namespace ABT.Test.TestExecutive.TestLib {
 
         private static readonly System.Configuration.Configuration configuration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
         public static readonly String TestExecutiveFolder = configuration.AppSettings.Settings[nameof(TestExecutiveFolder)].Value;
+        public static readonly String TestExecutiveURL = configuration.AppSettings.Settings[nameof(TestExecutiveURL)].Value;
         public static readonly String TestPlansFolder = configuration.AppSettings.Settings[nameof(TestPlansFolder)].Value;
-        public static readonly String TestPlanDefinitionXSD = TestExecutiveFolder + @"\TestPlanDefinition.xsd";
-        public static readonly String TestExecutiveDefinitionXML = TestExecutiveFolder + @"\TestExecDefinition.xml";
-        public static readonly TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TestExecutiveDefinitionXML}");
+
+        private static readonly String TestExecDefinitionXSD_Base = "TestExecDefinition";
+        public static readonly String TestExecDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestExecDefinitionXSD_Base +".xsd";
+        public static readonly String TestExecDefinitionXML_Path = TestExecutiveFolder + @"\" + TestExecDefinitionXSD_Base + ".xml";
+        public static readonly String TestExecDefinitionXSD_URL = TestExecutiveURL + "/" + TestExecDefinitionXSD_Base + ".xsd";
+
+        private static readonly String TestPlanDefinitionXSD_File = "TestPlanDefinition.xsd";
+        public static readonly String TestPlanDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestPlanDefinitionXSD_File;
+        public static readonly String TestPlanDefinitionXSD_URL = TestExecutiveURL + "/" + TestPlanDefinitionXSD_File;
+
+        public static readonly TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TestExecDefinitionXML_Path}");
         public static readonly String SPACES_2 = "  ";
         public static readonly Int32 PAD_RIGHT = 21;
         internal static readonly String TestExecutive = nameof(TestExecutive);

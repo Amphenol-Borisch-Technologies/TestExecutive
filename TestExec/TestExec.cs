@@ -113,8 +113,8 @@ namespace ABT.Test.TestExecutive.TestExec {
             InitializeComponent();
             Icon = icon; // NOTE:  https://stackoverflow.com/questions/40933304/how-to-create-an-icon-for-visual-studio-with-just-mspaint-and-visual-studio
             TestPlanDefinitionXML = testPlanFolder + @"\TestPlanDefinition.xml";
-            if (TestPlanDefinitionValidator.ValidSpecification(TestPlanDefinitionXSD, TestPlanDefinitionXML)) testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(xmlFile: $"{TestPlanDefinitionXML}");
-            else throw new ArgumentException($"Invalid XML '{TestPlanDefinitionXML}'; doesn't comply with XSD '{TestPlanDefinitionXSD}'.");
+            if (TestPlanDefinitionValidator.ValidSpecification(TestPlanDefinitionXML)) testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(xmlFile: $"{TestPlanDefinitionXML}");
+            else throw new ArgumentException($"Invalid XML '{TestPlanDefinitionXML}'; doesn't comply with XSD '{TestPlanDefinitionXSD_Path}'.");
             InstrumentDrivers = GetInstrumentDriversTestPlanDefinition();
             UserName = GetUserPrincipal();
 
@@ -426,7 +426,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             OpenApp(testExecDefinition.Apps.Microsoft.SQLServerManagementStudio);
         }
         private void TSMI_About_TestExec_Click(Object sender, EventArgs e) {
-            Development development = Serializing.DeserializeFromFile<Development>(TestExecutiveDefinitionXML);
+            Development development = Serializing.DeserializeFromFile<Development>(TestExecDefinitionXML_Path);
             ShowAbout(Assembly.GetExecutingAssembly(), development, isTestPlan: false);
         }
         private void TSMI_About_TestPlan_Click(Object sender, EventArgs e) {
