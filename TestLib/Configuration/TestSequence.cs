@@ -7,7 +7,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
     [XmlRoot(ElementName = nameof(TestSequence), Namespace = "", IsNullable = false)]
     public class TestSequence {
         [XmlAttribute("noNamespaceSchemaLocation", Namespace = "http://www.w3.org/2001/XMLSchema-instance")]
-        public String NoNamespaceSchemaLocation { get; set; } = "file:///" + TestLib.TestPlanDefinitionXSD_Path.Replace(@"\", "/") + " " + TestLib.TestSequenceXSD_URL;
+        public String NoNamespaceSchemaLocation { get; set; } = "file:///" + TestLib.TestSequenceXSD_Path.Replace(@"\", "/") + " " + TestLib.TestSequenceXSD_URL;
         public UUT UUT { get; set; } = Serializing.DeserializeFromFile<UUT>(xmlFile: TestLib.TestPlanDefinitionXML_Path);
         public TestOperation TestOperation { get; set; }
         [XmlIgnore] public Boolean IsOperation { get; set; } = false;
