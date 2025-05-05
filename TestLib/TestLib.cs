@@ -1,6 +1,5 @@
 ﻿using ABT.Test.TestExecutive.TestLib.Configuration;
 using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
-using Outlook = Microsoft.Office.Interop.Outlook;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -9,7 +8,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -221,53 +219,8 @@ namespace ABT.Test.TestExecutive.TestLib {
             return false;
         }
 
-        public static void SendEMailGroupMailMessage(String Subject, Exception Ex) {
-            const Int32 PR = 22;
-            StringBuilder stringBuilder = new StringBuilder();
-            _ = stringBuilder.AppendLine($"{nameof(Environment.MachineName)}".PadRight(PR) + $": {Environment.MachineName}");
-            _ = stringBuilder.AppendLine($"{UserName}".PadRight(PR) + $": {UserName}");
-            _ = stringBuilder.AppendLine($"Exception.ToString()".PadRight(PR) + $": {Ex}");
-            SendEMailGroupMailMessage(Subject, Body: stringBuilder.ToString());
-        }
-
-        public static void SendEMailGroupMailMessage(String Subject, String Body) {
-            try {
-                Outlook.MailItem mailItem = GetMailItem();
-                mailItem.Subject = Subject;
-                mailItem.To = testPlanDefinition.EMailGroup.Address;
-                mailItem.Importance = Outlook.OlImportance.olImportanceHigh;
-                mailItem.BodyFormat = Outlook.OlBodyFormat.olFormatPlain;
-                mailItem.Body = Body;
-                mailItem.Send();
-            } catch {
-                _ = MessageBox.Show($"Sorry, cannot E-Mail presently.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-            }
-        }
-
-        public static Outlook.MailItem GetMailItem() {
-            Outlook.Application outlook;
-            if (Process.GetProcessesByName("OUTLOOK").Length > 0) {
-                outlook = Marshal.GetActiveObject("Outlook.Application") as Outlook.Application;
-            } else {
-                outlook = new Outlook.Application();
-                Outlook.NameSpace nameSpace = outlook.GetNamespace("MAPI");
-                nameSpace.Logon("", "", true, true);
-                nameSpace = null;
-            }
-            return outlook.CreateItem(Outlook.OlItemType.olMailItem);
-        }
-
         public static void ErrorMessage(String Error) {
             _ = MessageBox.Show($"Unexpected error:{Environment.NewLine}{Error}", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-        }
-
-        public static void ErrorMessage(Exception Ex) {
-            if (testPlanDefinition != null && testPlanDefinition.EMailGroup != null) {
-                if (!String.Equals(testPlanDefinition.EMailGroup.Address, String.Empty)) {
-                    ErrorMessage($"'{Ex.Message}'{Environment.NewLine}{Environment.NewLine}Will attempt to E-Mail details To {testPlanDefinition.EMailGroup.Address}.{Environment.NewLine}{Environment.NewLine}Please select your Microsoft 365 Outlook profile if dialog appears.");
-                    SendEMailGroupMailMessage("Exception caught!", Ex);
-                }
-            }
         }
 
         public static String NotImplementedMessageEnum<T>(String enumName) where T : Enum { return $"Unimplemented Enum item '{enumName}'; switch/case must support all items in enum '{String.Join(",", Enum.GetNames(typeof(T)))}'."; }

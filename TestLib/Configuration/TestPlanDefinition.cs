@@ -13,7 +13,6 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
     public class TestPlanDefinition {
         [XmlElement(nameof(UUT))] public UUT UUT { get; set; }
         [XmlElement(nameof(SerialNumberEntry))] public SerialNumberEntry SerialNumberEntry { get; set; }
-        [XmlElement(nameof(EMailGroup))] public EMailGroup EMailGroup { get; set; }
         [XmlElement(nameof(Development))] public Development Development { get; set; }
         [XmlArray(nameof(Modifications))] public List<Modification> Modifications { get; set; }
         [XmlElement(nameof(InstrumentsTestPlan))] public InstrumentsTestPlan InstrumentsTestPlan { get; set; }
@@ -75,14 +74,6 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
 
     public enum SerialNumberEntryType { Barcode, Keyboard, None }
 
-    public class EMailGroup {
-        [XmlAttribute(nameof(Name))] public String Name { get; set; }
-        [XmlAttribute(nameof(Address))] public String Address { get; set; }
-        [XmlAttribute(nameof(Comment))] public String Comment { get; set; }
-
-        public EMailGroup() { }
-    }
-
     public class Development {
         [XmlElement(nameof(Developer))] public List<Developer> Developer { get; set; }
         [XmlElement(nameof(Documentation))] public List<Documentation> Documentation { get; set; }
@@ -96,7 +87,6 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         [XmlAttribute(nameof(Name))] public String Name { get; set; }
         [XmlAttribute(nameof(Language))] public Languages Language { get; set; }
         [XmlAttribute(nameof(Comment))] public String Comment { get; set; }
-        [XmlIgnore] public String EMailAddress { get; set; } = String.Empty;
 
         public enum Languages { CSharp, Python, VEE }
 

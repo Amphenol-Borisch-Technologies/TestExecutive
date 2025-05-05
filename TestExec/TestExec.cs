@@ -190,16 +190,6 @@ namespace ABT.Test.TestExecutive.TestExec {
             StatusModeUpdate(MODES.Waiting);
         }
 
-        private Outlook.MailItem GetMailItem() {
-            try {
-                return GetMailItem();
-            } catch {
-                _ = MessageBox.Show(ActiveForm, "Could not open Microsoft 365 Outlook.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LogAppend($"Could not open Microsoft 365 Outlook.{Environment.NewLine}Please contact Test Engineering.");
-                throw new NotImplementedException("Outlook not good...");
-            }
-        }
-
         public virtual void SystemReset() {
             if (testPlanDefinition.TestSpace.Simulate) return;
             IPowerSuppliesOutputsOff();
@@ -220,25 +210,6 @@ namespace ABT.Test.TestExecutive.TestExec {
         public virtual void IRelaysOpenAll() {
             if (testPlanDefinition.TestSpace.Simulate) return;
             foreach (KeyValuePair<String, Object> kvp in InstrumentDrivers) if (kvp.Value is IRelay iRelay) iRelay.OpenAll();
-        }
-
-        private void SendMailMessageWithAttachment(String subject) {
-            try {
-                Outlook.MailItem mailItem = GetMailItem();
-                mailItem.Subject = subject;
-                mailItem.To = testPlanDefinition.EMailGroup.Address;
-                mailItem.Importance = Outlook.OlImportance.olImportanceHigh;
-                mailItem.Body =
-                    $"Please detail desired Bug Report or Improvement Request:{Environment.NewLine}" +
-                    $" - Please attach relevant files, and/or embed relevant screen-captures.{Environment.NewLine}" +
-                    $" - Be specific!  Be verbose!  Unleash your inner author!  It's your time to shine!{Environment.NewLine}";
-                String rtfTempFile = $"{Path.GetTempPath()}\\{testPlanDefinition.UUT.Number}.rtf";
-                rtfResults.SaveFile(rtfTempFile);
-                _ = mailItem.Attachments.Add(rtfTempFile, Outlook.OlAttachmentType.olByValue, 1, $"{testPlanDefinition.UUT.Number}.rtf");
-                mailItem.Display();
-            } catch {
-                _ = MessageBox.Show(this, $"Sorry, cannot E-Mail presently.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information,  MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-            }
         }
         #endregion Form Miscellaneous
 
@@ -366,11 +337,6 @@ namespace ABT.Test.TestExecutive.TestExec {
             if (saveFileDialog.ShowDialog() == DialogResult.OK) rtfResults.SaveFile(saveFileDialog.FileName);
         }
         private void TSMI_TestPlan_Exit_Click(Object sender, EventArgs e) { Application.Exit(); }
-
-        private void TSMI_Feedback_ComplimentsPraiseεPlaudits_Click(Object sender, EventArgs e) { _ = MessageBox.Show(this, $"You are a kind person, {UserName}.", $"Thank you!", MessageBoxButtons.OK, MessageBoxIcon.Information); }
-        private void TSMI_Feedback_ComplimentsMoney_Click(Object sender, EventArgs e) { _ = MessageBox.Show(this, $"Prefer ₿itcoin donations!", $"₿₿₿", MessageBoxButtons.OK, MessageBoxIcon.Information); }
-        private void TSMI_Feedback_CritiqueBugReport_Click(Object sender, EventArgs e) { SendMailMessageWithAttachment($"Bug Report from {UserName} for {testPlanDefinition.UUT.Number}, {testPlanDefinition.UUT.Description}."); }
-        private void TSMI_Feedback_CritiqueImprovementRequest_Click(Object sender, EventArgs e) { SendMailMessageWithAttachment($"Improvement Request from {UserName} for {testPlanDefinition.UUT.Number}, {testPlanDefinition.UUT.Description}."); }
 
         private void TSMI_System_ColorCode_Click(Object sender, EventArgs e) {
             CustomMessageBox customMessageBox = new CustomMessageBox {
@@ -696,7 +662,8 @@ namespace ABT.Test.TestExecutive.TestExec {
                         if (!CT_EmergencyStop.IsCancellationRequested && !CT_Cancel.IsCancellationRequested) {
                             method.Event = EVENTS.ERROR;
                             _ = method.Log.AppendLine($"{Environment.NewLine}{exception}");
-                            ErrorMessage(exception);
+                            // TODO: Soon; log exception to Windows Event Log.
+                            ErrorMessage(exception.ToString());
                         }
                         return;
                     } finally {

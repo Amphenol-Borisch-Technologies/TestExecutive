@@ -36,13 +36,6 @@
             this.TSMI_TestPlan_SaveResults = new System.Windows.Forms.ToolStripMenuItem();
             this.TSMI_File_Separator = new System.Windows.Forms.ToolStripSeparator();
             this.TSMI_TestPlan_Exit = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Feedback = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Feedback_Compliments = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Feedback_ComplimentsPraiseεPlaudits = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Feedback_ComplimentsMoney = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Feedback_Critiques = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Feedback_CritiquesBugReport = new System.Windows.Forms.ToolStripMenuItem();
-            this.TSMI_Feedback_CritiquesImprovementRequest = new System.Windows.Forms.ToolStripMenuItem();
             this.TSMI_System = new System.Windows.Forms.ToolStripMenuItem();
             this.TSMI_System_ColorCode = new System.Windows.Forms.ToolStripMenuItem();
             this.TSMI_System_Manuals = new System.Windows.Forms.ToolStripMenuItem();
@@ -179,7 +172,6 @@
             this.MS.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.MS.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TSMI_TestPlan,
-            this.TSMI_Feedback,
             this.TSMI_System,
             this.TSMI_UUT,
             this.TSMI_About});
@@ -232,65 +224,6 @@
             this.TSMI_TestPlan_Exit.ToolTipText = "Close TestPlan.";
             this.TSMI_TestPlan_Exit.Click += new System.EventHandler(this.TSMI_TestPlan_Exit_Click);
             // 
-            // TSMI_Feedback
-            // 
-            this.TSMI_Feedback.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TSMI_Feedback_Compliments,
-            this.TSMI_Feedback_Critiques});
-            this.TSMI_Feedback.Name = "TSMI_Feedback";
-            this.TSMI_Feedback.Size = new System.Drawing.Size(86, 24);
-            this.TSMI_Feedback.Text = "Feed&back";
-            // 
-            // TSMI_Feedback_Compliments
-            // 
-            this.TSMI_Feedback_Compliments.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TSMI_Feedback_ComplimentsPraiseεPlaudits,
-            this.TSMI_Feedback_ComplimentsMoney});
-            this.TSMI_Feedback_Compliments.Name = "TSMI_Feedback_Compliments";
-            this.TSMI_Feedback_Compliments.Size = new System.Drawing.Size(180, 26);
-            this.TSMI_Feedback_Compliments.Text = "&Compliments";
-            // 
-            // TSMI_Feedback_ComplimentsPraiseεPlaudits
-            // 
-            this.TSMI_Feedback_ComplimentsPraiseεPlaudits.Name = "TSMI_Feedback_ComplimentsPraiseεPlaudits";
-            this.TSMI_Feedback_ComplimentsPraiseεPlaudits.Size = new System.Drawing.Size(203, 26);
-            this.TSMI_Feedback_ComplimentsPraiseεPlaudits.Text = "&Praise && Plaudits";
-            this.TSMI_Feedback_ComplimentsPraiseεPlaudits.ToolTipText = "\"I can live for two months on a good compliment.\" - Mark Twain";
-            this.TSMI_Feedback_ComplimentsPraiseεPlaudits.Click += new System.EventHandler(this.TSMI_Feedback_ComplimentsPraiseεPlaudits_Click);
-            // 
-            // TSMI_Feedback_ComplimentsMoney
-            // 
-            this.TSMI_Feedback_ComplimentsMoney.Name = "TSMI_Feedback_ComplimentsMoney";
-            this.TSMI_Feedback_ComplimentsMoney.Size = new System.Drawing.Size(203, 26);
-            this.TSMI_Feedback_ComplimentsMoney.Text = "&Money!";
-            this.TSMI_Feedback_ComplimentsMoney.ToolTipText = "For a good cause! ";
-            this.TSMI_Feedback_ComplimentsMoney.Click += new System.EventHandler(this.TSMI_Feedback_ComplimentsMoney_Click);
-            // 
-            // TSMI_Feedback_Critiques
-            // 
-            this.TSMI_Feedback_Critiques.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.TSMI_Feedback_CritiquesBugReport,
-            this.TSMI_Feedback_CritiquesImprovementRequest});
-            this.TSMI_Feedback_Critiques.Name = "TSMI_Feedback_Critiques";
-            this.TSMI_Feedback_Critiques.Size = new System.Drawing.Size(180, 26);
-            this.TSMI_Feedback_Critiques.Text = "Criti&ques";
-            // 
-            // TSMI_Feedback_CritiquesBugReport
-            // 
-            this.TSMI_Feedback_CritiquesBugReport.Name = "TSMI_Feedback_CritiquesBugReport";
-            this.TSMI_Feedback_CritiquesBugReport.Size = new System.Drawing.Size(238, 26);
-            this.TSMI_Feedback_CritiquesBugReport.Text = "&Bug Report";
-            this.TSMI_Feedback_CritiquesBugReport.ToolTipText = "\"The devil is is in the details.\" - Friedrich Nietzsche";
-            this.TSMI_Feedback_CritiquesBugReport.Click += new System.EventHandler(this.TSMI_Feedback_CritiqueBugReport_Click);
-            // 
-            // TSMI_Feedback_CritiquesImprovementRequest
-            // 
-            this.TSMI_Feedback_CritiquesImprovementRequest.Name = "TSMI_Feedback_CritiquesImprovementRequest";
-            this.TSMI_Feedback_CritiquesImprovementRequest.Size = new System.Drawing.Size(238, 26);
-            this.TSMI_Feedback_CritiquesImprovementRequest.Text = "&Improvement Request";
-            this.TSMI_Feedback_CritiquesImprovementRequest.ToolTipText = "\"God is in the details.\" - Mies van der Rohe";
-            this.TSMI_Feedback_CritiquesImprovementRequest.Click += new System.EventHandler(this.TSMI_Feedback_CritiqueImprovementRequest_Click);
-            // 
             // TSMI_System
             // 
             this.TSMI_System.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -304,7 +237,7 @@
             // TSMI_System_ColorCode
             // 
             this.TSMI_System_ColorCode.Name = "TSMI_System_ColorCode";
-            this.TSMI_System_ColorCode.Size = new System.Drawing.Size(167, 26);
+            this.TSMI_System_ColorCode.Size = new System.Drawing.Size(224, 26);
             this.TSMI_System_ColorCode.Text = "&Color Code";
             this.TSMI_System_ColorCode.ToolTipText = "EVENTful!";
             this.TSMI_System_ColorCode.Click += new System.EventHandler(this.TSMI_System_ColorCode_Click);
@@ -315,7 +248,7 @@
             this.TSMI_System_ManualsBarcodeScanner,
             this.TSMI_System_ManualsInstruments});
             this.TSMI_System_Manuals.Name = "TSMI_System_Manuals";
-            this.TSMI_System_Manuals.Size = new System.Drawing.Size(167, 26);
+            this.TSMI_System_Manuals.Size = new System.Drawing.Size(224, 26);
             this.TSMI_System_Manuals.Text = "&Manuals";
             // 
             // TSMI_System_ManualsBarcodeScanner
@@ -339,7 +272,7 @@
             this.TSMI_System_SelfTests.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.TSMI_System_DiagnosticsInstruments});
             this.TSMI_System_SelfTests.Name = "TSMI_System_SelfTests";
-            this.TSMI_System_SelfTests.Size = new System.Drawing.Size(167, 26);
+            this.TSMI_System_SelfTests.Size = new System.Drawing.Size(224, 26);
             this.TSMI_System_SelfTests.Text = "Self-&Tests";
             // 
             // TSMI_System_DiagnosticsInstruments
@@ -558,13 +491,6 @@
         private System.Windows.Forms.ToolStripMenuItem TSMI_System_Manuals;
         private System.Windows.Forms.ToolStripMenuItem TSMI_System_ManualsBarcodeScanner;
         private System.Windows.Forms.ToolStripMenuItem TSMI_System_ManualsInstruments;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback_Compliments;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback_ComplimentsPraiseεPlaudits;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback_ComplimentsMoney;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback_Critiques;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback_CritiquesBugReport;
-        private System.Windows.Forms.ToolStripMenuItem TSMI_Feedback_CritiquesImprovementRequest;
         private System.Windows.Forms.StatusStrip StatusStrip;
         private System.Windows.Forms.ToolStripStatusLabel StatusStatisticsLabel;
         private System.Windows.Forms.ToolStripStatusLabel StatusCustomLabel;
