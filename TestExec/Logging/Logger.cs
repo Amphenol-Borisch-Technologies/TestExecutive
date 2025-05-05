@@ -12,8 +12,8 @@ using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestExec.Logging {
     public static class Logger {
-        private static readonly String MESSAGE_TEST_EVENT = "Test Event";
-        private static readonly String MESSAGE_UUT_EVENT = (Spaces2 + MESSAGE_TEST_EVENT).PadRight(PaddingRight) + ": ";
+        private static readonly String MessageTestEvent = "Test Event";
+        private static readonly String MessageUUT_Event = (Spaces2 + MessageTestEvent).PadRight(PaddingRight) + ": ";
 
         #region Public Methods
         public static void LogError(RichTextBox rtfResults, String logMessage) { Append(rtfResults, logMessage); }
@@ -22,7 +22,7 @@ namespace ABT.Test.TestExecutive.TestExec.Logging {
             SetBackColor(rtfResults, 0, method.Name, EventColors[method.Event]);
             if (method.Event is EVENTS.PASS) return;
             StringBuilder stringBuilder = new StringBuilder(((IFormat)method).Format());
-            stringBuilder.AppendLine(FormatMessage(MESSAGE_TEST_EVENT, method.Event.ToString()));
+            stringBuilder.AppendLine(FormatMessage(MessageTestEvent, method.Event.ToString()));
             stringBuilder.Append($"{Spaces2}{method.Log}");
             Int32 startFind = rtfResults.TextLength;
             Append(rtfResults, stringBuilder.ToString());
@@ -32,7 +32,7 @@ namespace ABT.Test.TestExecutive.TestExec.Logging {
 
         public static void Start(RichTextBox rtfResults) {
             Append(rtfResults, $"{nameof(UUT)}:");
-            Append(rtfResults, $"{MESSAGE_UUT_EVENT}");
+            Append(rtfResults, $"{MessageUUT_Event}");
             Append(rtfResults, $"{Spaces2}{nameof(TestSequence.SerialNumber)}".PadRight(PaddingRight) + $": {testSequence.SerialNumber}");
             Append(rtfResults, $"{Spaces2}{nameof(UUT.Number)}".PadRight(PaddingRight) + $": {testSequence.UUT.Number}");
             Append(rtfResults, $"{Spaces2}{nameof(UUT.Revision)}".PadRight(PaddingRight) + $": {testSequence.UUT.Revision}");
@@ -51,7 +51,7 @@ namespace ABT.Test.TestExecutive.TestExec.Logging {
         }
 
         public static void Stop(RichTextBox rtfResults) {
-            ReplaceString(rtfResults, 0, $"{MESSAGE_UUT_EVENT}", $"{MESSAGE_UUT_EVENT}{testSequence.Event}");
+            ReplaceString(rtfResults, 0, $"{MessageUUT_Event}", $"{MessageUUT_Event}{testSequence.Event}");
             SetBackColor(rtfResults, 0, testSequence.Event.ToString(), EventColors[testSequence.Event]);
             if (testSequence.IsOperation && testPlanDefinition.SerialNumberEntry.EntryType != SerialNumberEntryType.None) {
                 if (testExecDefinition.TestData.Item is TextFiles) StopTextFiles();

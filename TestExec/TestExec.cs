@@ -20,6 +20,9 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
+using System.Data.SqlClient;
+using System.Xml.Serialization;
+using System.Xml;
 
 // TODO:  Eventually; evaluate Keysight OpenTAP as potential option in addition to TestExec/TestLib/TestPlan.  https://opentap.io/.
 // - Briefly evaluated previously; time for reevaluation.
@@ -192,7 +195,7 @@ namespace ABT.Test.TestExecutive.TestExec {
                 return GetMailItem();
             } catch {
                 _ = MessageBox.Show(ActiveForm, "Could not open Microsoft 365 Outlook.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Logger.Append(rtfResults, $"Could not open Microsoft 365 Outlook.{Environment.NewLine}Please contact Test Engineering.");
+                // TODO: Logger.Append($"Could not open Microsoft 365 Outlook.{Environment.NewLine}Please contact Test Engineering.");
                 throw new NotImplementedException("Outlook not good...");
             }
         }
@@ -456,11 +459,216 @@ namespace ABT.Test.TestExecutive.TestExec {
         }
         #endregion Form Tool Strip Menu Items
 
-        #region Methods
+        #region Form Status Strip
+        private void StatusTimeUpdate(Object source, ElapsedEventArgs e) { StatusTimeLabel.Text = testPlanDefinition.TestSpace.StatusTime(); }
+
+        private void StatusStatisticsUpdate(Object source, ElapsedEventArgs e) { StatusStatisticsLabel.Text = testPlanDefinition.TestSpace.StatisticsStatus(); }
+
+        private enum MODES { Resetting, Running, Cancelling, Emergency_Stopping, Waiting };
+
+        private readonly Dictionary<MODES, Color> ModeColors = new Dictionary<MODES, Color>() {
+            { MODES.Resetting, EventColors[EVENTS.UNSET] },
+            { MODES.Running, EventColors[EVENTS.PASS] },
+            { MODES.Cancelling, EventColors[EVENTS.CANCEL] },
+            { MODES.Emergency_Stopping, EventColors[EVENTS.EMERGENCY_STOP] },
+            { MODES.Waiting, Color.Black }
+        };
+
+        private void StatusModeUpdate(MODES mode) {
+            StatusModeLabel.Text = Enum.GetName(typeof(MODES), mode);
+            StatusModeLabel.ForeColor = ModeColors[mode];
+        }
+
+        public void StatusCustomWrite(String Message, Color ForeColor) {
+            _ = Invoke((Action)(() => StatusCustomLabel.Text = Message));
+            _ = Invoke((Action)(() => StatusCustomLabel.ForeColor = ForeColor));
+        }
+        #endregion Form Status Strip
+
+        #region Form Logging
+        private static readonly String MessageTestEvent = "Test Event";
+        private static readonly String MessageUUT_Event = (Spaces2 + MessageTestEvent).PadRight(PaddingRight) + ": ";
+
+        #region Public Methods
+        public void LogAppend(String message) {
+            Int32 startFind = rtfResults.TextLength;
+
+            if (rtfResults.InvokeRequired) {
+                rtfResults.BeginInvoke((MethodInvoker)(() => LogAppend(message)));
+            } else {
+                rtfResults.AppendText(message + Environment.NewLine);
+            }
+
+            Int32 selectionStart;
+            foreach (EVENTS Event in Enum.GetValues(typeof(EVENTS))) {
+                if (message.Contains(Event.ToString())) {
+                    selectionStart = rtfResults.Find(Event.ToString(), startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+                    rtfResults.SelectionStart = selectionStart;
+                    rtfResults.SelectionLength = Event.ToString().Length;
+                    rtfResults.SelectionBackColor = EventColors[Event];
+                }
+            }
+        }
+        public void LogError(String logMessage) { LogAppend(logMessage); }
+        #endregion Public Methods
+
+        #region Private Methods
+        private void LogMethod(Method method) {
+            LogSetBackColor(startFind: 0, findString: method.Name, backColor: EventColors[method.Event]);
+            if (method.Event is EVENTS.PASS) return;
+            StringBuilder stringBuilder = new StringBuilder(((IFormat)method).Format());
+            stringBuilder.AppendLine(FormatMessage(MessageTestEvent, method.Event.ToString()));
+            stringBuilder.Append($"{Spaces2}{method.Log}");
+            Int32 startFind = rtfResults.TextLength;
+            LogAppend(stringBuilder.ToString());
+            LogSetBackColors(startFind, findString: EVENTS.FAIL.ToString(), backColor: EventColors[EVENTS.FAIL]);
+            LogSetBackColors(startFind, findString: EVENTS.PASS.ToString(), backColor: EventColors[EVENTS.PASS]);
+        }
+
+        private void LogStart() {
+            LogAppend($"{nameof(UUT)}:");
+            LogAppend($"{MessageUUT_Event}");
+            LogAppend($"{Spaces2}{nameof(TestSequence.SerialNumber)}".PadRight(PaddingRight) + $": {testSequence.SerialNumber}");
+            LogAppend($"{Spaces2}{nameof(UUT.Number)}".PadRight(PaddingRight) + $": {testSequence.UUT.Number}");
+            LogAppend($"{Spaces2}{nameof(UUT.Revision)}".PadRight(PaddingRight) + $": {testSequence.UUT.Revision}");
+            LogAppend($"{Spaces2}{nameof(UUT.Description)}".PadRight(PaddingRight) + $": {testSequence.UUT.Description}");
+            LogAppend($"{Spaces2}{nameof(UUT.Category)}".PadRight(PaddingRight) + $": {testSequence.UUT.Category}");
+            LogAppend($"{Spaces2}{nameof(UUT.Customer)}".PadRight(PaddingRight) + $": {testSequence.UUT.Customer.Name}\n");
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine($"{nameof(TestGroup.Methods)}:");
+            String SPACING = Spaces2 + Spaces2; // Embedded tabs in strings (\t) seem to cause method ReplaceText() issues.
+            foreach (TestGroup testGroup in testSequence.TestOperation.TestGroups) {
+                stringBuilder.AppendLine($"{Spaces2}{testGroup.Classname}, {testGroup.Description}");
+                foreach (Method method in testGroup.Methods) stringBuilder.AppendLine($"{SPACING}{method.Name}".PadRight(PaddingRight + SPACING.Length) + $": {method.Description}");
+            }
+            LogAppend(stringBuilder.ToString());
+        }
+
+        private void LogStop() {
+            LogReplaceString(startFind: 0, findString: $"{MessageUUT_Event}", replacementString: $"{MessageUUT_Event}{testSequence.Event}");
+            LogSetBackColor(startFind: 0, findString: testSequence.Event.ToString(), backColor: EventColors[testSequence.Event]);
+            if (testSequence.IsOperation && testPlanDefinition.SerialNumberEntry.EntryType != SerialNumberEntryType.None) {
+                if (testExecDefinition.TestData.Item is TextFiles) LogStopTextFiles();
+                else if (testExecDefinition.TestData.Item is SQL_DB) LogStopSQL_DB();
+                else throw new ArgumentException($"Unknown {nameof(TestData)} item '{testExecDefinition.TestData.Item}'.");
+            }
+        }
+
+        private void LogReplaceString(Int32 startFind, String findString, String replacementString) {
+            Int32 selectionStart = rtfResults.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+            rtfResults.SelectionStart = selectionStart;
+            rtfResults.SelectionLength = findString.Length;
+            rtfResults.SelectedText = replacementString;
+        }
+
+        private void LogReplaceStrings(Int32 startFind, String findString, String replacementString) {
+            Int32 selectionStart;
+
+            while (startFind < rtfResults.TextLength) {
+                selectionStart = rtfResults.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+                if (selectionStart == -1) break;
+                rtfResults.SelectionStart = selectionStart;
+                rtfResults.SelectionLength = findString.Length;
+                rtfResults.SelectedText = replacementString;
+                startFind = selectionStart + findString.Length;
+            }
+        }
+
+        private void LogSetBackColor(Int32 startFind, String findString, Color backColor) {
+            Int32 selectionStart = rtfResults.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+            rtfResults.SelectionStart = selectionStart;
+            rtfResults.SelectionLength = findString.Length;
+            rtfResults.SelectionBackColor = backColor;
+        }
+
+        private void LogSetBackColors(Int32 startFind, String findString, Color backColor) {
+            Int32 selectionStart;
+            while (startFind < rtfResults.TextLength) {
+                selectionStart = rtfResults.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+                if (selectionStart == -1) break;
+                rtfResults.SelectionStart = selectionStart;
+                rtfResults.SelectionLength = findString.Length;
+                rtfResults.SelectionBackColor = backColor;
+                startFind = selectionStart + findString.Length;
+            }
+        }
+
+        private void LogStopTextFiles() {
+            String xmlFolder = $"{((TextFiles)testExecDefinition.TestData.Item).Folder}\\{testPlanDefinition.UUT.Number}\\{testSequence.TestOperation.NamespaceTrunk}";
+            String xmlBaseName = $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}";
+            String[] xmlFileNames;
+            try {
+                xmlFileNames = Directory.GetFiles(xmlFolder, $"{xmlBaseName}_*{xml}", SearchOption.TopDirectoryOnly);
+            } catch {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine($"Logging error:");
+                stringBuilder.AppendLine($"   Folder         : '{xmlFolder}'.");
+                stringBuilder.AppendLine($"   Base File Name : '{xmlBaseName}_*{xml}'.");
+                MessageBox.Show(stringBuilder.ToString(), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                throw;
+            }
+            Int32 maxNumber = 0; String s;
+            foreach (String xmlFileName in xmlFileNames) {
+                s = xmlFileName;
+                foreach (EVENTS Event in Enum.GetValues(typeof(EVENTS))) s = s.Replace(Event.ToString(), String.Empty);
+                s = s.Replace($"{xmlFolder}\\{xmlBaseName}", String.Empty);
+                s = s.Replace(xml, String.Empty);
+                s = s.Replace("_", String.Empty);
+
+                if (Int32.Parse(s) > maxNumber) maxNumber = Int32.Parse(s);
+            }
+
+            using (FileStream fileStream = new FileStream($"{xmlFolder}\\{xmlBaseName}_{++maxNumber}_{testSequence.Event}{xml}", FileMode.CreateNew)) {
+                using (XmlTextWriter xmlTextWriter = new XmlTextWriter(fileStream, new UTF8Encoding(true))) {
+                    xmlTextWriter.Formatting = Formatting.Indented;
+                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(TestSequence), LogGetOverrides());
+                    xmlSerializer.Serialize(xmlTextWriter, testSequence);
+                }
+            }
+        }
+
+        private void LogStopSQL_DB() {
+            using (StringWriter stringWriter = new StringWriter()) {
+                using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, new XmlWriterSettings { Encoding = new UTF8Encoding(true), Indent = true })) {
+                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(TestSequence), LogGetOverrides());
+                    xmlSerializer.Serialize(xmlWriter, testSequence);
+                    xmlWriter.Flush();
+
+                    using (SqlConnection sqlConnection = new SqlConnection(((SQL_DB)testExecDefinition.TestData.Item).ConnectionString)) {
+                        using (SqlCommand sqlCommand = new SqlCommand("INSERT INTO Sequences (Sequence) VALUES (@XML)", sqlConnection)) {
+                            sqlCommand.Parameters.AddWithValue("@XML", stringWriter.ToString());
+                            sqlConnection.Open();
+                            sqlCommand.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+        }
+
+        private XmlAttributeOverrides LogGetOverrides() {
+            XmlAttributes xmlAttributes;
+            XmlAttributeOverrides xmlAttributeOverrides = new XmlAttributeOverrides();
+            xmlAttributes = new XmlAttributes { XmlIgnore = true };
+            xmlAttributeOverrides.Add(typeof(UUT), nameof(UUT.Documentation), xmlAttributes);
+            xmlAttributes = new XmlAttributes { XmlIgnore = true };
+            xmlAttributeOverrides.Add(typeof(TestOperation), nameof(TestOperation.ProductionTest), xmlAttributes);
+            xmlAttributes = new XmlAttributes { XmlIgnore = true };
+            xmlAttributeOverrides.Add(typeof(Method), nameof(Method.CancelNotPassed), xmlAttributes);
+            xmlAttributes = new XmlAttributes { XmlIgnore = true };
+            xmlAttributeOverrides.Add(typeof(TestGroup), nameof(TestGroup.CancelNotPassed), xmlAttributes);
+            xmlAttributes = new XmlAttributes { XmlIgnore = true };
+            xmlAttributeOverrides.Add(typeof(TestGroup), nameof(TestGroup.Independent), xmlAttributes);
+            return xmlAttributeOverrides;
+        }
+        #endregion Private
+        #endregion Form Logging
+
+        #region Form Methods
         private void MethodsPreRun() {
             testSequence.PreRun();
             TestIndices.Nullify();
-            Logger.Start(rtfResults);
+            LogStart();
             SystemReset();
         }
 
@@ -497,7 +705,7 @@ namespace ABT.Test.TestExecutive.TestExec {
                         if (CT_EmergencyStop.IsCancellationRequested) method.Event = EVENTS.EMERGENCY_STOP;
                         else if (CT_Cancel.IsCancellationRequested) method.Event = EVENTS.CANCEL;
                         // NOTE:  Both CT_Cancel.IsCancellationRequested & CT_EmergencyStop.IsCancellationRequested could be true; prioritize CT_EmergencyStop.
-                        Logger.LogMethod(rtfResults, method);
+                        LogMethod(method);
                     }
                     if (method.Event != EVENTS.PASS && method.CancelNotPassed) return;
                 }
@@ -514,7 +722,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             TextTest.BackColor = EventColors[testSequence.Event];
             testPlanDefinition.TestSpace.Statistics.Update(testSequence.Event);
             StatusStatisticsUpdate(null, null);
-            Logger.Stop(rtfResults);
+            LogStop();
         }
 
         private Boolean EventSet(Int32 aggregatedEvents, EVENTS events) { return ((aggregatedEvents & (Int32)events) == (Int32)events); }
@@ -534,32 +742,6 @@ namespace ABT.Test.TestExecutive.TestExec {
 
             throw new NotImplementedException(($"{nameof(testOperation.NamespaceTrunk)}: '{testOperation.NamespaceTrunk}', {nameof(testOperation.Description)} '{testOperation.Description}' doesn't contain valid {nameof(EVENTS)}."));
         }
-        #endregion Methods
-
-        #region Status Strip methods.
-        private void StatusTimeUpdate(Object source, ElapsedEventArgs e) { StatusTimeLabel.Text = testPlanDefinition.TestSpace.StatusTime(); }
-
-        private void StatusStatisticsUpdate(Object source, ElapsedEventArgs e) { StatusStatisticsLabel.Text = testPlanDefinition.TestSpace.StatisticsStatus(); }
-
-        private enum MODES { Resetting, Running, Cancelling, Emergency_Stopping, Waiting };
-
-        private readonly Dictionary<MODES, Color> ModeColors = new Dictionary<MODES, Color>() {
-            { MODES.Resetting, EventColors[EVENTS.UNSET] },
-            { MODES.Running, EventColors[EVENTS.PASS] },
-            { MODES.Cancelling, EventColors[EVENTS.CANCEL] },
-            { MODES.Emergency_Stopping, EventColors[EVENTS.EMERGENCY_STOP] },
-            { MODES.Waiting, Color.Black }
-        };
-
-        private void StatusModeUpdate(MODES mode) {
-            StatusModeLabel.Text = Enum.GetName(typeof(MODES), mode);
-            StatusModeLabel.ForeColor = ModeColors[mode];
-        }
-
-        public void StatusCustomWrite(String Message, Color ForeColor) {
-            _ = Invoke((Action)(() => StatusCustomLabel.Text = Message));
-            _ = Invoke((Action)(() => StatusCustomLabel.ForeColor = ForeColor));
-        }
-        #endregion Status Strip methods.
+        #endregion Form Methods
     }
 }
