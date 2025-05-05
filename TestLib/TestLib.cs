@@ -54,15 +54,21 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static readonly String TestExecutiveURL = configuration.AppSettings.Settings[nameof(TestExecutiveURL)].Value;
         public static readonly String TestPlansFolder = configuration.AppSettings.Settings[nameof(TestPlansFolder)].Value;
 
+        public static readonly String xml = ".xml";
+        public static readonly String xsd = ".xsd";
         public static readonly String TestExecDefinitionBase = "TestExecDefinition";
-        public static readonly String TestExecDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase +".xsd";
-        public static readonly String TestExecDefinitionXML_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase + ".xml";
-        public static readonly String TestExecDefinitionXSD_URL = TestExecutiveURL + "/" + TestExecDefinitionBase + ".xsd";
+        public static readonly String TestExecDefinitionXML_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase + xml;
+        public static readonly String TestExecDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase + xsd;
+        public static readonly String TestExecDefinitionXSD_URL = TestExecutiveURL + "/" + TestExecDefinitionBase + xsd;
 
         public static readonly String TestPlanDefinitionBase = "TestPlanDefinition";
-        public static readonly String TestPlanDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestPlanDefinitionBase +".xsd";
         public static String TestPlanDefinitionXML_Path = null;
-        public static readonly String TestPlanDefinitionXSD_URL = TestExecutiveURL + "/" + TestPlanDefinitionBase +".xsd";
+        public static readonly String TestPlanDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestPlanDefinitionBase + xsd;
+        public static readonly String TestPlanDefinitionXSD_URL = TestExecutiveURL + "/" + TestPlanDefinitionBase + xsd;
+
+        public static readonly String TestSequenceBase = "TestSequence";
+        public static readonly String TestSequenceXSD_Path = TestExecutiveFolder + @"\" + TestSequenceBase + xsd;
+        public static readonly String TestSequenceXSD_URL = TestExecutiveURL + "/" + TestSequenceBase + xsd;
 
         public static readonly TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TestExecDefinitionXML_Path}");
         public static readonly String Spaces2 = "  ";

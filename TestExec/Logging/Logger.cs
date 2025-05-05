@@ -122,17 +122,16 @@ namespace ABT.Test.TestExecutive.TestExec.Logging {
         }
 
         private static void StopTextFiles() {
-            const String _xml = ".xml";
             String xmlFolder = $"{((TextFiles)testExecDefinition.TestData.Item).Folder}\\{testPlanDefinition.UUT.Number}\\{testSequence.TestOperation.NamespaceTrunk}";
             String xmlBaseName = $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}";
             String[] xmlFileNames;
             try {
-                xmlFileNames = Directory.GetFiles(xmlFolder, $"{xmlBaseName}_*{_xml}", SearchOption.TopDirectoryOnly);
+                xmlFileNames = Directory.GetFiles(xmlFolder, $"{xmlBaseName}_*{xml}", SearchOption.TopDirectoryOnly);
             } catch {
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.AppendLine($"Logging error:");
                 stringBuilder.AppendLine($"   Folder         : '{xmlFolder}'.");
-                stringBuilder.AppendLine($"   Base File Name : '{xmlBaseName}_*{_xml}'.");
+                stringBuilder.AppendLine($"   Base File Name : '{xmlBaseName}_*{xml}'.");
                 MessageBox.Show(stringBuilder.ToString(), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 throw;
             }
@@ -141,13 +140,13 @@ namespace ABT.Test.TestExecutive.TestExec.Logging {
                 s = xmlFileName;
                 foreach (EVENTS Event in Enum.GetValues(typeof(EVENTS))) s = s.Replace(Event.ToString(), String.Empty);
                 s = s.Replace($"{xmlFolder}\\{xmlBaseName}", String.Empty);
-                s = s.Replace(_xml, String.Empty);
+                s = s.Replace(xml, String.Empty);
                 s = s.Replace("_", String.Empty);
 
                 if (Int32.Parse(s) > maxNumber) maxNumber = Int32.Parse(s);
             }
 
-            using (FileStream fileStream = new FileStream($"{xmlFolder}\\{xmlBaseName}_{++maxNumber}_{testSequence.Event}{_xml}", FileMode.CreateNew)) {
+            using (FileStream fileStream = new FileStream($"{xmlFolder}\\{xmlBaseName}_{++maxNumber}_{testSequence.Event}{xml}", FileMode.CreateNew)) {
                 using (XmlTextWriter xmlTextWriter = new XmlTextWriter(fileStream, new UTF8Encoding(true))) {
                     xmlTextWriter.Formatting = Formatting.Indented;
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(TestSequence), GetOverrides());

@@ -16,8 +16,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             if (!File.Exists(testPlanDefinitionXML_Path)) throw new ArgumentException($"XML TestPlan Definition File '{testPlanDefinitionXML_Path}' does not exist.");
             XmlSchemaSet xmlSchemaSet = new XmlSchemaSet();
             xmlSchemaSet.Add(null, TestLib.TestPlanDefinitionXSD_Path);
-            xmlSchemaSet.Add(null, TestLib.TestPlanDefinitionXSD_URL);
-            XmlReaderSettings xmlReaderSettings = new XmlReaderSettings { ValidationType = ValidationType.Schema, Schemas = xmlSchemaSet };
+             XmlReaderSettings xmlReaderSettings = new XmlReaderSettings { ValidationType = ValidationType.Schema, Schemas = xmlSchemaSet };
             xmlReaderSettings.ValidationEventHandler += ValidationCallback;
 
             try {
