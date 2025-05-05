@@ -406,7 +406,6 @@ namespace ABT.Test.TestExecutive.TestExec {
             stringBuilder.AppendLine($"{nameof(Assembly)}:");
             stringBuilder.AppendLine($"\t{nameof(Name)}".PadRight(PR) + $": {assembly.GetName().Name}");
             stringBuilder.AppendLine($"\t{nameof(Version)}".PadRight(PR) + $": {assembly.GetName().Version}");
-            stringBuilder.AppendLine($"\tBuilt".PadRight(PR) + $": {BuildDate(assembly.GetName().Version)}");
             AssemblyCopyrightAttribute assemblyCopyrightAttribute = (AssemblyCopyrightAttribute)Attribute.GetCustomAttribute(assembly, typeof(AssemblyCopyrightAttribute));
             String copyRight = assemblyCopyrightAttribute is null ? "© Amphenol Borisch Technologies" : assemblyCopyrightAttribute.Copyright;
             stringBuilder.AppendLine($"\t{copyRight}{Environment.NewLine}{Environment.NewLine}");
@@ -522,10 +521,10 @@ namespace ABT.Test.TestExecutive.TestExec {
 
         private void LogReplaceString(Int32 startFind, String findString, String replacementString) {
             Int32 selectionStart = rtfResults.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
-            rtfResults.SelectionStart = selectionStart;
-            rtfResults.SelectionLength = findString.Length;
-            rtfResults.SelectedText = replacementString;
-        }
+                rtfResults.SelectionStart = selectionStart;
+                rtfResults.SelectionLength = findString.Length;
+                rtfResults.SelectedText = replacementString;
+            }
 
         private void LogReplaceStrings(Int32 startFind, String findString, String replacementString) {
             Int32 selectionStart;
@@ -661,7 +660,6 @@ namespace ABT.Test.TestExecutive.TestExec {
                         if (!CT_EmergencyStop.IsCancellationRequested && !CT_Cancel.IsCancellationRequested) {
                             method.Event = EVENTS.ERROR;
                             _ = method.Log.AppendLine($"{Environment.NewLine}{exception}");
-                            // TODO: Soon; log exception to Windows Event Log.
                             ErrorMessage(exception.ToString());
                         }
                         return;

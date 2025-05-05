@@ -46,7 +46,6 @@ namespace ABT.Test.TestExecutive.TestLib {
             { EVENTS.INFORMATION, Color.White }
         };
 
-        // TODO:  Eventually; mitigate or eliminate writeable global objects; use passed parameters instead.
         private static readonly System.Configuration.Configuration configuration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
         public static readonly String TestExecutiveFolder = configuration.AppSettings.Settings[nameof(TestExecutiveFolder)].Value;
         public static readonly String TestExecutiveURL = configuration.AppSettings.Settings[nameof(TestExecutiveURL)].Value;
@@ -60,7 +59,7 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static readonly String TestExecDefinitionXSD_URL = TestExecutiveURL + "/" + TestExecDefinitionBase + xsd;
 
         public static readonly String TestPlanDefinitionBase = "TestPlanDefinition";
-        public static String TestPlanDefinitionXML_Path = null;
+        public static String TestPlanDefinitionXML_Path { get; set; } = null;
         public static readonly String TestPlanDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestPlanDefinitionBase + xsd;
         public static readonly String TestPlanDefinitionXSD_URL = TestExecutiveURL + "/" + TestPlanDefinitionBase + xsd;
 
@@ -73,21 +72,16 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static readonly Int32 PaddingRight = 21;
         internal static readonly String TestExecutive = nameof(TestExecutive);
 
-        public static TestPlanDefinition testPlanDefinition = null;
-        public static Dictionary<String, Object> InstrumentDrivers = null;
-        public static TestSequence testSequence = null;
-        public static String UserName = null;
-        public static CancellationTokenSource CTS_Cancel;
-        public static CancellationTokenSource CTS_EmergencyStop;
-        public static CancellationToken CT_Cancel;
-        public static CancellationToken CT_EmergencyStop;
+        public static TestPlanDefinition testPlanDefinition { get; set; } = null;
+        public static Dictionary<String, Object> InstrumentDrivers { get; set; } = null;
+        public static TestSequence testSequence { get; set; } = null;
+        public static String UserName { get; set; } = null;
+        public static CancellationTokenSource CTS_Cancel { get; set; } = null;
+        public static CancellationTokenSource CTS_EmergencyStop { get; set; } = null;
+        public static CancellationToken CT_Cancel { get; set; }
+        public static CancellationToken CT_EmergencyStop { get; set; }
 
         public static String FormatMessage(String Label, String Message) { return $"{Spaces2}{Label}".PadRight(PaddingRight) + $": {Message}"; }
-
-        public static String BuildDate(Version version) {
-            DateTime Y2K = new DateTime(year: 2000, month: 1, day: 1, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Local);
-            return $"{Y2K + new TimeSpan(days: version.Build, hours: 0, minutes: 0, seconds: 2 * version.Revision):g}";
-        }
 
         public static Dictionary<String, Object> GetInstrumentDriversTestExecDefinition() {
             Dictionary<String, Object> instrumentDrivers = new Dictionary<String, Object>();
@@ -221,6 +215,10 @@ namespace ABT.Test.TestExecutive.TestLib {
 
         public static void ErrorMessage(String Error) {
             _ = MessageBox.Show($"Unexpected error:{Environment.NewLine}{Error}", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            using (EventLog eventLog = new EventLog("Application")) {
+                eventLog.Source = configuration.AppSettings.Settings["EventLog"].Value;
+                eventLog.WriteEntry(Error, EventLogEntryType.Error);
+            }
         }
 
         public static String NotImplementedMessageEnum<T>(String enumName) where T : Enum { return $"Unimplemented Enum item '{enumName}'; switch/case must support all items in enum '{String.Join(",", Enum.GetNames(typeof(T)))}'."; }
