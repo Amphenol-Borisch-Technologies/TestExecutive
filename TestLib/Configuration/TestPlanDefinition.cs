@@ -122,7 +122,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             InstrumentTestExec instrumentTestExec = null;
             foreach (Stationary stationary in Stationary) {
                 instrumentTestExec = instrumentsTestExec.InstrumentTestExec.Find(x => x.ID == stationary.ID) ?? throw new ArgumentException(FormatException(stationary.ID));
-                instruments.Add(new InstrumentInfo(stationary.ID, stationary.Alias, instrumentTestExec.NameSpacedClassName));   
+                instruments.Add(new InstrumentInfo(stationary.ID, stationary.Alias, instrumentTestExec.NameSpacedClassName));
             }
 
             foreach (Mobile mobile in Mobile) instruments.Add(new InstrumentInfo(mobile.ID, mobile.Alias, mobile.NameSpacedClassName));

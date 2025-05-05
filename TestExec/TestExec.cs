@@ -4,9 +4,9 @@ using ABT.Test.TestExecutive.TestLib.Configuration;
 using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using ABT.Test.TestExecutive.TestLib.Miscellaneous;
 using Microsoft.VisualBasic;
-using Outlook = Microsoft.Office.Interop.Outlook;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.DirectoryServices.AccountManagement;
 using System.Drawing;
@@ -19,10 +19,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
-using static ABT.Test.TestExecutive.TestLib.TestLib;
-using System.Data.SqlClient;
-using System.Xml.Serialization;
 using System.Xml;
+using System.Xml.Serialization;
+using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 // TODO:  Eventually; evaluate Keysight OpenTAP as potential option in addition to TestExec/TestLib/TestPlan.  https://opentap.io/.
 // - Briefly evaluated previously; time for reevaluation.
@@ -320,7 +319,7 @@ namespace ABT.Test.TestExecutive.TestExec {
                 openFileDialog.Filter = "TestPlan Files|*.exe";
                 if (openFileDialog.ShowDialog() == DialogResult.OK) {
                     TestChooser.TestChooser.Launch(openFileDialog.FileName, Process.GetCurrentProcess().Id);
-                    Application.Exit();   
+                    Application.Exit();
                 }
             }
         }
