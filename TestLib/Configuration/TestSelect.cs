@@ -61,7 +61,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             TestOperation selectedOperation = null;
             if (testSequence.IsOperation) selectedOperation = TestLib.testPlanDefinition.TestSpace.TestOperations[TestList.SelectedItems[0].Index];
             else selectedOperation = TestLib.testPlanDefinition.TestSpace.TestOperations.Find(nt => nt.NamespaceTrunk.Equals(TestList.SelectedItems[0].SubItems[0].Text));
-            testSequence.TestOperation = Serializing.DeserializeFromFile<TestOperation>(xmlFile: TestLib.TestPlanDefinitionXML, xPath: $"//TestOperation[@NamespaceTrunk='{selectedOperation.NamespaceTrunk}']");
+            testSequence.TestOperation = Serializing.DeserializeFromFile<TestOperation>(xmlFile: TestLib.TestPlanDefinitionXML_Path, xPath: $"//TestOperation[@NamespaceTrunk='{selectedOperation.NamespaceTrunk}']");
             if (!testSequence.IsOperation) {
                 TestGroup selectedGroup = selectedOperation.TestGroups.Find(tg => tg.Classname.Equals(TestList.SelectedItems[0].SubItems[1].Text));
                 _ = testSequence.TestOperation.TestGroups.RemoveAll(tg => tg.Classname != selectedGroup.Classname);

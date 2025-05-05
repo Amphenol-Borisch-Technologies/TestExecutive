@@ -48,26 +48,27 @@ namespace ABT.Test.TestExecutive.TestLib {
             { EVENTS.INFORMATION, Color.White }
         };
 
+        // TODO:  Eventually; mitigate or eliminate writeable global objects; use passed parameters instead.
         private static readonly System.Configuration.Configuration configuration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
         public static readonly String TestExecutiveFolder = configuration.AppSettings.Settings[nameof(TestExecutiveFolder)].Value;
         public static readonly String TestExecutiveURL = configuration.AppSettings.Settings[nameof(TestExecutiveURL)].Value;
         public static readonly String TestPlansFolder = configuration.AppSettings.Settings[nameof(TestPlansFolder)].Value;
 
-        private static readonly String TestExecDefinitionXSD_Base = "TestExecDefinition";
-        public static readonly String TestExecDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestExecDefinitionXSD_Base +".xsd";
-        public static readonly String TestExecDefinitionXML_Path = TestExecutiveFolder + @"\" + TestExecDefinitionXSD_Base + ".xml";
-        public static readonly String TestExecDefinitionXSD_URL = TestExecutiveURL + "/" + TestExecDefinitionXSD_Base + ".xsd";
+        public static readonly String TestExecDefinitionBase = "TestExecDefinition";
+        public static readonly String TestExecDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase +".xsd";
+        public static readonly String TestExecDefinitionXML_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase + ".xml";
+        public static readonly String TestExecDefinitionXSD_URL = TestExecutiveURL + "/" + TestExecDefinitionBase + ".xsd";
 
-        private static readonly String TestPlanDefinitionXSD_File = "TestPlanDefinition.xsd";
-        public static readonly String TestPlanDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestPlanDefinitionXSD_File;
-        public static readonly String TestPlanDefinitionXSD_URL = TestExecutiveURL + "/" + TestPlanDefinitionXSD_File;
+        public static readonly String TestPlanDefinitionBase = "TestPlanDefinition";
+        public static readonly String TestPlanDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestPlanDefinitionBase +".xsd";
+        public static String TestPlanDefinitionXML_Path = null;
+        public static readonly String TestPlanDefinitionXSD_URL = TestExecutiveURL + "/" + TestPlanDefinitionBase +".xsd";
 
         public static readonly TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TestExecDefinitionXML_Path}");
-        public static readonly String SPACES_2 = "  ";
-        public static readonly Int32 PAD_RIGHT = 21;
+        public static readonly String Spaces2 = "  ";
+        public static readonly Int32 PaddingRight = 21;
         internal static readonly String TestExecutive = nameof(TestExecutive);
-        // TODO:  Eventually; mitigate or eliminate writeable global objects; use passed parameters instead.
-        public static String TestPlanDefinitionXML = null;
+
         public static TestPlanDefinition testPlanDefinition = null;
         public static Dictionary<String, Object> InstrumentDrivers = null;
         public static TestSequence testSequence = null;
@@ -77,7 +78,7 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static CancellationToken CT_Cancel;
         public static CancellationToken CT_EmergencyStop;
 
-        public static String FormatMessage(String Label, String Message) { return $"{SPACES_2}{Label}".PadRight(PAD_RIGHT) + $": {Message}"; }
+        public static String FormatMessage(String Label, String Message) { return $"{Spaces2}{Label}".PadRight(PaddingRight) + $": {Message}"; }
 
         public static String BuildDate(Version version) {
             DateTime Y2K = new DateTime(year: 2000, month: 1, day: 1, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Local);

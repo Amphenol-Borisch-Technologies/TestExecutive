@@ -112,9 +112,9 @@ namespace ABT.Test.TestExecutive.TestExec {
         protected TestExec(Icon icon, String testPlanFolder) {
             InitializeComponent();
             Icon = icon; // NOTE:  https://stackoverflow.com/questions/40933304/how-to-create-an-icon-for-visual-studio-with-just-mspaint-and-visual-studio
-            TestPlanDefinitionXML = testPlanFolder + @"\TestPlanDefinition.xml";
-            if (TestPlanDefinitionValidator.ValidSpecification(TestPlanDefinitionXML)) testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(xmlFile: $"{TestPlanDefinitionXML}");
-            else throw new ArgumentException($"Invalid XML '{TestPlanDefinitionXML}'; doesn't comply with XSD '{TestPlanDefinitionXSD_Path}'.");
+            TestPlanDefinitionXML_Path = testPlanFolder + @"\" + TestPlanDefinitionBase + ".xml";
+            if (TestPlanDefinitionValidator.ValidDefinition(TestPlanDefinitionXML_Path)) testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(xmlFile: $"{TestPlanDefinitionXML_Path}");
+            else throw new ArgumentException($"Invalid XML '{TestPlanDefinitionXML_Path}'; doesn't comply with XSD '{TestPlanDefinitionXSD_Path}'.");
             InstrumentDrivers = GetInstrumentDriversTestPlanDefinition();
             UserName = GetUserPrincipal();
 
@@ -124,7 +124,7 @@ namespace ABT.Test.TestExecutive.TestExec {
                 TSMI_UUT_TestDataP_DriveTDR_Folder.Enabled = (testExecDefinition.TestData.Item is TextFiles);
                 TSMI_UUT_TestDataSQL_ReportingAndQuerying.Enabled = (testExecDefinition.TestData.Item is SQL_DB);
 
-                if (RegexInvalid(testPlanDefinition.SerialNumberEntry.RegularEx)) throw new ArgumentException($"Invalid {nameof(SerialNumberEntry.RegularEx)} '{testPlanDefinition.SerialNumberEntry.RegularEx}' in file '{TestPlanDefinitionXML}'.");
+                if (RegexInvalid(testPlanDefinition.SerialNumberEntry.RegularEx)) throw new ArgumentException($"Invalid {nameof(SerialNumberEntry.RegularEx)} '{testPlanDefinition.SerialNumberEntry.RegularEx}' in file '{TestPlanDefinitionXML_Path}'.");
                 if (testPlanDefinition.SerialNumberEntry.EntryType is SerialNumberEntryType.Barcode) _serialNumberDialog = new SerialNumberDialog(testPlanDefinition.SerialNumberEntry.RegularEx, testPlanDefinition.SerialNumberEntry.Format, testExecDefinition.BarcodeReader.ID);
             }
 

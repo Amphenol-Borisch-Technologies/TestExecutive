@@ -13,7 +13,7 @@ using static ABT.Test.TestExecutive.TestLib.TestLib;
 namespace ABT.Test.TestExecutive.TestExec.Logging {
     public static class Logger {
         private static readonly String MESSAGE_TEST_EVENT = "Test Event";
-        private static readonly String MESSAGE_UUT_EVENT = (SPACES_2 + MESSAGE_TEST_EVENT).PadRight(PAD_RIGHT) + ": ";
+        private static readonly String MESSAGE_UUT_EVENT = (Spaces2 + MESSAGE_TEST_EVENT).PadRight(PaddingRight) + ": ";
 
         #region Public Methods
         public static void LogError(RichTextBox rtfResults, String logMessage) { Append(rtfResults, logMessage); }
@@ -23,7 +23,7 @@ namespace ABT.Test.TestExecutive.TestExec.Logging {
             if (method.Event is EVENTS.PASS) return;
             StringBuilder stringBuilder = new StringBuilder(((IFormat)method).Format());
             stringBuilder.AppendLine(FormatMessage(MESSAGE_TEST_EVENT, method.Event.ToString()));
-            stringBuilder.Append($"{SPACES_2}{method.Log}");
+            stringBuilder.Append($"{Spaces2}{method.Log}");
             Int32 startFind = rtfResults.TextLength;
             Append(rtfResults, stringBuilder.ToString());
             SetBackColors(rtfResults, startFind, EVENTS.FAIL.ToString(), EventColors[EVENTS.FAIL]);
@@ -33,19 +33,19 @@ namespace ABT.Test.TestExecutive.TestExec.Logging {
         public static void Start(RichTextBox rtfResults) {
             Append(rtfResults, $"{nameof(UUT)}:");
             Append(rtfResults, $"{MESSAGE_UUT_EVENT}");
-            Append(rtfResults, $"{SPACES_2}{nameof(TestSequence.SerialNumber)}".PadRight(PAD_RIGHT) + $": {testSequence.SerialNumber}");
-            Append(rtfResults, $"{SPACES_2}{nameof(UUT.Number)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Number}");
-            Append(rtfResults, $"{SPACES_2}{nameof(UUT.Revision)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Revision}");
-            Append(rtfResults, $"{SPACES_2}{nameof(UUT.Description)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Description}");
-            Append(rtfResults, $"{SPACES_2}{nameof(UUT.Category)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Category}");
-            Append(rtfResults, $"{SPACES_2}{nameof(UUT.Customer)}".PadRight(PAD_RIGHT) + $": {testSequence.UUT.Customer.Name}\n");
+            Append(rtfResults, $"{Spaces2}{nameof(TestSequence.SerialNumber)}".PadRight(PaddingRight) + $": {testSequence.SerialNumber}");
+            Append(rtfResults, $"{Spaces2}{nameof(UUT.Number)}".PadRight(PaddingRight) + $": {testSequence.UUT.Number}");
+            Append(rtfResults, $"{Spaces2}{nameof(UUT.Revision)}".PadRight(PaddingRight) + $": {testSequence.UUT.Revision}");
+            Append(rtfResults, $"{Spaces2}{nameof(UUT.Description)}".PadRight(PaddingRight) + $": {testSequence.UUT.Description}");
+            Append(rtfResults, $"{Spaces2}{nameof(UUT.Category)}".PadRight(PaddingRight) + $": {testSequence.UUT.Category}");
+            Append(rtfResults, $"{Spaces2}{nameof(UUT.Customer)}".PadRight(PaddingRight) + $": {testSequence.UUT.Customer.Name}\n");
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($"{nameof(TestGroup.Methods)}:");
-            String SPACING = SPACES_2 + SPACES_2; // Embedded tabs in strings (\t) seem to cause method ReplaceText() issues.
+            String SPACING = Spaces2 + Spaces2; // Embedded tabs in strings (\t) seem to cause method ReplaceText() issues.
             foreach (TestGroup testGroup in testSequence.TestOperation.TestGroups) {
-                stringBuilder.AppendLine($"{SPACES_2}{testGroup.Classname}, {testGroup.Description}");
-                foreach (Method method in testGroup.Methods) stringBuilder.AppendLine($"{SPACING}{method.Name}".PadRight(PAD_RIGHT + SPACING.Length) + $": {method.Description}");
+                stringBuilder.AppendLine($"{Spaces2}{testGroup.Classname}, {testGroup.Description}");
+                foreach (Method method in testGroup.Methods) stringBuilder.AppendLine($"{SPACING}{method.Name}".PadRight(PaddingRight + SPACING.Length) + $": {method.Description}");
             }
             Append(rtfResults, stringBuilder.ToString());
         }

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace ABT.Test.TestExecutive.TestLib.Configuration {
     public static class TestPlanGenerator {
 
-        public static void GenerateTestPlan(String TestPlanDefinitionXML) {
+        public static void GenerateTestPlan(String testPlanDefinitionXML_Path) {
             // TODO:  Soon; add option to generate method invocations to Keysight VEE.  Need this.
             //        - Also add capability for VEE programs to access the TestExec & TestLib DLL libraries. 
             // NOTE:  Won't add an option to generate method invocations for Python:
@@ -26,7 +26,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             //          - Unless Python is deeply preferred, C# is as good as or better a choice, especially with Microsoft CoPilot's assistance.
             //          - And if Python is preferred, invoking it from C#, and accessing .Net, TestExec & TestLib from Python are easily coded manually.
             //            - No need to auto-generate such code; CoPilot can easily help with that.
-            TestSpace testSpace = Serializing.DeserializeFromFile<TestSpace>(TestPlanDefinitionXML);
+            TestSpace testSpace = Serializing.DeserializeFromFile<TestSpace>(testPlanDefinitionXML_Path);
 
             for (Int32 testOperation = 0; testOperation < testSpace.TestOperations.Count; testOperation++) {
                 CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
@@ -98,8 +98,8 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             _ = codeTypeDeclaration.Members.Add(codeMemberMethod);
         }
 
-        public static void GenerateInstrumentAliases(String TestPlanDefinitionXML) {
-            TestPlanDefinition testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(TestPlanDefinitionXML);
+        public static void GenerateInstrumentAliases(String testPlanDefinitionXML_Path) {
+            TestPlanDefinition testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(testPlanDefinitionXML_Path);
             CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
             CodeNamespace codeNamespace = new CodeNamespace($"{testPlanDefinition.TestSpace.NamespaceRoot}.{nameof(InstrumentDrivers)}");
             codeNamespace.Imports.Add(new CodeNamespaceImport($"{nameof(ABT)}.{nameof(Test)}.{TestLib.TestExecutive}.{nameof(TestLib)}"));

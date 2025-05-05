@@ -43,25 +43,25 @@ namespace ABT.Test.TestExecutive.TestDev {
         private void TSMI_Generate_InstrumentAliases_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateInstrumentAliases); }
         private void TSMI_Generate_TestPlan_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateTestPlan); }
         private void TestPlanDefinitionAction(Action<String> executeAction) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TestPlansFolder, "TestPlan Definition File|TestPlanDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TestPlansFolder, $"TestPlan Definition File|{TestPlanDefinitionBase}.xml");
             if (dialogResult == DialogResult.OK) {
-                if (!TestPlanDefinitionValidator.ValidSpecification(fileName)) return;
+                if (!TestPlanDefinitionValidator.ValidDefinition(fileName)) return;
                 executeAction?.Invoke(fileName);
             }
         }
 
         private void TSMI_TestDefinitions_TestExec_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TestExecutiveFolder, "TestExec Definition File|TestExecDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TestExecutiveFolder, $"TestExec Definition File|{TestExecDefinitionBase}.xml");
             if (dialogResult == DialogResult.OK) OpenApp(fileName);
         }
         private void TSMI_TestDefinitions_TestPlans_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TestPlansFolder, "TestPlan Definition File|TestPlanDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TestPlansFolder, $"TestPlan Definition File|{TestPlanDefinitionBase}.xml");
             if (dialogResult == DialogResult.OK) OpenApp(fileName);
         }
         private void TSMI_TestDefinitions_Validate_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TestPlansFolder, "TestPlan Definition File|TestPlanDefinition.xml");
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TestPlansFolder, $"TestPlan Definition File|{TestPlanDefinitionBase}.xml");
             if (dialogResult == DialogResult.OK) {
-                if (TestPlanDefinitionValidator.ValidSpecification(fileName)) _ = MessageBox.Show(this, "Validation passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (TestPlanDefinitionValidator.ValidDefinition(fileName)) _ = MessageBox.Show(this, "Validation passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

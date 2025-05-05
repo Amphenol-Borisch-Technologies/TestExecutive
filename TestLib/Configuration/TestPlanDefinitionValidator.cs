@@ -7,13 +7,13 @@ using System.Xml.Schema;
 
 namespace ABT.Test.TestExecutive.TestLib.Configuration {
     public static class TestPlanDefinitionValidator {
-        private static Boolean validSpecification = true;
+        private static Boolean validDefinition = true;
         private static readonly StringBuilder stringBuilder = new StringBuilder();
         private static XmlReader xmlReader;
         private const Int32 PR = 14;
 
-        public static Boolean ValidSpecification(String TestPlanDefinitionXML) {
-            if (!File.Exists(TestPlanDefinitionXML)) throw new ArgumentException($"XML Test Specification File '{TestPlanDefinitionXML}' does not exist.");
+        public static Boolean ValidDefinition(String testPlanDefinitionXML_Path) {
+            if (!File.Exists(testPlanDefinitionXML_Path)) throw new ArgumentException($"XML TestPlan Definition File '{testPlanDefinitionXML_Path}' does not exist.");
             XmlSchemaSet xmlSchemaSet = new XmlSchemaSet();
             xmlSchemaSet.Add(null, TestLib.TestPlanDefinitionXSD_Path);
             xmlSchemaSet.Add(null, TestLib.TestPlanDefinitionXSD_URL);
@@ -21,7 +21,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             xmlReaderSettings.ValidationEventHandler += ValidationCallback;
 
             try {
-                using (xmlReader = XmlReader.Create(TestPlanDefinitionXML, xmlReaderSettings)) {
+                using (xmlReader = XmlReader.Create(testPlanDefinitionXML_Path, xmlReaderSettings)) {
                     Double low, high;
                     String className = String.Empty;
                     HashSet<String> methodTypes = TestLib.GetDerivedClassnames<Method>();
@@ -60,7 +60,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
                                 low = Double.Parse(xmlReader.GetAttribute(nameof(MethodInterval.Low)));
                                 high = Double.Parse(xmlReader.GetAttribute(nameof(MethodInterval.High)));
                                 if (low > high) {
-                                    validSpecification = false;
+                                    validDefinition = false;
                                     stringBuilder.AppendLine($"{nameof(MethodInterval)}'s {nameof(MethodInterval.Low)} > {nameof(MethodInterval.High)}:");
                                     stringBuilder.AppendLine($"\t{nameof(IXmlLineInfo.LineNumber)}".PadRight(PR) + $": {(xmlReader as IXmlLineInfo).LineNumber}");
                                     stringBuilder.AppendLine($"\t{nameof(IXmlLineInfo.LinePosition)}".PadRight(PR) + $": {(xmlReader as IXmlLineInfo).LinePosition}");
@@ -85,7 +85,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
                                 // <xs:assert test="not(Classname = MethodInterval/@Name or Classname = MethodProcess/@Name or Classname = MethodTextual/@Name or Classname = MethodCustom/@Name)"/>.
                                 String methodName = xmlReader.GetAttribute(nameof(Method.Name));
                                 if (className == methodName) {
-                                    validSpecification = false;
+                                    validDefinition = false;
                                     stringBuilder.AppendLine($"{nameof(Method)}'s {nameof(Method.Name)} '{methodName}' identical to {nameof(TestGroup)}'s {nameof(TestGroup.Classname)} '{className}':");
                                     stringBuilder.AppendLine($"\t{nameof(IXmlLineInfo.LineNumber)}".PadRight(PR) + $": {(xmlReader as IXmlLineInfo).LineNumber}");
                                     stringBuilder.AppendLine($"\t{nameof(IXmlLineInfo.LinePosition)}".PadRight(PR) + $": {(xmlReader as IXmlLineInfo).LinePosition}");
@@ -98,20 +98,20 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
                     }
                 }
             } catch (Exception exception) {
-                validSpecification = false;
+                validDefinition = false;
                 stringBuilder.AppendLine($"{nameof(Exception)}:");
                 stringBuilder.AppendLine($"\t{exception.Message}".PadRight(PR) + Environment.NewLine);
             }
 
-            if (!validSpecification) {
-                stringBuilder.AppendLine($"Invalid XML Test Specification File: file:///{TestPlanDefinitionXML}.{Environment.NewLine}");
-                Miscellaneous.CustomMessageBox.Show(Title: "Invalid XML Test Specification File", Message: stringBuilder.ToString(), OptionalIcon: System.Drawing.SystemIcons.Error);
+            if (!validDefinition) {
+                stringBuilder.AppendLine($"Invalid XML TestPlan Definition File: file:///{testPlanDefinitionXML_Path}.{Environment.NewLine}");
+                Miscellaneous.CustomMessageBox.Show(Title: "Invalid XML TestPlan Definition File", Message: stringBuilder.ToString(), OptionalIcon: System.Drawing.SystemIcons.Error);
             }
-            return validSpecification;
+            return validDefinition;
         }
 
         private static void ValidationCallback(Object sender, ValidationEventArgs vea) {
-            validSpecification = false;
+            validDefinition = false;
             stringBuilder.AppendLine($"Validation Event:");
             stringBuilder.AppendLine($"\t{nameof(vea.Exception.LineNumber)}".PadRight(PR) + $": {vea.Exception.LineNumber}");
             stringBuilder.AppendLine($"\t{nameof(vea.Exception.LinePosition)}".PadRight(PR) + $": {vea.Exception.LinePosition}");
