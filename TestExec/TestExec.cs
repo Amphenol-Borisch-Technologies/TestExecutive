@@ -195,7 +195,7 @@ namespace ABT.Test.TestExecutive.TestExec {
                 return GetMailItem();
             } catch {
                 _ = MessageBox.Show(ActiveForm, "Could not open Microsoft 365 Outlook.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                // TODO: Logger.Append($"Could not open Microsoft 365 Outlook.{Environment.NewLine}Please contact Test Engineering.");
+                LogAppend($"Could not open Microsoft 365 Outlook.{Environment.NewLine}Please contact Test Engineering.");
                 throw new NotImplementedException("Outlook not good...");
             }
         }
