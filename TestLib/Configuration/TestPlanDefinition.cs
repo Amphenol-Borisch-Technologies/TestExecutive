@@ -158,10 +158,33 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         public Stationary() { }
     }
 
-    public class Mobile : Stationary {
+    public interface IInstrumentDefinition {
+        String ID { get; set; }
+        String Detail { get; set; }
+        String Address { get; set; }
+        String NameSpacedClassName { get; set; }
+
+        String FormatException(Exception e);
+    }
+
+    public class Mobile : Stationary, IInstrumentDefinition {
         [XmlAttribute(nameof(Detail))] public String Detail { get; set; }
         [XmlAttribute(nameof(Address))] public String Address { get; set; }
         [XmlAttribute(nameof(NameSpacedClassName))] public String NameSpacedClassName { get; set; }
+
+        public String FormatException(Exception exception) {
+            StringBuilder stringBuilder = new StringBuilder().AppendLine();
+            const Int32 PR = 23;
+            stringBuilder.AppendLine($"Issue with {nameof(Mobile)}:");
+            stringBuilder.AppendLine($"   {nameof(ID)}".PadRight(PR) + $": {ID}");
+            stringBuilder.AppendLine($"   {nameof(Alias)}".PadRight(PR) + $": {Alias}");
+            stringBuilder.AppendLine($"   {nameof(Detail)}".PadRight(PR) + $": {Detail}");
+            stringBuilder.AppendLine($"   {nameof(Address)}".PadRight(PR) + $": {Address}");
+            stringBuilder.AppendLine($"   {nameof(NameSpacedClassName)}".PadRight(PR) + $": {NameSpacedClassName}{Environment.NewLine}");
+            stringBuilder.AppendLine($"{nameof(Exception)} {nameof(Exception.Message)}(s):");
+            stringBuilder.AppendLine($"{exception}{Environment.NewLine}");
+            return stringBuilder.ToString();
+        }
 
         public Mobile() { }
     }

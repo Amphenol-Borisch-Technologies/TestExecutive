@@ -91,17 +91,8 @@ namespace ABT.Test.TestExecutive.TestLib {
                 try {
                     if (!testPlanDefinition.TestSpace.Simulate) instrumentDriver = Activator.CreateInstance(Type.GetType(instrumentTestExec.NameSpacedClassName), new Object[] { instrumentTestExec.Address, instrumentTestExec.Detail });
                     instrumentDrivers.Add(instrumentTestExec.ID, instrumentDriver); // instrumentDriver is null if testPlanDefinition.TestSpace.Simulate.
-                } catch (Exception e) {
-                    StringBuilder stringBuilder = new StringBuilder().AppendLine();
-                    const Int32 PR = 23;
-                    stringBuilder.AppendLine($"Issue with {nameof(InstrumentTestExec)}:");
-                    stringBuilder.AppendLine($"   {nameof(instrumentTestExec.ID)}".PadRight(PR) + $": {instrumentTestExec.ID}");
-                    stringBuilder.AppendLine($"   {nameof(instrumentTestExec.Detail)}".PadRight(PR) + $": {instrumentTestExec.Detail}");
-                    stringBuilder.AppendLine($"   {nameof(instrumentTestExec.Address)}".PadRight(PR) + $": {instrumentTestExec.Address}");
-                    stringBuilder.AppendLine($"   {nameof(instrumentTestExec.NameSpacedClassName)}".PadRight(PR) + $": {instrumentTestExec.NameSpacedClassName}{Environment.NewLine}");
-                    stringBuilder.AppendLine($"{nameof(Exception)} {nameof(Exception.Message)}(s):");
-                    stringBuilder.AppendLine($"{e}{Environment.NewLine}");
-                    throw new ArgumentException(stringBuilder.ToString());
+                } catch (Exception exception) {
+                    throw new ArgumentException(instrumentTestExec.FormatException(exception));
                 }
             }
             return instrumentDrivers;
@@ -148,16 +139,7 @@ namespace ABT.Test.TestExecutive.TestLib {
                     if (!testPlanDefinition.TestSpace.Simulate) instrumentDriver = Activator.CreateInstance(Type.GetType(mobile.NameSpacedClassName), new Object[] { mobile.Address, mobile.Detail });
                     instrumentDrivers.Add(mobile.ID, instrumentDriver); // instrumentDriver is null if testPlanDefinition.TestSpace.Simulate.
                 } catch (Exception exception) {
-                    StringBuilder stringBuilder = new StringBuilder().AppendLine();
-                    const Int32 PR = 23;
-                    stringBuilder.AppendLine($"Issue with {nameof(Mobile)}:");
-                    stringBuilder.AppendLine($"   {nameof(mobile.ID)}".PadRight(PR) + $": {mobile.ID}");
-                    stringBuilder.AppendLine($"   {nameof(mobile.Detail)}".PadRight(PR) + $": {mobile.Detail}");
-                    stringBuilder.AppendLine($"   {nameof(mobile.Address)}".PadRight(PR) + $": {mobile.Address}");
-                    stringBuilder.AppendLine($"   {nameof(mobile.NameSpacedClassName)}".PadRight(PR) + $": {mobile.NameSpacedClassName}{Environment.NewLine}");
-                    stringBuilder.AppendLine($"{nameof(Exception)} {nameof(Exception.Message)}(s):");
-                    stringBuilder.AppendLine($"{exception}{Environment.NewLine}");
-                    throw new ArgumentException(stringBuilder.ToString());
+                    throw new ArgumentException(mobile.FormatException(exception));
                 }
             return instrumentDrivers;
         }
@@ -216,7 +198,7 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static void ErrorMessage(String Error) {
             _ = MessageBox.Show($"Unexpected error:{Environment.NewLine}{Error}", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             using (EventLog eventLog = new EventLog("Application")) {
-                eventLog.Source = configuration.AppSettings.Settings["EventLog"].Value;
+                eventLog.Source = configuration.AppSettings.Settings["EventSource"].Value;
                 eventLog.WriteEntry(Error, EventLogEntryType.Error);
             }
         }

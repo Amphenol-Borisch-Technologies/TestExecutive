@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Text;
 using System.Xml.Serialization;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace ABT.Test.TestExecutive.TestLib.Configuration {
     // TODO: Eventually; Move TestDev specific classes to TestDev project.
@@ -74,11 +77,23 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         public InstrumentsTestExec() { }
     }
 
-    public class InstrumentTestExec {
+    public class InstrumentTestExec : IInstrumentDefinition {
         [XmlAttribute(nameof(ID))] public String ID { get; set; }
         [XmlAttribute(nameof(Detail))] public String Detail { get; set; }
         [XmlAttribute(nameof(Address))] public String Address { get; set; }
         [XmlAttribute(nameof(NameSpacedClassName))] public String NameSpacedClassName { get; set; }
+        public String FormatException(Exception exception) {
+            StringBuilder stringBuilder = new StringBuilder().AppendLine();
+            const Int32 PR = 23;
+            stringBuilder.AppendLine($"Issue with {nameof(InstrumentTestExec)}:");
+            stringBuilder.AppendLine($"   {nameof(ID)}".PadRight(PR) + $": {ID}");
+            stringBuilder.AppendLine($"   {nameof(Detail)}".PadRight(PR) + $": {Detail}");
+            stringBuilder.AppendLine($"   {nameof(Address)}".PadRight(PR) + $": {Address}");
+            stringBuilder.AppendLine($"   {nameof(NameSpacedClassName)}".PadRight(PR) + $": {NameSpacedClassName}{Environment.NewLine}");
+            stringBuilder.AppendLine($"{nameof(Exception)} {nameof(Exception.Message)}(s):");
+            stringBuilder.AppendLine($"{exception}{Environment.NewLine}");
+            return stringBuilder.ToString();
+        }
         public InstrumentTestExec() { }
     }
 }
