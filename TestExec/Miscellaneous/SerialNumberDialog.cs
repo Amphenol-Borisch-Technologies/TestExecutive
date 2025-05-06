@@ -5,7 +5,7 @@ using Windows.Devices.Enumeration;
 using Windows.Devices.PointOfService;
 using Windows.Security.Cryptography;
 
-namespace ABT.Test.TestExecutive.TestExec.Logging {
+namespace ABT.Test.TestExecutive.TestExec.Miscellaneous {
     public sealed partial class SerialNumberDialog : Form {
         // NOTE:  Honeywell Voyager 1200g Scanner must be programmed into USB HID mode to work correctly with TestExec to read ABT Serial #s.
         //       - Scan PAP131 label from "Honeywell Voyager 1200G User's Guide ReadMe.pdf" to program 1200 into USB HID mode.

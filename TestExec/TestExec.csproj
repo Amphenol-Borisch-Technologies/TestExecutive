@@ -119,10 +119,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logging\SerialNumberDialog.cs">
+    <Compile Include="Miscellaneous\SerialNumberDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Logging\SerialNumberDialog.Designer.cs">
+    <Compile Include="Miscellaneous\SerialNumberDialog.Designer.cs">
       <DependentUpon>SerialNumberDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Miscellaneous\MessageBoxMonoSpaced.cs">
@@ -140,7 +140,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Logging\SerialNumberDialog.resx">
+    <EmbeddedResource Include="Miscellaneous\SerialNumberDialog.resx">
       <DependentUpon>SerialNumberDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Miscellaneous\MessageBoxMonoSpaced.resx">

@@ -1,5 +1,4 @@
-﻿using ABT.Test.TestExecutive.TestExec.Logging;
-using ABT.Test.TestExecutive.TestLib;
+﻿using ABT.Test.TestExecutive.TestLib;
 using ABT.Test.TestExecutive.TestLib.Configuration;
 using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using ABT.Test.TestExecutive.TestLib.Miscellaneous;
@@ -109,7 +108,7 @@ namespace ABT.Test.TestExecutive.TestExec {
     public abstract partial class TestExec : Form {
         public static System.Timers.Timer StatusTimer = new System.Timers.Timer(15000);
         public readonly String TestPlanFolder;
-        private readonly SerialNumberDialog _serialNumberDialog = null;
+        private readonly Miscellaneous.SerialNumberDialog _serialNumberDialog = null;
 
         protected TestExec(Icon icon, String testPlanFolder) {
             InitializeComponent();
@@ -127,7 +126,7 @@ namespace ABT.Test.TestExecutive.TestExec {
                 TSMI_UUT_TestDataSQL_ReportingAndQuerying.Enabled = (testExecDefinition.TestData.Item is SQL_DB);
 
                 if (RegexInvalid(testPlanDefinition.SerialNumberEntry.RegularEx)) throw new ArgumentException($"Invalid {nameof(SerialNumberEntry.RegularEx)} '{testPlanDefinition.SerialNumberEntry.RegularEx}' in file '{TestPlanDefinitionXML_Path}'.");
-                if (testPlanDefinition.SerialNumberEntry.EntryType is SerialNumberEntryType.Barcode) _serialNumberDialog = new SerialNumberDialog(testPlanDefinition.SerialNumberEntry.RegularEx, testPlanDefinition.SerialNumberEntry.Format, testExecDefinition.BarcodeReader.ID);
+                if (testPlanDefinition.SerialNumberEntry.EntryType is SerialNumberEntryType.Barcode) _serialNumberDialog = new Miscellaneous.SerialNumberDialog(testPlanDefinition.SerialNumberEntry.RegularEx, testPlanDefinition.SerialNumberEntry.Format, testExecDefinition.BarcodeReader.ID);
             }
 
             StatusTimer.Elapsed += StatusTimeUpdate;
