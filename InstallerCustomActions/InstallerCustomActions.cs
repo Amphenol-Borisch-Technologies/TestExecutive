@@ -8,6 +8,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.InstallerCustomActions {
     [RunInstaller(true)]
@@ -17,8 +18,8 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
         public override void Install(IDictionary stateSaver) {
             base.Install(stateSaver);
-            SetDirectoryPermissions(Context.Parameters["targetdir"], WellKnownSidType.BuiltinUsersSid, FileSystemRights.ReadAndExecute);
-            SetDirectoryPermissions(Context.Parameters["targetdir"], @"BORISCH\Test - TestExecutive Administrators", FileSystemRights.Modify | FileSystemRights.Write);
+            SetDirectoryPermissions(Context.Parameters["targetdir"], WellKnownSidType.AccountDomainUsersSid, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(Context.Parameters["targetdir"], @"BORISCH\Test - TestExecutive Administrators", FileSystemRights.FullControl);
 
             Configuration configuration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
             String eventSource = configuration.AppSettings.Settings["EventSource"].Value;
@@ -35,12 +36,21 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
             directorySecurity.AddAccessRule(
                 new FileSystemAccessRule(
-                    new SecurityIdentifier(wellKnownSidType, null),
+                    new SecurityIdentifier(wellKnownSidType, GetDomainSid().AccountDomainSid),
                         fileSystemRights,
                         InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
                         PropagationFlags.NoPropagateInherit,
                         AccessControlType.Allow));
             directoryInfo.SetAccessControl(directorySecurity);
+        }
+
+        private SecurityIdentifier GetDomainSid() {
+            try {
+                using (WindowsIdentity identity = WindowsIdentity.GetCurrent()) { return identity?.User?.AccountDomainSid; }
+            } catch (Exception exception) {
+                _ = MessageBox.Show($"Error retrieving Current Windows Identity User's Domain SID: {exception.Message}", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
         }
 
         private void SetDirectoryPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
