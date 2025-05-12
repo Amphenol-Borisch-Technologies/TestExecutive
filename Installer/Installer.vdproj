@@ -1543,7 +1543,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TestExecutive"
         "ProductCode" = "8:{9E7CE688-EBE2-4ADE-83DE-0C2CF5443EF5}"
-        "PackageCode" = "8:{1D8D45E6-D748-4ED7-A6C2-E8745E81259F}"
+        "PackageCode" = "8:{86E9D3B8-19B3-49C6-92F6-66E77FFAA681}"
         "UpgradeCode" = "8:{4F1CC228-B14D-4021-BCB8-14DDE00DC07D}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"

@@ -5,6 +5,7 @@ using System.Configuration.Install;
 using System.Diagnostics;
 using System.IO;
 using System.Security.AccessControl;
+using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace ABT.Test.TestExecutive.InstallerCustomActions {
@@ -42,15 +43,19 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
         }
 
         private void SetDirectoryPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
-            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
-            DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
-            directorySecurity.AddAccessRule(
-                new FileSystemAccessRule(identity,
-                    fileSystemRights,
-                    InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
-                    PropagationFlags.NoPropagateInherit,
-                    AccessControlType.Allow));
-            directoryInfo.SetAccessControl(directorySecurity);
+            try {
+                DirectoryInfo directoryInfo = new DirectoryInfo(directory);
+                DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
+                directorySecurity.AddAccessRule(
+                    new FileSystemAccessRule(identity,
+                        fileSystemRights,
+                        InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
+                        PropagationFlags.NoPropagateInherit,
+                        AccessControlType.Allow));
+                directoryInfo.SetAccessControl(directorySecurity);
+            } catch (Exception exception) {
+                _ = MessageBox.Show(exception.Message, "Error setting directory permissions", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
