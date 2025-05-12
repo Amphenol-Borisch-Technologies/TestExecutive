@@ -18,11 +18,19 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         [XmlElement(nameof(TestExecutiveURL))] public String TestExecutiveURL { get; set; }
         [XmlElement(nameof(TestPlansFolder))] public String TestPlansFolder { get; set; }
         [XmlElement(nameof(EventSource))] public String EventSource { get; set; }
+        [XmlElement(nameof(ActiveDirectoryPermissions))] public ActiveDirectoryPermissions ActiveDirectoryPermissions { get; set; }
         [XmlElement(nameof(TestData))] public TestData TestData { get; set; }
         [XmlElement(nameof(BarcodeReader))] public BarcodeReader BarcodeReader { get; set; }
         [XmlElement(nameof(Apps))] public Apps Apps { get; set; }
         [XmlElement(nameof(InstrumentsTestExec))] public InstrumentsTestExec InstrumentsTestExec { get; set; }
         public TestExecDefinition() { }
+    }
+
+    public class ActiveDirectoryPermissions {
+        [XmlAttribute(nameof(ReadAndExecute))] public String ReadAndExecute { get; set; }
+        [XmlAttribute(nameof(ModifyWrite))] public String ModifyWrite { get; set; }
+        [XmlAttribute(nameof(FullControl))] public String FullControl { get; set; }
+        public ActiveDirectoryPermissions() { }
     }
 
     public class TestData {

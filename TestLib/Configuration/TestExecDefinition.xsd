@@ -114,6 +114,61 @@
     </xs:attribute>
   </xs:complexType>
 
+  <xs:complexType name="ActiveDirectoryPermissions">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+            ActiveDirectoryPermission element:
+            - Required, 1 occurence.
+            
+            .NET System.Security.AccessControl.FileSystemRights enumeration values.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    <xs:attribute name="ReadAndExecute" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+            ReadAndExecute attribute:
+            - Required.
+            - Type: xs:string:
+            
+            FileSystemRights.ReadAndExecute.
+            Applied to TestExecutive & TestPlans.  Also TestData\TextFiles\Folder if applicable.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ModifyWrite" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+            Identity attribute:
+            - Required.
+            - Type: xs:string:
+
+            FileSystemRights.Modify | FileSystemRights.Write.
+            Applied to TestData\TextFiles\Folder if applicable.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="FullControl" type="xs:string" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">
+          <![CDATA[
+            Permission attribute:
+            - Required.
+            - Type: xs:string:
+            
+            FileSystemRights.FullControl.
+            Applied to TestExecutive & TestPlans.  Also TestData\TextFiles\Folder if applicable.
+          ]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>  
+  
   <xs:complexType name="BarcodeReader">
     <xs:attribute name="ID" type="xs:string" use="required">
       <xs:annotation>
@@ -331,7 +386,14 @@
               ]]>
             </xs:documentation>
           </xs:annotation>
-        </xs:element>      
+        </xs:element>
+        <xs:element name="ActiveDirectoryPermissions" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ActiveDirectoryPermission" type="ActiveDirectoryPermission" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
         <xs:element name="TestData" minOccurs="1" maxOccurs="1">
           <xs:annotation>
             <xs:documentation xml:lang="en">
