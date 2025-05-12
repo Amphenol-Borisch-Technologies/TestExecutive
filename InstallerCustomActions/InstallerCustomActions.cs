@@ -20,39 +20,25 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
         public override void Install(IDictionary stateSaver) {
             base.Install(stateSaver);
 
-            XDocument xmlDocument = XDocument.Load(Context.Parameters["targetdir"] + @"\TestExecDefinition.xml");
+            XElement testExecDefinition = XDocument.Load(Context.Parameters["targetdir"] + @"\TestExecDefinition.xml").Root;
 
-            SetDirectoryPermissions(Context.Parameters["targetdir"], WellKnownSidType.AccountDomainUsersSid, FileSystemRights.ReadAndExecute);
-            SetDirectoryPermissions(Context.Parameters["targetdir"], @"BORISCH\Test - TestExecutive Administrators", FileSystemRights.FullControl);
+            XElement activeDirectoryPermissions = testExecDefinition.Element("ActiveDirectoryPermissions");
+            SetDirectoryPermissions(Context.Parameters["targetdir"], activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(Context.Parameters["targetdir"], activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
 
-            XElement eventSourceElement = xmlDocument.Root.Element("EventSource");
-            if (!EventLog.SourceExists(eventSourceElement.Value)) {
-                EventLog.CreateEventSource(eventSourceElement.Value, "Application");
+            XElement textFiles = testExecDefinition.Element("TestData").Element("TextFiles");
+            if (textFiles != null) {
+                SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
+                SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ModifyWrite").Value, FileSystemRights.Modify | FileSystemRights.Write);
+                SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
+            }
+
+            if (!EventLog.SourceExists(testExecDefinition.Element("EventSource").Value)) {
+                EventLog.CreateEventSource(testExecDefinition.Element("EventSource").Value, "Application");
                 EventLog eventLog = new EventLog("Application") {
-                    Source = eventSourceElement.Value
+                    Source = testExecDefinition.Element("EventSource").Value
                 };
                 eventLog.WriteEntry("First entry.", EventLogEntryType.Information, 1);
-            }
-        }
-        private void SetDirectoryPermissions(String directory, WellKnownSidType wellKnownSidType, FileSystemRights fileSystemRights) {
-            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
-            DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
-            directorySecurity.AddAccessRule(
-                new FileSystemAccessRule(
-                    new SecurityIdentifier(wellKnownSidType, WindowsIdentity.GetCurrent()?.User?.AccountDomainSid),
-                        fileSystemRights,
-                        InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
-                        PropagationFlags.NoPropagateInherit,
-                        AccessControlType.Allow));
-            directoryInfo.SetAccessControl(directorySecurity);
-        }
-
-        private SecurityIdentifier GetDomainSid() {
-            try {
-                using (WindowsIdentity identity = WindowsIdentity.GetCurrent()) { return identity?.User?.AccountDomainSid; }
-            } catch (Exception exception) {
-                _ = MessageBox.Show($"Error retrieving Current Windows Identity User's Domain SID: {exception.Message}", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
             }
         }
 

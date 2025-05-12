@@ -45,9 +45,6 @@ namespace ABT.Test.TestExecutive.TestLib {
             { EVENTS.PASS, Color.Green },
             { EVENTS.INFORMATION, Color.White }
         };
-
-        private static readonly System.Configuration.Configuration configuration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
-
         public static readonly String xml = ".xml";
         public static readonly String xsd = ".xsd";
         public static readonly String TestExecutiveFolder = Assembly.GetExecutingAssembly().Location;
