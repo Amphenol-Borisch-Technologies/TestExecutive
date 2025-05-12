@@ -26,12 +26,13 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             SetDirectoryPermissions(testExecDefinition.Element("TestPlansFolder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
             SetDirectoryPermissions(testExecDefinition.Element("TestPlansFolder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
 
-            XElement textFiles = testExecDefinition.Element("TestData").Element("TextFiles");
-            if (textFiles != null) {
-                SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
-                SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ModifyWrite").Value, FileSystemRights.Modify | FileSystemRights.Write);
-                SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
-            }
+            //XElement textFiles = testExecDefinition.Element("TestData").Element("TextFiles");
+            //if (textFiles != null) {
+            // TODO: Eventually; fails, apparently because I can't change permissions on P:\Test\TDR.
+            //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
+            //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ModifyWrite").Value, FileSystemRights.Modify | FileSystemRights.Write);
+            //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
+            //}
 
             if (!EventLog.SourceExists(testExecDefinition.Element("EventSource").Value)) {
                 EventLog.CreateEventSource(testExecDefinition.Element("EventSource").Value, "Application");
