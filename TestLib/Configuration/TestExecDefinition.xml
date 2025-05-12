@@ -10,6 +10,12 @@
     <Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestPlan" />
   </Development>
 
+  <ActiveDirectoryPermissions>
+    <ActiveDirectoryPermission>Identity="" FileSystemRights="ReadAndExecute"</ActiveDirectoryPermission>
+    <ActiveDirectoryPermission>Identity="BORISCH\Test - TestExecutive Administrators" FileSystemRights="FullControl"</ActiveDirectoryPermission>
+    <ActiveDirectoryPermission>Identity="" FileSystemRights=""</ActiveDirectoryPermission>
+  </ActiveDirectoryPermissions>  
+  
   <TestExecutiveURL>https://raw.githubusercontent.com/Amphenol-Borisch-Technologies/TestExecutive/refs/heads/master/TestLib/Configuration</TestExecutiveURL>
   <TestPlansFolder>C:\Program Files\ABT\Test\TestPlans</TestPlansFolder>
   <EventSource>TestExecutive</EventSource>

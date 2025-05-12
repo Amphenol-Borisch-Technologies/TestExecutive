@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace ABT.Test.TestExecutive.InstallerCustomActions {
     [RunInstaller(true)]
@@ -18,15 +19,17 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
         public override void Install(IDictionary stateSaver) {
             base.Install(stateSaver);
+
+            XDocument xmlDocument = XDocument.Load(Context.Parameters["targetdir"] + @"\TestExecDefinition.xml");
+
             SetDirectoryPermissions(Context.Parameters["targetdir"], WellKnownSidType.AccountDomainUsersSid, FileSystemRights.ReadAndExecute);
             SetDirectoryPermissions(Context.Parameters["targetdir"], @"BORISCH\Test - TestExecutive Administrators", FileSystemRights.FullControl);
 
-            Configuration configuration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
-            String eventSource = configuration.AppSettings.Settings["EventSource"].Value;
-            if (!EventLog.SourceExists(eventSource)) {
-                EventLog.CreateEventSource(eventSource, "Application");
+            XElement eventSourceElement = xmlDocument.Root.Element("EventSource");
+            if (!EventLog.SourceExists(eventSourceElement.Value)) {
+                EventLog.CreateEventSource(eventSourceElement.Value, "Application");
                 EventLog eventLog = new EventLog("Application") {
-                    Source = eventSource
+                    Source = eventSourceElement.Value
                 };
                 eventLog.WriteEntry("First entry.", EventLogEntryType.Information, 1);
             }
