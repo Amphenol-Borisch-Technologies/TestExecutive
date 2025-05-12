@@ -22,6 +22,9 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             SetDirectoryPermissions(Context.Parameters["targetdir"], activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
             SetDirectoryPermissions(Context.Parameters["targetdir"], activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
 
+            SetDirectoryPermissions(testExecDefinition.Element("TestPlansFolder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(testExecDefinition.Element("TestPlansFolder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
+
             XElement textFiles = testExecDefinition.Element("TestData").Element("TextFiles");
             if (textFiles != null) {
                 SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
