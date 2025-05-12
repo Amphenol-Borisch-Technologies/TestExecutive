@@ -9,6 +9,10 @@
     <Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestExecutive" />
     <Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestPlan" />
   </Development>
+
+  <TestExecutiveURL>https://raw.githubusercontent.com/Amphenol-Borisch-Technologies/TestExecutive/refs/heads/master/TestLib/Configuration</TestExecutiveURL>
+  <TestPlansFolder>C:\Program Files\ABT\Test\TestPlans</TestPlansFolder>
+  <EventSource>TestExecutive</EventSource>
   
   <TestData>
     <TextFiles Folder="P:\Test\TDR" />

@@ -299,6 +299,39 @@
             <xs:field xpath="@URL"/>
           </xs:unique>
         </xs:element>
+        <xs:element name="TestExecutiveURL" type="xs:string" minOccurs="1" maxOccurs="1" >
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+                TestExecutiveURL element:
+                - Required, 1 occurence.
+                - Type: xs:string.
+              ]]>
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TestPlansFolder" type="xs:string" minOccurs="1" maxOccurs="1" >
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+                TestPlansFolder element:
+                - Required, 1 occurence.
+                - Type: xs:string.
+              ]]>
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EventSource" type="xs:string" minOccurs="1" maxOccurs="1" >
+          <xs:annotation>
+            <xs:documentation xml:lang="en">
+              <![CDATA[
+                EventSource element:
+                - Required, 1 occurence.
+                - Type: xs:string.
+              ]]>
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>      
         <xs:element name="TestData" minOccurs="1" maxOccurs="1">
           <xs:annotation>
             <xs:documentation xml:lang="en">

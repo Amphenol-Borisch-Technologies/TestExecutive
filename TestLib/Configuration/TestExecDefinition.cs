@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Net;
 using System.Text;
 using System.Xml.Serialization;
@@ -14,6 +15,9 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
     [XmlRoot(nameof(TestExecDefinition))]
     public class TestExecDefinition {
         [XmlElement(nameof(Development))] public Development Development { get; set; }
+        [XmlElement(nameof(TestExecutiveURL))] public String TestExecutiveURL { get; set; }
+        [XmlElement(nameof(TestPlansFolder))] public String TestPlansFolder { get; set; }
+        [XmlElement(nameof(EventSource))] public String EventSource { get; set; }
         [XmlElement(nameof(TestData))] public TestData TestData { get; set; }
         [XmlElement(nameof(BarcodeReader))] public BarcodeReader BarcodeReader { get; set; }
         [XmlElement(nameof(Apps))] public Apps Apps { get; set; }

@@ -47,27 +47,26 @@ namespace ABT.Test.TestExecutive.TestLib {
         };
 
         private static readonly System.Configuration.Configuration configuration = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
-        public static readonly String TestExecutiveFolder = configuration.AppSettings.Settings[nameof(TestExecutiveFolder)].Value;
-        public static readonly String TestExecutiveURL = configuration.AppSettings.Settings[nameof(TestExecutiveURL)].Value;
-        public static readonly String TestPlansFolder = configuration.AppSettings.Settings[nameof(TestPlansFolder)].Value;
 
         public static readonly String xml = ".xml";
         public static readonly String xsd = ".xsd";
+        public static readonly String TestExecutiveFolder = Assembly.GetExecutingAssembly().Location;
         public static readonly String TestExecDefinitionBase = "TestExecDefinition";
         public static readonly String TestExecDefinitionXML_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase + xml;
         public static readonly String TestExecDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase + xsd;
-        public static readonly String TestExecDefinitionXSD_URL = TestExecutiveURL + "/" + TestExecDefinitionBase + xsd;
+        public static readonly String TestExecDefinitionXSD_URL = testExecDefinition.TestExecutiveURL + "/" + TestExecDefinitionBase + xsd;
 
         public static readonly String TestPlanDefinitionBase = "TestPlanDefinition";
         public static String TestPlanDefinitionXML_Path { get; set; } = null;
         public static readonly String TestPlanDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestPlanDefinitionBase + xsd;
-        public static readonly String TestPlanDefinitionXSD_URL = TestExecutiveURL + "/" + TestPlanDefinitionBase + xsd;
+        public static readonly String TestPlanDefinitionXSD_URL = testExecDefinition.TestExecutiveURL + "/" + TestPlanDefinitionBase + xsd;
 
         public static readonly String TestSequenceBase = "TestSequence";
         public static readonly String TestSequenceXSD_Path = TestExecutiveFolder + @"\" + TestSequenceBase + xsd;
-        public static readonly String TestSequenceXSD_URL = TestExecutiveURL + "/" + TestSequenceBase + xsd;
+        public static readonly String TestSequenceXSD_URL = testExecDefinition.TestExecutiveURL + "/" + TestSequenceBase + xsd;
 
         public static readonly TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TestExecDefinitionXML_Path}");
+
         public static readonly String Spaces2 = "  ";
         public static readonly Int32 PaddingRight = 21;
         internal static readonly String TestExecutive = nameof(TestExecutive);
@@ -198,7 +197,7 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static void ErrorMessage(String Error) {
             _ = MessageBox.Show($"Unexpected error:{Environment.NewLine}{Error}", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             using (EventLog eventLog = new EventLog("Application")) {
-                eventLog.Source = configuration.AppSettings.Settings["EventSource"].Value;
+                eventLog.Source = testExecDefinition.EventSource;
                 eventLog.WriteEntry(Error, EventLogEntryType.Error);
             }
         }

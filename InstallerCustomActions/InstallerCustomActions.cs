@@ -36,7 +36,7 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
             directorySecurity.AddAccessRule(
                 new FileSystemAccessRule(
-                    new SecurityIdentifier(wellKnownSidType, GetDomainSid().AccountDomainSid),
+                    new SecurityIdentifier(wellKnownSidType, WindowsIdentity.GetCurrent()?.User?.AccountDomainSid),
                         fileSystemRights,
                         InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
                         PropagationFlags.NoPropagateInherit,
