@@ -141,12 +141,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_4B41D0BDFFF845348D4FCF8729EE931A"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_6D3989D55F49B84E54AC41E7D0BA45D5"
         "OwnerKey" = "8:_E3F146FF5EBFC61026E2C6EEA8D6A675"
         "MsmSig" = "8:_UNDEFINED"
@@ -796,26 +790,6 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4B41D0BDFFF845348D4FCF8729EE931A"
-            {
-            "SourcePath" = "8:..\\InstallerCustomActions\\bin\\x64\\Release\\InstallerCustomActions.dll.config"
-            "TargetName" = "8:InstallerCustomActions.dll.config"
-            "Tag" = "8:"
-            "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6D3989D55F49B84E54AC41E7D0BA45D5"
