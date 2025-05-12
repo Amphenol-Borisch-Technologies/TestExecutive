@@ -10,7 +10,7 @@ namespace ABT.Test.TestExecutive.TestChooser {
         [STAThread]
         public static void Main() {
             using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
-                openFileDialog.InitialDirectory = TestPlansFolder;
+                openFileDialog.InitialDirectory = testExecDefinition.TestPlansFolder;
                 openFileDialog.Filter = "TestPlan Files|*.exe";
                 if (openFileDialog.ShowDialog() == DialogResult.OK) _ = Process.Start($"\"{openFileDialog.FileName}\"");
             }
