@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel;
-using System.Configuration;
 using System.Configuration.Install;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Security.AccessControl;
-using System.Security.Principal;
-using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace ABT.Test.TestExecutive.InstallerCustomActions {

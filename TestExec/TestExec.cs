@@ -520,10 +520,10 @@ namespace ABT.Test.TestExecutive.TestExec {
 
         private void LogReplaceString(Int32 startFind, String findString, String replacementString) {
             Int32 selectionStart = rtfResults.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
-                rtfResults.SelectionStart = selectionStart;
-                rtfResults.SelectionLength = findString.Length;
-                rtfResults.SelectedText = replacementString;
-            }
+            rtfResults.SelectionStart = selectionStart;
+            rtfResults.SelectionLength = findString.Length;
+            rtfResults.SelectedText = replacementString;
+        }
 
         private void LogReplaceStrings(Int32 startFind, String findString, String replacementString) {
             Int32 selectionStart;

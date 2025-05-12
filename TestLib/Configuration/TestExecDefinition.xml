@@ -13,12 +13,8 @@
   <TestExecutiveURL>https://raw.githubusercontent.com/Amphenol-Borisch-Technologies/TestExecutive/refs/heads/master/TestLib/Configuration</TestExecutiveURL>
   <TestPlansFolder>C:\Program Files\ABT\Test\TestPlans</TestPlansFolder>
   <EventSource>TestExecutive</EventSource>
-  
-  <ActiveDirectoryPermissions>
-    ReadAndExecute="BORISCH\Domain Users"
-    ModifyWrite="BORISCH\Test - TDR Administrators"
-    FullControl="BORISCH\Test - TestExecutive Administrators"
-  </ActiveDirectoryPermissions>
+
+  <ActiveDirectoryPermissions ReadAndExecute="BORISCH\Domain Users" ModifyWrite="BORISCH\Test - TDR Administrators" FullControl="BORISCH\Test - TestExecutive Administrators"/>
   
   <TestData>
     <TextFiles Folder="P:\Test\TDR" />

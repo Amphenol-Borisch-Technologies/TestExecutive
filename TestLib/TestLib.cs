@@ -2,7 +2,6 @@
 using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
