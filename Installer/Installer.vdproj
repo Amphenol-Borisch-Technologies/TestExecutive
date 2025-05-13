@@ -141,6 +141,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5932EA68A7AE646F780BDB2C9A17B633"
+        "OwnerKey" = "8:_3270A19668A265D42A64E03AFC560725"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6D3989D55F49B84E54AC41E7D0BA45D5"
         "OwnerKey" = "8:_E3F146FF5EBFC61026E2C6EEA8D6A675"
         "MsmSig" = "8:_UNDEFINED"
@@ -185,6 +191,12 @@
         {
         "MsmKey" = "8:_898FD5B64D1E4FF4BA81AAFDCBC7B839"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_89F4CBE5548AC3A722B36A13D8AFBC7B"
+        "OwnerKey" = "8:_CE2A425EB32B19F79154BB971D381A86"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -792,6 +804,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5932EA68A7AE646F780BDB2C9A17B633"
+            {
+            "SourcePath" = "8:IviDriverTypeLib.dll"
+            "TargetName" = "8:IviDriverTypeLib.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:4"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6D3989D55F49B84E54AC41E7D0BA45D5"
             {
             "AssemblyRegister" = "3:1"
@@ -1005,6 +1037,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_89F4CBE5548AC3A722B36A13D8AFBC7B"
+            {
+            "SourcePath" = "8:IviScopeTypeLib.dll"
+            "TargetName" = "8:IviScopeTypeLib.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:4"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8A69A6B9EAC44DECABFFF85132FCE16F"
@@ -1543,7 +1595,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TestExecutive"
         "ProductCode" = "8:{9E7CE688-EBE2-4ADE-83DE-0C2CF5443EF5}"
-        "PackageCode" = "8:{34B55359-7199-41B8-A172-8AE890BF9136}"
+        "PackageCode" = "8:{5C7B6B64-20CB-45B1-A662-C7FB1500A5B6}"
         "UpgradeCode" = "8:{4F1CC228-B14D-4021-BCB8-14DDE00DC07D}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
