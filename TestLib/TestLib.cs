@@ -50,6 +50,7 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static readonly String TestExecDefinitionBase = "TestExecDefinition";
         public static readonly String TestExecDefinitionXML_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase + xml;
         public static readonly String TestExecDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase + xsd;
+        public static readonly TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TestExecDefinitionXML_Path}");
         public static readonly String TestExecDefinitionXSD_URL = testExecDefinition.TestExecutiveURL + "/" + TestExecDefinitionBase + xsd;
 
         public static readonly String TestPlanDefinitionBase = "TestPlanDefinition";
@@ -60,8 +61,6 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static readonly String TestSequenceBase = "TestSequence";
         public static readonly String TestSequenceXSD_Path = TestExecutiveFolder + @"\" + TestSequenceBase + xsd;
         public static readonly String TestSequenceXSD_URL = testExecDefinition.TestExecutiveURL + "/" + TestSequenceBase + xsd;
-
-        public static readonly TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TestExecDefinitionXML_Path}");
 
         public static readonly String Spaces2 = "  ";
         public static readonly Int32 PaddingRight = 21;
