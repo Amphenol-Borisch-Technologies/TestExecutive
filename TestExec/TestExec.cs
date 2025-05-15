@@ -372,7 +372,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             foreach (Documentation documentation in testPlanDefinition.Development.Documentation) OpenFolder(documentation.Folder);
         }
         private void TSMI_UUT_StatisticsDisplay_Click(Object sender, EventArgs e) {
-            Form statistics = new Miscellaneous.MessageBoxMonoSpaced(
+            Form statistics = new MessageBoxMonoSpaced(
                 Title: $"{testSequence.UUT.Number}, {testSequence.TestOperation.NamespaceTrunk}, {testPlanDefinition.TestSpace.StatusTime()}",
                 Text: testPlanDefinition.TestSpace.StatisticsDisplay(),
                 Link: String.Empty
