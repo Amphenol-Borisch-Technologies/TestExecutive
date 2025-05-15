@@ -47,7 +47,6 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
                     if (EventLog.Exists(log)) using (EventLog eventLog = new EventLog() { Source = source }) { eventLog.WriteEntry("Created previously.", EventLogEntryType.Information, 1); }
                 }
             } catch (Exception exception) {
-                // TODO: Eventually; consider referencing ABT.Test.TestExecutive.TestLib and utilizing it's MessageBoxMonoSpaced form instead of Message Boxes, so formatting aligns.
                 _ = MessageBox.Show(
                     $"Source: '{source}'.{Environment.NewLine}" +
                     $"Log:    '{log}'.{Environment.NewLine}{Environment.NewLine}" +
@@ -68,7 +67,6 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
                         AccessControlType.Allow));
                 directoryInfo.SetAccessControl(directorySecurity);
             } catch (Exception exception) {
-                // TODO: Eventually; consider referencing ABT.Test.TestExecutive.TestLib and utilizing it's MessageBoxMonoSpaced form instead of Message Boxes, so formatting aligns.
                 _ = MessageBox.Show(
                     $"Directory:   '{directory}'.{Environment.NewLine}" +
                     $"Identity:    '{identity}'.{Environment.NewLine}" +
