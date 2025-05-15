@@ -5,7 +5,6 @@ using System.Configuration.Install;
 using System.Diagnostics;
 using System.IO;
 using System.Security.AccessControl;
-using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -28,22 +27,22 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             SetDirectoryPermissions(testExecDefinition.Element("TestPlansFolder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
             SetDirectoryPermissions(testExecDefinition.Element("TestPlansFolder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
 
-            //XElement textFiles = testExecDefinition.Element("TestData").Element("TextFiles");
-            //if (textFiles != null) {
-            // TODO: Eventually; fails, apparently because I can't change permissions on P:\Test\TDR.
-            //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
-            //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ModifyWrite").Value, FileSystemRights.Modify | FileSystemRights.Write);
-            //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
-            //}
+            XElement textFiles = testExecDefinition.Element("TestData").Element("TextFiles");
+            if (textFiles != null) {
+                // TODO: Eventually; SetDirectoryPermissions(textFiles.Attribute("Folder").Value) fails, apparently because I can't change permissions on P:\Test\TDR.
+                SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
+                SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ModifyWrite").Value, FileSystemRights.Modify | FileSystemRights.Write);
+                SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
+            }
 
             String source = testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value;
             String log = testExecDefinition.Element("WindowsEventLog").Attribute("Log").Value;
             try {
                 if (!EventLog.SourceExists(source)) {
                     EventLog.CreateEventSource(source, log);
-                    Int32 i = 5;  while (i-- > 0 && !EventLog.Exists(log)) Thread.Sleep(1000);
+                    Int32 i = 5; while (i-- > 0 && !EventLog.Exists(log)) Thread.Sleep(1000);
                     if (EventLog.Exists(log)) using (EventLog eventLog = new EventLog() { Source = source }) { eventLog.WriteEntry("Created.", EventLogEntryType.Information, 0); }
-                }else {
+                } else {
                     if (EventLog.Exists(log)) using (EventLog eventLog = new EventLog() { Source = source }) { eventLog.WriteEntry("Previously created.", EventLogEntryType.Information, 1); }
                 }
             } catch (Exception exception) {
@@ -69,7 +68,7 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             } catch (Exception exception) {
                 _ = MessageBox.Show(
                     $"Directory '{directory}'.{Environment.NewLine}" +
-                    $"Identity' {identity}'.{Environment.NewLine}" + 
+                    $"Identity' {identity}'.{Environment.NewLine}" +
                     $"FileSystemRights '{fileSystemRights}'.{Environment.NewLine}{Environment.NewLine}" +
                     $"{exception.Message}",
                     $"Error setting directory permissions", MessageBoxButtons.OK, MessageBoxIcon.Error);
