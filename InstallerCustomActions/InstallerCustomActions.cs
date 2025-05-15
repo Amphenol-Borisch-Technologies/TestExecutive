@@ -18,7 +18,7 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
         public override void Install(IDictionary stateSaver) {
             base.Install(stateSaver);
 
-            // TODO: Eventually; consider referencing ABT.Test.TestExecutive.TestLib and utilizing it's testExecDefinition object, instead of reading TestExecDefinition.xml directly.
+            // NOTE: Tried referencing ABT.Test.TestExecutive.TestLib and utilizing it's testExecDefinition object, instead of reading TestExecDefinition.xml directly, but it was problematic.
             XElement testExecDefinition = XDocument.Load(Context.Parameters["targetdir"] + @"\TestExecDefinition.xml").Root;
 
             XElement activeDirectoryPermissions = testExecDefinition.Element("ActiveDirectoryPermissions");
@@ -30,7 +30,7 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
 
             XElement textFiles = testExecDefinition.Element("TestData").Element("TextFiles");
             if (textFiles != null) {
-                // TODO: Eventually; SetDirectoryPermissions(textFiles.Attribute("Folder").Value) fails, apparently because I can't change permissions on P:\Test\TDR.
+                // NOTE: SetDirectoryPermissions(textFiles.Attribute("Folder").Value) fails, apparently because I can't change permissions on P:\Test\TDR.
                 SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
                 SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ModifyWrite").Value, FileSystemRights.Modify | FileSystemRights.Write);
                 SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
