@@ -36,13 +36,15 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
             //}
 
-            String log = testExecDefinition.Element("WindowsEventLog").Attribute("Log").Value;
             String source = testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value;
+            String log = testExecDefinition.Element("WindowsEventLog").Attribute("Log").Value;
             try {
-                if (!EventLog.Exists(log)) {
+                if (!EventLog.SourceExists(source)) {
                     EventLog.CreateEventSource(source, log);
-                    Thread.Sleep(2000);
-                    if (EventLog.Exists(log)) using (EventLog eventLog = new EventLog(log) { Source = source }) { eventLog.WriteEntry("Created.", EventLogEntryType.Information, 0); }
+                    Int32 i = 5;  while (i-- > 0 && !EventLog.Exists(log)) Thread.Sleep(1000);
+                    if (EventLog.Exists(log)) using (EventLog eventLog = new EventLog() { Source = source }) { eventLog.WriteEntry("Created.", EventLogEntryType.Information, 0); }
+                }else {
+                    if (EventLog.Exists(log)) using (EventLog eventLog = new EventLog() { Source = source }) { eventLog.WriteEntry("Previously created.", EventLogEntryType.Information, 1); }
                 }
             } catch (Exception exception) {
                 _ = MessageBox.Show(
