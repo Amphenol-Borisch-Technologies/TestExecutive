@@ -41,9 +41,9 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
                 if (!EventLog.SourceExists(source)) {
                     EventLog.CreateEventSource(source, log);
                     Int32 i = 5; while (i-- > 0 && !EventLog.Exists(log)) Thread.Sleep(1000);
-                    if (EventLog.Exists(log)) using (EventLog eventLog = new EventLog() { Source = source }) { eventLog.WriteEntry("Created.", EventLogEntryType.Information, 0); }
+                    if (EventLog.Exists(log)) using (EventLog eventLog = new EventLog() { Source = source }) { eventLog.WriteEntry("Created today.", EventLogEntryType.Information, 0); }
                 } else {
-                    if (EventLog.Exists(log)) using (EventLog eventLog = new EventLog() { Source = source }) { eventLog.WriteEntry("Previously created.", EventLogEntryType.Information, 1); }
+                    if (EventLog.Exists(log)) using (EventLog eventLog = new EventLog() { Source = source }) { eventLog.WriteEntry("Created previously.", EventLogEntryType.Information, 1); }
                 }
             } catch (Exception exception) {
                 _ = MessageBox.Show(
