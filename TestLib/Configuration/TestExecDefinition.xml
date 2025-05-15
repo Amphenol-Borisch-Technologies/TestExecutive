@@ -11,8 +11,10 @@
   </Development>
  
   <TestExecutiveURL>https://raw.githubusercontent.com/Amphenol-Borisch-Technologies/TestExecutive/refs/heads/master/TestLib/Configuration</TestExecutiveURL>
+	
   <TestPlansFolder>C:\Program Files\ABT\Test\TestPlans</TestPlansFolder>
-  <EventSource>TestExecutive</EventSource>
+
+  <WindowsEventLog Source="TestExecutive" Log="TestExecutiveLog"/>
 
   <ActiveDirectoryPermissions ReadAndExecute="BORISCH\Domain Users" ModifyWrite="BORISCH\Test - TDR Administrators" FullControl="BORISCH\Test - TestExecutive Administrators"/>
   

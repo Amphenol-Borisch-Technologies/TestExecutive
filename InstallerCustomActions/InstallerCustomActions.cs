@@ -35,8 +35,8 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             //}
 
             if (!EventLog.SourceExists(testExecDefinition.Element("EventSource").Value)) {
-                EventLog.CreateEventSource(testExecDefinition.Element("EventSource").Value, "Application");
-                EventLog eventLog = new EventLog("Application") {
+                EventLog.CreateEventSource(testExecDefinition.Element("EventSource").Value, testExecDefinition.Element("EventSource").Value + "Log");
+                EventLog eventLog = new EventLog(testExecDefinition.Element("EventSource").Value) {
                     Source = testExecDefinition.Element("EventSource").Value
                 };
                 eventLog.WriteEntry("First entry.", EventLogEntryType.Information, 1);

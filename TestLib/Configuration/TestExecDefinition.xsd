@@ -3,491 +3,531 @@
 <xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:simpleType name="ValidCSharpNamespace">
-    <xs:annotation>
-      <xs:documentation xml:lang="en">
-        <![CDATA[
-          ValidCSharpNamespace simpleType:
-          - RegEx to validate a C# namespace; for example, "ABT.Test.TestExecutive.TestLib.Configuration".
-          - Type: xs:string.
-        ]]>
-      </xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="xs:string">
-      <xs:pattern value="^(?:[A-Za-z_][A-Za-z0-9_]*)(?:\.[A-Za-z_][A-Za-z0-9_]*)*$"/>
-    </xs:restriction>
-  </xs:simpleType>
+	<xs:simpleType name="ValidCSharpNamespace">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				<![CDATA[
+				  ValidCSharpNamespace simpleType:
+				  - RegEx to validate a C# namespace; for example, "ABT.Test.TestExecutive.TestLib.Configuration".
+				  - Type: xs:string.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="^(?:[A-Za-z_][A-Za-z0-9_]*)(?:\.[A-Za-z_][A-Za-z0-9_]*)*$"/>
+		</xs:restriction>
+	</xs:simpleType>
 
-  <xs:simpleType name="ValidWindowsPath">
-    <xs:annotation>
-      <xs:documentation xml:lang="en">
-        <![CDATA[
-          ValidWindowsPath simpleType:
-          - RegEx to validate a Windows Path name; for example, "C:\Windows" or "C:\Windows\notepad.exe".
-          - Don't add a trailing '\' to the path; for example, "C:\Windows" instead of "C:\Windows\".
-          - Type: xs:string.
-        ]]>
-      </xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[^&lt;&gt;&quot;\/|?*]{1,255}" />
-    </xs:restriction>
-  </xs:simpleType>
+	<xs:simpleType name="ValidWindowsPath">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				<![CDATA[
+				  ValidWindowsPath simpleType:
+				  - RegEx to validate a Windows Path name; for example, "C:\Windows" or "C:\Windows\notepad.exe".
+				  - Don't add a trailing '\' to the path; for example, "C:\Windows" instead of "C:\Windows\".
+				  - Type: xs:string.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[^&lt;&gt;&quot;\/|?*]{1,255}" />
+		</xs:restriction>
+	</xs:simpleType>
 
-  <xs:simpleType name="ValidWindowsFile">
-    <xs:annotation>
-      <xs:documentation xml:lang="en">
-        <![CDATA[
-          ValidWindowsFile simpleType:
-          - RegEx to validate a Windows file name; for example, "Solitaire.exe".
-          - Type: xs:string.
-        ]]>
-      </xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[^&lt;&gt;:&quot;\/\\|?*]{1,255}" />
-    </xs:restriction>
-  </xs:simpleType>
+	<xs:simpleType name="ValidWindowsFile">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				<![CDATA[
+				  ValidWindowsFile simpleType:
+				  - RegEx to validate a Windows file name; for example, "Solitaire.exe".
+				  - Type: xs:string.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[^&lt;&gt;:&quot;\/\\|?*]{1,255}" />
+		</xs:restriction>
+	</xs:simpleType>
 
-  <xs:attribute name="Folder" type="ValidWindowsPath"/>
+	<xs:simpleType name="ValidWindowsEventLog">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				<![CDATA[
+                ValidWindowsEventLog simpleType:
+                - RegEx to validate a Windows Event Log Source name or Log name.
+                - Type: xs:string.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="^[A-Za-z0-9 _]{1,64}$"/>
+		</xs:restriction>
+	</xs:simpleType>
 
-  <xs:complexType name="Documentation">
-    <xs:attribute ref="Folder" use="required"/>
-  </xs:complexType>
+	<xs:attribute name="Folder" type="ValidWindowsPath"/>
 
-  <xs:complexType name="Developer">
-    <xs:attribute name="Name" type="xs:string" use="required">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-          Name attribute:
-          - Required.
-          - Must be unique.
-          - Type: xs:string.
-        ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="Language" use="required">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-          Language attribute:
-          - Required.
-          - Type: xs:enumeration.
-        ]]>
-        </xs:documentation>
-      </xs:annotation>
-      <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="CSharp"/>
-          <xs:enumeration value="Python"/>
-          <xs:enumeration value="VEE"/>
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:attribute>
-    <xs:attribute name="Comment" type="xs:string" use="optional">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-          Comment attribute:
-          - Optional.
-          - Type: xs:string.
-          ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:complexType>
+	<xs:complexType name="Documentation">
+		<xs:attribute ref="Folder" use="required"/>
+	</xs:complexType>
 
-  <xs:complexType name="Repository">
-    <xs:attribute name="URL" type="xs:anyURI" use="required">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-            URL attribute:
-            - Required.
-            - Must be unique.
-            - Type: xs:anyURI:
-          ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:complexType>
+	<xs:complexType name="Repository">
+		<xs:attribute name="URL" type="xs:anyURI" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					URL attribute:
+					- Required.
+					- Must be unique.
+					- Type: xs:anyURI:
+				  ]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
 
-  <xs:complexType name="ActiveDirectoryPermissions">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-            ActiveDirectoryPermission element:
-            - Required, 1 occurence.
+	<xs:complexType name="Developer">
+		<xs:attribute name="Name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+						Name attribute:
+						- Required.
+						- Must be unique.
+						- Type: xs:string.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Language" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					Language attribute:
+					- Required.
+					- Type: xs:enumeration.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="CSharp"/>
+					<xs:enumeration value="Python"/>
+					<xs:enumeration value="VEE"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Comment" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					Comment attribute:
+					- Optional.
+					- Type: xs:string.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="WindowsEventLog">
+		<xs:attribute name="Source" type="ValidWindowsEventLog" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					  Source attribute:
+					  - Required.
+					  - Type: ValidWindowsEventLog.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Log" type="ValidWindowsEventLog" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					  Log attribute:
+					  - Required.
+					  - Type: ValidWindowsEventLog.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="ActiveDirectoryPermissions">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				<![CDATA[
+				ActiveDirectoryPermission element:
+				- Required, 1 occurence.
             
-            .NET System.Security.AccessControl.FileSystemRights enumeration values.
-          ]]>
-        </xs:documentation>
-      </xs:annotation>
-    <xs:attribute name="ReadAndExecute" type="xs:string" use="required">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-            ReadAndExecute attribute:
-            - Required.
-            - Type: xs:string:
+				.NET System.Security.AccessControl.FileSystemRights enumeration values.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="ReadAndExecute" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					ReadAndExecute attribute:
+					- Required.
+					- Type: xs:string:
             
-            FileSystemRights.ReadAndExecute.
-            Applied to TestExecutive & TestPlans.  Also TestData\TextFiles\Folder if applicable.
-          ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="ModifyWrite" type="xs:string" use="required">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-            Identity attribute:
-            - Required.
-            - Type: xs:string:
+					FileSystemRights.ReadAndExecute.
+					Applied to TestExecutive & TestPlans.  Also TestData\TextFiles\Folder if applicable.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ModifyWrite" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					Identity attribute:
+					- Required.
+					- Type: xs:string:
 
-            FileSystemRights.Modify | FileSystemRights.Write.
-            Applied to TestData\TextFiles\Folder if applicable.
-          ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="FullControl" type="xs:string" use="required">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-            Permission attribute:
-            - Required.
-            - Type: xs:string:
+					FileSystemRights.Modify | FileSystemRights.Write.
+					Applied to TestData\TextFiles\Folder if applicable.
+				  ]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="FullControl" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					Permission attribute:
+					- Required.
+					- Type: xs:string:
             
-            FileSystemRights.FullControl.
-            Applied to TestExecutive & TestPlans.  Also TestData\TextFiles\Folder if applicable.
-          ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:complexType>  
-  
-  <xs:complexType name="BarcodeReader">
-    <xs:attribute name="ID" type="xs:string" use="required">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-            ID attribute:
-            - Required.
-            - Type: xs:string.
-          ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="Detail" type="xs:string" use="required">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-            Detail attribute:
-            - Required.
-            - Type: xs:string.
+					FileSystemRights.FullControl.
+					Applied to TestExecutive & TestPlans.  Also TestData\TextFiles\Folder if applicable.
+					 ]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="BarcodeReader">
+		<xs:attribute name="ID" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					ID attribute:
+					- Required.
+					- Type: xs:string.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Detail" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					Detail attribute:
+					- Required.
+					- Type: xs:string.
                 
-            Concise description of Barcode Scanner.
-          ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute ref="Folder" use="required"/>
-  </xs:complexType>
+					Concise description of Barcode Scanner.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute ref="Folder" use="required"/>
+	</xs:complexType>
 
-  <xs:complexType name="TextFiles">
-    <xs:attribute ref="Folder" use="required">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-        Folder attribute:
-        - Type: folder.
-        - Initial base path to save test data into.
-        - Each TestPlan has its own, individual sub-folder under this folder.
-        - Test data saved/persisted in XML textual format as individual files.
-        ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:complexType>
+	<xs:complexType name="TextFiles">
+		<xs:attribute ref="Folder" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					Folder attribute:
+					- Type: folder.
+					- Initial base path to save test data into.
+					- Each TestPlan has its own, individual sub-folder under this folder.
+					- Test data saved/persisted in XML textual format as individual files.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
 
-  <xs:complexType name="SQL_DB">
-    <xs:attribute name="ConnectionString" use="required" type="xs:string">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-          ConnectionString attribute:
-          - Type: xs:string.
-          - Connection string to SQL database to save test data into.
-          - Test data saved/persisted in XML textual format in database.
-          ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:complexType>
+	<xs:complexType name="SQL_DB">
+		<xs:attribute name="ConnectionString" use="required" type="xs:string">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					  ConnectionString attribute:
+					  - Type: xs:string.
+					  - Connection string to SQL database to save test data into.
+					  - Test data saved/persisted in XML textual format in database.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
 
-  <xs:complexType name="InstrumentTestExec">
-    <xs:attribute name="ID" type="xs:string" use="required">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-          ID attribute:
-          - Required.
-          - Must be unique.
-          - Type: xs:string.
-          ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="Detail" type="xs:string" use="required">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-                Detail attribute:
-                - Required.
-                - Type: xs:string.
+	<xs:complexType name="InstrumentTestExec">
+		<xs:attribute name="ID" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					  ID attribute:
+					  - Required.
+					  - Must be unique.
+					  - Type: xs:string.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Detail" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					Detail attribute:
+					- Required.
+					- Type: xs:string.
                 
-                Concise description of InstrumentTestExec.
-              ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="Address" type="xs:string" use="required">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-              Address attribute:
-              - Required.
-              - Must be unique.
-              - Type: xs:string.
-          ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="NameSpacedClassName" type="ValidCSharpNamespace" use="required">
-      <xs:annotation>
-        <xs:documentation xml:lang="en">
-          <![CDATA[
-              NameSpacedClassName attribute:
-              - Required.
-              - Type: ValidCSharpNamespace.
-          ]]>
-        </xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-  </xs:complexType>
+					Concise description of InstrumentTestExec.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Address" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					  Address attribute:
+					  - Required.
+					  - Must be unique.
+					  - Type: xs:string.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="NameSpacedClassName" type="ValidCSharpNamespace" use="required">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">
+					<![CDATA[
+					  NameSpacedClassName attribute:
+					  - Required.
+					  - Type: ValidCSharpNamespace.
+					]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
 
 
-  <xs:element name="TestExecDefinition">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="Development" minOccurs="1" maxOccurs="1">
-          <xs:annotation>
-            <xs:documentation xml:lang="en">
-              <![CDATA[
-                Development element.
-                - Required, 1 occurence.
-                - Type: xs:element.
-              ]]>
-            </xs:documentation>
-          </xs:annotation>
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="Developer" type="Developer" minOccurs="1" maxOccurs="unbounded">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
-                    <![CDATA[
-                    Developer element.
-                    - Required, 1 or more occurences.
-                    - Type: Developer.
-                  ]]>
-                  </xs:documentation>
-                </xs:annotation>
-              </xs:element>
-              <xs:element name="Documentation" type="Documentation" minOccurs="0" maxOccurs="unbounded">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
-                    <![CDATA[
-                    Documentation element.
-                    - Optional, 0 or more occurences.
-                    - Type: Documentation.
-                  ]]>
-                  </xs:documentation>
-                </xs:annotation>
-              </xs:element>
-              <xs:element name="Repository" type="Repository" minOccurs="0" maxOccurs="unbounded">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
-                    <![CDATA[
-                    Repository element.
-                    - Optional, 0 or more occurences.
-                    - Type: Repository.
-                  ]]>
-                  </xs:documentation>
-                </xs:annotation>
-              </xs:element>
-            </xs:sequence>
-            <xs:attribute name="Released" type="xs:date" use="required">
-              <xs:annotation>
-                <xs:documentation xml:lang="en">
-                  <![CDATA[
-                    Released attribute.
-                    - Required.
-                    - Type: xs:date.
-                  ]]>
-                </xs:documentation>
-              </xs:annotation>
-            </xs:attribute>
-          </xs:complexType>
-          <xs:unique name="UniqueDeveloper">
-            <xs:selector xpath="Developer"/>
-            <xs:field xpath="@Name"/>
-          </xs:unique>
-          <xs:unique name="UniqueDocumentationa">
-            <xs:selector xpath="Documentation"/>
-            <xs:field xpath="@Folder"/>
-          </xs:unique>
-          <xs:unique name="UniqueRepository">
-            <xs:selector xpath="Repository"/>
-            <xs:field xpath="@URL"/>
-          </xs:unique>
-        </xs:element>
-        <xs:element name="TestExecutiveURL" type="xs:string" minOccurs="1" maxOccurs="1" >
-          <xs:annotation>
-            <xs:documentation xml:lang="en">
-              <![CDATA[
-                TestExecutiveURL element:
-                - Required, 1 occurence.
-                - Type: xs:string.
-              ]]>
-            </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element name="TestPlansFolder" type="xs:string" minOccurs="1" maxOccurs="1" >
-          <xs:annotation>
-            <xs:documentation xml:lang="en">
-              <![CDATA[
-                TestPlansFolder element:
-                - Required, 1 occurence.
-                - Type: xs:string.
-              ]]>
-            </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element name="EventSource" type="xs:string" minOccurs="1" maxOccurs="1" >
-          <xs:annotation>
-            <xs:documentation xml:lang="en">
-              <![CDATA[
-                EventSource element:
-                - Required, 1 occurence.
-                - Type: xs:string.
-              ]]>
-            </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element name="ActiveDirectoryPermissions" minOccurs="1" maxOccurs="1"/>
-        <xs:element name="TestData" minOccurs="1" maxOccurs="1">
-          <xs:annotation>
-            <xs:documentation xml:lang="en">
-              <![CDATA[
-                TestData element.
-                - Required, 1 occurence.
-                - Type: xs:element.
+	<xs:element name="TestExecDefinition">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Development" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							<![CDATA[
+							Development element.
+							- Required, 1 occurence.
+							- Type: xs:element.
+							]]>
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Developer" type="Developer" minOccurs="1" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation xml:lang="en">
+										<![CDATA[
+										Developer element.
+										- Required, 1 or more occurences.
+										- Type: Developer.
+										]]>
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Documentation" type="Documentation" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation xml:lang="en">
+										<![CDATA[
+										Documentation element.
+										- Optional, 0 or more occurences.
+										- Type: Documentation.
+										]]>
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Repository" type="Repository" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation xml:lang="en">
+										<![CDATA[
+										Repository element.
+										- Optional, 0 or more occurences.
+										- Type: Repository.
+										]]>
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="Released" type="xs:date" use="required">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">
+									<![CDATA[
+									Released attribute.
+									- Required.
+									- Type: xs:date.
+									]]>
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+					<xs:unique name="UniqueDeveloper">
+						<xs:selector xpath="Developer"/>
+						<xs:field xpath="@Name"/>
+					</xs:unique>
+					<xs:unique name="UniqueDocumentationa">
+						<xs:selector xpath="Documentation"/>
+						<xs:field xpath="@Folder"/>
+					</xs:unique>
+					<xs:unique name="UniqueRepository">
+						<xs:selector xpath="Repository"/>
+						<xs:field xpath="@URL"/>
+					</xs:unique>
+				</xs:element>
+				<xs:element name="TestExecutiveURL" type="xs:string" minOccurs="1" maxOccurs="1" >
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							<![CDATA[
+							TestExecutiveURL element:
+							- Required, 1 occurence.
+							- Type: xs:string.
+							]]>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TestPlansFolder" type="xs:string" minOccurs="1" maxOccurs="1" >
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							<![CDATA[
+							TestPlansFolder element:
+							- Required, 1 occurence.
+							- Type: xs:string.
+							]]>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="WindowsEventLog" type="WindowsEventLog" minOccurs="1" maxOccurs="1" >
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							<![CDATA[
+							WindowsEventLog element:
+							- Required, 1 occurence.
+							- Type: WindowsEventLog.
+							 ]]>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ActiveDirectoryPermissions" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="TestData" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							<![CDATA[
+							TestData element.
+							- Required, 1 occurence.
+							- Type: xs:element.
                 
-                Choose TextFiles xor SQL_DB for test data persistence type.
-                Enable/disable test data individually for each TestPlan.
-              ]]>
-            </xs:documentation>
-          </xs:annotation>
-          <xs:complexType>
-            <xs:choice>
-              <xs:element name="TextFiles" type="TextFiles"/>
-              <xs:element name="SQL_DB" type="SQL_DB"/>
-            </xs:choice>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="BarcodeReader" type="BarcodeReader" minOccurs="1" maxOccurs="1" >
-          <xs:annotation>
-            <xs:documentation xml:lang="en">
-              <![CDATA[
-                BarcodeReader element:
-                - Required, 1 occurence.
-                - Type: BarcodeReader.
-              ]]>
-            </xs:documentation>
-          </xs:annotation>
-        </xs:element>
-        <xs:element name="Apps" minOccurs="1" maxOccurs="1" >
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="ABT" minOccurs="1" maxOccurs="1" >
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="TestChooser" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
-                  </xs:sequence>
-                </xs:complexType>
-              </xs:element>
-              <xs:element name="Keysight" minOccurs="1" maxOccurs="1" >
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="CommandExpert" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
-                    <xs:element name="ConnectionExpert" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
-                  </xs:sequence>
-                </xs:complexType>
-              </xs:element>
-              <xs:element name="Microsoft" minOccurs="1" maxOccurs="1" >
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="SQLServerManagementStudio" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
-                    <xs:element name="VisualStudio" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
-                    <xs:element name="VisualStudioCode" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
-                    <xs:element name="XMLNotepad" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
-                  </xs:sequence>
-                </xs:complexType>
-              </xs:element>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="InstrumentsTestExec" minOccurs="1" maxOccurs="1">
-          <xs:annotation>
-            <xs:documentation xml:lang="en">
-              <![CDATA[
-                InstrumentsTestExec element.
-                - Required, 1 occurence.
-                - Type: xs:element.
+							Choose TextFiles xor SQL_DB for test data persistence type.
+							Enable/disable test data individually for each TestPlan.
+							]]>
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:choice>
+							<xs:element name="TextFiles" type="TextFiles"/>
+							<xs:element name="SQL_DB" type="SQL_DB"/>
+						</xs:choice>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="BarcodeReader" type="BarcodeReader" minOccurs="1" maxOccurs="1" >
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							<![CDATA[
+							BarcodeReader element:
+							- Required, 1 occurence.
+							- Type: BarcodeReader.
+							]]>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Apps" minOccurs="1" maxOccurs="1" >
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ABT" minOccurs="1" maxOccurs="1" >
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="TestChooser" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Keysight" minOccurs="1" maxOccurs="1" >
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="CommandExpert" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
+										<xs:element name="ConnectionExpert" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Microsoft" minOccurs="1" maxOccurs="1" >
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="SQLServerManagementStudio" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
+										<xs:element name="VisualStudio" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
+										<xs:element name="VisualStudioCode" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
+										<xs:element name="XMLNotepad" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="InstrumentsTestExec" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							<![CDATA[
+							InstrumentsTestExec element.
+							- Required, 1 occurence.
+							- Type: xs:element.
                 
-                List stationary/permanently installed instruments for this test system.
-              ]]>
-            </xs:documentation>
-          </xs:annotation>
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="InstrumentTestExec" type="InstrumentTestExec" minOccurs="0" maxOccurs="unbounded">
-                <xs:annotation>
-                  <xs:documentation xml:lang="en">
-                    <![CDATA[
-                      InstrumentTestExec element.
-                      - Optional, 0 or more occurences.
-                      - Type: InstrumentTestExec.
-                   ]]>
-                  </xs:documentation>
-                </xs:annotation>
-              </xs:element>
-            </xs:sequence>
-            <xs:attribute ref="Folder" use="required"/>
-          </xs:complexType>
-          <xs:unique name="UniqueID">
-            <xs:selector xpath="InstrumentTestExec"/>
-            <xs:field xpath="@ID"/>
-          </xs:unique>
-          <xs:unique name="UniqueAddress">
-            <xs:selector xpath="InstrumentTestExec"/>
-            <xs:field xpath="@Address"/>
-          </xs:unique>
-        </xs:element>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
+							List stationary/permanently installed instruments for this test system.
+							]]>
+						</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="InstrumentTestExec" type="InstrumentTestExec" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation xml:lang="en">
+										<![CDATA[
+										  InstrumentTestExec element.
+										  - Optional, 0 or more occurences.
+										  - Type: InstrumentTestExec.
+									   ]]>
+									</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute ref="Folder" use="required"/>
+					</xs:complexType>
+					<xs:unique name="UniqueID">
+						<xs:selector xpath="InstrumentTestExec"/>
+						<xs:field xpath="@ID"/>
+					</xs:unique>
+					<xs:unique name="UniqueAddress">
+						<xs:selector xpath="InstrumentTestExec"/>
+						<xs:field xpath="@Address"/>
+					</xs:unique>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
 </xs:schema>

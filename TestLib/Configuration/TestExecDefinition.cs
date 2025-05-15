@@ -14,13 +14,19 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         [XmlElement(nameof(Development))] public Development Development { get; set; }
         [XmlElement(nameof(TestExecutiveURL))] public String TestExecutiveURL { get; set; }
         [XmlElement(nameof(TestPlansFolder))] public String TestPlansFolder { get; set; }
-        [XmlElement(nameof(EventSource))] public String EventSource { get; set; }
+        [XmlElement(nameof(WindowsEventLog))] public WindowsEventLog WindowsEventLog { get; set; }
         [XmlElement(nameof(ActiveDirectoryPermissions))] public ActiveDirectoryPermissions ActiveDirectoryPermissions { get; set; }
         [XmlElement(nameof(TestData))] public TestData TestData { get; set; }
         [XmlElement(nameof(BarcodeReader))] public BarcodeReader BarcodeReader { get; set; }
         [XmlElement(nameof(Apps))] public Apps Apps { get; set; }
         [XmlElement(nameof(InstrumentsTestExec))] public InstrumentsTestExec InstrumentsTestExec { get; set; }
         public TestExecDefinition() { }
+    }
+
+    public class WindowsEventLog {
+        [XmlAttribute(nameof(Source))] public String Source { get; set; }
+        [XmlAttribute(nameof(Log))] public String Log { get; set; }
+        public WindowsEventLog() { }
     }
 
     public class ActiveDirectoryPermissions {
