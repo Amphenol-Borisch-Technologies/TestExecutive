@@ -5,6 +5,7 @@ using System.Configuration.Install;
 using System.Diagnostics;
 using System.IO;
 using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -35,13 +36,20 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
             //}
 
-            if (!EventLog.SourceExists(testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value)) {
-                EventLog.CreateEventSource(testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value, testExecDefinition.Element("WindowsEventLog").Attribute("Log").Value);
-                EventLog eventLog = new EventLog(testExecDefinition.Element("WindowsEventLog").Attribute("Log").Value) {
-                    Source = testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value
-                };
-                Thread.Sleep(1000);
-                eventLog.WriteEntry("First entry.", EventLogEntryType.Information, 1);
+            String log = testExecDefinition.Element("WindowsEventLog").Attribute("Log").Value;
+            String source = testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value;
+            try {
+                if (!EventLog.Exists(log)) {
+                    EventLog.CreateEventSource(source, log);
+                    Thread.Sleep(2000);
+                    if (EventLog.Exists(log)) using (EventLog eventLog = new EventLog(log) { Source = source }) { eventLog.WriteEntry("Created.", EventLogEntryType.Information, 0); }
+                }
+            } catch (Exception exception) {
+                _ = MessageBox.Show(
+                    $"Source '{source}'.{Environment.NewLine}" +
+                    $"Log' {log}'.{Environment.NewLine}{Environment.NewLine}" +
+                    $"{exception.Message}",
+                    $"Error creating or writing event log source", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -57,7 +65,12 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
                         AccessControlType.Allow));
                 directoryInfo.SetAccessControl(directorySecurity);
             } catch (Exception exception) {
-                _ = MessageBox.Show(exception.Message, "Error setting directory permissions", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _ = MessageBox.Show(
+                    $"Directory '{directory}'.{Environment.NewLine}" +
+                    $"Identity' {identity}'.{Environment.NewLine}" + 
+                    $"FileSystemRights '{fileSystemRights}'.{Environment.NewLine}{Environment.NewLine}" +
+                    $"{exception.Message}",
+                    $"Error setting directory permissions", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
