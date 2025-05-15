@@ -69,7 +69,7 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             } catch (Exception exception) {
                 _ = MessageBox.Show(
                     $"Directory:   '{directory}'.{Environment.NewLine}" +
-                    $"Identity:    '{identity}'.{Environment.NewLine}" +
+                    $"Identity:     '{identity}'.{Environment.NewLine}" +
                     $"File Rights: '{fileSystemRights}'.{Environment.NewLine}{Environment.NewLine}" +
                     $"{exception.Message}",
                     $"Error Setting Directory Permissions", MessageBoxButtons.OK, MessageBoxIcon.Error);
