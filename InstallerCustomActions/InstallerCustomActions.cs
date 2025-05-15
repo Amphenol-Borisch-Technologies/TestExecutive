@@ -5,6 +5,7 @@ using System.Configuration.Install;
 using System.Diagnostics;
 using System.IO;
 using System.Security.AccessControl;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
@@ -39,6 +40,7 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
                 EventLog eventLog = new EventLog(testExecDefinition.Element("WindowsEventLog").Attribute("Log").Value) {
                     Source = testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value
                 };
+                Thread.Sleep(1000);
                 eventLog.WriteEntry("First entry.", EventLogEntryType.Information, 1);
             }
         }
