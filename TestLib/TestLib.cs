@@ -44,13 +44,12 @@ namespace ABT.Test.TestExecutive.TestLib {
             { EVENTS.PASS, Color.Green },
             { EVENTS.INFORMATION, Color.White }
         };
-        public static readonly String xml = ".xml";
-        public static readonly String xsd = ".xsd";
+        public static readonly String xml = ".xml", xsd = ".xsd";
         public static readonly String TestExecutiveFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public static readonly String TestExecDefinitionBase = "TestExecDefinition";
         public static readonly String TestExecDefinitionXML_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase + xml;
         public static readonly String TestExecDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase + xsd;
-        public static readonly TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(xmlFile: $"{TestExecDefinitionXML_Path}");
+        public static readonly TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(TestExecDefinitionXML_Path);
         public static readonly String TestExecDefinitionXSD_URL = testExecDefinition.TestExecutiveURL + "/" + TestExecDefinitionBase + xsd;
 
         public static readonly String TestPlanDefinitionBase = "TestPlanDefinition";
