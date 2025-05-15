@@ -191,8 +191,8 @@ namespace ABT.Test.TestExecutive.TestLib {
 
         public static void ErrorMessage(String Error) {
             _ = MessageBox.Show($"Unexpected error:{Environment.NewLine}{Error}", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-            using (EventLog eventLog = new EventLog("Application")) {
-                eventLog.Source = testExecDefinition.EventSource;
+            using (EventLog eventLog = new EventLog(testExecDefinition.WindowsEventLog.Log)) {
+                eventLog.Source = testExecDefinition.WindowsEventLog.Source;
                 eventLog.WriteEntry(Error, EventLogEntryType.Error);
             }
         }

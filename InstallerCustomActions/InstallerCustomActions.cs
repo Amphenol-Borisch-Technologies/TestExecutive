@@ -34,10 +34,10 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
             //}
 
-            if (!EventLog.SourceExists(testExecDefinition.Element("EventSource").Value)) {
-                EventLog.CreateEventSource(testExecDefinition.Element("EventSource").Value, testExecDefinition.Element("EventSource").Value + "Log");
-                EventLog eventLog = new EventLog(testExecDefinition.Element("EventSource").Value) {
-                    Source = testExecDefinition.Element("EventSource").Value
+            if (!EventLog.SourceExists(testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value)) {
+                EventLog.CreateEventSource(testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value, testExecDefinition.Element("WindowsEventLog").Attribute("Log").Value);
+                EventLog eventLog = new EventLog(testExecDefinition.Element("WindowsEventLog").Attribute("Log").Value) {
+                    Source = testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value
                 };
                 eventLog.WriteEntry("First entry.", EventLogEntryType.Information, 1);
             }

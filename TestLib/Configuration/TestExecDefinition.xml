@@ -14,7 +14,7 @@
 	
   <TestPlansFolder>C:\Program Files\ABT\Test\TestPlans</TestPlansFolder>
 
-  <WindowsEventLog Source="TestExecutive" Log="TestExecutiveLog"/>
+  <WindowsEventLog Source="TestExecutiveSource" Log="TestExecutive"/>
 
   <ActiveDirectoryPermissions ReadAndExecute="BORISCH\Domain Users" ModifyWrite="BORISCH\Test - TDR Administrators" FullControl="BORISCH\Test - TestExecutive Administrators"/>
   

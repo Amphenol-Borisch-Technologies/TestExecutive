@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace ABT.Test.TestExecutive.TestLib.Configuration {
     // TODO: Eventually; Move TestDev specific classes to TestDev project.
     // Classes Apps, ABT, Keysight & Microsoft.
-    // In TestExecDefinition.xml, move <Apps> element/sub-elements to a TestDeveDefinition.xml file.
+    // In TestExecDefinition.xml, move <Apps> element/sub-elements to a TestDevDefinition.xml file.
     // In TestExecDefinition.xsd, move <Apps> element/sub-elements to a TestDevDefinition.xsd file.
     // In TestExec.cs, address OpenApp(testExecDefinition.Apps.Microsoft.SQLServerManagementStudio);
     [XmlRoot(nameof(TestExecDefinition))]
