@@ -47,10 +47,10 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
                 }
             } catch (Exception exception) {
                 _ = MessageBox.Show(
-                    $"Source '{source}'.{Environment.NewLine}" +
-                    $"Log' {log}'.{Environment.NewLine}{Environment.NewLine}" +
+                    $"Source: '{source}'.{Environment.NewLine}" +
+                    $"Log:    '{log}'.{Environment.NewLine}{Environment.NewLine}" +
                     $"{exception.Message}",
-                    $"Error creating or writing event log source", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    $"Error Creating or Writing Event Log & Source", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -67,11 +67,11 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
                 directoryInfo.SetAccessControl(directorySecurity);
             } catch (Exception exception) {
                 _ = MessageBox.Show(
-                    $"Directory '{directory}'.{Environment.NewLine}" +
-                    $"Identity' {identity}'.{Environment.NewLine}" +
-                    $"FileSystemRights '{fileSystemRights}'.{Environment.NewLine}{Environment.NewLine}" +
+                    $"Directory:        '{directory}'.{Environment.NewLine}" +
+                    $"Identity:         '{identity}'.{Environment.NewLine}" +
+                    $"FileSystemRights: '{fileSystemRights}'.{Environment.NewLine}{Environment.NewLine}" +
                     $"{exception.Message}",
-                    $"Error setting directory permissions", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    $"Error Setting Directory Permissions", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
