@@ -1,8 +1,12 @@
 ﻿using ABT.Test.TestExecutive.TestLib.Configuration;
 using ABT.Test.TestExecutive.TestLib.Miscellaneous;
 using System;
+using System.IO;
+using System.Runtime.Remoting.Contexts;
+using System.Security.AccessControl;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using Windows.Devices.Enumeration;
 using Windows.Devices.PointOfService;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
@@ -13,13 +17,14 @@ namespace ABT.Test.TestExecutive.TestDev {
         private void TSMI_Apps_ABT_TestChooser_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.ABT.TestChooser); }
         private void TSMI_Apps_Keysight_CommandExpert_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Keysight.CommandExpert); }
         private void TSMI_Apps_Keysight_ConnectionExpert_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Keysight.ConnectionExpert); }
+        private void TSMI_Apps_Microsoft_EventViewer_Click(object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.EventViewer, $"/c:{testExecDefinition.WindowsEventLog.Log}"); }
         private void TSMI_Apps_Microsoft_SQLServerManagementStudio_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.SQLServerManagementStudio); }
         private void TSMI_Apps_Microsoft_VisualStudio_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.VisualStudio); }
         private void TSMI_Apps_Microsoft_VisualStudioCode_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.VisualStudioCode); }
         private void TSMI_Apps_Microsoft_XMLNotepad_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.XMLNotepad); }
 
         private async void TSMI_BarcodeScanner_Click(Object sender, EventArgs e) {
-            DeviceInformationCollection deviceInformationCollectionic = await DeviceInformation.FindAllAsync(BarcodeScanner.GetDeviceSelector(PosConnectionTypes.Local));
+            DeviceInformationCollection deviceInformationCollection = await DeviceInformation.FindAllAsync(BarcodeScanner.GetDeviceSelector(PosConnectionTypes.Local));
             StringBuilder stringBuilder = new StringBuilder();
             _ = stringBuilder.AppendLine($"Discovering Microsoft supported, corded Barcode Scanner(s):{Environment.NewLine}");
             _ = stringBuilder.AppendLine($"  - See https://learn.microsoft.com/en-us/windows/uwp/devices-sensors/pos-device-support.");
@@ -29,7 +34,7 @@ namespace ABT.Test.TestExecutive.TestDev {
             _ = stringBuilder.AppendLine($"  - Scanners must be programmed into USB-HID mode to function properly:");
             _ = stringBuilder.AppendLine(@"    - See: file:///P:/Test/Engineers/Equipment_Manuals/Honeywell/Honeywell_Voyager_1200G_User's_Guide_ReadMe.pdf");
             _ = stringBuilder.AppendLine($"    - Or:  https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/ppr/en-us/public/products/barcode-scanners/general-purpose-handheld/1200g/documents/sps-ppr-vg1200-ug.pdf{Environment.NewLine}{Environment.NewLine}");
-            foreach (DeviceInformation deviceInformation in deviceInformationCollectionic) {
+            foreach (DeviceInformation deviceInformation in deviceInformationCollection) {
                 _ = stringBuilder.AppendLine($"Name: '{deviceInformation.Name}'.");
                 _ = stringBuilder.AppendLine($"Kind: '{deviceInformation.Kind}'.");
                 _ = stringBuilder.AppendLine($"ID  : '{deviceInformation.Id}'.{Environment.NewLine}");
@@ -39,6 +44,20 @@ namespace ABT.Test.TestExecutive.TestDev {
         }
         private void TSMI_Generate_Project_Click(Object sender, EventArgs e) { }
         private void TSMI_Generate_InstrumentAliases_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateInstrumentAliases); }
+        private void TSMI_Generate_TDRFolders_Click(object sender, EventArgs e) {
+            if (testExecDefinition.TestData.Item is TextFiles textFiles) {
+                String[] testPlanDefinitionPaths = Directory.GetFiles(testExecDefinition.TestPlansFolder, TestPlanDefinitionBase + xml, SearchOption.AllDirectories);
+
+                TestPlanDefinition testPlanDefinition;
+                foreach (String testPlanDefinitionPath in testPlanDefinitionPaths) {
+                    testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(testPlanDefinitionPath);
+                    Directory.CreateDirectory(textFiles.Folder + "\\" + testPlanDefinition.UUT.Number);
+                    foreach (TestOperation testOperation in testPlanDefinition.TestSpace.TestOperations) {
+                        Directory.CreateDirectory(textFiles.Folder + "\\" + testPlanDefinition.UUT.Number + "\\" + testOperation.NamespaceTrunk);
+                    }
+                }
+            }
+        }
         private void TSMI_Generate_TestPlan_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateTestPlan); }
         private void TestPlanDefinitionAction(Action<String> executeAction) {
             (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(testExecDefinition.TestPlansFolder, $"TestPlan Definition File|{TestPlanDefinitionBase}{xml}");
@@ -71,5 +90,7 @@ namespace ABT.Test.TestExecutive.TestDev {
             }
             return (DialogResult.Cancel, null);
         }
+
+        private void TestDev_Load(object sender, EventArgs e) { TSMI_Generate_TDRFolders.Enabled = (testExecDefinition.TestData.Item is TextFiles textFiles); }
     }
 }

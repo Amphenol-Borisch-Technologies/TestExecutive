@@ -480,6 +480,7 @@
 							<xs:element name="Microsoft" minOccurs="1" maxOccurs="1" >
 								<xs:complexType>
 									<xs:sequence>
+										<xs:element name="EventViewer" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
 										<xs:element name="SQLServerManagementStudio" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
 										<xs:element name="VisualStudio" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />
 										<xs:element name="VisualStudioCode" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" />

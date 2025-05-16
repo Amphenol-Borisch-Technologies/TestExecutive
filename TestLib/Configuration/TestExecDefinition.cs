@@ -79,6 +79,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
     }
 
     public class Microsoft {
+        [XmlElement(nameof(EventViewer))] public String EventViewer { get; set; }
         [XmlElement(nameof(SQLServerManagementStudio))] public String SQLServerManagementStudio { get; set; }
         [XmlElement(nameof(VisualStudio))] public String VisualStudio { get; set; }
         [XmlElement(nameof(VisualStudioCode))] public String VisualStudioCode { get; set; }

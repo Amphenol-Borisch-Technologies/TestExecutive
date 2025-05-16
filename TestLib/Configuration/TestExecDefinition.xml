@@ -52,6 +52,7 @@
       <ConnectionExpert>C:\Program Files\Keysight\IO Libraries Suite\ConnectionExpert.exe</ConnectionExpert>
     </Keysight>
     <Microsoft>
+	  <EventViewer>C:\Windows\System32\eventvwr.exe</EventViewer>
       <SQLServerManagementStudio>C:\Program Files (x86)\Microsoft SQL Server Management Studio 20\Common7\IDE\Ssms.exe</SQLServerManagementStudio>
       <VisualStudio>C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\devenv.exe</VisualStudio>
       <VisualStudioCode>C:\Program Files\Microsoft VS Code\Code.exe</VisualStudioCode>
