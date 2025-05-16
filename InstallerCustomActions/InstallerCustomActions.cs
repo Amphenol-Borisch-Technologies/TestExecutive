@@ -18,23 +18,23 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
         public override void Install(IDictionary stateSaver) {
             base.Install(stateSaver);
 
-            // NOTE: Tried referencing ABT.Test.TestExecutive.TestLib and utilizing it's testExecDefinition object, instead of reading TestExecDefinition.xml directly, but it was problematic.
             XElement testExecDefinition = XDocument.Load(Context.Parameters["targetdir"] + @"\TestExecDefinition.xml").Root;
 
             XElement activeDirectoryPermissions = testExecDefinition.Element("ActiveDirectoryPermissions");
             SetDirectoryPermissions(Context.Parameters["targetdir"], activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
             SetDirectoryPermissions(Context.Parameters["targetdir"], activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
 
+            Directory.CreateDirectory(testExecDefinition.Element("TestPlansFolder").Value);
             SetDirectoryPermissions(testExecDefinition.Element("TestPlansFolder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
             SetDirectoryPermissions(testExecDefinition.Element("TestPlansFolder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
 
-            XElement textFiles = testExecDefinition.Element("TestData").Element("TextFiles");
-            if (textFiles != null) {
-                // NOTE: SetDirectoryPermissions(textFiles.Attribute("Folder").Value) fails, apparently because I can't change permissions on P:\Test\TDR.
-                SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
-                SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ModifyWrite").Value, FileSystemRights.Modify | FileSystemRights.Write);
-                SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
-            }
+            // NOTE: SetDirectoryPermissions(textFiles.Attribute("Folder").Value) fails, apparently because I can't change permissions on P:\Test\TDR.
+            //XElement textFiles = testExecDefinition.Element("TestData").Element("TextFiles");
+            //if (textFiles != null) {
+            //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
+            //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ModifyWrite").Value, FileSystemRights.Modify | FileSystemRights.Write);
+            //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
+            //}
 
             String source = testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value;
             String log = testExecDefinition.Element("WindowsEventLog").Attribute("Log").Value;
