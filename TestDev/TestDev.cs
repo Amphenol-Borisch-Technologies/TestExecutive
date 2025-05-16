@@ -51,12 +51,29 @@ namespace ABT.Test.TestExecutive.TestDev {
                 TestPlanDefinition testPlanDefinition;
                 foreach (String testPlanDefinitionPath in testPlanDefinitionPaths) {
                     testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(testPlanDefinitionPath);
-                    Directory.CreateDirectory(textFiles.Folder + "\\" + testPlanDefinition.UUT.Number);
+                    CreateDirectoryAndSetPermissions(textFiles.Folder + "\\" + testPlanDefinition.UUT.Number);
                     foreach (TestOperation testOperation in testPlanDefinition.TestSpace.TestOperations) {
-                        Directory.CreateDirectory(textFiles.Folder + "\\" + testPlanDefinition.UUT.Number + "\\" + testOperation.NamespaceTrunk);
+                        CreateDirectoryAndSetPermissions(textFiles.Folder + "\\" + testPlanDefinition.UUT.Number + "\\" + testOperation.NamespaceTrunk);
                     }
                 }
             }
+        }
+        private void SetDirectoryPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
+            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
+            DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
+            directorySecurity.AddAccessRule(
+                new FileSystemAccessRule(identity,
+                    fileSystemRights,
+                    InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
+                    PropagationFlags.None,
+                    AccessControlType.Allow));
+            directoryInfo.SetAccessControl(directorySecurity);
+        }
+        private void CreateDirectoryAndSetPermissions(String directory) {
+            Directory.CreateDirectory(directory);
+            SetDirectoryPermissions(directory, testExecDefinition.ActiveDirectoryPermissions.ReadAndExecute, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(directory, testExecDefinition.ActiveDirectoryPermissions.ModifyWrite, FileSystemRights.Modify | FileSystemRights.Write);
+            SetDirectoryPermissions(directory, testExecDefinition.ActiveDirectoryPermissions.FullControl, FileSystemRights.FullControl);
         }
         private void TSMI_Generate_TestPlan_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateTestPlan); }
         private void TestPlanDefinitionAction(Action<String> executeAction) {
