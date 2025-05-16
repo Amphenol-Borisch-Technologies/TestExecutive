@@ -64,7 +64,7 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
                     new FileSystemAccessRule(identity,
                         fileSystemRights,
                         InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
-                        PropagationFlags.NoPropagateInherit,
+                        PropagationFlags.None,
                         AccessControlType.Allow));
                 directoryInfo.SetAccessControl(directorySecurity);
             } catch (Exception exception) {
