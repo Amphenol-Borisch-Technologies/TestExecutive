@@ -25,6 +25,7 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             SetDirectoryPermissions(Context.Parameters["targetdir"], activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
 
             Directory.CreateDirectory(testExecDefinition.Element("TestPlansFolder").Value);
+
             SetDirectoryPermissions(testExecDefinition.Element("TestPlansFolder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
             SetDirectoryPermissions(testExecDefinition.Element("TestPlansFolder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
 
@@ -59,6 +60,7 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             try {
                 DirectoryInfo directoryInfo = new DirectoryInfo(directory);
                 DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
+                directorySecurity.SetAccessRuleProtection(false, false);
                 directorySecurity.AddAccessRule(
                     new FileSystemAccessRule(identity,
                         fileSystemRights,
