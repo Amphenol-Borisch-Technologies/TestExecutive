@@ -39,12 +39,16 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             String source = testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value;
             String log = testExecDefinition.Element("WindowsEventLog").Attribute("Log").Value;
             try {
-                if (!EventLog.SourceExists(source)) {
+                Boolean sourceExisted = EventLog.SourceExists(source);
+                if (!sourceExisted) {
                     EventLog.CreateEventSource(source, log);
                     Int32 i = 5; while (i-- > 0 && !EventLog.Exists(log)) Thread.Sleep(1000);
-                    if (EventLog.Exists(log)) using (EventLog eventLog = new EventLog() { Source = source }) { eventLog.WriteEntry("Created today.", EventLogEntryType.Information, 0); }
-                } else {
-                    if (EventLog.Exists(log)) using (EventLog eventLog = new EventLog() { Source = source }) { eventLog.WriteEntry("Created previously.", EventLogEntryType.Information, 1); }
+                }
+                if (EventLog.Exists(log)) {
+                    using (EventLog eventLog = new EventLog() { Source = source }) {
+                        if (sourceExisted) eventLog.WriteEntry("Created previously.", EventLogEntryType.Information, 1);
+                        else eventLog.WriteEntry("Created today.", EventLogEntryType.Information, 0);
+                    }
                 }
             } catch (Exception exception) {
                 _ = MessageBox.Show(
