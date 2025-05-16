@@ -1,8 +1,8 @@
 ﻿using ABT.Test.TestExecutive.TestLib.Configuration;
 using ABT.Test.TestExecutive.TestLib.Miscellaneous;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Remoting.Contexts;
 using System.Security.AccessControl;
 using System.Text;
 using System.Windows.Forms;
@@ -47,15 +47,20 @@ namespace ABT.Test.TestExecutive.TestDev {
         private void TSMI_Generate_TDRFolders_Click(object sender, EventArgs e) {
             if (testExecDefinition.TestData.Item is TextFiles textFiles) {
                 String[] testPlanDefinitionPaths = Directory.GetFiles(testExecDefinition.TestPlansFolder, TestPlanDefinitionBase + xml, SearchOption.AllDirectories);
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine($"TDR folders in {testExecDefinition.TestPlansFolder} corresponding to TestPlans in {testExecDefinition.TestPlansFolder}.");
 
                 TestPlanDefinition testPlanDefinition;
                 foreach (String testPlanDefinitionPath in testPlanDefinitionPaths) {
                     testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(testPlanDefinitionPath);
                     CreateDirectoryAndSetPermissions(textFiles.Folder + "\\" + testPlanDefinition.UUT.Number);
+                    stringBuilder.AppendLine($"  {textFiles.Folder + "\\" + testPlanDefinition.UUT.Number}");
                     foreach (TestOperation testOperation in testPlanDefinition.TestSpace.TestOperations) {
                         CreateDirectoryAndSetPermissions(textFiles.Folder + "\\" + testPlanDefinition.UUT.Number + "\\" + testOperation.NamespaceTrunk);
+                        stringBuilder.AppendLine($"     {textFiles.Folder + "\\" + testPlanDefinition.UUT.Number + "\\" + testOperation.NamespaceTrunk}");
                     }
                 }
+                CustomMessageBox.Show(Title: $"TestPlan TDR Folders", Message: stringBuilder.ToString());
             }
         }
         private void SetDirectoryPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
