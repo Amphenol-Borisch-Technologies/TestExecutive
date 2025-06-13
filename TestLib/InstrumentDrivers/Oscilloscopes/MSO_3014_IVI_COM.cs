@@ -10,7 +10,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public INSTRUMENT_TYPES InstrumentType { get; }
         private Boolean disposed = false;
 
-        public void ResetClear() { Utility.Reset(); }
+        public void ResetClear() { Reset(); }
 
         public SELF_TEST_RESULTS SelfTests() {
             Int32 TestResult = 0;
