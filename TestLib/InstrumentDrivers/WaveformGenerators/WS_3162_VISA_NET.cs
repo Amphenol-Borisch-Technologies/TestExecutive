@@ -9,10 +9,16 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerators {
     public class WS_3162_VISA_NET : IInstrument, IDiagnostics, IDisposable {
         public enum CHANNELS { C1, C2 }
         public enum CLOCK_SOURCE { INT, EXT }
-        public enum  COMMAND_HEADERS { OFF, SHORT, LONG }
+        public enum COMMAND_HEADERS { OFF, SHORT, LONG }
         public enum CONFIGURATIONS { DEFAULT, LAST }
-        public enum MINUTES { OFF, M1=1, M5=5, M15=15, M30=30, M60=60, M120=120, M300=300 }
+        public enum MINUTES { OFF, M1 = 1, M5 = 5, M15 = 15, M30 = 30, M60 = 60, M120 = 120, M300 = 300 }
         public enum STATUSES { OFF, ON }
+        public enum VIRTUAL_KEYS { KB_BURST = 17, KB_CHANNEL = 33, KB_FUNC1 = 28, KB_FUNC2 = 23, KB_FUNC3 = 18, KB_FUNC4 = 13,
+            KB_FUNC5 = 8, KB_FUNC6 = 3, KB_HELP = 12, KB_KNOB_DOWN = 176, KB_KNOB_LEFT = 177, KB_KNOB_RIGHT = 175, KB_LEFT = 44,
+            KB_MOD = 15, KB_NEGATIVE = 43, KB_NUMBER_0 = 48, KB_NUMBER_1 = 49, KB_NUMBER_2 = 50, KB_NUMBER_3 = 51, KB_NUMBER_4 = 52,
+            KB_NUMBER_5 = 53, KB_NUMBER_6 = 54, KB_NUMBER_7 = 55, KB_NUMBER_8 = 56, KB_NUMBER_9 = 57, KB_OUTPUT1 = 153, KB_OUTPUT2 = 152,
+            KB_PARAMETER = 5, KB_POINT = 46, KB_RIGHT = 40, KB_SWEEP = 16, KB_UTILITY = 11, KB_WAVES = 4
+        }
 
         public UsbSession UsbSession;
         public IMessageBasedFormattedIO FormattedIO => UsbSession.FormattedIO;
@@ -95,6 +101,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerators {
             FormattedIO.WriteLine("*TST?");
             return FormattedIO.ReadLine().Substring(5);
         }
+        public void VirtualKeyCommand(VIRTUAL_KEYS VirtualKey) { FormattedIO.WriteLine($"VirtualKEY {VirtualKey},STATE,1"); }
+
         public void ResetCommand() { FormattedIO.WriteLine("*RST"); }
         public void WaitCommand() { FormattedIO.WriteLine("*WAI"); }
         public void ResetClear() {
@@ -123,7 +131,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerators {
             return result_3162;
         }
 
-        public WS_3162_VISA_NET(String Address, String Detail, AccessModes AccessMode=AccessModes.None, Int32 TimeoutMilliseconds = -1) {
+        public WS_3162_VISA_NET(String Address, String Detail, AccessModes AccessMode = AccessModes.None, Int32 TimeoutMilliseconds = -1) {
             this.Address = Address;
             this.Detail = Detail;
             InstrumentType = INSTRUMENT_TYPES.WAVEFORM_GENERATOR;
