@@ -32,9 +32,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerators {
             String response = FormattedIO.ReadLine();
             return (STATUSES)Enum.Parse(typeof(STATUSES), response.Substring(response.IndexOf(" ") + 1), true);
         }
-        public void ChannelParameterCopyCommand(CHANNELS ChannelSource) {
-            FormattedIO.WriteLine($"*PAraCoPy {(ChannelSource == CHANNELS.C1 ? CHANNELS.C2 : CHANNELS.C1)},{ChannelSource}");
-        }
+        public void ChannelParameterCopyCommand(CHANNELS ChannelSource) { FormattedIO.WriteLine($"*PAraCoPy {(ChannelSource == CHANNELS.C1 ? CHANNELS.C2 : CHANNELS.C1)},{ChannelSource}"); }
         public void ClearStatusCommand() { FormattedIO.WriteLine("*CLS"); }
         public void ClockSourceCommand(CLOCK_SOURCE ClockSource) { FormattedIO.WriteLine($"*ROSCillator {ClockSource}"); }
         public CLOCK_SOURCE ClockSourceQuery() {
@@ -136,7 +134,11 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerators {
             this.Detail = Detail;
             InstrumentType = INSTRUMENT_TYPES.WAVEFORM_GENERATOR;
             UsbSession = new UsbSession(Address, AccessMode, TimeoutMilliseconds);
-            ResetClear();
+            ResetCommand();
+            ClearStatusCommand();
+            CommandHeaderCommand(COMMAND_HEADERS.LONG);
+            ScreenSaveCommand(MINUTES.M5);
+            BuzzerCommand(STATUSES.ON);
         }
 
         public void Dispose() { UsbSession.Dispose(); }
