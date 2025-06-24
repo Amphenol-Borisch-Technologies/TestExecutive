@@ -3,7 +3,6 @@ using Ivi.Visa;
 using Keysight.Visa;
 using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Channels;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerators {
     public class WS_3162_VISA_NET : IInstrument, IDiagnostics, IDisposable {
