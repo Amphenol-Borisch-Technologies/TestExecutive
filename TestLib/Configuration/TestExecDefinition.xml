@@ -3,30 +3,30 @@
       xsi:schemaLocation="file:///C:/Program%20Files/ABT/Test/TestExecutive/TestExecDefinition.xsd
       https://raw.githubusercontent.com/Amphenol-Borisch-Technologies/TestExecutive/refs/heads/master/TestLib/Configuration/TestExecDefinition.xsd">
 
-  <Development Released="2025-04-01">
-    <Developer Name="Phillip Smelt" Language="CSharp" Comment="Also XML &amp; XSD." />
-    <Documentation Folder="P:\Test\Engineers\Equipment_Manuals\TestExecutive" />
-    <Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestExecutive" />
-    <Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestPlan" />
-  </Development>
- 
-  <TestExecutiveURL>https://raw.githubusercontent.com/Amphenol-Borisch-Technologies/TestExecutive/refs/heads/master/TestLib/Configuration</TestExecutiveURL>
-	
-  <TestPlansFolder>C:\Program Files\ABT\Test\TestPlans</TestPlansFolder>
+	<Development Released="2025-04-01">
+		<Developer Name="Phillip Smelt" Language="CSharp" Comment="Also XML &amp; XSD." />
+		<Documentation Folder="P:\Test\Engineers\Equipment_Manuals\TestExecutive" />
+		<Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestExecutive" />
+		<Repository URL="https://github.com/Amphenol-Borisch-Technologies/TestPlan" />
+	</Development>
 
-  <WindowsEventLog Source="TestExecutiveSource" Log="TestExecutive"/>
+	<TestExecutiveURL>https://raw.githubusercontent.com/Amphenol-Borisch-Technologies/TestExecutive/refs/heads/master/TestLib/Configuration</TestExecutiveURL>
 
-  <ActiveDirectoryPermissions ReadAndExecute="BORISCH\Domain Users" ModifyWrite="BORISCH\Test - TDR Administrators" FullControl="BORISCH\Test - TestExecutive Administrators"/>
-  
-  <TestData>
-    <TextFiles Folder="P:\Test\TDR" />
-    <!--<SQL_DB ConnectionString="Server=ABT002780\SQLEXPRESS;Database=TestData;Integrated Security=true;" />-->
-  </TestData>
+	<TestPlansFolder>C:\Program Files\ABT\Test\TestPlans</TestPlansFolder>
 
-  <BarcodeReader ID="\\?\HID#VID_0C2E&amp;PID_0A07&amp;MI_00#7&amp;1f27e379&amp;0&amp;0000#{c243ffbd-3afc-45e9-b3d3-2ba18bc7ebc5}\posbarcodescanner" 
-                 Detail="Honeywell Voyager USB 1200g corded Barcode Scanner" 
-                 Folder="P:\Test\Engineers\Equipment_Manuals\TestExec\Honeywell_Voyager_1200g" />
-  <!-- 
+	<WindowsEventLog Source="TestExecutiveSource" Log="TestExecutive"/>
+
+	<ActiveDirectoryPermissions ReadAndExecute="BORISCH\Domain Users" ModifyWrite="BORISCH\Test - TDR Administrators" FullControl="BORISCH\Test - TestExecutive Administrators"/>
+
+	<TestData>
+		<TextFiles Folder="P:\Test\TDR" />
+		<!--<SQL_DB ConnectionString="Server=ABT002780\SQLEXPRESS;Database=TestData;Integrated Security=true;" />-->
+	</TestData>
+
+	<BarcodeReader ID="\\?\HID#VID_0C2E&amp;PID_0A07&amp;MI_00#7&amp;1f27e379&amp;0&amp;0000#{c243ffbd-3afc-45e9-b3d3-2ba18bc7ebc5}\posbarcodescanner"
+				   Detail="Honeywell Voyager USB 1200g corded Barcode Scanner"
+				   Folder="P:\Test\Engineers\Equipment_Manuals\TestExec\Honeywell_Voyager_1200g" />
+	<!-- 
   BarcodeScanner's  is the identifier used to find & claim the Barcode Scanner used in class SerialNumberDialog.
   When a TestPlanDefinition.xml file specifies SerialNumberEntryType="Barcode":
 	- Class SerialNumberDialog is the Barcode Scanning method for prompting test operators for UUT Serial Numbers.
@@ -43,25 +43,26 @@
         - Both "ReadMe" & "User's Guides" documents reside in Logging folder for convenience.
   NOTE:  Barcode Scanner must also be programmed to read the Code39 Barcode Symbology of ABT's Serial Numbers.
   -->
-  <Apps>
-    <ABT>
-      <TestChooser>TestChooser.exe</TestChooser> <!-- Installation folder for TestChooser.exe is pre-pended in TestExecDefinition.cs. -->
-    </ABT>
-    <Keysight>
-      <CommandExpert>C:\Program Files\Keysight\Command Expert\CommandExpert.exe</CommandExpert>
-      <ConnectionExpert>C:\Program Files\Keysight\IO Libraries Suite\ConnectionExpert.exe</ConnectionExpert>
-    </Keysight>
-    <Microsoft>
-	  <EventViewer>C:\Windows\System32\eventvwr.exe</EventViewer>
-      <SQLServerManagementStudio>C:\Program Files (x86)\Microsoft SQL Server Management Studio 20\Common7\IDE\Ssms.exe</SQLServerManagementStudio>
-      <VisualStudio>C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\devenv.exe</VisualStudio>
-      <VisualStudioCode>C:\Program Files\Microsoft VS Code\Code.exe</VisualStudioCode>
-      <XMLNotepad>C:\Program Files (x86)\LovettSoftware\XmlNotepad\XmlNotepad.exe</XMLNotepad>
-    </Microsoft>
-  </Apps>
+	<Apps>
+		<ABT>
+			<TestChooser>TestChooser.exe</TestChooser>
+			<!-- Installation folder for TestChooser.exe is pre-pended in TestExecDefinition.cs. -->
+		</ABT>
+		<Keysight>
+			<CommandExpert>C:\Program Files\Keysight\Command Expert\CommandExpert.exe</CommandExpert>
+			<ConnectionExpert>C:\Program Files\Keysight\IO Libraries Suite\ConnectionExpert.exe</ConnectionExpert>
+		</Keysight>
+		<Microsoft>
+			<EventViewer>C:\Windows\System32\eventvwr.exe</EventViewer>
+			<SQLServerManagementStudio>C:\Program Files (x86)\Microsoft SQL Server Management Studio 20\Common7\IDE\Ssms.exe</SQLServerManagementStudio>
+			<VisualStudio>C:\Program Files\Microsoft Visual Studio\2022\Professional\Common7\IDE\devenv.exe</VisualStudio>
+			<VisualStudioCode>C:\Program Files\Microsoft VS Code\Code.exe</VisualStudioCode>
+			<XMLNotepad>C:\Program Files (x86)\LovettSoftware\XmlNotepad\XmlNotepad.exe</XMLNotepad>
+		</Microsoft>
+	</Apps>
 
-  <InstrumentsTestExec Folder="P:\Test\Engineers\Equipment_Manuals" >
-  <!--
+	<InstrumentsTestExec Folder="P:\Test\Engineers\Equipment_Manuals" >
+		<!--
 	InstrumentsTextExec:
   - Define all stationary/permanently installed instruments for this TestExec system.
     - Mobile/temporary instruments are defined in individual TestPlanDefinition.xml files.
@@ -88,9 +89,11 @@
 	- https://www.ni.com/docs/en-US/bundle/labview/page/lvinstio/visa_resource_name_generic.html.
 	- https://www.ivifoundation.org/downloads/Architecture%20Specifications/vpp43_2022-05-19.pdf.
   -->
-    <!--<InstrumentTestExec ID="MM1_34401A"   Detail="Agilent 34401A Digital MultiMeter"                Address="GPIB0::11::INSTR" NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters.MM_34401A_SCPI_NET" />-->
-    <InstrumentTestExec ID="MSMU1_34980A" Detail="Agilent 34980A Multifunction Switch/Measure Unit" Address="GPIB0::2::INSTR"  NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction.MSMU_34980A_SCPI_NET" />
-    <InstrumentTestExec ID="PS1ε2_E3649A" Detail="Agilent E3649A Dual Output DC Power Supply"       Address="GPIB0::1::INSTR"  NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.PS_E3649A_SCPI_NET" />
-    <InstrumentTestExec ID="PS3_E3634A"   Detail="Keysight E3634A Single Ouput Power Supply"        Address="GPIB0::3::INSTR"  NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.PS_E3634A_SCPI_NET" />
-  </InstrumentsTestExec>
+
+		<!--<InstrumentTestExec ID="MM1_34401A"   Detail="Agilent 34401A Digital MultiMeter"                Address="GPIB0::11::INSTR" NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters.MM_34401A_SCPI_NET" />-->
+		<InstrumentTestExec ID="MSO1_3014" Detail="Tektronix MSO3014 Mixed Signal Oscilloscope" Address="USB0::0x0699::0x0421::C021373::INSTR" NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes.MSO_3014_IVI_COM" />
+		<InstrumentTestExec ID="MSMU1_34980A" Detail="Agilent 34980A Multifunction Switch/Measure Unit" Address="GPIB0::2::INSTR"  NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction.MSMU_34980A_SCPI_NET" />
+		<InstrumentTestExec ID="PS1ε2_E3649A" Detail="Agilent E3649A Dual Output DC Power Supply"       Address="GPIB0::1::INSTR"  NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.PS_E3649A_SCPI_NET" />
+		<!--<InstrumentTestExec ID="PS3_E3634A"   Detail="Keysight E3634A Single Ouput Power Supply"        Address="GPIB0::3::INSTR"  NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.PS_E3634A_SCPI_NET" />-->
+	</InstrumentsTestExec>
 </TestExecDefinition>
