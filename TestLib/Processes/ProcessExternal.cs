@@ -67,7 +67,7 @@ namespace ABT.Test.TestExecutive.TestLib.Processes {
             return exitCode.ToString();
         }
 
-        public static (String StandardError, String StandardOutput, Int32 ExitCode) ProcessRedirect(String arguments, String fileName, String workingDirectory, String expectedResult) {
+        public static (String StandardError, String StandardOutput, Int32 ExitCode) ProcessRedirect(String arguments, String fileName, String workingDirectory) {
             String standardError, standardOutput;
             Int32 exitCode = -1;
             using (Process process = new Process()) {
@@ -90,11 +90,10 @@ namespace ABT.Test.TestExecutive.TestLib.Processes {
                 standardOutput = so.ReadToEnd();
                 exitCode = process.ExitCode;
             }
-            if (standardOutput.Contains(expectedResult)) return (standardError, expectedResult, exitCode);
-            else return (standardError, standardOutput, exitCode);
+            return (standardError, standardOutput, exitCode);
         }
 
-        public static (String StandardError, String StandardOutput, Int32 ExitCode) Redirect(MethodProcess methodProcess) { return ProcessRedirect(methodProcess.Parameters, methodProcess.File, methodProcess.Folder, methodProcess.Expected); }
+        public static (String StandardError, String StandardOutput, Int32 ExitCode) Redirect(MethodProcess methodProcess) { return ProcessRedirect(methodProcess.Parameters, methodProcess.File, methodProcess.Folder); }
 
         private static void DisableQuickEdit(IntPtr processHandle) {
             // https://stackoverflow.com/questions/13656846/how-to-programmatic-disable-c-sharp-console-applications-quick-edit-mode
