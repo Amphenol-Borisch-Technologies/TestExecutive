@@ -88,7 +88,7 @@ namespace ABT.Test.TestExecutive.TestLib.Processes {
 
                 process.StartInfo = processStartInfo;
                 process.EnableRaisingEvents = true;
-                // TODO:  DisableQuickEdit(GetStdHandle(STD_INPUT_HANDLE));
+                DisableQuickEdit(GetStdHandle(STD_INPUT_HANDLE));
                 process.OutputDataReceived += (_, e) => {
                     if (e.Data is null) return;
                     Console.Out.WriteLine(e.Data);
