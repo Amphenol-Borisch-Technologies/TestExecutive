@@ -77,7 +77,7 @@ namespace ABT.Test.TestExecutive.TestLib.Processes {
             using (Process process = new Process()) {
                 ProcessStartInfo processStartInfo = new ProcessStartInfo {
                     FileName = @"C:\Windows\System32\cmd.exe",
-                    Arguments = $"/c start \"{workingDirectory + @"\" + fileName}\" {arguments}",
+                    Arguments = $"/c \"{workingDirectory + @"\" + fileName}\" {arguments}",
                     WorkingDirectory = workingDirectory,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
