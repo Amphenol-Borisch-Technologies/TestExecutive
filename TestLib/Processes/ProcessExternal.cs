@@ -76,8 +76,8 @@ namespace ABT.Test.TestExecutive.TestLib.Processes {
 
             using (Process process = new Process()) {
                 ProcessStartInfo processStartInfo = new ProcessStartInfo {
-                    Arguments = arguments,
-                    FileName = workingDirectory + @"\" + fileName,
+                    FileName = @"C:\Windows\System32\cmd.exe",
+                    Arguments = $"/c \"{workingDirectory + @"\" + fileName}\" {arguments}",
                     WorkingDirectory = workingDirectory,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
@@ -87,16 +87,15 @@ namespace ABT.Test.TestExecutive.TestLib.Processes {
                 };
 
                 process.StartInfo = processStartInfo;
+                process.EnableRaisingEvents = true;
                 DisableQuickEdit(GetStdHandle(STD_INPUT_HANDLE));
                 process.OutputDataReceived += (_, e) => {
-                    if (e.Data == null) return;
+                    if (e.Data is null) return;
                     Console.Out.WriteLine(e.Data);
                     standardOutput.AppendLine(e.Data);
                 };
-
-                process.EnableRaisingEvents = true;
                 process.ErrorDataReceived += (_, e) => {
-                    if (e.Data == null) return;
+                    if (e.Data is null) return;
                     Console.Error.WriteLine(e.Data);
                     standardError.AppendLine(e.Data);
                 };
