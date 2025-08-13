@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -65,6 +67,47 @@ namespace ABT.Test.TestExecutive.TestLib.Processes {
                 exitCode = process.ExitCode;
             }
             return exitCode.ToString();
+        }
+
+        public static (String StandardError, String StandardOutput, Int32 ExitCode) ProcessTee(String arguments, String fileName, String workingDirectory) {
+            StringBuilder standardOutput = new StringBuilder();
+            StringBuilder standardError = new StringBuilder();
+            Int32 exitCode = -1;
+
+            using (Process process = new Process()) {
+                ProcessStartInfo processStartInfo = new ProcessStartInfo {
+                    Arguments = arguments,
+                    FileName = workingDirectory + @"\" + fileName,
+                    WorkingDirectory = workingDirectory,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Normal,
+                };
+
+                process.StartInfo = processStartInfo;
+                DisableQuickEdit(GetStdHandle(STD_INPUT_HANDLE));
+                process.OutputDataReceived += (_, e) => {
+                    if (e.Data == null) return;
+                    Console.Out.WriteLine(e.Data);
+                    standardOutput.AppendLine(e.Data);
+                };
+
+                process.EnableRaisingEvents = true;
+                process.ErrorDataReceived += (_, e) => {
+                    if (e.Data == null) return;
+                    Console.Error.WriteLine(e.Data);
+                    standardError.AppendLine(e.Data);
+                };
+
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                process.WaitForExit();
+                exitCode = process.ExitCode;
+            }
+            return (standardError.ToString(), standardOutput.ToString(), exitCode);
         }
 
         public static (String StandardError, String StandardOutput, Int32 ExitCode) ProcessRedirect(String arguments, String fileName, String workingDirectory) {
