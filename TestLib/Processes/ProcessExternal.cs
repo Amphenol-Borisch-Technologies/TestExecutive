@@ -54,7 +54,7 @@ namespace ABT.Test.TestExecutive.TestLib.Processes {
                     Arguments = arguments,
                     FileName = $"\"{workingDirectory}\\{fileName}\"",
                     WorkingDirectory = workingDirectory,
-                    CreateNoWindow = false,
+                    CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Maximized,
                     UseShellExecute = false,
                     RedirectStandardError = false,
