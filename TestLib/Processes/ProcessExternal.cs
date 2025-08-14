@@ -52,7 +52,7 @@ namespace ABT.Test.TestExecutive.TestLib.Processes {
             using (Process process = new Process()) {
                 ProcessStartInfo psi = new ProcessStartInfo {
                     Arguments = arguments,
-                    FileName = workingDirectory + @"\" + fileName,
+                    FileName = $"\"{workingDirectory}\\{fileName}\"",
                     WorkingDirectory = workingDirectory,
                     CreateNoWindow = false,
                     WindowStyle = ProcessWindowStyle.Maximized,
@@ -76,8 +76,8 @@ namespace ABT.Test.TestExecutive.TestLib.Processes {
 
             using (Process process = new Process()) {
                 ProcessStartInfo processStartInfo = new ProcessStartInfo {
-                    FileName = $"\"{workingDirectory}\\{fileName}\"",
                     Arguments = arguments,
+                    FileName = $"\"{workingDirectory}\\{fileName}\"",
                     WorkingDirectory = workingDirectory,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
@@ -115,7 +115,7 @@ namespace ABT.Test.TestExecutive.TestLib.Processes {
             using (Process process = new Process()) {
                 ProcessStartInfo psi = new ProcessStartInfo {
                     Arguments = arguments,
-                    FileName = workingDirectory + @"\" + fileName,
+                    FileName = $"\"{workingDirectory}\\{fileName}\"",
                     WorkingDirectory = workingDirectory,
                     CreateNoWindow = true,
                     UseShellExecute = false,
