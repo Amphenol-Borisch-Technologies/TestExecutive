@@ -87,7 +87,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                     }
                 case BasicWave.COMMANDS.FRQ: {
                         if (wvtp == BasicWave.WVTP.NOISE) throw new ArgumentException("Frequency invalid for WVTP = NOISE.");
-                        if (Parameter is Double hertzFRQ) {
+                        if (Double.TryParse(Parameter.ToString(), out Double hertzFRQ)) {
                             if (hertzFRQ < 1E-6 || hertzFRQ > 160E6) throw new ArgumentOutOfRangeException($"Frequency '{hertzFRQ}' must be between 1E-6 and 160E6 Hertz.");
                             FormattedIO.WriteLine($"{Channel}:BaSic_WaVe FRQ,{hertzFRQ}HZ");
                         } else throw new ArgumentException(nameof(Parameter), $"Frequency '{Parameter}' must be of type '{typeof(Double)}'.");
@@ -95,7 +95,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                     }
                 case BasicWave.COMMANDS.AMP: {
                         if (wvtp == BasicWave.WVTP.NOISE) throw new ArgumentException("Amplifier invalid for WVTP = NOISE.");
-                        if (Parameter is Double voltsAMP) {
+                        if (Double.TryParse(Parameter.ToString(), out Double voltsAMP)) {
                             if (voltsAMP < 2E-3 || voltsAMP > 2E1) throw new ArgumentOutOfRangeException($"Amplifier voltage '{voltsAMP}' must be between 2E-3 and 2E1 Volts.");
                             FormattedIO.WriteLine($"{Channel}:BaSic_WaVe AMP,{voltsAMP}V");
                         } else throw new ArgumentException(nameof(Parameter), $"Amplifier voltage '{Parameter}' must be of type '{typeof(Double)}'.");
@@ -103,7 +103,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                     }
                 case BasicWave.COMMANDS.OFST: {
                         if (wvtp == BasicWave.WVTP.NOISE) throw new ArgumentException("Offset invalid for WVTP = NOISE.");
-                        if (Parameter is Double voltsOFST) {
+                        if (Double.TryParse(Parameter.ToString(), out Double voltsOFST)) {
                             Double voltsAMP = Double.Parse(BasicWaveQuery(Channel, BasicWave.QUERIES.AMP).Replace("V", ""));
                             if (voltsOFST > (voltsAMP / 2)) throw new ArgumentOutOfRangeException($"Offset voltage '{voltsOFST}' must be ≤ amplitude/2 '{voltsAMP / 2}'.");
                             if (Math.Abs(voltsOFST) + (voltsAMP / 2) > 10) throw new ArgumentOutOfRangeException($"Offset '{voltsOFST}' and amplitude '{voltsAMP}' combination must be within ± 10 Volts.");
@@ -113,14 +113,14 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                     }
                 case BasicWave.COMMANDS.SYM: {
                         if (wvtp != BasicWave.WVTP.RAMP) throw new ArgumentException("Symmetry invalid for WVTP ≠ RAMP.");
-                        if (Parameter is Double symmetry) {
+                        if (Double.TryParse(Parameter.ToString(), out Double symmetry)) {
                             if (symmetry < 0 || symmetry > 100) throw new ArgumentOutOfRangeException($"Symmetry '{symmetry}' must be between 0 and 100.");
                             FormattedIO.WriteLine($"{Channel}:BaSic_WaVe SYM,{symmetry}");
                         } else throw new ArgumentException(nameof(Parameter), $"Symmetry '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
                 case BasicWave.COMMANDS.DUTY: {
-                        if (Parameter is Double duty) {
+                        if (Double.TryParse(Parameter.ToString(), out Double duty)) {
                             switch (wvtp) {
                                 case BasicWave.WVTP.PULSE:
                                     if (duty < 0.001 || duty > 0.999) throw new ArgumentOutOfRangeException($"Duty cycle '{duty}' must be between 0.001 and 0.999 for WVTP = PULSE.");
@@ -138,7 +138,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                     }
                 case BasicWave.COMMANDS.PHSE: {
                         if (wvtp == BasicWave.WVTP.NOISE) throw new ArgumentException("Phase invalid for WVTP = NOISE.");
-                        if (Parameter is Double phaseDegrees) {
+                        if (Double.TryParse(Parameter.ToString(), out Double phaseDegrees)) {
                             if (phaseDegrees < 0 || phaseDegrees > 360) throw new ArgumentOutOfRangeException($"Phase '{phaseDegrees}' must be between 0 and 360°.");
                             FormattedIO.WriteLine($"{Channel}:BaSic_WaVe PHSE,{phaseDegrees}");
                         } else throw new ArgumentException(nameof(Parameter), $"Phase '{Parameter}' must be of type '{typeof(Double)}'.");
@@ -146,7 +146,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                     }
                 case BasicWave.COMMANDS.STDEV: {
                         if (wvtp != BasicWave.WVTP.NOISE) throw new ArgumentException("Standard deviation invalid for WVTP ≠ NOISE.");
-                        if (Parameter is Double stdevVolts) {
+                        if (Double.TryParse(Parameter.ToString(), out Double stdevVolts)) {
                             if (stdevVolts < 0.0005 || stdevVolts > 1.599) throw new ArgumentOutOfRangeException($"Standard deviation voltage '{stdevVolts}' must be between 0.0005 and 1.599 volts.");
                             FormattedIO.WriteLine($"{Channel}:BaSic_WaVe STDEV,{stdevVolts}V");
                         } else throw new ArgumentException(nameof(Parameter), $"Standard deviation '{Parameter}' must be of type '{typeof(Double)}'.");
@@ -154,7 +154,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                     }
                 case BasicWave.COMMANDS.MEAN: {
                         if (wvtp != BasicWave.WVTP.NOISE) throw new ArgumentException("Mean invalid for WVTP ≠ NOISE.");
-                        if (Parameter is Double meanVolts) {
+                        if (Double.TryParse(Parameter.ToString(), out Double meanVolts)) {
                             // TODO: if (meanVolts < 0.0005 || meanVolts > 1.599) throw new ArgumentOutOfRangeException($"Mean voltage '{meanVolts}' must be between 0.0005 and 1.599 volts.");
                             FormattedIO.WriteLine($"{Channel}:BaSic_WaVe MEAN,{meanVolts}V");
                         } else throw new ArgumentException(nameof(Parameter), $"Mean '{Parameter}' must be of type '{typeof(Double)}'.");
@@ -162,25 +162,25 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                     }
                 case BasicWave.COMMANDS.WIDTH: {
                         if (wvtp != BasicWave.WVTP.PULSE) throw new ArgumentException("Width invalid for WVTP ≠ PULSE.");
-                        if (Parameter is Double width) FormattedIO.WriteLine($"{Channel}:BaSic_WaVe WIDTH,{width}");
+                        if (Double.TryParse(Parameter.ToString(), out Double width)) FormattedIO.WriteLine($"{Channel}:BaSic_WaVe WIDTH,{width}");
                         else throw new ArgumentException(nameof(Parameter), $"Width '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
                 case BasicWave.COMMANDS.RISE: {
                         if (wvtp != BasicWave.WVTP.PULSE) throw new ArgumentException("Rise invalid for WVTP ≠ PULSE.");
-                        if (Parameter is Double rise) FormattedIO.WriteLine($"{Channel}:BaSic_WaVe RISE,{rise}");
+                        if (Double.TryParse(Parameter.ToString(), out Double rise)) FormattedIO.WriteLine($"{Channel}:BaSic_WaVe RISE,{rise}");
                         else throw new ArgumentException(nameof(Parameter), $"Rise '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
                 case BasicWave.COMMANDS.FALL: {
                         if (wvtp != BasicWave.WVTP.PULSE) throw new ArgumentException("Fall invalid for WVTP ≠ PULSE.");
-                        if (Parameter is Double fall) FormattedIO.WriteLine($"{Channel}:BaSic_WaVe FALL,{fall}");
+                        if (Double.TryParse(Parameter.ToString(), out Double fall)) FormattedIO.WriteLine($"{Channel}:BaSic_WaVe FALL,{fall}");
                         else throw new ArgumentException(nameof(Parameter), $"Fall '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
                 case BasicWave.COMMANDS.DLY: {
                         if (wvtp != BasicWave.WVTP.PULSE) throw new ArgumentException("Delay invalid for WVTP ≠ PULSE.");
-                        if (Parameter is Double delaySeconds) {
+                        if (Double.TryParse(Parameter.ToString(), out Double delaySeconds)) {
                             Double periodSeconds = Double.Parse(BasicWaveQuery(Channel, BasicWave.QUERIES.PERI).Replace("S", ""));
                             if (delaySeconds < 0 || delaySeconds > periodSeconds) throw new ArgumentOutOfRangeException($"Delay '{delaySeconds}' must be between 0 and '{periodSeconds}' seconds.");
                             FormattedIO.WriteLine($"{Channel}:BaSic_WaVe DLY,{delaySeconds}S");
@@ -313,11 +313,22 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             return result_3162;
         }
 
+        public WS_3162_VISA_NET(String Address, String Detail) {
+            this.Address = Address;
+            this.Detail = Detail;
+            InstrumentType = INSTRUMENT_TYPES.WAVEFORM_GENERATOR;
+            UsbSession = new UsbSession(Address, AccessModes.None, -1);
+            ConstructorHelper();
+        }
         public WS_3162_VISA_NET(String Address, String Detail, AccessModes AccessMode = AccessModes.None, Int32 TimeoutMilliseconds = -1) {
             this.Address = Address;
             this.Detail = Detail;
             InstrumentType = INSTRUMENT_TYPES.WAVEFORM_GENERATOR;
             UsbSession = new UsbSession(Address, AccessMode, TimeoutMilliseconds);
+            ConstructorHelper();
+        }
+
+        private void ConstructorHelper() {
             ResetCommand();
             ClearStatusCommand();
             CommandHeaderCommand(COMMAND_HEADERS.LONG);
