@@ -317,18 +317,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             this.Address = Address;
             this.Detail = Detail;
             InstrumentType = INSTRUMENT_TYPES.WAVEFORM_GENERATOR;
-            UsbSession = new UsbSession(Address, AccessModes.None, -1);
-            ConstructorHelper();
-        }
-        public WS_3162_VISA_NET(String Address, String Detail, AccessModes AccessMode = AccessModes.None, Int32 TimeoutMilliseconds = -1) {
-            this.Address = Address;
-            this.Detail = Detail;
-            InstrumentType = INSTRUMENT_TYPES.WAVEFORM_GENERATOR;
-            UsbSession = new UsbSession(Address, AccessMode, TimeoutMilliseconds);
-            ConstructorHelper();
-        }
-
-        private void ConstructorHelper() {
+            UsbSession = new UsbSession(Address);
             ResetCommand();
             ClearStatusCommand();
             CommandHeaderCommand(COMMAND_HEADERS.LONG);
