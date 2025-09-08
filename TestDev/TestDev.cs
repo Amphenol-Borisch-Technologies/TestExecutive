@@ -44,7 +44,7 @@ namespace ABT.Test.TestExecutive.TestDev {
         }
         private void TSMI_Generate_Project_Click(Object sender, EventArgs e) { }
         private void TSMI_Generate_InstrumentAliases_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateInstrumentAliases); }
-        private void TSMI_Generate_TDRFolders_Click(object sender, EventArgs e) {
+        private void TSMI_Generate_TDRFolders_Click(Object sender, EventArgs e) {
             if (testExecDefinition.TestData.Item is TextFiles textFiles) {
                 String[] testPlanDefinitionPaths = Directory.GetFiles(testExecDefinition.TestPlansFolder, TestPlanDefinitionBase + xml, SearchOption.AllDirectories);
                 StringBuilder stringBuilder = new StringBuilder();
