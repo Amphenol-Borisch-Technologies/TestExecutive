@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters {
     public class MM_34401A_SCPI_NET : Ag34401, IInstrument, IDiagnostics {
-        public enum MMD { MIN, MAX, DEF }
+        public enum MMDA { MIN, MAX, DEF, AUTO }
         public enum TERMINALS { Front, Rear };
         public enum PROPERTY { AmperageAC, AmperageDC, Continuity, Frequency, Fresistance, Period, Resistance, VoltageAC, VoltageDC, VoltageDiodic }
 
@@ -57,31 +57,31 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters {
             // SCPI FORMAT:DATA(ASCii/REAL) command unavailable on KS 34461A.
             switch (property) {
                 case PROPERTY.AmperageAC:
-                    SCPI.MEASure.CURRent.AC.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double acCurrent);
+                    SCPI.MEASure.CURRent.AC.Query($"{MMDA.DEF}", $"{MMDA.DEF}", out Double acCurrent);
                     return acCurrent;
                 case PROPERTY.AmperageDC:
-                    SCPI.MEASure.CURRent.DC.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double dcCurrent);
+                    SCPI.MEASure.CURRent.DC.Query($"{MMDA.DEF}", $"{MMDA.DEF}", out Double dcCurrent);
                     return dcCurrent;
                 case PROPERTY.Continuity:
                     SCPI.MEASure.CONTinuity.Query(out Double continuity);
                     return continuity;
                 case PROPERTY.Frequency:
-                    SCPI.MEASure.FREQuency.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double frequency);
+                    SCPI.MEASure.FREQuency.Query($"{MMDA.DEF}", $"{MMDA.DEF}", out Double frequency);
                     return frequency;
                 case PROPERTY.Fresistance:
-                    SCPI.MEASure.FRESistance.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double fresistance);
+                    SCPI.MEASure.FRESistance.Query($"{MMDA.DEF}", $"{MMDA.DEF}", out Double fresistance);
                     return fresistance;
                 case PROPERTY.Period:
-                    SCPI.MEASure.PERiod.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double period);
+                    SCPI.MEASure.PERiod.Query($"{MMDA.DEF}", $"{MMDA.DEF}", out Double period);
                     return period;
                 case PROPERTY.Resistance:
-                    SCPI.MEASure.RESistance.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double resistance);
+                    SCPI.MEASure.RESistance.Query($"{MMDA.DEF}", $"{MMDA.DEF}", out Double resistance);
                     return resistance;
                 case PROPERTY.VoltageAC:
-                    SCPI.MEASure.VOLTage.AC.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double acVoltage);
+                    SCPI.MEASure.VOLTage.AC.Query($"{MMDA.DEF}", $"{MMDA.DEF}", out Double acVoltage);
                     return acVoltage;
                 case PROPERTY.VoltageDC:
-                    SCPI.MEASure.VOLTage.DC.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double dcVoltage);
+                    SCPI.MEASure.VOLTage.DC.Query($"{MMDA.DEF}", $"{MMDA.DEF}", out Double dcVoltage);
                     return dcVoltage;
                 case PROPERTY.VoltageDiodic:
                     SCPI.MEASure.DIODe.Query(out Double diodeVoltage);
