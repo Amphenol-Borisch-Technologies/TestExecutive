@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.DirectoryServices.AccountManagement;
 using System.Drawing;
 using System.Globalization;
@@ -19,7 +20,9 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
+using Windows.ApplicationModel.Activation;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 // TODO:  Eventually; evaluate Keysight OpenTAP as potential option in addition to TestExec/TestLib/TestPlan.  https://opentap.io/.
@@ -268,8 +271,8 @@ namespace ABT.Test.TestExecutive.TestExec {
         }
 
         private async void ButtonRun_Clicked(Object sender, EventArgs e) {
-            TSMI_About_TestPlan.Select(); // Prevents ButtonCanel or ButtonEmergencyStop from having focus, so if a MessageBox loses focus while testing and operator presses keyboard Enter key, won't cancel or Emergency Stop.
-            if (testPlanDefinition.SerialNumberEntry.IsEnabled()) {
+            TSMI_About_TestPlan.Select(); // Prevents ButtonCancel or ButtonEmergencyStop from having focus, so if a MessageBox loses focus while testing and operator presses keyboard Enter key, won't cancel or Emergency Stop.
+            if (testPlanDefinition.SerialNumberEntry.IsEnabled() && testSequence.IsOperation) {
                 String serialNumber;
                 if (testPlanDefinition.SerialNumberEntry.EntryType is SerialNumberEntryType.Barcode) {
                     _serialNumberDialog.Set(testSequence.SerialNumber);
@@ -283,7 +286,19 @@ namespace ABT.Test.TestExecutive.TestExec {
                     serialNumber = Regex.IsMatch(serialNumber, testPlanDefinition.SerialNumberEntry.RegularEx) ? serialNumber : String.Empty;
                 }
                 if (String.Equals(serialNumber, String.Empty)) return;
+
                 testSequence.SerialNumber = serialNumber;
+                if (testPlanDefinition.SerialNumberEntry.SupplementalData) {
+                    if (testExecDefinition.TestData.Item is TestData) {
+                        testSequence.LogFileBaseName = GetLogFileBaseName();
+                        Directory.CreateDirectory($"{testSequence.LogFileBaseName}");
+                    }
+                    if (testExecDefinition.TestData.Item is SQL_DB) {
+                        String sql_DB_Folder = $@"C:\Users\Public\Documents\ABT\Test\TestPlans\{testSequence.UUT.Number}";
+                        if (Directory.Exists(sql_DB_Folder)) Directory.Delete(sql_DB_Folder, recursive: true);
+                        Directory.CreateDirectory(sql_DB_Folder);
+                    }
+                }
             }
 
             FormModeReset();
@@ -557,7 +572,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             }
         }
 
-        private void LogStopTextFiles() {
+        private String GetLogFileBaseName() {
             String xmlFolder = $"{((TextFiles)testExecDefinition.TestData.Item).Folder}\\{testPlanDefinition.UUT.Number}\\{testSequence.TestOperation.NamespaceTrunk}";
             String xmlBaseName = $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}";
             String[] xmlFileNames;
@@ -581,8 +596,11 @@ namespace ABT.Test.TestExecutive.TestExec {
 
                 if (Int32.Parse(s) > maxNumber) maxNumber = Int32.Parse(s);
             }
+            return $"{xmlFolder}\\{xmlBaseName}_{++maxNumber}";
+        }
 
-            using (FileStream fileStream = new FileStream($"{xmlFolder}\\{xmlBaseName}_{++maxNumber}_{testSequence.Event}{xml}", FileMode.CreateNew)) {
+        private void LogStopTextFiles() {
+            using (FileStream fileStream = new FileStream($"{testSequence.LogFileBaseName}_{testSequence.Event}{xml}", FileMode.CreateNew)) {
                 using (XmlTextWriter xmlTextWriter = new XmlTextWriter(fileStream, new UTF8Encoding(true))) {
                     xmlTextWriter.Formatting = Formatting.Indented;
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(TestSequence), LogGetOverrides());
@@ -592,6 +610,7 @@ namespace ABT.Test.TestExecutive.TestExec {
         }
 
         private void LogStopSQL_DB() {
+            // TODO: if (testPlanDefinition.SerialNumberEntry.SupplementalData), move C:\Users\Public\Documents\ABT\Test\TestPlans\CurrentTestPlan into SQL_DB.
             using (StringWriter stringWriter = new StringWriter()) {
                 using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, new XmlWriterSettings { Encoding = new UTF8Encoding(true), Indent = true })) {
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(TestSequence), LogGetOverrides());

@@ -1111,6 +1111,18 @@
 								</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
+						<xs:attribute name="SupplementalData" type="xs:boolean" use="optional" default="">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">
+									<![CDATA[
+                    SupplementalData attribute:
+                    - Optional, relevant only for EntryType="Barcode" or "Keyboard".
+                    - Accomodate supplemental Test Data associated with SerialNumber, such as screen captures, external process logs, etc.
+                    - Type: xs:string.
+                    ]]>
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="Development" minOccurs="1" maxOccurs="1">
