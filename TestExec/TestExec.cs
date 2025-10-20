@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.DirectoryServices.AccountManagement;
 using System.Drawing;
 using System.Globalization;
@@ -20,9 +19,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
-using Windows.ApplicationModel.Activation;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 // TODO:  Eventually; evaluate Keysight OpenTAP as potential option in addition to TestExec/TestLib/TestPlan.  https://opentap.io/.
