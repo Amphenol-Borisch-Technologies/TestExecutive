@@ -3,6 +3,7 @@ using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction;
 using Agilent.CommandExpert.ScpiNet.AgE364xD_1_7;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
@@ -56,6 +57,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Command($"{AmpsDC}");
             SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{OVP}");
             SCPI.OUTPut.STATe.Command(State == STATES.ON);
+            Thread.Sleep(500); // Allow some time for voltage to stabilize.
         }
 
         public STATES StateGet(OUTPUTS2 Output) {
@@ -68,6 +70,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             // NOTE: Most multi-output supplies like the E3649A permit individual control of outputs,
             // but the E3649A does not; all supplies are set to the same STATE, off or ON.
             SCPI.OUTPut.STATe.Command(State == STATES.ON);
+            Thread.Sleep(500); // Allow some time for voltage to stabilize.
         }
 
         #region Diagnostics
@@ -110,7 +113,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
             Boolean passed_E3649A = true, passed_VDC;
             for (Int32 vdcApplied = 0; vdcApplied < 60; vdcApplied++) {
-                System.Threading.Thread.Sleep(millisecondsTimeout: 500);
+                Thread.Sleep(millisecondsTimeout: 500);
                 MSMU.SCPI.MEASure.SCALar.VOLTage.DC.Query("AUTO", $"{MMD.MAXimum}", ch_list: null, out Double[] vdcMeasured);
                 passed_VDC = Math.Abs(vdcMeasured[0] - vdcApplied) <= limit;
                 passed_E3649A &= passed_VDC;

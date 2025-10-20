@@ -492,7 +492,7 @@ namespace ABT.Test.TestExecutive.TestExec {
 
         #region Private Methods
         private void LogMethod(Method method) {
-            LogSetBackColor(startFind: 0, findString: method.Name, backColor: EventColors[method.Event]);
+            LogSetBackColorSpaceDelimited(startFind: 0, findString: method.Name, backColor: EventColors[method.Event]);
             if (method.Event is EVENTS.PASS) return;
             StringBuilder stringBuilder = new StringBuilder(((IFormat)method).Format());
             stringBuilder.AppendLine(FormatMessage(MessageTestEvent, method.Event.ToString()));
@@ -525,7 +525,7 @@ namespace ABT.Test.TestExecutive.TestExec {
 
         private void LogStop() {
             LogReplaceString(startFind: 0, findString: $"{MessageUUT_Event}", replacementString: $"{MessageUUT_Event}{testSequence.Event}");
-            LogSetBackColor(startFind: 0, findString: testSequence.Event.ToString(), backColor: EventColors[testSequence.Event]);
+            LogSetBackColorSpaceDelimited(startFind: 0, findString: testSequence.Event.ToString(), backColor: EventColors[testSequence.Event]);
             if (testSequence.IsOperation && testPlanDefinition.SerialNumberEntry.EntryType != SerialNumberEntryType.None) {
                 if (testExecDefinition.TestData.Item is TextFiles) LogStopTextFiles();
                 else if (testExecDefinition.TestData.Item is SQL_DB) LogStopSQL_DB();
@@ -553,9 +553,10 @@ namespace ABT.Test.TestExecutive.TestExec {
             }
         }
 
-        private void LogSetBackColor(Int32 startFind, String findString, Color backColor) {
-            Int32 selectionStart = rtfResults.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
-            rtfResults.SelectionStart = selectionStart;
+        private void LogSetBackColorSpaceDelimited(Int32 startFind, String findString, Color backColor) {
+            String findStringSpaceDelimited = " " + findString + " ";
+            Int32 selectionStart = rtfResults.Find(findStringSpaceDelimited, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+            rtfResults.SelectionStart = selectionStart + 1;
             rtfResults.SelectionLength = findString.Length;
             rtfResults.SelectionBackColor = backColor;
         }

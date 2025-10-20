@@ -3,6 +3,7 @@ using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction;
 using Agilent.CommandExpert.ScpiNet.AgE363x_1_7;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
@@ -29,9 +30,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             return (SELF_TEST_RESULTS)result; // AgE363x returns 0 for passed, 1 for fail.
         }
 
-        public void OutputsOff() {
-            SCPI.OUTPut.STATe.Command(Convert.ToBoolean(STATES.off));
-        }
+        public void OutputsOff() { SCPI.OUTPut.STATe.Command(Convert.ToBoolean(STATES.off)); }
 
         public RANGE RangeGet() {
             SCPI.SOURce.VOLTage.RANGe.Query(out String range);
@@ -53,6 +52,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Command($"{AmpsDC}");
             SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{OVP}");
             SCPI.OUTPut.STATe.Command(State == STATES.ON);
+            Thread.Sleep(500); // Allow some time for voltage to stabilize.
         }
 
         public STATES StateGet() {
@@ -60,7 +60,10 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             return state ? STATES.ON : STATES.off;
         }
 
-        public void StateSet(STATES State) { SCPI.OUTPut.STATe.Command(State == STATES.ON); }
+        public void StateSet(STATES State) {
+            SCPI.OUTPut.STATe.Command(State == STATES.ON);
+            Thread.Sleep(500); // Allow some time for voltage to stabilize.        
+        }
 
         #region Diagnostics
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
@@ -89,7 +92,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
                     Boolean passed_E3634A = true, passed_VDC;
                     for (Int32 vdcApplied = 0; vdcApplied < 50; vdcApplied++) {
-                        System.Threading.Thread.Sleep(millisecondsTimeout: 500);
+                        Thread.Sleep(millisecondsTimeout: 500);
                         MSMU.SCPI.MEASure.SCALar.VOLTage.DC.Query("AUTO", $"{MMD.MAXimum}", ch_list: null, out Double[] vdcMeasured);
                         passed_VDC = Math.Abs(vdcMeasured[0] - vdcApplied) <= limit;
                         passed_E3634A &= passed_VDC;
