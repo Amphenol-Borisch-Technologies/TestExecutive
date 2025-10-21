@@ -1087,7 +1087,7 @@
 								</xs:restriction>
 							</xs:simpleType>
 						</xs:attribute>
-						<xs:attribute name="RegularEx" type="xs:string" use="optional" default=".*">
+						<xs:attribute name="RegularEx" type="xs:string" use="optional">
 							<xs:annotation>
 								<xs:documentation xml:lang="en">
 									<![CDATA[
@@ -1099,7 +1099,7 @@
 								</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
-						<xs:attribute name="Format" type="StringWithWhitespace" use="optional" default="">
+						<xs:attribute name="Format" type="StringWithWhitespace" use="optional">
 							<xs:annotation>
 								<xs:documentation xml:lang="en">
 									<![CDATA[
@@ -1111,7 +1111,7 @@
 								</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
-						<xs:attribute name="SupplementalData" type="xs:boolean" use="optional" default="">
+						<xs:attribute name="SupplementalData" type="xs:boolean" use="optional">
 							<xs:annotation>
 								<xs:documentation xml:lang="en">
 									<![CDATA[
