@@ -70,6 +70,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         }
 
         public void SetupLoad(String SetupFilePath) {
+            if (!File.Exists(SetupFilePath)) throw new FileNotFoundException($"MSO-3014 Setup file not found at path '{SetupFilePath}'!");
             ResetClear();
             foreach (String mso_3014_SCPI_Command in File.ReadLines(SetupFilePath)) {
                 WriteString(mso_3014_SCPI_Command);
