@@ -1,7 +1,6 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using Tektronix.Tkdpo2k3k4k.Interop;
