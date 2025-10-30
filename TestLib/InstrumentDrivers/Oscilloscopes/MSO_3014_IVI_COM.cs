@@ -1,6 +1,7 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using Tektronix.Tkdpo2k3k4k.Interop;
@@ -12,7 +13,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public String Detail { get; }
         public INSTRUMENT_TYPES InstrumentType { get; }
         private Boolean disposed = false;
-        private readonly static String ValidCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=+-!@#$%^&()[]{}~‘’,";
+        public readonly static String ValidCharacterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=+-!@#$%^&()[]{}~‘’,";
         public void ResetClear() { Reset(); }
 
         public SELF_TEST_RESULTS SelfTests() {
@@ -47,7 +48,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public void WaitForOperationComplete() {
             WriteString("*WAI");
             WriteString("*OPC?");
-            if (ReadString().Trim().Trim('"') != "1") throw new Exception("MSO-3014 didn't complete SCPI command!");
+            if (ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException("MSO-3014 didn't complete SCPI command!");
         }
 
         public enum BUSES { B1, B2 }
@@ -69,28 +70,42 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             WaitForOperationComplete();
         }
 
+        public enum SETUPS { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
+        public void SetupLoad(SETUPS Setup, String Label) {
+            if (!ValidLabel(Label)) throw new ArgumentException(InvalidLabelMessage(Label));
+            WriteString($":{Setup}:LABEL?");
+            String labelRead = ReadString().Trim().Trim('"');
+            if (!labelRead.Equals(Label)) throw new ArgumentException($"MSO-3014 {Setup} non-existent!{Environment.NewLine}  Expected '{Label}'.{Environment.NewLine}  Found '{labelRead}'.");
+            WriteString($":RECAll:SETUp {(Int32)Setup}");
+        }
+
         public void SetupLoad(String SetupFilePath) {
             if (!File.Exists(SetupFilePath)) throw new FileNotFoundException($"MSO-3014 Setup file not found at path '{SetupFilePath}'!");
-            ResetClear();
             foreach (String mso_3014_SCPI_Command in File.ReadLines(SetupFilePath)) {
                 WriteString(mso_3014_SCPI_Command);
                 WaitForOperationComplete();
             }
         }
 
-        public enum SETUPS { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
         public void SetupSave(SETUPS Setup, String Label) {
-            if (Label.Length > 30) throw new ArgumentException("MSO-3014 Setup label length cannot exceed 30 characters!");
-            if (!AllValidCharacters(Label)) throw new ArgumentException($"MSO-3014 Setup label can only contain characters in set \"{ValidCharacters}\".");
+            if (!ValidLabel(Label)) throw new ArgumentException(InvalidLabelMessage(Label));
             WriteString($":{Setup}:LABEL \"{Label}\"");
             WaitForOperationComplete();
             WriteString($":{Setup}:LABEL?");
             String labelRead = ReadString().Trim().Trim('"');
-            if (!labelRead.Equals(Label)) throw new Exception($"MSO-3014 {Setup} not labeled correctly!{Environment.NewLine}  Should be '{Label}'.{Environment.NewLine}  Is '{labelRead}'.");
+            if (!labelRead.Equals(Label)) throw new ArgumentException($"MSO-3014 {Setup} not labeled correctly!{Environment.NewLine}  Should be '{Label}'.{Environment.NewLine}  Is '{labelRead}'.");
         }
 
-        private static Boolean AllValidCharacters(String CharacterString) {
-            return CharacterString.All(new HashSet<Char>(ValidCharacters.ToCharArray()).Contains);
+        public Boolean ValidCharacters(String CharacterString) {
+            return CharacterString.All(new HashSet<Char>(ValidCharacterSet.ToCharArray()).Contains);
+        }
+
+        public Boolean ValidLabel(String Label) {
+            return ((Label.Length < 30) && ValidCharacters(Label));
+        }
+
+        private String InvalidLabelMessage(String Label) {
+            return $"MSO-3014 Setup label '{Label}' is invalid!{Environment.NewLine}  Label cannot exceed 30 characters in length and can only contain characters in set \"{ValidCharacterSet}\".";
         }
 
         ~MSO_3014_IVI_COM() { Dispose(false); }
