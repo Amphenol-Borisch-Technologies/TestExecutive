@@ -13,7 +13,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public String Detail { get; }
         public INSTRUMENT_TYPES InstrumentType { get; }
         private Boolean disposed = false;
-        public readonly static String ValidCharacterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=+-!@#$%^&()[]{}~‘’,";
+        public readonly static String ValidCharactersFile = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=+-!@#$%^&()[]{}~‘’,";
+        public readonly static String ValidCharactersLabel = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=≠+-±!@#$%^&*()[]{}<>/~‘’\"\\|:,.?µ∞∆°Ωσ";
         public void ResetClear() { Reset(); }
 
         public SELF_TEST_RESULTS SelfTests() {
@@ -72,10 +73,15 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
 
         public enum SETUPS { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
 
+        public Boolean SetupExists(SETUPS Setup, String Label) {
+            if (!ValidLabel(Label)) throw new ArgumentException(InvalidLabelMessage(Label));
+            WriteString($":{Setup}:LABEL?");
+            return ReadString().Trim().Trim('"').Equals(Label);
+        }   
+
         public void SetupLoadAndSave(SETUPS Setup, String Label, String Path) {
-            try {
-                SetupLoad(Setup, Label); // Throws Exception if Setup is mis-labeled, which implies it hasn't been created yet, and proves its mis-labeled.
-            } catch {
+            if (SetupExists(Setup, Label)) SetupLoad(Setup, Label);
+            else {
                 SetupLoad(Path);         // Loading an entire MSO-3014 Setup from disk is slow because there are 805 SCPI commands in a complete Setup.
                 SetupSave(Setup, Label); // Save Setup into MSO-3014's non-volatile memory for faster recall later, and label it correctly so its presence can be verified.
             }
@@ -84,10 +90,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         }
 
         public void SetupLoad(SETUPS Setup, String Label) {
-            if (!ValidLabel(Label)) throw new ArgumentException(InvalidLabelMessage(Label));
-            WriteString($":{Setup}:LABEL?");
-            String labelRead = ReadString().Trim().Trim('"');
-            if (!labelRead.Equals(Label)) throw new ArgumentException($"MSO-3014 {Setup} non-existent!{Environment.NewLine}  Expected '{Label}'.{Environment.NewLine}  Found '{labelRead}'.");
+            if (!SetupExists(Setup, Label)) throw new ArgumentException($"MSO-3014 {Setup} labled '{Label}' non-existent!");
             WriteString($":RECAll:SETUp {(Int32)Setup}");
         }
 
@@ -108,17 +111,11 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             if (!labelRead.Equals(Label)) throw new ArgumentException($"MSO-3014 {Setup} not labeled correctly!{Environment.NewLine}  Should be '{Label}'.{Environment.NewLine}  Is '{labelRead}'.");
         }
 
-        public Boolean ValidCharacters(String CharacterString) {
-            return CharacterString.All(new HashSet<Char>(ValidCharacterSet.ToCharArray()).Contains);
-        }
+        public Boolean ValidCharacters(String CharacterString) { return CharacterString.All(new HashSet<Char>(ValidCharactersLabel.ToCharArray()).Contains); }
 
-        public Boolean ValidLabel(String Label) {
-            return ((Label.Length < 30) && ValidCharacters(Label));
-        }
+        public Boolean ValidLabel(String Label) { return ((Label.Length < 30) && ValidCharacters(Label)); }
 
-        private String InvalidLabelMessage(String Label) {
-            return $"MSO-3014 Setup label '{Label}' is invalid!{Environment.NewLine}  Label cannot exceed 30 characters in length and can only contain characters in set \"{ValidCharacterSet}\".";
-        }
+        private String InvalidLabelMessage(String Label) { return $"Invalid MSO-3014 Setup label '{Label}'!{Environment.NewLine}  Label cannot exceed 30 characters in length and can only contain characters in set \"{ValidCharactersLabel}\"."; }
 
         ~MSO_3014_IVI_COM() { Dispose(false); }
 
