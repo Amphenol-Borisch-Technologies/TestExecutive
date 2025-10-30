@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Tektronix.Tkdpo2k3k4k.Interop;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
@@ -70,6 +71,18 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         }
 
         public enum SETUPS { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
+
+        public void SetupLoadAndSave(SETUPS Setup, String Label, String Path) {
+            try {
+                SetupLoad(Setup, Label); // Throws Exception if Setup is mis-labeled, which implies it hasn't been created yet, and proves its mis-labeled.
+            } catch {
+                SetupLoad(Path);         // Loading an entire MSO-3014 Setup from disk is slow because there are 805 SCPI commands in a complete Setup.
+                SetupSave(Setup, Label); // Save Setup into MSO-3014's non-volatile memory for faster recall later, and label it correctly so its presence can be verified.
+            }
+            Thread.Sleep(5000);          // Setups take a non-deterministic amount of time to load; wait 5 seconds to ensure loading is complete.
+                                         // *OPC? didn't work for me, but possibly could check status registers to be deterministic.
+        }
+
         public void SetupLoad(SETUPS Setup, String Label) {
             if (!ValidLabel(Label)) throw new ArgumentException(InvalidLabelMessage(Label));
             WriteString($":{Setup}:LABEL?");
