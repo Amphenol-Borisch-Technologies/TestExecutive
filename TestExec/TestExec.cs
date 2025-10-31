@@ -285,11 +285,9 @@ namespace ABT.Test.TestExecutive.TestExec {
                 if (String.Equals(serialNumber, String.Empty)) return;
 
                 testSequence.SerialNumber = serialNumber;
+                if (testExecDefinition.TestData.Item is TextFiles) testSequence.LogFileBaseName = GetLogFileBaseName();
                 if (testPlanDefinition.SerialNumberEntry.SupplementalData) {
-                    if (testExecDefinition.TestData.Item is TestData) {
-                        testSequence.LogFileBaseName = GetLogFileBaseName();
-                        Directory.CreateDirectory($"{testSequence.LogFileBaseName}");
-                    }
+                    if (testExecDefinition.TestData.Item is TextFiles) Directory.CreateDirectory($"{testSequence.LogFileBaseName}");
                     if (testExecDefinition.TestData.Item is SQL_DB) {
                         String sql_DB_Folder = $@"C:\Users\Public\Documents\ABT\Test\TestPlans\{testSequence.UUT.Number}";
                         if (Directory.Exists(sql_DB_Folder)) Directory.Delete(sql_DB_Folder, recursive: true);
