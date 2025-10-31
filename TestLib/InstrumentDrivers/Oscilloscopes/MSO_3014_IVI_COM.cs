@@ -69,8 +69,9 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             WriteString(":FPAnel:PRESS MENUOff;:*WAI");
             OperationCompleteQuery();
         }
-
-        // NOTE: MSO-3014 Setup loading/saving times appear non-deterministic; hence, use a fixed delay:
+        // NOTE: MSO-3014 loaded Setup _activation_ times appear non-deterministic, hence, use a fixed delay; 3.5 seconds seems sufficient. YMMV.
+        // NOTE: Unsure about below assertions.  Think through them again later.
+        // NOTE: MSO-3014 Setup loading activation /saving_ times also appear non-deterministic; hence, use a fixed delay:
         // - Setups loaded/saved from/to the MSO-3014's non-volatile memory Setups are quickest; for Default, Factory & Setups 1-10 3.5 seconds seems sufficient.  YMMV.
         // - Setups loaded/saved as text files (*.set) from/to the MSO-3014's removable USB flash E: & F: drives load more slowly. 5 seconds seems sufficient.  YMMV.
         // - TestExecutive's MSO_3014_IVI_COM driver has custom method SetupLoad(String SetupFilePath) to load Setups from the host PC via IVI, which is likely slowest, as it issues an *OPC? query after each command and awaits correct response.
