@@ -46,8 +46,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             Initialize(ResourceName: Address, IdQuery: false, Reset: false, OptionString: String.Empty);
         }
 
-        public void WaitForOperationComplete() {
-            WriteString("*WAI");
+        public void OperationCompleteQuery() {
             WriteString("*OPC?");
             if (ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException("MSO-3014 didn't complete SCPI command!");
         }
@@ -68,29 +67,27 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             WriteString(":FPAnel:PRESS RMENU1;:*WAI");
             WriteString(":FPAnel:PRESS MENUOff;:*WAI");
             WriteString(":FPAnel:PRESS MENUOff;:*WAI");
-            WaitForOperationComplete();
+            OperationCompleteQuery();
         }
 
         public enum SETUPS { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
 
-        public Boolean SetupExists(SETUPS Setup, String Label) {
-            if (!ValidLabel(Label)) throw new ArgumentException(InvalidLabelMessage(Label));
+        public Boolean SetupExists(SETUPS Setup, String LabelString) {
+            if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
             WriteString($":{Setup}:LABEL?");
-            return ReadString().Trim().Trim('"').Equals(Label);
+            return ReadString().Trim().Trim('"').Equals(LabelString);
         }   
 
-        public void SetupLoadAndSave(SETUPS Setup, String Label, String Path) {
-            if (SetupExists(Setup, Label)) SetupLoad(Setup, Label);
+        public void SetupLoadAndSave(SETUPS Setup, String LabelString, String Path) {
+            if (SetupExists(Setup, LabelString)) SetupLoad(Setup, LabelString); // This is risky; just because a Setup is labeled correctly doesn't mean the Setup's correct.
             else {
-                SetupLoad(Path);         // Loading an entire MSO-3014 Setup from disk is slow because there are 805 SCPI commands in a complete Setup.
-                SetupSave(Setup, Label); // Save Setup into MSO-3014's non-volatile memory for faster recall later, and label it correctly so its presence can be verified.
+                SetupLoad(Path);         // Loading an entire MSO-3014 Setup from comparatively slow because there are 805 SCPI commands in a complete Setup, and the *OPC? query is used after each command to ensure proper loading.
+                SetupSave(Setup, LabelString); // Save Setup into MSO-3014's non-volatile memory for faster recall later, and label it correctly so its presence can be verified.
             }
-            Thread.Sleep(5000);          // Setups take a non-deterministic amount of time to load; wait 5 seconds to ensure loading is complete.
-                                         // *OPC? didn't work for me, but possibly could check status registers to be deterministic.
         }
 
-        public void SetupLoad(SETUPS Setup, String Label) {
-            if (!SetupExists(Setup, Label)) throw new ArgumentException($"MSO-3014 {Setup} labled '{Label}' non-existent!");
+        public void SetupLoad(SETUPS Setup, String LabelString) {
+            if (!SetupExists(Setup, LabelString)) throw new ArgumentException($"MSO-3014 {Setup} labled '{LabelString}' non-existent!");
             WriteString($":RECAll:SETUp {(Int32)Setup}");
         }
 
@@ -98,24 +95,28 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             if (!File.Exists(SetupFilePath)) throw new FileNotFoundException($"MSO-3014 Setup file not found at path '{SetupFilePath}'!");
             foreach (String mso_3014_SCPI_Command in File.ReadLines(SetupFilePath)) {
                 WriteString(mso_3014_SCPI_Command);
-                WaitForOperationComplete();
+                OperationCompleteQuery();
             }
         }
 
-        public void SetupSave(SETUPS Setup, String Label) {
-            if (!ValidLabel(Label)) throw new ArgumentException(InvalidLabelMessage(Label));
-            WriteString($":{Setup}:LABEL \"{Label}\"");
-            WaitForOperationComplete();
+        public void SetupSave(SETUPS Setup, String LabelString) {
+            if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
+            WriteString($":{Setup}:LABEL \"{LabelString}\"");
+            OperationCompleteQuery();
             WriteString($":{Setup}:LABEL?");
             String labelRead = ReadString().Trim().Trim('"');
-            if (!labelRead.Equals(Label)) throw new ArgumentException($"MSO-3014 {Setup} not labeled correctly!{Environment.NewLine}  Should be '{Label}'.{Environment.NewLine}  Is '{labelRead}'.");
+            if (!labelRead.Equals(LabelString)) throw new ArgumentException($"MSO-3014 {Setup} not labeled correctly!{Environment.NewLine}  Should be '{LabelString}'.{Environment.NewLine}  Is '{labelRead}'.");
         }
 
-        public Boolean ValidCharacters(String CharacterString) { return CharacterString.All(new HashSet<Char>(ValidCharactersLabel.ToCharArray()).Contains); }
+        public Boolean ValidFileCharacters(String FileString) { return FileString.All(new HashSet<Char>(ValidCharactersFile.ToCharArray()).Contains); }
 
-        public Boolean ValidLabel(String Label) { return ((Label.Length < 30) && ValidCharacters(Label)); }
+        public Boolean ValidFilel(String FileString) { return ((FileString.Length < 125) && ValidFileCharacters(FileString)); }
 
-        private String InvalidLabelMessage(String Label) { return $"Invalid MSO-3014 Setup label '{Label}'!{Environment.NewLine}  Label cannot exceed 30 characters in length and can only contain characters in set \"{ValidCharactersLabel}\"."; }
+        public Boolean ValidLabelCharacters(String LabelString) { return LabelString.All(new HashSet<Char>(ValidCharactersLabel.ToCharArray()).Contains); }
+
+        public Boolean ValidLabel(String LabelString) { return ((LabelString.Length < 30) && ValidLabelCharacters(LabelString)); }
+
+        private String InvalidLabelMessage(String LabelString) { return $"Invalid MSO-3014 Setup label '{LabelString}'!{Environment.NewLine}  Label cannot exceed 30 characters in length and can only contain characters in set \"{ValidCharactersLabel}\"."; }
 
         ~MSO_3014_IVI_COM() { Dispose(false); }
 
