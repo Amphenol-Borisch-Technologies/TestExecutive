@@ -70,6 +70,12 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             OperationCompleteQuery();
         }
 
+        // NOTE: MSO-3014 Setup loading/saving times appear non-deterministic; hence, use a fixed delay:
+        // - Setups loaded/saved from/to the MSO-3014's non-volatile memory Setups are quickest; for Default, Factory & Setups 1-10 3.5 seconds seems sufficient.  YMMV.
+        // - Setups loaded/saved as text files (*.set) from/to the MSO-3014's removable USB flash E: & F: drives load more slowly. 5 seconds seems sufficient.  YMMV.
+        // - TestExecutive's MSO_3014_IVI_COM driver has custom method SetupLoad(String SetupFilePath) to load Setups from the host PC via IVI, which is likely slowest, as it issues an *OPC? query after each command and awaits correct response.
+        // - TestExecutive's MSO_3014_IVI_COM driver currently has no custom method to save Setups to the host PC via IVI.
+        //   - One could be potentally be implemented by saving to the MSO-3014's removable USB flash drives and then copying the files to the host PC via IVI file I/O commands.
         public enum SETUPS { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
 
         public Boolean SetupExists(SETUPS Setup, String LabelString) {
