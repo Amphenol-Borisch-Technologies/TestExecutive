@@ -22,7 +22,7 @@ namespace ABT.Test.TestExecutive.TestLib {
         // - This is true with the below order and flag values, with most critical having lowest flag value; EMERGENCY_STOP = 0b0000_0001...INFORMATION = 0b0100_0000.
         // - However, initially I set their flags from most critical having highest flag value; EMERGENCY_STOP = 0b0100_0000...INFORMATION = 0b0000_0001.
         //   This caused the above foreach to iterate in flag value sequence, not definition order.
-        // - When I confronted CoPilot with this info, it agreed that flag value overrides definition order.
+        // - When I confronted CoPilot with this info, it agreed that flag value overrides definition order, and iterations occur in flag value order, lowest to highest.
         EMERGENCY_STOP = 0b0000_0001, // Most critical event.
         ERROR = 0b0000_0010,          // Second most critical event.
         CANCEL = 0b0000_0100,         // Third most critical event.
