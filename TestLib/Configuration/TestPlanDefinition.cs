@@ -352,7 +352,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
 
         public override EVENTS Evaluate() { return Event; } // NOTE:  MethodCustoms have their Events set in their TestPlan methods.
 
-        public override String Format() { return base.Format() + Value; }
+        public override String Format() { return base.Format() + Value + Environment.NewLine; }
     }
 
     public class Parameter {

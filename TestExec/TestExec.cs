@@ -466,11 +466,8 @@ namespace ABT.Test.TestExecutive.TestExec {
         public void LogAppend(String message) {
             Int32 startFind = rtfResults.TextLength;
 
-            if (rtfResults.InvokeRequired) {
-                rtfResults.BeginInvoke((MethodInvoker)(() => LogAppend(message)));
-            } else {
-                rtfResults.AppendText(message + Environment.NewLine);
-            }
+            if (rtfResults.InvokeRequired) rtfResults.BeginInvoke((MethodInvoker)(() => LogAppend(message)));
+            else rtfResults.AppendText(message + Environment.NewLine);
 
             Int32 selectionStart;
             foreach (EVENTS Event in Enum.GetValues(typeof(EVENTS))) {
