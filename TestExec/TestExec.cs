@@ -685,9 +685,9 @@ namespace ABT.Test.TestExecutive.TestExec {
                         // NOTE:  Both CT_Cancel.IsCancellationRequested & CT_EmergencyStop.IsCancellationRequested could be true; prioritize CT_EmergencyStop.
                         LogMethod(method);
                     }
-                    if (method.Event != EVENTS.PASS && method.CancelNotPassed) return;
+                    if (!new HashSet<EVENTS> { EVENTS.PASS, EVENTS.INFORMATION }.Contains(method.Event) && method.CancelNotPassed) return;
                 }
-                if (GroupEvaluate(testGroup) != EVENTS.PASS && testGroup.CancelNotPassed) return;
+                if (!new HashSet<EVENTS> { EVENTS.PASS, EVENTS.INFORMATION }.Contains(GroupEvaluate(testGroup)) && testGroup.CancelNotPassed) return;
             }
         }
 
