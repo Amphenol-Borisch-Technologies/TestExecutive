@@ -488,7 +488,7 @@ namespace ABT.Test.TestExecutive.TestExec {
         #region Private Methods
         private void LogMethod(Method method) {
             LogSetBackColorSpaceDelimited(startFind: 0, findString: method.Name, backColor: EventColors[method.Event]);
-            if (method.Event is EVENTS.PASS) return;
+            if (method.Event is EVENTS.PASS || method.Event is EVENTS.INFORMATION) return;
             StringBuilder stringBuilder = new StringBuilder(((IFormat)method).Format());
             stringBuilder.AppendLine(FormatMessage(MessageTestEvent, method.Event.ToString()));
             stringBuilder.Append($"{Spaces2}{method.Log}");
