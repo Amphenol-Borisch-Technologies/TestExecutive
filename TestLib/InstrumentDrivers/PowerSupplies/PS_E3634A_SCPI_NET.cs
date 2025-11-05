@@ -44,14 +44,14 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             return (AmpsDC, VoltsDC);
         }
 
-        public void SetOffOn(Double VoltsDC, Double AmpsDC, Double OVP, STATES State) {
+        public void SetOffOn(Double VoltsDC, Double AmpsDC, Double OVP) {
             SCPI.OUTPut.STATe.Command(false);
             SCPI.SOURce.VOLTage.PROTection.CLEar.Command();
             SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{MMD.MAXimum}");
             SCPI.SOURce.VOLTage.LEVel.IMMediate.AMPLitude.Command($"{VoltsDC}");
             SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Command($"{AmpsDC}");
             SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{OVP}");
-            SCPI.OUTPut.STATe.Command(State == STATES.ON);
+            SCPI.OUTPut.STATe.Command(true);
             Thread.Sleep(500); // Allow some time for voltage to stabilize.
         }
 
