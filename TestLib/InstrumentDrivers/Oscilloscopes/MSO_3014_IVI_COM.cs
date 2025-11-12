@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Ivi.Visa;
+using Keysight.Visa;
 using System.Linq;
 using System.Threading;
 using Tektronix.Tkdpo2k3k4k.Interop;
@@ -12,9 +14,11 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public String Address { get; }
         public String Detail { get; }
         public INSTRUMENT_TYPES InstrumentType { get; }
-        private Boolean disposed = false;
+        private Boolean _disposed = false;
         public readonly static String ValidCharactersFile = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=+-!@#$%^&()[]{}~‘’,";
         public readonly static String ValidCharactersLabel = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=≠+-±!@#$%^&*()[]{}<>/~‘’\"\\|:,.?µ∞∆°Ωσ";
+        public UsbSession USB_Session;
+        
         public void ResetClear() { Reset(); }
 
         public SELF_TEST_RESULTS SelfTests() {
@@ -44,6 +48,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             this.Detail = Detail;
             InstrumentType = INSTRUMENT_TYPES.OSCILLOSCOPE_MIXED_SIGNAL;
             Initialize(ResourceName: Address, IdQuery: false, Reset: false, OptionString: String.Empty);
+            USB_Session = new UsbSession(Address, AccessModes.None, timeoutMilliseconds: 20000);
         }
 
         public void OperationCompleteQuery() {
@@ -69,14 +74,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             WriteString(":FPAnel:PRESS MENUOff;:*WAI");
             OperationCompleteQuery();
         }
-        // NOTE: MSO-3014 loaded Setup _activation_ times appear non-deterministic, hence, use a fixed delay; 3.5 seconds seems sufficient. YMMV.
-        // NOTE: Unsure about below assertions.  Think through them again later.
-        // NOTE: MSO-3014 Setup loading activation /saving_ times also appear non-deterministic; hence, use a fixed delay:
-        // - Setups loaded/saved from/to the MSO-3014's non-volatile memory Setups are quickest; for Default, Factory & Setups 1-10 3.5 seconds seems sufficient.  YMMV.
-        // - Setups loaded/saved as text files (*.set) from/to the MSO-3014's removable USB flash E: & F: drives load more slowly. 5 seconds seems sufficient.  YMMV.
-        // - TestExecutive's MSO_3014_IVI_COM driver has custom method SetupLoad(String SetupFilePath) to load Setups from the host PC via IVI, which is likely slowest, as it issues an *OPC? query after each command and awaits correct response.
-        // - TestExecutive's MSO_3014_IVI_COM driver currently has no custom method to save Setups to the host PC via IVI.
-        //   - One could be potentally be implemented by saving to the MSO-3014's removable USB flash drives and then copying the files to the host PC via IVI file I/O commands.
+        // NOTE: MSO-3014 loaded Setup activation times appear non-deterministic, hence, use a fixed delay; 3.5 seconds seems sufficient. YMMV.
         public enum SETUPS { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
 
         public Boolean SetupExists(SETUPS Setup, String LabelString) {
@@ -84,14 +82,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             WriteString($":{Setup}:LABEL?");
             return ReadString().Trim().Trim('"').Equals(LabelString);
         }   
-
-        public void SetupLoadAndSave(SETUPS Setup, String LabelString, String Path) {
-            if (SetupExists(Setup, LabelString)) SetupLoad(Setup, LabelString); // This is risky; just because a Setup is labeled correctly doesn't mean the Setup's correct.
-            else {
-                SetupLoad(Path);         // Loading an entire MSO-3014 Setup from comparatively slow because there are 805 SCPI commands in a complete Setup, and the *OPC? query is used after each command to ensure proper loading.
-                SetupSave(Setup, LabelString); // Save Setup into MSO-3014's non-volatile memory for faster recall later, and label it correctly so its presence can be verified.
-            }
-        }
 
         public void SetupLoad(SETUPS Setup, String LabelString) {
             if (!SetupExists(Setup, LabelString)) throw new ArgumentException($"MSO-3014 {Setup} labled '{LabelString}' non-existent!");
@@ -137,10 +127,10 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         }
 
         protected virtual void Dispose(Boolean disposing) {
-            if (!disposed) {
-                if (disposing) { } // Free managed resources specific to MSO_3014_IVI_COM; none as yet.
-                base.Close();      // Free unmanaged resources specific to MSO_3014_IVI_COM; invoke Tkdpo2k3k4kClass.Close().
-                disposed = true;   // Can only invoke Dispose(Boolean disposing) once and thus only base.Close() once, as is required. 
+            if (!_disposed) {
+                if (disposing) USB_Session.Dispose(); // Free managed resources specific to MSO_3014_IVI_COM.
+                base.Close();                         // Free unmanaged resources specific to MSO_3014_IVI_COM; invoke Tkdpo2k3k4kClass.Close().
+                _disposed = true;                     // Can only invoke Dispose(Boolean disposing) once and thus only base.Close() once, as is required. 
             }
         }
     }
