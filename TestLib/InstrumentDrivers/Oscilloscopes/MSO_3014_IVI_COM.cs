@@ -1,11 +1,10 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
+using Ivi.Visa;
+using Keysight.Visa;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Ivi.Visa;
-using Keysight.Visa;
 using System.Linq;
-using System.Threading;
 using Tektronix.Tkdpo2k3k4k.Interop;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
@@ -18,7 +17,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public readonly static String ValidCharactersFile = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=+-!@#$%^&()[]{}~‘’,";
         public readonly static String ValidCharactersLabel = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=≠+-±!@#$%^&*()[]{}<>/~‘’\"\\|:,.?µ∞∆°Ωσ";
         public UsbSession USB_Session;
-        
+
         public void ResetClear() { Reset(); }
 
         public SELF_TEST_RESULTS SelfTests() {
@@ -81,7 +80,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
             WriteString($":{Setup}:LABEL?");
             return ReadString().Trim().Trim('"').Equals(LabelString);
-        }   
+        }
 
         public void SetupLoad(SETUPS Setup, String LabelString) {
             if (!SetupExists(Setup, LabelString)) throw new ArgumentException($"MSO-3014 {Setup} labled '{LabelString}' non-existent!");
