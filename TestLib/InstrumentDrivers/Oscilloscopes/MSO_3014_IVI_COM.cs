@@ -116,9 +116,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
 
         ~MSO_3014_IVI_COM() { Dispose(false); }
 
-        // public override void Close() { Dispose(); } NOTE: Overriding Close() causes TestLib.GetDerivedClassnames<> to throw
-        // 'System.Reflection.ReflectionTypeLoadException' in mscorlib.dll.
-        // Types extending from COM objects should override all methods of an interface implemented by the base COM class.
+        // public override void Close() { Dispose(); } NOTE: Overriding Close() causes TestLib.GetDerivedClassnames<> to throw 'System.Reflection.ReflectionTypeLoadException' in mscorlib.dll.
+        // However, Types extending from COM objects should override all methods of an interface implemented by the base COM class.
 
         public void Dispose() {
             Dispose(true);
