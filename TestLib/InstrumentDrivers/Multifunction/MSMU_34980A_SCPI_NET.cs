@@ -445,7 +445,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         public MSMU_34980A_SCPI_NET(String Address, String Detail) {
             this.Address = Address;
             this.Detail = Detail;
-            Ag34980 Ag34980 = new Ag34980(Address);
+            Ag34980 = new Ag34980(Address);
             InstrumentType = INSTRUMENT_TYPES.MULTI_FUNCTION;
             DateTime now = DateTime.Now;
             Ag34980.SCPI.SYSTem.DATE.Command(now.Year, now.Month, now.Day);

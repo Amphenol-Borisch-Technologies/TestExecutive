@@ -114,7 +114,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         public PS_E3634A_SCPI_NET(String Address, String Detail) {
             this.Address = Address;
             this.Detail = Detail;
-            AgE363x AgE363x = new AgE363x(Address);
+            AgE363x = new AgE363x(Address);
             InstrumentType = INSTRUMENT_TYPES.POWER_SUPPLY;
         }
     }
