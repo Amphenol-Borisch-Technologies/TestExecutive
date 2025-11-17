@@ -1,5 +1,4 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
-using Ivi.Visa;
 using Keysight.Visa;
 using System;
 using System.Collections.Generic;
