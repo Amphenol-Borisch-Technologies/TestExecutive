@@ -5,14 +5,19 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Tektronix.Tkdpo2k3k4k.Interop;
+using static ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes.MSO_3014_IVI_COM;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
     public class MSO_3014_IVI_COM : Tkdpo2k3k4kClass, IInstrument, IDiagnostics, IDisposable {
         public String Address { get; }
         public String Detail { get; }
+        public enum BUSES { B1, B2 }
+        public enum DRIVES_USB { E, F }
         public INSTRUMENT_TYPES InstrumentType { get; }
+        public enum SETUPS { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
         private Boolean _disposed = false;
         public readonly static String ValidCharactersFile = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=+-!@#$%^&()[]{}~‘’,";
         public readonly static String ValidCharactersLabel = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=≠+-±!@#$%^&*()[]{}<>/~‘’\"\\|:,.?µ∞∆°Ωσ";
@@ -55,7 +60,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             if (ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException("MSO-3014 didn't complete SCPI command!");
         }
 
-        public enum BUSES { B1, B2 }
         public void BusEventTableEnable(BUSES Buses) {
             switch (Buses) {
                 case BUSES.B1:
@@ -74,11 +78,31 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             OperationCompleteQuery();
         }
 
-        public enum DrivesUSB { E, F }
+        private void ImageLandscapePNG_Save(String PathPC) {
+            USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:INKSaver OFF");
+            USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:LAYout LANdscape");
+            USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:FILEFormat PNG");
+            OperationCompleteQuery();
+            USB_Session.FormattedIO.WriteLine("HARDCopy STARt");        // Ostensibly a printing command, actually works _best_ for saving a screenshot image to MSO-3014's USB drive.
+            File.WriteAllBytes($@"{PathPC}", USB_Session.RawIO.Read()); // Read HARDCopy image from MSO-3014's USB drive, & Save HARDCopy image to PC.
+            OperationCompleteQuery();
+        }
+
+        private void EventTableSave(BUSES Bus, DRIVES_USB Drive_USB, String PathPC) {
+            String pathMSO_3014 = $"\"{Drive_USB}:/{Bus}.csv\"";
+            USB_Session.FormattedIO.WriteLine($"SAVe:EVENTtable:{Bus} {pathMSO_3014}"); // Save Event Table to MSO-3014 USB drive.  Can't HARDCopy Event Tables, sadly.
+            OperationCompleteQuery();
+            Thread.Sleep(500);                                                          // USB Drive write latency.
+
+            USB_Session.FormattedIO.WriteLine($"FILESystem:READFile {pathMSO_3014}");   // Read Event Table from MSO-3014 USB drive.
+            File.WriteAllBytes($@"{PathPC}", USB_Session.RawIO.Read());                 // Save read Event Table to PC.
+            OperationCompleteQuery();
+
+            USB_Session.FormattedIO.WriteLine($"FILESystem:DELEte {pathMSO_3014}");     // Delete Event Table from MSO-3014 USB drive.
+            OperationCompleteQuery();
+        }
 
         // NOTE: MSO-3014 loaded Setup activation times appear non-deterministic, hence, use a fixed delay; 3.5 seconds seems sufficient. YMMV.
-        public enum SETUPS { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
-
         public Boolean SetupExists(SETUPS Setup, String LabelString) {
             if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
             WriteString($":{Setup}:LABEL?");
