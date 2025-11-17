@@ -84,18 +84,18 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:FILEFormat PNG");
             OperationCompleteQuery();
             USB_Session.FormattedIO.WriteLine("HARDCopy STARt");        // Ostensibly a printing command, actually works _best_ for saving a screenshot image to MSO-3014's USB drive.
-            File.WriteAllBytes($@"{PathPC}", USB_Session.RawIO.Read()); // Read HARDCopy image from MSO-3014's USB drive, & Save HARDCopy image to PC.
+            File.WriteAllBytes($@"{PathPC}", USB_Session.RawIO.Read()); // Read HARDCopy image from MSO-3014's USB drive, & Save HARDCopy image to PC, overwriting any existing file without warning.
             OperationCompleteQuery();
         }
 
         public void EventTableSave(BUSES Bus, DRIVES_USB Drive_USB, String PathPC) {
             String pathMSO_3014 = $"\"{Drive_USB}:/{Bus}.csv\"";
-            USB_Session.FormattedIO.WriteLine($"SAVe:EVENTtable:{Bus} {pathMSO_3014}"); // Save Event Table to MSO-3014 USB drive.  Can't HARDCopy Event Tables, sadly.
+            USB_Session.FormattedIO.WriteLine($"SAVe:EVENTtable:{Bus} {pathMSO_3014}"); // Save Event Table to MSO-3014 USB drive, overwriting any existing file without warning.  Can't HARDCopy Event Tables, sadly.
             OperationCompleteQuery();
             Thread.Sleep(500);                                                          // USB Drive write latency.
 
             USB_Session.FormattedIO.WriteLine($"FILESystem:READFile {pathMSO_3014}");   // Read Event Table from MSO-3014 USB drive.
-            File.WriteAllBytes($@"{PathPC}", USB_Session.RawIO.Read());                 // Save read Event Table to PC.
+            File.WriteAllBytes($@"{PathPC}", USB_Session.RawIO.Read());                 // Save read Event Table to PC, overwriting any existing file without warning.
             OperationCompleteQuery();
 
             USB_Session.FormattedIO.WriteLine($"FILESystem:DELEte {pathMSO_3014}");     // Delete Event Table from MSO-3014 USB drive.
