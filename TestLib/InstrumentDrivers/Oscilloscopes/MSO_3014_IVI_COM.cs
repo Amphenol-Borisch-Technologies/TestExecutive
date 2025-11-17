@@ -74,7 +74,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             OperationCompleteQuery();
         }
 
-        public enum USB_Drives { E, F }
+        public enum DrivesUSB { E, F }
 
         // NOTE: MSO-3014 loaded Setup activation times appear non-deterministic, hence, use a fixed delay; 3.5 seconds seems sufficient. YMMV.
         public enum SETUPS { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
