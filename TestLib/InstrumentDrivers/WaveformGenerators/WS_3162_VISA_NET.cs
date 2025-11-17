@@ -67,8 +67,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             public enum WVTP { SINE, SQUARE, RAMP, PULSE, NOISE, ARB, DC }
         }
 
-        public UsbSession USB_Session;
-        public IMessageBasedFormattedIO FormattedIO => USB_Session.FormattedIO;
+        public UsbSession UsbSession;
         public String Address { get; }
         public String Detail { get; }
         public INSTRUMENT_TYPES InstrumentType { get; }
@@ -77,7 +76,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             BasicWave.WVTP wvtp = (BasicWave.WVTP)Enum.Parse(typeof(BasicWave.WVTP), BasicWaveQuery(Channel, BasicWave.QUERIES.WVTP));
             switch (Command) {
                 case BasicWave.COMMANDS.WVTP: {
-                        if (Enum.IsDefined(typeof(BasicWave.WVTP), Parameter.ToString())) FormattedIO.WriteLine($"{Channel}:BaSic_WaVe WVTP,{Parameter}");
+                        if (Enum.IsDefined(typeof(BasicWave.WVTP), Parameter.ToString())) UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe WVTP,{Parameter}");
                         else {
                             BasicWave.WVTP[] waveEnum = (BasicWave.WVTP[])Enum.GetValues(typeof(BasicWave.WVTP));
                             String waveTypes = "{ " + String.Join(", ", waveEnum.Select(wt => wt.ToString())) + " }";
@@ -89,7 +88,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                         if (wvtp == BasicWave.WVTP.NOISE) throw new ArgumentException("Frequency invalid for WVTP = NOISE.");
                         if (Double.TryParse(Parameter.ToString(), out Double hertzFRQ)) {
                             if (hertzFRQ < 1E-6 || hertzFRQ > 160E6) throw new ArgumentOutOfRangeException($"Frequency '{hertzFRQ}' must be between 1E-6 and 160E6 Hertz.");
-                            FormattedIO.WriteLine($"{Channel}:BaSic_WaVe FRQ,{hertzFRQ}HZ");
+                            UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe FRQ,{hertzFRQ}HZ");
                         } else throw new ArgumentException(nameof(Parameter), $"Frequency '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
@@ -97,7 +96,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                         if (wvtp == BasicWave.WVTP.NOISE) throw new ArgumentException("Amplifier invalid for WVTP = NOISE.");
                         if (Double.TryParse(Parameter.ToString(), out Double voltsAMP)) {
                             if (voltsAMP < 2E-3 || voltsAMP > 2E1) throw new ArgumentOutOfRangeException($"Amplifier voltage '{voltsAMP}' must be between 2E-3 and 2E1 Volts.");
-                            FormattedIO.WriteLine($"{Channel}:BaSic_WaVe AMP,{voltsAMP}V");
+                            UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe AMP,{voltsAMP}V");
                         } else throw new ArgumentException(nameof(Parameter), $"Amplifier voltage '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
@@ -107,7 +106,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                             Double voltsAMP = Double.Parse(BasicWaveQuery(Channel, BasicWave.QUERIES.AMP).Replace("V", ""));
                             if (voltsOFST > (voltsAMP / 2)) throw new ArgumentOutOfRangeException($"Offset voltage '{voltsOFST}' must be ≤ amplitude/2 '{voltsAMP / 2}'.");
                             if (Math.Abs(voltsOFST) + (voltsAMP / 2) > 10) throw new ArgumentOutOfRangeException($"Offset '{voltsOFST}' and amplitude '{voltsAMP}' combination must be within ± 10 Volts.");
-                            FormattedIO.WriteLine($"{Channel}:BaSic_WaVe OFST,{voltsOFST}V");
+                            UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe OFST,{voltsOFST}V");
                         } else throw new ArgumentException(nameof(Parameter), $"Offset voltage '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
@@ -115,7 +114,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                         if (wvtp != BasicWave.WVTP.RAMP) throw new ArgumentException("Symmetry invalid for WVTP ≠ RAMP.");
                         if (Double.TryParse(Parameter.ToString(), out Double symmetry)) {
                             if (symmetry < 0 || symmetry > 100) throw new ArgumentOutOfRangeException($"Symmetry '{symmetry}' must be between 0 and 100.");
-                            FormattedIO.WriteLine($"{Channel}:BaSic_WaVe SYM,{symmetry}");
+                            UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe SYM,{symmetry}");
                         } else throw new ArgumentException(nameof(Parameter), $"Symmetry '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
@@ -124,11 +123,11 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                             switch (wvtp) {
                                 case BasicWave.WVTP.PULSE:
                                     if (duty < 0.001 || duty > 0.999) throw new ArgumentOutOfRangeException($"Duty cycle '{duty}' must be between 0.001 and 0.999 for WVTP = PULSE.");
-                                    FormattedIO.WriteLine($"{Channel}:BaSic_WaVe DUTY,{duty * 100}%");
+                                    UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe DUTY,{duty * 100}%");
                                     break;
                                 case BasicWave.WVTP.SQUARE:
                                     if (duty < 0.2 || duty > 0.8) throw new ArgumentOutOfRangeException($"Duty cycle '{duty}' must be between 0.2 and 0.8 for WVTP = SQUARE.");
-                                    FormattedIO.WriteLine($"{Channel}:BaSic_WaVe DUTY,{duty * 100}%");
+                                    UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe DUTY,{duty * 100}%");
                                     break;
                                 default:
                                     throw new ArgumentException($"Duty cycle invalid for WVTP '{wvtp}'; must be PULSE or SQUARE.");
@@ -140,7 +139,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                         if (wvtp == BasicWave.WVTP.NOISE) throw new ArgumentException("Phase invalid for WVTP = NOISE.");
                         if (Double.TryParse(Parameter.ToString(), out Double phaseDegrees)) {
                             if (phaseDegrees < 0 || phaseDegrees > 360) throw new ArgumentOutOfRangeException($"Phase '{phaseDegrees}' must be between 0 and 360°.");
-                            FormattedIO.WriteLine($"{Channel}:BaSic_WaVe PHSE,{phaseDegrees}");
+                            UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe PHSE,{phaseDegrees}");
                         } else throw new ArgumentException(nameof(Parameter), $"Phase '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
@@ -148,7 +147,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                         if (wvtp != BasicWave.WVTP.NOISE) throw new ArgumentException("Standard deviation invalid for WVTP ≠ NOISE.");
                         if (Double.TryParse(Parameter.ToString(), out Double stdevVolts)) {
                             if (stdevVolts < 0.0005 || stdevVolts > 1.599) throw new ArgumentOutOfRangeException($"Standard deviation voltage '{stdevVolts}' must be between 0.0005 and 1.599 volts.");
-                            FormattedIO.WriteLine($"{Channel}:BaSic_WaVe STDEV,{stdevVolts}V");
+                            UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe STDEV,{stdevVolts}V");
                         } else throw new ArgumentException(nameof(Parameter), $"Standard deviation '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
@@ -156,25 +155,25 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                         if (wvtp != BasicWave.WVTP.NOISE) throw new ArgumentException("Mean invalid for WVTP ≠ NOISE.");
                         if (Double.TryParse(Parameter.ToString(), out Double meanVolts)) {
                             // TODO: if (meanVolts < 0.0005 || meanVolts > 1.599) throw new ArgumentOutOfRangeException($"Mean voltage '{meanVolts}' must be between 0.0005 and 1.599 volts.");
-                            FormattedIO.WriteLine($"{Channel}:BaSic_WaVe MEAN,{meanVolts}V");
+                            UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe MEAN,{meanVolts}V");
                         } else throw new ArgumentException(nameof(Parameter), $"Mean '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
                 case BasicWave.COMMANDS.WIDTH: {
                         if (wvtp != BasicWave.WVTP.PULSE) throw new ArgumentException("Width invalid for WVTP ≠ PULSE.");
-                        if (Double.TryParse(Parameter.ToString(), out Double width)) FormattedIO.WriteLine($"{Channel}:BaSic_WaVe WIDTH,{width}");
+                        if (Double.TryParse(Parameter.ToString(), out Double width)) UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe WIDTH,{width}");
                         else throw new ArgumentException(nameof(Parameter), $"Width '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
                 case BasicWave.COMMANDS.RISE: {
                         if (wvtp != BasicWave.WVTP.PULSE) throw new ArgumentException("Rise invalid for WVTP ≠ PULSE.");
-                        if (Double.TryParse(Parameter.ToString(), out Double rise)) FormattedIO.WriteLine($"{Channel}:BaSic_WaVe RISE,{rise}");
+                        if (Double.TryParse(Parameter.ToString(), out Double rise)) UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe RISE,{rise}");
                         else throw new ArgumentException(nameof(Parameter), $"Rise '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
                 case BasicWave.COMMANDS.FALL: {
                         if (wvtp != BasicWave.WVTP.PULSE) throw new ArgumentException("Fall invalid for WVTP ≠ PULSE.");
-                        if (Double.TryParse(Parameter.ToString(), out Double fall)) FormattedIO.WriteLine($"{Channel}:BaSic_WaVe FALL,{fall}");
+                        if (Double.TryParse(Parameter.ToString(), out Double fall)) UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe FALL,{fall}");
                         else throw new ArgumentException(nameof(Parameter), $"Fall '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
@@ -183,7 +182,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                         if (Double.TryParse(Parameter.ToString(), out Double delaySeconds)) {
                             Double periodSeconds = Double.Parse(BasicWaveQuery(Channel, BasicWave.QUERIES.PERI).Replace("S", ""));
                             if (delaySeconds < 0 || delaySeconds > periodSeconds) throw new ArgumentOutOfRangeException($"Delay '{delaySeconds}' must be between 0 and '{periodSeconds}' seconds.");
-                            FormattedIO.WriteLine($"{Channel}:BaSic_WaVe DLY,{delaySeconds}S");
+                            UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe DLY,{delaySeconds}S");
                         } else throw new ArgumentException(nameof(Parameter), $"Delay '{Parameter}' must be of type '{typeof(Double)}'.");
                         break;
                     }
@@ -191,8 +190,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             }
         }
         public String BasicWaveQuery(CHANNELS Channel) {
-            FormattedIO.WriteLine($"{Channel}:BaSic_WaVe?");
-            return FormattedIO.ReadLine();
+            UsbSession.FormattedIO.WriteLine($"{Channel}:BaSic_WaVe?");
+            return UsbSession.FormattedIO.ReadLine();
         }
         public String BasicWaveQuery(CHANNELS Channel, BasicWave.QUERIES Query) {
             String response = BasicWaveQuery(Channel);                  // C1:BASIC_WAVE WVTP,SQUARE,FRQ,1e+07HZ,PERI,1e-07S,AMP,1V,OFST,0.5V,HLEV,1V,LLEV,0V,PHSE,0,DUTY,50
@@ -200,93 +199,93 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             List<String> responses = response.Split(',').ToList();
             return responses[responses.IndexOf(Query.ToString()) + 1];
         }
-        public void BuzzerCommand(STATUSES Status) { FormattedIO.WriteLine($"BUZZer {Status}"); }
+        public void BuzzerCommand(STATUSES Status) { UsbSession.FormattedIO.WriteLine($"BUZZer {Status}"); }
         public STATUSES BuzzerQuery() {
-            FormattedIO.WriteLine("BUZZer?");
-            String response = FormattedIO.ReadLine();
+            UsbSession.FormattedIO.WriteLine("BUZZer?");
+            String response = UsbSession.FormattedIO.ReadLine();
             return (STATUSES)Enum.Parse(typeof(STATUSES), response.Substring(response.IndexOf(" ") + 1), true);
         }
-        public void ChannelParameterCopyCommand(CHANNELS ChannelSource) { FormattedIO.WriteLine($"PAraCoPy {(ChannelSource == CHANNELS.C1 ? CHANNELS.C2 : CHANNELS.C1)},{ChannelSource}"); }
-        public void ClearStatusCommand() { FormattedIO.WriteLine("*CLS"); }
-        public void ClockSourceCommand(CLOCK_SOURCE ClockSource) { FormattedIO.WriteLine($"ROSCillator {ClockSource}"); }
+        public void ChannelParameterCopyCommand(CHANNELS ChannelSource) { UsbSession.FormattedIO.WriteLine($"PAraCoPy {(ChannelSource == CHANNELS.C1 ? CHANNELS.C2 : CHANNELS.C1)},{ChannelSource}"); }
+        public void ClearStatusCommand() { UsbSession.FormattedIO.WriteLine("*CLS"); }
+        public void ClockSourceCommand(CLOCK_SOURCE ClockSource) { UsbSession.FormattedIO.WriteLine($"ROSCillator {ClockSource}"); }
         public CLOCK_SOURCE ClockSourceQuery() {
-            FormattedIO.WriteLine("ROSCillator?");
-            String response = FormattedIO.ReadLine();
+            UsbSession.FormattedIO.WriteLine("ROSCillator?");
+            String response = UsbSession.FormattedIO.ReadLine();
             return (CLOCK_SOURCE)Enum.Parse(typeof(CLOCK_SOURCE), response.Substring(response.IndexOf(" ") + 1), true);
         }
-        public void CommandHeaderCommand(COMMAND_HEADERS CommandHeader) { FormattedIO.WriteLine($"*Comm_HeaDeR {CommandHeader}"); }
+        public void CommandHeaderCommand(COMMAND_HEADERS CommandHeader) { UsbSession.FormattedIO.WriteLine($"*Comm_HeaDeR {CommandHeader}"); }
         public COMMAND_HEADERS CommandHeaderQuery() {
-            FormattedIO.WriteLine("*Comm_HeaDeR?");
-            String response = FormattedIO.ReadLine();
+            UsbSession.FormattedIO.WriteLine("*Comm_HeaDeR?");
+            String response = UsbSession.FormattedIO.ReadLine();
             return (COMMAND_HEADERS)Enum.Parse(typeof(COMMAND_HEADERS), response.Substring(response.IndexOf(" ") + 1), true);
         }
-        public void ConfigurationCommand(CONFIGURATIONS Configuration) { FormattedIO.WriteLine($"Sys_CFG {Configuration}"); }
+        public void ConfigurationCommand(CONFIGURATIONS Configuration) { UsbSession.FormattedIO.WriteLine($"Sys_CFG {Configuration}"); }
         public CONFIGURATIONS ConfigurationQuery() {
-            FormattedIO.WriteLine("Sys_CFG?");
-            String response = FormattedIO.ReadLine();
+            UsbSession.FormattedIO.WriteLine("Sys_CFG?");
+            String response = UsbSession.FormattedIO.ReadLine();
             return (CONFIGURATIONS)Enum.Parse(typeof(CONFIGURATIONS), response.Substring(response.IndexOf(" ") + 1), true);
         }
-        public void EventStatusEnableCommand(Byte RegisterMask) { FormattedIO.WriteLine($"*ESE {RegisterMask}"); }
+        public void EventStatusEnableCommand(Byte RegisterMask) { UsbSession.FormattedIO.WriteLine($"*ESE {RegisterMask}"); }
         public Byte EventStatusEnableQuery() {
-            FormattedIO.WriteLine("*ESE?");
-            return Byte.Parse(FormattedIO.ReadLine().Substring(5));
+            UsbSession.FormattedIO.WriteLine("*ESE?");
+            return Byte.Parse(UsbSession.FormattedIO.ReadLine().Substring(5));
         }
         public Byte EventStatusRegisterQuery() {
-            FormattedIO.WriteLine("*ESR?");
-            return Byte.Parse(FormattedIO.ReadLine().Substring(5));
+            UsbSession.FormattedIO.WriteLine("*ESR?");
+            return Byte.Parse(UsbSession.FormattedIO.ReadLine().Substring(5));
         }
         public String IdentityQuery() {
-            FormattedIO.WriteLine("*IDN?");
-            return FormattedIO.ReadLine();
+            UsbSession.FormattedIO.WriteLine("*IDN?");
+            return UsbSession.FormattedIO.ReadLine();
         }
-        public void InvertCommand(STATUSES Status) { FormattedIO.WriteLine($"INVerT {Status}"); }
+        public void InvertCommand(STATUSES Status) { UsbSession.FormattedIO.WriteLine($"INVerT {Status}"); }
         public STATUSES InvertQuery() {
-            FormattedIO.WriteLine("INVerT?");
-            String response = FormattedIO.ReadLine();
+            UsbSession.FormattedIO.WriteLine("INVerT?");
+            String response = UsbSession.FormattedIO.ReadLine();
             return (STATUSES)Enum.Parse(typeof(STATUSES), response.Substring(response.IndexOf(" ") + 1), true);
         }
-        public void OperationCompleteCommand() { FormattedIO.WriteLine($"*OPC"); }
+        public void OperationCompleteCommand() { UsbSession.FormattedIO.WriteLine($"*OPC"); }
         public Byte OperationCompleteQuery() {
-            FormattedIO.WriteLine("*OPC?");
-            return Byte.Parse(FormattedIO.ReadLine().Substring(5));
+            UsbSession.FormattedIO.WriteLine("*OPC?");
+            return Byte.Parse(UsbSession.FormattedIO.ReadLine().Substring(5));
         }
-        public void OutputCommand(CHANNELS Channel, OUTP Output) { FormattedIO.WriteLine($"{Channel}:OUTPut {Output.ToString().Replace('_', ',')}"); }
+        public void OutputCommand(CHANNELS Channel, OUTP Output) { UsbSession.FormattedIO.WriteLine($"{Channel}:OUTPut {Output.ToString().Replace('_', ',')}"); }
         public String OutputQuery(CHANNELS Channel) {
-            FormattedIO.WriteLine($"{Channel}:OUTPut?");
-            return FormattedIO.ReadLine();
+            UsbSession.FormattedIO.WriteLine($"{Channel}:OUTPut?");
+            return UsbSession.FormattedIO.ReadLine();
         }
         public void ScreenSaveCommand(MINUTES Minutes) {
-            if (Minutes == MINUTES.OFF) FormattedIO.WriteLine($"SCreen_SaVe {Minutes}");
-            else FormattedIO.WriteLine($"SCreen_SaVe {(Int32)Minutes}");
+            if (Minutes == MINUTES.OFF) UsbSession.FormattedIO.WriteLine($"SCreen_SaVe {Minutes}");
+            else UsbSession.FormattedIO.WriteLine($"SCreen_SaVe {(Int32)Minutes}");
         }
         public String ScreenSaveQuery() {
-            FormattedIO.WriteLine("SCreen_SaVe?");
-            String response = FormattedIO.ReadLine();
+            UsbSession.FormattedIO.WriteLine("SCreen_SaVe?");
+            String response = UsbSession.FormattedIO.ReadLine();
             return response.Substring(response.IndexOf(" ") + 1);
         }
-        public void ServiceRequestEnableCommand(Byte RegisterMask) { FormattedIO.WriteLine($"*SRE {RegisterMask}"); }
+        public void ServiceRequestEnableCommand(Byte RegisterMask) { UsbSession.FormattedIO.WriteLine($"*SRE {RegisterMask}"); }
         public Byte ServiceRequestEnableQuery() {
-            FormattedIO.WriteLine("*SRE?");
-            return Byte.Parse(FormattedIO.ReadLine().Substring(5));
+            UsbSession.FormattedIO.WriteLine("*SRE?");
+            return Byte.Parse(UsbSession.FormattedIO.ReadLine().Substring(5));
         }
         public Byte StatusRegisterQuery() {
-            FormattedIO.WriteLine("*STB?");
-            return Byte.Parse(FormattedIO.ReadLine().Substring(5));
+            UsbSession.FormattedIO.WriteLine("*STB?");
+            return Byte.Parse(UsbSession.FormattedIO.ReadLine().Substring(5));
         }
-        public void SynchronizeCommand(CHANNELS Channel, STATUSES Status) { FormattedIO.WriteLine($"{Channel}:SYNC {Status}"); }
+        public void SynchronizeCommand(CHANNELS Channel, STATUSES Status) { UsbSession.FormattedIO.WriteLine($"{Channel}:SYNC {Status}"); }
         public CHANNELS SynchronizeQuery() {
-            FormattedIO.WriteLine("SYNC?");
-            String response = FormattedIO.ReadLine();
+            UsbSession.FormattedIO.WriteLine("SYNC?");
+            String response = UsbSession.FormattedIO.ReadLine();
             return (CHANNELS)Enum.Parse(typeof(CHANNELS), response.Substring(response.IndexOf(" ") + 1), true);
         }
         public String TestQuery() {
-            FormattedIO.WriteLine("*TST?");
-            return FormattedIO.ReadLine().Substring(5);
+            UsbSession.FormattedIO.WriteLine("*TST?");
+            return UsbSession.FormattedIO.ReadLine().Substring(5);
         }
-        public void VirtualKeyCommand(VIRTUAL_KEYS VirtualKey) { FormattedIO.WriteLine($"VKEY VALUE,{VirtualKey},STATE,1"); }
+        public void VirtualKeyCommand(VIRTUAL_KEYS VirtualKey) { UsbSession.FormattedIO.WriteLine($"VKEY VALUE,{VirtualKey},STATE,1"); }
 
-        public void ResetCommand() { FormattedIO.WriteLine("*RST"); }
-        public void WaitCommand() { FormattedIO.WriteLine("*WAI"); }
+        public void ResetCommand() { UsbSession.FormattedIO.WriteLine("*RST"); }
+        public void WaitCommand() { UsbSession.FormattedIO.WriteLine("*WAI"); }
         public void ResetClear() {
             ResetCommand();
             ClearStatusCommand();
@@ -294,7 +293,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
 
         public SELF_TEST_RESULTS SelfTests() {
             try {
-                FormattedIO.WriteLine("*TST?");
+                UsbSession.FormattedIO.WriteLine("*TST?");
                 if (TestQuery().Equals("0")) return SELF_TEST_RESULTS.PASS;
                 return SELF_TEST_RESULTS.FAIL;
             } catch (Exception exception) {
@@ -317,7 +316,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             this.Address = Address;
             this.Detail = Detail;
             InstrumentType = INSTRUMENT_TYPES.WAVEFORM_GENERATOR;
-            USB_Session = new UsbSession(Address);
+            UsbSession = new UsbSession(Address);
             ResetCommand();
             ClearStatusCommand();
             CommandHeaderCommand(COMMAND_HEADERS.LONG);
@@ -326,6 +325,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
         }
         ~WS_3162_VISA_NET() { Dispose(); }
 
-        public void Dispose() { USB_Session.Dispose(); }
+        public void Dispose() { UsbSession.Dispose(); }
     }
 }
