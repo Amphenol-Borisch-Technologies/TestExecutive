@@ -67,8 +67,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             public enum WVTP { SINE, SQUARE, RAMP, PULSE, NOISE, ARB, DC }
         }
 
-        public UsbSession UsbSession;
-        public IMessageBasedFormattedIO FormattedIO => UsbSession.FormattedIO;
+        public UsbSession USB_Session;
+        public IMessageBasedFormattedIO FormattedIO => USB_Session.FormattedIO;
         public String Address { get; }
         public String Detail { get; }
         public INSTRUMENT_TYPES InstrumentType { get; }
@@ -317,16 +317,15 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             this.Address = Address;
             this.Detail = Detail;
             InstrumentType = INSTRUMENT_TYPES.WAVEFORM_GENERATOR;
-            UsbSession = new UsbSession(Address);
+            USB_Session = new UsbSession(Address);
             ResetCommand();
             ClearStatusCommand();
             CommandHeaderCommand(COMMAND_HEADERS.LONG);
             ScreenSaveCommand(MINUTES.M5);
             BuzzerCommand(STATUSES.ON);
         }
-
-        public void Dispose() { UsbSession.Dispose(); }
-
         ~WS_3162_VISA_NET() { Dispose(); }
+
+        public void Dispose() { USB_Session.Dispose(); }
     }
 }
