@@ -57,25 +57,25 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         }
 
         public void OperationCompleteQuery() {
-            tkdpo2k3k4kClass.WriteString("*OPC?");
-            if (tkdpo2k3k4kClass.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException("MSO-3014 didn't complete SCPI command!");
+            USB_Session.FormattedIO.WriteLine("*OPC?");
+            if (USB_Session.FormattedIO.ReadLine().Trim().Trim('"') != "1") throw new InvalidOperationException("MSO-3014 didn't complete SCPI command!");
         }
 
         public void EventTableEnable(BUSES Bus) {
             switch (Bus) {
                 case BUSES.B1:
-                    tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS B1;:*WAI");
+                    USB_Session.FormattedIO.WriteLine(":FPAnel:PRESS B1;:*WAI");
                     break;
                 case BUSES.B2:
-                    tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS B2;:*WAI");
+                    USB_Session.FormattedIO.WriteLine(":FPAnel:PRESS B2;:*WAI");
                     break;
                 default:
                     throw new NotImplementedException(NotImplementedMessageEnum<BUSES>(Enum.GetName(typeof(BUSES), Bus)));
             }
-            tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS BMENU7;:*WAI");
-            tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS RMENU1;:*WAI");
-            tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS MENUOff;:*WAI");
-            tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS MENUOff;:*WAI");
+            USB_Session.FormattedIO.WriteLine(":FPAnel:PRESS BMENU7;:*WAI");
+            USB_Session.FormattedIO.WriteLine(":FPAnel:PRESS RMENU1;:*WAI");
+            USB_Session.FormattedIO.WriteLine(":FPAnel:PRESS MENUOff;:*WAI");
+            USB_Session.FormattedIO.WriteLine(":FPAnel:PRESS MENUOff;:*WAI");
             OperationCompleteQuery();
         }
 
@@ -105,29 +105,29 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
 
         public Boolean SetupExists(SETUPS Setup, String LabelString) {
             if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
-            tkdpo2k3k4kClass.WriteString($":{Setup}:LABEL?");
-            return tkdpo2k3k4kClass.ReadString().Trim().Trim('"').Equals(LabelString);
+            USB_Session.FormattedIO.WriteLine($":{Setup}:LABEL?");
+            return USB_Session.FormattedIO.ReadLine().Trim().Trim('"').Equals(LabelString);
         }
 
         public void SetupLoad(SETUPS Setup, String LabelString) {
             if (!SetupExists(Setup, LabelString)) throw new ArgumentException($"MSO-3014 {Setup} labled '{LabelString}' non-existent!");
-            tkdpo2k3k4kClass.WriteString($":RECAll:SETUp {(Int32)Setup}");
+            USB_Session.FormattedIO.WriteLine($":RECAll:SETUp {(Int32)Setup}");
         }
 
         public void SetupLoad(String SetupFilePath) {
             if (!File.Exists(SetupFilePath)) throw new FileNotFoundException($"MSO-3014 Setup file not found at path '{SetupFilePath}'!");
             foreach (String mso_3014_SCPI_Command in File.ReadLines(SetupFilePath)) {
-                tkdpo2k3k4kClass.WriteString(mso_3014_SCPI_Command);
+                USB_Session.FormattedIO.WriteLine(mso_3014_SCPI_Command);
                 OperationCompleteQuery();
             }
         }
 
         public void SetupSave(SETUPS Setup, String LabelString) {
             if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
-            tkdpo2k3k4kClass.WriteString($":{Setup}:LABEL \"{LabelString}\"");
+            USB_Session.FormattedIO.WriteLine($":{Setup}:LABEL \"{LabelString}\"");
             OperationCompleteQuery();
-            tkdpo2k3k4kClass.WriteString($":{Setup}:LABEL?");
-            String labelRead = tkdpo2k3k4kClass.ReadString().Trim().Trim('"');
+            USB_Session.FormattedIO.WriteLine($":{Setup}:LABEL?");
+            String labelRead = USB_Session.FormattedIO.ReadLine().Trim().Trim('"');
             if (!labelRead.Equals(LabelString)) throw new ArgumentException($"MSO-3014 {Setup} not labeled correctly!{Environment.NewLine}  Should be '{LabelString}'.{Environment.NewLine}  Is '{labelRead}'.");
         }
 
