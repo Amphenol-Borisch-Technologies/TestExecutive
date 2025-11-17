@@ -78,7 +78,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             OperationCompleteQuery();
         }
 
-        private void ImageLandscapePNG_Save(String PathPC) {
+        public void ImageLandscapePNG_Save(String PathPC) {
             USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:INKSaver OFF");
             USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:LAYout LANdscape");
             USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:FILEFormat PNG");
@@ -88,7 +88,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             OperationCompleteQuery();
         }
 
-        private void EventTableSave(BUSES Bus, DRIVES_USB Drive_USB, String PathPC) {
+        public void EventTableSave(BUSES Bus, DRIVES_USB Drive_USB, String PathPC) {
             String pathMSO_3014 = $"\"{Drive_USB}:/{Bus}.csv\"";
             USB_Session.FormattedIO.WriteLine($"SAVe:EVENTtable:{Bus} {pathMSO_3014}"); // Save Event Table to MSO-3014 USB drive.  Can't HARDCopy Event Tables, sadly.
             OperationCompleteQuery();
@@ -102,7 +102,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             OperationCompleteQuery();
         }
 
-        // NOTE: MSO-3014 loaded Setup activation times appear non-deterministic, hence, use a fixed delay; 3.5 seconds seems sufficient. YMMV.
         public Boolean SetupExists(SETUPS Setup, String LabelString) {
             if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
             WriteString($":{Setup}:LABEL?");
