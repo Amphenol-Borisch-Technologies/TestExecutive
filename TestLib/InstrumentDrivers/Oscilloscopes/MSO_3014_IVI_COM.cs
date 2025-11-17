@@ -60,8 +60,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             if (ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException("MSO-3014 didn't complete SCPI command!");
         }
 
-        public void BusEventTableEnable(BUSES Buses) {
-            switch (Buses) {
+        public void EventTableEnable(BUSES Bus) {
+            switch (Bus) {
                 case BUSES.B1:
                     WriteString(":FPAnel:PRESS B1;:*WAI");
                     break;
@@ -69,22 +69,12 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
                     WriteString(":FPAnel:PRESS B2;:*WAI");
                     break;
                 default:
-                    throw new NotImplementedException(NotImplementedMessageEnum<BUSES>(Enum.GetName(typeof(BUSES), Buses)));
+                    throw new NotImplementedException(NotImplementedMessageEnum<BUSES>(Enum.GetName(typeof(BUSES), Bus)));
             }
             WriteString(":FPAnel:PRESS BMENU7;:*WAI");
             WriteString(":FPAnel:PRESS RMENU1;:*WAI");
             WriteString(":FPAnel:PRESS MENUOff;:*WAI");
             WriteString(":FPAnel:PRESS MENUOff;:*WAI");
-            OperationCompleteQuery();
-        }
-
-        public void ImageLandscapePNG_Save(String PathPC) {
-            USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:INKSaver OFF");
-            USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:LAYout LANdscape");
-            USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:FILEFormat PNG");
-            OperationCompleteQuery();
-            USB_Session.FormattedIO.WriteLine("HARDCopy STARt");        // Ostensibly a printing command, actually works _best_ for saving a screenshot image to MSO-3014's USB drive.
-            File.WriteAllBytes($@"{PathPC}", USB_Session.RawIO.Read()); // Read HARDCopy image from MSO-3014's USB drive, & Save HARDCopy image to PC, overwriting any existing file without warning.
             OperationCompleteQuery();
         }
 
@@ -99,6 +89,16 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             OperationCompleteQuery();
 
             USB_Session.FormattedIO.WriteLine($"FILESystem:DELEte {pathMSO_3014}");     // Delete Event Table from MSO-3014 USB drive.
+            OperationCompleteQuery();
+        }
+
+        public void ImageLandscapePNG_Save(String PathPC) {
+            USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:INKSaver OFF");
+            USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:LAYout LANdscape");
+            USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:FILEFormat PNG");
+            OperationCompleteQuery();
+            USB_Session.FormattedIO.WriteLine("HARDCopy STARt");        // Ostensibly a printing command, actually works _best_ for saving a screenshot image to MSO-3014's USB drive.
+            File.WriteAllBytes($@"{PathPC}", USB_Session.RawIO.Read()); // Read HARDCopy image from MSO-3014's USB drive, & Save HARDCopy image to PC, overwriting any existing file without warning.
             OperationCompleteQuery();
         }
 
