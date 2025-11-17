@@ -15,7 +15,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public String Detail { get; }
         public Tkdpo2k3k4kClass tkdpo2k3k4kClass;
         public UsbSession USB_Session;
-        public IMessageBasedFormattedIO FormattedIO => USB_Session.FormattedIO;
         public enum BUSES { B1, B2 }
         public enum DRIVES_USB { E, F }
         public INSTRUMENT_TYPES InstrumentType { get; }
@@ -52,6 +51,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             this.Address = Address;
             this.Detail = Detail;
             InstrumentType = INSTRUMENT_TYPES.OSCILLOSCOPE_MIXED_SIGNAL;
+            tkdpo2k3k4kClass = new Tkdpo2k3k4kClass();
             tkdpo2k3k4kClass.Initialize(ResourceName: Address, IdQuery: false, Reset: false, OptionString: String.Empty);
             USB_Session = new UsbSession(Address, AccessModes.None, timeoutMilliseconds: 20000);
         }
@@ -81,24 +81,24 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
 
         public void EventTableSave(BUSES Bus, DRIVES_USB Drive_USB, String PathPC) {
             String pathMSO_3014 = $"\"{Drive_USB}:/{Bus}.csv\"";
-            FormattedIO.WriteLine($"SAVe:EVENTtable:{Bus} {pathMSO_3014}"); // Save Event Table to MSO-3014 USB drive, overwriting any existing file without warning.  Can't HARDCopy Event Tables, sadly.
+            USB_Session.FormattedIO.WriteLine($"SAVe:EVENTtable:{Bus} {pathMSO_3014}"); // Save Event Table to MSO-3014 USB drive, overwriting any existing file without warning.  Can't HARDCopy Event Tables, sadly.
             OperationCompleteQuery();
             Thread.Sleep(500);                                                          // USB Drive write latency.
 
-            FormattedIO.WriteLine($"FILESystem:READFile {pathMSO_3014}");   // Read Event Table from MSO-3014 USB drive.
+            USB_Session.FormattedIO.WriteLine($"FILESystem:READFile {pathMSO_3014}");   // Read Event Table from MSO-3014 USB drive.
             File.WriteAllBytes($@"{PathPC}", USB_Session.RawIO.Read());                 // Save read Event Table to PC, overwriting any existing file without warning.
             OperationCompleteQuery();
 
-            FormattedIO.WriteLine($"FILESystem:DELEte {pathMSO_3014}");     // Delete Event Table from MSO-3014 USB drive.
+            USB_Session.FormattedIO.WriteLine($"FILESystem:DELEte {pathMSO_3014}");     // Delete Event Table from MSO-3014 USB drive.
             OperationCompleteQuery();
         }
 
         public void ImageLandscapePNG_Save(String PathPC) {
-            FormattedIO.WriteLine("SAVe:IMAGe:INKSaver OFF");
-            FormattedIO.WriteLine("SAVe:IMAGe:LAYout LANdscape");
-            FormattedIO.WriteLine("SAVe:IMAGe:FILEFormat PNG");
+            USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:INKSaver OFF");
+            USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:LAYout LANdscape");
+            USB_Session.FormattedIO.WriteLine("SAVe:IMAGe:FILEFormat PNG");
             OperationCompleteQuery();
-            FormattedIO.WriteLine("HARDCopy STARt");        // Ostensibly a printing command, actually works _best_ for saving a screenshot image to MSO-3014's USB drive.
+            USB_Session.FormattedIO.WriteLine("HARDCopy STARt");        // Ostensibly a printing command, actually works _best_ for saving a screenshot image to MSO-3014's USB drive.
             File.WriteAllBytes($@"{PathPC}", USB_Session.RawIO.Read()); // Read HARDCopy image from MSO-3014's USB drive, & Save HARDCopy image to PC, overwriting any existing file without warning.
             OperationCompleteQuery();
         }
