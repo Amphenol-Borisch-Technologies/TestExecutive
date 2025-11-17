@@ -7,22 +7,23 @@ using System.Threading;
 using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
-    public class PS_E3634A_SCPI_NET : AgE363x, IInstrument, IPowerSupplyOutputs1, IDiagnostics {
+    public class PS_E3634A_SCPI_NET : IInstrument, IPowerSupplyOutputs1, IDiagnostics {
         public enum RANGE { P25V, P50V }
 
         public String Address { get; }
         public String Detail { get; }
+        public AgE363x AgE363x { get; }
         public INSTRUMENT_TYPES InstrumentType { get; }
 
         public void ResetClear() {
-            SCPI.RST.Command();
-            SCPI.CLS.Command();
+            AgE363x.SCPI.RST.Command();
+            AgE363x.SCPI.CLS.Command();
         }
 
         public SELF_TEST_RESULTS SelfTests() {
             Int32 result;
             try {
-                SCPI.TST.Query(out result);
+                AgE363x.SCPI.TST.Query(out result);
             } catch (Exception exception) {
                 Instruments.SelfTestFailure(this, exception);
                 return SELF_TEST_RESULTS.FAIL;
@@ -30,38 +31,38 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             return (SELF_TEST_RESULTS)result; // AgE363x returns 0 for passed, 1 for fail.
         }
 
-        public void OutputsOff() { SCPI.OUTPut.STATe.Command(Convert.ToBoolean(STATES.off)); }
+        public void OutputsOff() { AgE363x.SCPI.OUTPut.STATe.Command(Convert.ToBoolean(STATES.off)); }
 
         public RANGE RangeGet() {
-            SCPI.SOURce.VOLTage.RANGe.Query(out String range);
+            AgE363x.SCPI.SOURce.VOLTage.RANGe.Query(out String range);
             return (RANGE)Enum.Parse(typeof(RANGE), range);
         }
-        public void RangeSet(RANGE Range) { SCPI.SOURce.VOLTage.RANGe.Command($"{Range}"); }
+        public void RangeSet(RANGE Range) { AgE363x.SCPI.SOURce.VOLTage.RANGe.Command($"{Range}"); }
 
         public (Double AmpsDC, Double VoltsDC) Get(DC DC) {
-            SCPI.MEASure.CURRent.DC.Query(out Double AmpsDC);
-            SCPI.MEASure.VOLTage.DC.Query(out Double VoltsDC);
+            AgE363x.SCPI.MEASure.CURRent.DC.Query(out Double AmpsDC);
+            AgE363x.SCPI.MEASure.VOLTage.DC.Query(out Double VoltsDC);
             return (AmpsDC, VoltsDC);
         }
 
         public void SetOffOn(Double VoltsDC, Double AmpsDC, Double OVP) {
-            SCPI.OUTPut.STATe.Command(false);
-            SCPI.SOURce.VOLTage.PROTection.CLEar.Command();
-            SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{MMD.MAXimum}");
-            SCPI.SOURce.VOLTage.LEVel.IMMediate.AMPLitude.Command($"{VoltsDC}");
-            SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Command($"{AmpsDC}");
-            SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{OVP}");
-            SCPI.OUTPut.STATe.Command(true);
+            AgE363x.SCPI.OUTPut.STATe.Command(false);
+            AgE363x.SCPI.SOURce.VOLTage.PROTection.CLEar.Command();
+            AgE363x.SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{MMD.MAXimum}");
+            AgE363x.SCPI.SOURce.VOLTage.LEVel.IMMediate.AMPLitude.Command($"{VoltsDC}");
+            AgE363x.SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Command($"{AmpsDC}");
+            AgE363x.SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{OVP}");
+            AgE363x.SCPI.OUTPut.STATe.Command(true);
             Thread.Sleep(500); // Allow some time for voltage to stabilize.
         }
 
         public STATES StateGet() {
-            SCPI.OUTPut.STATe.Query(out Boolean state);
+            AgE363x.SCPI.OUTPut.STATe.Query(out Boolean state);
             return state ? STATES.ON : STATES.off;
         }
 
         public void StateSet(STATES State) {
-            SCPI.OUTPut.STATe.Command(State == STATES.ON);
+            AgE363x.SCPI.OUTPut.STATe.Command(State == STATES.ON);
             Thread.Sleep(500); // Allow some time for voltage to stabilize.        
         }
 
@@ -81,23 +82,23 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
                     $"to {MSMU.Detail}/{MSMU.Address}.{Environment.NewLine}{Environment.NewLine}" +
                     "Click Cancel if desired.";
                 if (DialogResult.OK == MessageBox.Show(message, "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
-                    MSMU.SCPI.INSTrument.DMM.STATe.Command(true);
-                    MSMU.SCPI.INSTrument.DMM.CONNect.Command();
-                    SCPI.OUTPut.STATe.Command(false);
-                    SCPI.SOURce.VOLTage.PROTection.STATe.Command(false);
-                    SCPI.SOURce.CURRent.PROTection.STATe.Command(false);
-                    SCPI.SOURce.VOLTage.LEVel.IMMediate.AMPLitude.Command("MINimum");
-                    SCPI.SOURce.VOLTage.LEVel.IMMediate.STEP.INCRement.Command(1D);
-                    SCPI.OUTPut.STATe.Command(true);
+                    MSMU.Ag34980.SCPI.INSTrument.DMM.STATe.Command(true);
+                    MSMU.Ag34980.SCPI.INSTrument.DMM.CONNect.Command();
+                    AgE363x.SCPI.OUTPut.STATe.Command(false);
+                    AgE363x.SCPI.SOURce.VOLTage.PROTection.STATe.Command(false);
+                    AgE363x.SCPI.SOURce.CURRent.PROTection.STATe.Command(false);
+                    AgE363x.SCPI.SOURce.VOLTage.LEVel.IMMediate.AMPLitude.Command("MINimum");
+                    AgE363x.SCPI.SOURce.VOLTage.LEVel.IMMediate.STEP.INCRement.Command(1D);
+                    AgE363x.SCPI.OUTPut.STATe.Command(true);
 
                     Boolean passed_E3634A = true, passed_VDC;
                     for (Int32 vdcApplied = 0; vdcApplied < 50; vdcApplied++) {
                         Thread.Sleep(millisecondsTimeout: 500);
-                        MSMU.SCPI.MEASure.SCALar.VOLTage.DC.Query("AUTO", $"{MMD.MAXimum}", ch_list: null, out Double[] vdcMeasured);
+                        MSMU.Ag34980.SCPI.MEASure.SCALar.VOLTage.DC.Query("AUTO", $"{MMD.MAXimum}", ch_list: null, out Double[] vdcMeasured);
                         passed_VDC = Math.Abs(vdcMeasured[0] - vdcApplied) <= limit;
                         passed_E3634A &= passed_VDC;
                         result_E3634A.Details.Add(new DiagnosticsResult(Label: "OUTput: ", Message: $"Applied {vdcApplied}VDC, measured {Math.Round(vdcMeasured[0], 3, MidpointRounding.ToEven)}VDC", Event: (passed_VDC ? EVENTS.PASS : EVENTS.FAIL)));
-                        SCPI.SOURce.VOLTage.LEVel.IMMediate.AMPLitude.Command("UP");
+                        AgE363x.SCPI.SOURce.VOLTage.LEVel.IMMediate.AMPLitude.Command("UP");
                     }
                     result_E3634A.Summary &= passed_E3634A;
                     message =
@@ -110,9 +111,10 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         }
         #endregion Diagnostics
 
-        public PS_E3634A_SCPI_NET(String Address, String Detail) : base(Address) {
+        public PS_E3634A_SCPI_NET(String Address, String Detail) {
             this.Address = Address;
             this.Detail = Detail;
+            AgE363x AgE363x = new AgE363x(Address);
             InstrumentType = INSTRUMENT_TYPES.POWER_SUPPLY;
         }
     }

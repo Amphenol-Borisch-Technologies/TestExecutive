@@ -13,8 +13,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
     public class MSO_3014_IVI_COM : IInstrument, IDiagnostics, IDisposable {
         public String Address { get; }
         public String Detail { get; }
-        public Tkdpo2k3k4kClass tkdpo2k3k4kClass;
-        public UsbSession USB_Session;
+        public Tkdpo2k3k4kClass Tkdpo2k3k4kClass { get; }
+        public UsbSession USB_Session { get; }
         public enum BUSES { B1, B2 }
         public enum DRIVES_USB { E, F }
         public INSTRUMENT_TYPES InstrumentType { get; }
@@ -23,13 +23,13 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public readonly static String ValidCharactersLabel = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=≠+-±!@#$%^&*()[]{}<>/~‘’\"\\|:,.?µ∞∆°Ωσ";
         private Boolean _disposed = false;
 
-        public void ResetClear() { tkdpo2k3k4kClass.Reset(); }
+        public void ResetClear() { Tkdpo2k3k4kClass.Reset(); }
 
         public SELF_TEST_RESULTS SelfTests() {
             Int32 TestResult = 0;
             String TestMessage = String.Empty;
             try {
-                tkdpo2k3k4kClass.UtilityEx.SelfTest(ref TestResult, ref TestMessage);
+                Tkdpo2k3k4kClass.UtilityEx.SelfTest(ref TestResult, ref TestMessage);
             } catch (Exception exception) {
                 Instruments.SelfTestFailure(this, exception);
                 return SELF_TEST_RESULTS.FAIL;
@@ -51,8 +51,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             this.Address = Address;
             this.Detail = Detail;
             InstrumentType = INSTRUMENT_TYPES.OSCILLOSCOPE_MIXED_SIGNAL;
-            tkdpo2k3k4kClass = new Tkdpo2k3k4kClass();
-            tkdpo2k3k4kClass.Initialize(ResourceName: Address, IdQuery: false, Reset: false, OptionString: String.Empty);
+            Tkdpo2k3k4kClass = new Tkdpo2k3k4kClass();
+            Tkdpo2k3k4kClass.Initialize(ResourceName: Address, IdQuery: false, Reset: false, OptionString: String.Empty);
             USB_Session = new UsbSession(Address, AccessModes.None, timeoutMilliseconds: 20000);
         }
 
@@ -155,7 +155,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
                     USB_Session.Dispose();
                 }
                 // Free unmanaged resources here (if any).
-                tkdpo2k3k4kClass.Close();
+                Tkdpo2k3k4kClass.Close();
                 _disposed = true;
             }
         }

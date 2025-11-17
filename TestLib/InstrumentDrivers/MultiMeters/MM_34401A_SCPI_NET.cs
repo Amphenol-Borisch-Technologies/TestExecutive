@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters {
-    public class MM_34401A_SCPI_NET : Ag34401, IInstrument, IDiagnostics {
+    public class MM_34401A_SCPI_NET : IInstrument, IDiagnostics {
         public enum MMD { MIN, MAX, DEF }
         public enum TERMINALS { Front, Rear };
         public enum PROPERTY { AmperageAC, AmperageDC, Continuity, Frequency, Fresistance, Period, Resistance, VoltageAC, VoltageDC, VoltageDiodic }
@@ -13,17 +13,18 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters {
 
         public String Address { get; }
         public String Detail { get; }
+        public Ag34401 Ag34401 { get; }
         public INSTRUMENT_TYPES InstrumentType { get; }
 
         public void ResetClear() {
-            SCPI.RST.Command();
-            SCPI.CLS.Command();
+            Ag34401.SCPI.RST.Command();
+            Ag34401.SCPI.CLS.Command();
         }
 
         public SELF_TEST_RESULTS SelfTests() {
             Boolean result;
             try {
-                SCPI.TST.Query(out result);
+                Ag34401.SCPI.TST.Query(out result);
             } catch (Exception exception) {
                 Instruments.SelfTestFailure(this, exception);
                 return SELF_TEST_RESULTS.FAIL;
@@ -41,15 +42,16 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters {
             return result_34401A;
         }
 
-        public MM_34401A_SCPI_NET(String Address, String Detail) : base(Address) {
+        public MM_34401A_SCPI_NET(String Address, String Detail) {
             this.Address = Address;
             this.Detail = Detail;
+            Ag34401 = new Ag34401(Address);
             InstrumentType = INSTRUMENT_TYPES.MULTI_METER;
             TerminalsSetRear();
         }
 
         public Boolean DelayAutoIs() {
-            SCPI.TRIGger.DELay.AUTO.Query(out Boolean state);
+            Ag34401.SCPI.TRIGger.DELay.AUTO.Query(out Boolean state);
             return state;
         }
 
@@ -57,34 +59,34 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters {
             // SCPI FORMAT:DATA(ASCii/REAL) command unavailable on KS 34461A.
             switch (property) {
                 case PROPERTY.AmperageAC:
-                    SCPI.MEASure.CURRent.AC.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double acCurrent);
+                    Ag34401.SCPI.MEASure.CURRent.AC.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double acCurrent);
                     return acCurrent;
                 case PROPERTY.AmperageDC:
-                    SCPI.MEASure.CURRent.DC.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double dcCurrent);
+                    Ag34401.SCPI.MEASure.CURRent.DC.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double dcCurrent);
                     return dcCurrent;
                 case PROPERTY.Continuity:
-                    SCPI.MEASure.CONTinuity.Query(out Double continuity);
+                    Ag34401.SCPI.MEASure.CONTinuity.Query(out Double continuity);
                     return continuity;
                 case PROPERTY.Frequency:
-                    SCPI.MEASure.FREQuency.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double frequency);
+                    Ag34401.SCPI.MEASure.FREQuency.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double frequency);
                     return frequency;
                 case PROPERTY.Fresistance:
-                    SCPI.MEASure.FRESistance.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double fresistance);
+                    Ag34401.SCPI.MEASure.FRESistance.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double fresistance);
                     return fresistance;
                 case PROPERTY.Period:
-                    SCPI.MEASure.PERiod.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double period);
+                    Ag34401.SCPI.MEASure.PERiod.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double period);
                     return period;
                 case PROPERTY.Resistance:
-                    SCPI.MEASure.RESistance.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double resistance);
+                    Ag34401.SCPI.MEASure.RESistance.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double resistance);
                     return resistance;
                 case PROPERTY.VoltageAC:
-                    SCPI.MEASure.VOLTage.AC.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double acVoltage);
+                    Ag34401.SCPI.MEASure.VOLTage.AC.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double acVoltage);
                     return acVoltage;
                 case PROPERTY.VoltageDC:
-                    SCPI.MEASure.VOLTage.DC.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double dcVoltage);
+                    Ag34401.SCPI.MEASure.VOLTage.DC.Query($"{MMD.DEF}", $"{MMD.DEF}", out Double dcVoltage);
                     return dcVoltage;
                 case PROPERTY.VoltageDiodic:
-                    SCPI.MEASure.DIODe.Query(out Double diodeVoltage);
+                    Ag34401.SCPI.MEASure.DIODe.Query(out Double diodeVoltage);
                     return diodeVoltage;
                 default:
                     throw new NotImplementedException(TestLib.NotImplementedMessageEnum<PROPERTY>(Enum.GetName(typeof(PROPERTY), property)));
@@ -93,11 +95,11 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters {
 
         public void TerminalsSetRear() {
             if (TerminalsGet() == TERMINALS.Front) _ = MessageBox.Show("Please depress Keysight 34401A Front/Rear button.", "Paused, click OK to continue.", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-            SCPI.TRIGger.DELay.AUTO.Command(true);
+            Ag34401.SCPI.TRIGger.DELay.AUTO.Command(true);
         }
 
         public TERMINALS TerminalsGet() {
-            SCPI.ROUTe.TERMinals.Query(out String terminals);
+            Ag34401.SCPI.ROUTe.TERMinals.Query(out String terminals);
             return String.Equals(terminals, "REAR") ? TERMINALS.Rear : TERMINALS.Front;
         }
     }
