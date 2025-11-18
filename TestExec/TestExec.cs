@@ -521,6 +521,7 @@ namespace ABT.Test.TestExecutive.TestExec {
 
         private void LogReplaceString(String findString, Int32 startFind, String replacementString) {
             Int32 selectionStart = rtfResults.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+            if (selectionStart == -1) return;
             rtfResults.SelectionStart = selectionStart;
             rtfResults.SelectionLength = findString.Length;
             rtfResults.SelectedText = replacementString;
@@ -542,6 +543,7 @@ namespace ABT.Test.TestExecutive.TestExec {
         private void LogSetBackColorSpaceDelimited(String findString, Int32 startFind, Color backColor) {
             String findStringSpaceDelimited = " " + findString + " ";
             Int32 selectionStart = rtfResults.Find(findStringSpaceDelimited, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+            if (selectionStart == -1) return;
             rtfResults.SelectionStart = selectionStart + 1;
             rtfResults.SelectionLength = findString.Length;
             rtfResults.SelectionBackColor = backColor;
@@ -549,6 +551,7 @@ namespace ABT.Test.TestExecutive.TestExec {
 
         private void LogSetBackColor(String findString, Int32 startFind, Color backColor) {
             Int32 selectionStart = rtfResults.Find(findString, startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+            if (selectionStart == -1) return;
             rtfResults.SelectionStart = selectionStart;
             rtfResults.SelectionLength = findString.Length;
             rtfResults.SelectionBackColor = backColor;
