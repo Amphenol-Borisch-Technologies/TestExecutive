@@ -467,6 +467,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             foreach (EVENTS Event in Enum.GetValues(typeof(EVENTS))) {
                 if (message.Contains(Event.ToString())) {
                     selectionStart = rtfResults.Find(Event.ToString(), startFind, RichTextBoxFinds.MatchCase | RichTextBoxFinds.WholeWord);
+                    if (selectionStart == -1) continue;
                     rtfResults.SelectionStart = selectionStart;
                     rtfResults.SelectionLength = Event.ToString().Length;
                     rtfResults.SelectionBackColor = EventColors[Event];
