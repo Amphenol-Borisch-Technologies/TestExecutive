@@ -1062,6 +1062,7 @@
                 SerialNumberEntry element.
                 - Required, 1 occurence.
                 - Type: xs:element.
+				- Optional attribute "SupplementalData".
               ]]>
 						</xs:documentation>
 					</xs:annotation>

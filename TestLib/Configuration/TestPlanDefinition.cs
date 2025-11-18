@@ -34,7 +34,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         public UUT() { }
 
         public static String EF(Object o) {
-            String s = (o.ToString()).Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\'", "\\\'");
+            String s = o.ToString().Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\'", "\\\'");
             return $"\"{s}\"";
         }
     }

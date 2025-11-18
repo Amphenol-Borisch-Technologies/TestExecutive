@@ -140,10 +140,8 @@ namespace ABT.Test.TestExecutive.TestExec {
         #region Form Miscellaneous
         private String GetUserPrincipal() {
             String UserName;
-            try { UserName = UserPrincipal.Current.DisplayName; } catch {
-                // NOTE:  UserPrincipal.Current.DisplayName requires a connected/active Domain session for Active Directory PCs.
-                UserName = InputForm.Show(Title: "Enter your full name for test data.", SystemIcons.Question);
-            }
+            try { UserName = UserPrincipal.Current.DisplayName; } // NOTE:  UserPrincipal.Current.DisplayName requires a connected/active Domain session for Active Directory PCs.
+            catch { UserName = InputForm.Show(Title: "Enter your full name for test data.", SystemIcons.Question); }
             UserName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UserName);
             return UserName;
         }
@@ -212,9 +210,7 @@ namespace ABT.Test.TestExecutive.TestExec {
         #endregion Form Miscellaneous
 
         #region Form Command Buttons
-        private void ButtonCancel_Enter(Object sender, EventArgs e) {
-            TSMI_About_TestPlan.Select(); // Prevents ButtonCanel or ButtonEmergencyStop from having focus, so if a MessageBox loses focus while testing and operator presses keyboard Enter key, won't cancel or Emergency Stop.
-        }
+        private void ButtonCancel_Enter(Object sender, EventArgs e) { TSMI_About_TestPlan.Select(); } // Prevents ButtonCanel or ButtonEmergencyStop from having focus, so if a MessageBox loses focus while testing and operator presses keyboard Enter key, won't cancel or Emergency Stop.
 
         private void ButtonCancel_Clicked(Object sender, EventArgs e) {
             ButtonCancelReset(enabled: false);
@@ -238,9 +234,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             ButtonCancel.Enabled = enabled;
         }
 
-        private void ButtonEmergencyStop_Enter(Object sender, EventArgs e) {
-            TSMI_About_TestPlan.Select(); // Prevents ButtonCanel or ButtonEmergencyStop from having focus, so if a MessageBox loses focus while testing and operator presses keyboard Enter key, won't cancel or Emergency Stop.
-        }
+        private void ButtonEmergencyStop_Enter(Object sender, EventArgs e) { TSMI_About_TestPlan.Select(); } // Prevents ButtonCanel or ButtonEmergencyStop from having focus, so if a MessageBox loses focus while testing and operator presses keyboard Enter key, won't cancel or Emergency Stop.
 
         private void ButtonEmergencyStop_Clicked(Object sender, EventArgs e) {
             ButtonEmergencyStop.Enabled = false;
@@ -285,9 +279,9 @@ namespace ABT.Test.TestExecutive.TestExec {
                 if (String.Equals(serialNumber, String.Empty)) return;
 
                 testSequence.SerialNumber = serialNumber;
-                if (testExecDefinition.TestData.Item is TextFiles) testSequence.LogFileBaseName = GetLogFileBaseName();
+                if (testExecDefinition.TestData.Item is TextFiles) testSequence.LogFileBasePath = GetLogFileBasePath();
                 if (testPlanDefinition.SerialNumberEntry.SupplementalData) {
-                    if (testExecDefinition.TestData.Item is TextFiles) Directory.CreateDirectory($"{testSequence.LogFileBaseName}");
+                    if (testExecDefinition.TestData.Item is TextFiles) Directory.CreateDirectory($"{testSequence.LogFileBasePath}");
                     if (testExecDefinition.TestData.Item is SQL_DB) {
                         String sql_DB_Folder = $@"C:\Users\Public\Documents\ABT\Test\TestPlans\{testSequence.UUT.Number}";
                         if (Directory.Exists(sql_DB_Folder)) Directory.Delete(sql_DB_Folder, recursive: true);
@@ -396,7 +390,7 @@ namespace ABT.Test.TestExecutive.TestExec {
         }
         private void TSMI_UUT_TestData_P_DriveTDR_Folder_Click(Object sender, EventArgs e) {
             Debug.Assert(testExecDefinition.TestData.Item is TextFiles);
-            OpenFolder($"{((TextFiles)testExecDefinition.TestData.Item).Folder}\\{testPlanDefinition.UUT.Number}\\{testSequence.TestOperation.NamespaceTrunk}");
+            OpenFolder($@"{((TextFiles)testExecDefinition.TestData.Item).Folder}\{testPlanDefinition.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}");
         }
         private void TSMI_UUT_TestDataSQL_ReportingAndQuerying_Click(Object sender, EventArgs e) {
             Debug.Assert(testExecDefinition.TestData.Item is SQL_DB);
@@ -572,17 +566,17 @@ namespace ABT.Test.TestExecutive.TestExec {
             }
         }
 
-        private String GetLogFileBaseName() {
-            String xmlFolder = $"{((TextFiles)testExecDefinition.TestData.Item).Folder}\\{testPlanDefinition.UUT.Number}\\{testSequence.TestOperation.NamespaceTrunk}";
-            String xmlBaseName = $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}";
+        private String GetLogFileBasePath() {
+            String xmlFolder = $@"{((TextFiles)testExecDefinition.TestData.Item).Folder}\{testSequence.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}";
+            String xmlBaseFileName = $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}";
             String[] xmlFileNames;
             try {
-                xmlFileNames = Directory.GetFiles(xmlFolder, $"{xmlBaseName}_*{xml}", SearchOption.TopDirectoryOnly);
+                xmlFileNames = Directory.GetFiles(xmlFolder, $"{xmlBaseFileName}_*{xml}", SearchOption.TopDirectoryOnly);
             } catch {
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.AppendLine($"Logging error:");
                 stringBuilder.AppendLine($"   Folder         : '{xmlFolder}'.");
-                stringBuilder.AppendLine($"   Base File Name : '{xmlBaseName}_*{xml}'.");
+                stringBuilder.AppendLine($"   Base File Name : '{xmlBaseFileName}_*{xml}'.");
                 MessageBox.Show(stringBuilder.ToString(), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 throw;
             }
@@ -590,22 +584,26 @@ namespace ABT.Test.TestExecutive.TestExec {
             foreach (String xmlFileName in xmlFileNames) {
                 s = xmlFileName;
                 foreach (EVENTS Event in Enum.GetValues(typeof(EVENTS))) s = s.Replace(Event.ToString(), String.Empty);
-                s = s.Replace($"{xmlFolder}\\{xmlBaseName}", String.Empty);
+                s = s.Replace($@"{xmlFolder}\{xmlBaseFileName}", String.Empty);
                 s = s.Replace(xml, String.Empty);
                 s = s.Replace("_", String.Empty);
 
                 if (Int32.Parse(s) > maxNumber) maxNumber = Int32.Parse(s);
             }
-            return $"{xmlFolder}\\{xmlBaseName}_{++maxNumber}";
+            return $@"{xmlFolder}\{xmlBaseFileName}_{++maxNumber}";
         }
 
         private void LogStopTextFiles() {
-            using (FileStream fileStream = new FileStream($"{testSequence.LogFileBaseName}_{testSequence.Event}{xml}", FileMode.CreateNew)) {
+            using (FileStream fileStream = new FileStream($"{testSequence.LogFileBasePath}_{testSequence.Event}{xml}", FileMode.CreateNew)) {
                 using (XmlTextWriter xmlTextWriter = new XmlTextWriter(fileStream, new UTF8Encoding(true))) {
                     xmlTextWriter.Formatting = Formatting.Indented;
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(TestSequence), LogGetOverrides());
                     xmlSerializer.Serialize(xmlTextWriter, testSequence);
                 }
+            }
+            if (testPlanDefinition.SerialNumberEntry.SupplementalData) {
+                Directory.Move(testSequence.LogFileBasePath, $"{testSequence.LogFileBasePath}_{testSequence.Event}");
+                File.Move($"{testSequence.LogFileBasePath}_{testSequence.Event}{xml}", $@"{testSequence.LogFileBasePath}_{testSequence.Event}\{testSequence.LogFileBasePath}_{testSequence.Event}{xml}");
             }
         }
 
