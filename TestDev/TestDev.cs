@@ -45,7 +45,7 @@ namespace ABT.Test.TestExecutive.TestDev {
         private void TSMI_Generate_Project_Click(Object sender, EventArgs e) { }
         private void TSMI_Generate_InstrumentAliases_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateInstrumentAliases); }
         private void TSMI_Generate_TDRFolders_Click(Object sender, EventArgs e) {
-            if (testExecDefinition.TestData.Item is TextFiles textFiles) {
+            if (testExecDefinition.TestData.Item is Files files) {
                 String[] testPlanDefinitionPaths = Directory.GetFiles(testExecDefinition.TestPlansFolder, TestPlanDefinitionBase + xml, SearchOption.AllDirectories);
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.AppendLine($"TDR folders in {testExecDefinition.TestPlansFolder} corresponding to TestPlans in {testExecDefinition.TestPlansFolder}.");
@@ -53,11 +53,11 @@ namespace ABT.Test.TestExecutive.TestDev {
                 TestPlanDefinition testPlanDefinition;
                 foreach (String testPlanDefinitionPath in testPlanDefinitionPaths) {
                     testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(testPlanDefinitionPath);
-                    CreateDirectoryAndSetPermissions(textFiles.Folder + "\\" + testPlanDefinition.UUT.Number);
-                    stringBuilder.AppendLine($"  {textFiles.Folder + "\\" + testPlanDefinition.UUT.Number}");
+                    CreateDirectoryAndSetPermissions(files.Folder + "\\" + testPlanDefinition.UUT.Number);
+                    stringBuilder.AppendLine($"  {files.Folder + "\\" + testPlanDefinition.UUT.Number}");
                     foreach (TestOperation testOperation in testPlanDefinition.TestSpace.TestOperations) {
-                        CreateDirectoryAndSetPermissions(textFiles.Folder + "\\" + testPlanDefinition.UUT.Number + "\\" + testOperation.NamespaceTrunk);
-                        stringBuilder.AppendLine($"     {textFiles.Folder + "\\" + testPlanDefinition.UUT.Number + "\\" + testOperation.NamespaceTrunk}");
+                        CreateDirectoryAndSetPermissions(files.Folder + "\\" + testPlanDefinition.UUT.Number + "\\" + testOperation.NamespaceTrunk);
+                        stringBuilder.AppendLine($"     {files.Folder + "\\" + testPlanDefinition.UUT.Number + "\\" + testOperation.NamespaceTrunk}");
                     }
                 }
                 CustomMessageBox.Show(Title: $"TestPlan TDR Folders", Message: stringBuilder.ToString());
@@ -113,6 +113,6 @@ namespace ABT.Test.TestExecutive.TestDev {
             return (DialogResult.Cancel, null);
         }
 
-        private void TestDev_Load(object sender, EventArgs e) { TSMI_Generate_TDRFolders.Enabled = (testExecDefinition.TestData.Item is TextFiles textFiles); }
+        private void TestDev_Load(Object sender, EventArgs e) { TSMI_Generate_TDRFolders.Enabled = (testExecDefinition.TestData.Item is Files); }
     }
 }

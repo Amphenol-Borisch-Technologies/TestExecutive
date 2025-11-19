@@ -38,7 +38,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
 
     public class TestData {
         [XmlElement(nameof(SQL_DB), typeof(SQL_DB))]
-        [XmlElement(nameof(TextFiles), typeof(TextFiles))]
+        [XmlElement(nameof(Files), typeof(Files))]
         public Object Item { get; set; }
         public TestData() { }
     }
@@ -48,9 +48,9 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         public SQL_DB() { }
     }
 
-    public class TextFiles {
+    public class Files {
         [XmlAttribute(nameof(Folder))] public String Folder { get; set; }
-        public TextFiles() { }
+        public Files() { }
     }
 
     public class BarcodeReader {

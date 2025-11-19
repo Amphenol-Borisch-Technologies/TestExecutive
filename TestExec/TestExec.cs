@@ -121,8 +121,8 @@ namespace ABT.Test.TestExecutive.TestExec {
 
             TSMI_UUT_TestData.Enabled = testPlanDefinition.SerialNumberEntry.IsEnabled();
             if (TSMI_UUT_TestData.Enabled) {
-                if (!(testExecDefinition.TestData.Item is TextFiles) && !(testExecDefinition.TestData.Item is SQL_DB)) throw new ArgumentException($"Unknown {nameof(TestPlanDefinition)}.{nameof(TestData)}.{nameof(TestData.Item)} '{nameof(testExecDefinition.TestData.Item)}'.");
-                TSMI_UUT_TestDataP_DriveTDR_Folder.Enabled = (testExecDefinition.TestData.Item is TextFiles);
+                if (!(testExecDefinition.TestData.Item is Files) && !(testExecDefinition.TestData.Item is SQL_DB)) throw new ArgumentException($"Unknown {nameof(TestPlanDefinition)}.{nameof(TestData)}.{nameof(TestData.Item)} '{nameof(testExecDefinition.TestData.Item)}'.");
+                TSMI_UUT_TestDataP_DriveTDR_Folder.Enabled = (testExecDefinition.TestData.Item is Files);
                 TSMI_UUT_TestDataSQL_ReportingAndQuerying.Enabled = (testExecDefinition.TestData.Item is SQL_DB);
 
                 if (RegexInvalid(testPlanDefinition.SerialNumberEntry.RegularEx)) throw new ArgumentException($"Invalid {nameof(SerialNumberEntry.RegularEx)} '{testPlanDefinition.SerialNumberEntry.RegularEx}' in file '{TestPlanDefinitionXML_Path}'.");
@@ -279,9 +279,9 @@ namespace ABT.Test.TestExecutive.TestExec {
                 if (String.Equals(serialNumber, String.Empty)) return;
 
                 testSequence.SerialNumber = serialNumber;
-                if (testExecDefinition.TestData.Item is TextFiles) testSequence.LogFileBasePath = GetLogFileBasePath();
+                if (testExecDefinition.TestData.Item is Files) testSequence.LogFolderInitialPath = GetLogFolderInitialPath();
                 if (testPlanDefinition.SerialNumberEntry.SupplementalData) {
-                    if (testExecDefinition.TestData.Item is TextFiles) Directory.CreateDirectory($"{testSequence.LogFileBasePath}");
+                    if (testExecDefinition.TestData.Item is Files) Directory.CreateDirectory($"{testSequence.LogFolderInitialPath}");
                     if (testExecDefinition.TestData.Item is SQL_DB) {
                         String sql_DB_Folder = $@"C:\Users\Public\Documents\ABT\Test\TestPlans\{testSequence.UUT.Number}";
                         if (Directory.Exists(sql_DB_Folder)) Directory.Delete(sql_DB_Folder, recursive: true);
@@ -389,8 +389,8 @@ namespace ABT.Test.TestExecutive.TestExec {
             StatusStatisticsUpdate(null, null);
         }
         private void TSMI_UUT_TestData_P_DriveTDR_Folder_Click(Object sender, EventArgs e) {
-            Debug.Assert(testExecDefinition.TestData.Item is TextFiles);
-            OpenFolder($@"{((TextFiles)testExecDefinition.TestData.Item).Folder}\{testPlanDefinition.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}");
+            Debug.Assert(testExecDefinition.TestData.Item is Files);
+            OpenFolder($@"{((Files)testExecDefinition.TestData.Item).Folder}\{testPlanDefinition.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}");
         }
         private void TSMI_UUT_TestDataSQL_ReportingAndQuerying_Click(Object sender, EventArgs e) {
             Debug.Assert(testExecDefinition.TestData.Item is SQL_DB);
@@ -514,7 +514,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             LogReplaceString(findString: $"{MessageUUT_Event}", startFind: 0, replacementString: $"{MessageUUT_Event}{testSequence.Event}");
             LogSetBackColor(findString: testSequence.Event.ToString(), startFind: 0, backColor: EventColors[testSequence.Event]);
             if (testSequence.IsOperation && testPlanDefinition.SerialNumberEntry.EntryType != SerialNumberEntryType.None) {
-                if (testExecDefinition.TestData.Item is TextFiles) LogStopTextFiles();
+                if (testExecDefinition.TestData.Item is Files) LogStopFiles();
                 else if (testExecDefinition.TestData.Item is SQL_DB) LogStopSQL_DB();
                 else throw new ArgumentException($"Unknown {nameof(TestData)} item '{testExecDefinition.TestData.Item}'.");
             }
@@ -570,38 +570,38 @@ namespace ABT.Test.TestExecutive.TestExec {
             }
         }
 
-        private String GetLogFileBasePath() {
-            String xmlFolder = $@"{((TextFiles)testExecDefinition.TestData.Item).Folder}\{testSequence.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}";
-            String xmlBaseFileName = $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}";
-            String[] xmlFileNames;
+        private String GetLogFolderInitialPath() {
+            String loggingFolder = $@"{((Files)testExecDefinition.TestData.Item).Folder}\{testSequence.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}";
+            String logInitialFolderName = $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}";
+            String[] logFolderNames;
+
             try {
-                xmlFileNames = Directory.GetFiles(xmlFolder, $"{xmlBaseFileName}_*{xml}", SearchOption.TopDirectoryOnly);
+                logFolderNames = Directory.GetDirectories(loggingFolder, $"{logInitialFolderName}_*", SearchOption.TopDirectoryOnly);
             } catch {
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.AppendLine($"Logging error:");
-                stringBuilder.AppendLine($"   Folder         : '{xmlFolder}'.");
-                stringBuilder.AppendLine($"   Base File Name : '{xmlBaseFileName}_*{xml}'.");
+                stringBuilder.AppendLine($"   Logging Folder          : '{loggingFolder}'.");
+                stringBuilder.AppendLine($"   Initial Log Folder Name : '{logInitialFolderName}_*'.");
                 MessageBox.Show(stringBuilder.ToString(), "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 throw;
             }
             Int32 maxNumber = 0; String s;
-            foreach (String xmlFileName in xmlFileNames) {
-                s = xmlFileName;
+            foreach (String logFolderName in logFolderNames) {
+                s = logFolderName;
                 foreach (EVENTS Event in Enum.GetValues(typeof(EVENTS))) s = s.Replace(Event.ToString(), String.Empty);
-                s = s.Replace($@"{xmlFolder}\{xmlBaseFileName}", String.Empty);
-                s = s.Replace(xml, String.Empty);
+                s = s.Replace($@"{loggingFolder}\{logInitialFolderName}", String.Empty);
                 s = s.Replace("_", String.Empty);
 
                 if (Int32.Parse(s) > maxNumber) maxNumber = Int32.Parse(s);
             }
-            return $@"{xmlFolder}\{xmlBaseFileName}_{++maxNumber}";
+            return $@"{loggingFolder}\{logInitialFolderName}_{++maxNumber}";
         }
 
-        private void LogStopTextFiles() {
-            String logPath = $"{testSequence.LogFileBasePath}_{testSequence.Event}{xml}";
+        private void LogStopFiles() {
+            String logPath = $"{testSequence.LogFolderInitialPath}_{testSequence.Event}{xml}";
              if (testPlanDefinition.SerialNumberEntry.SupplementalData) {
-                Directory.Move(testSequence.LogFileBasePath, $"{testSequence.LogFileBasePath}_{testSequence.Event}");
-                logPath = $@"{testSequence.LogFileBasePath}_{testSequence.Event}\" + Path.GetFileName(logPath);
+                Directory.Move(testSequence.LogFolderInitialPath, $"{testSequence.LogFolderInitialPath}_{testSequence.Event}");
+                logPath = $@"{testSequence.LogFolderInitialPath}_{testSequence.Event}\" + Path.GetFileName(logPath);
             }
 
             using (FileStream fileStream = new FileStream(logPath, FileMode.CreateNew)) {

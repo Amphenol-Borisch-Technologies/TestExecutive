@@ -174,7 +174,7 @@
 					- Type: xs:string:
             
 					FileSystemRights.ReadAndExecute.
-					Applied to TestExecutive & TestPlans.  Also TestData\TextFiles\Folder if applicable.
+					Applied to TestExecutive & TestPlans.  Also TestData\Files\Folder if applicable.
 					]]>
 				</xs:documentation>
 			</xs:annotation>
@@ -188,7 +188,7 @@
 					- Type: xs:string:
 
 					FileSystemRights.Modify | FileSystemRights.Write.
-					Applied to TestData\TextFiles\Folder if applicable.
+					Applied to TestData\Files\Folder if applicable.
 				  ]]>
 				</xs:documentation>
 			</xs:annotation>
@@ -202,7 +202,7 @@
 					- Type: xs:string:
             
 					FileSystemRights.FullControl.
-					Applied to TestExecutive & TestPlans.  Also TestData\TextFiles\Folder if applicable.
+					Applied to TestExecutive & TestPlans.  Also TestData\Files\Folder if applicable.
 					 ]]>
 				</xs:documentation>
 			</xs:annotation>
@@ -237,7 +237,7 @@
 		<xs:attribute ref="Folder" use="required"/>
 	</xs:complexType>
 
-	<xs:complexType name="TextFiles">
+	<xs:complexType name="Files">
 		<xs:attribute ref="Folder" use="required">
 			<xs:annotation>
 				<xs:documentation xml:lang="en">
@@ -245,8 +245,10 @@
 					Folder attribute:
 					- Type: folder.
 					- Initial base path to save test data into.
-					- Each TestPlan has its own, individual sub-folder under this folder.
-					- Test data saved/persisted in XML textual format as individual files.
+					- Each TestPlan has its own, individual sub-folder under this base folder.
+					- Each TestGroup has its own, individual sub-folder under its TestPlan's folder.
+					- Each Test run's data is saved in its own sub-folder under its TestGroup's folder.
+					- Test data saved/persisted in XML textual format, plus any supplemental files.
 					]]>
 				</xs:documentation>
 			</xs:annotation>
@@ -436,14 +438,14 @@
 							- Required, 1 occurence.
 							- Type: xs:element.
                 
-							Choose TextFiles xor SQL_DB for test data persistence type.
+							Choose Files xor SQL_DB for test data persistence type.
 							Enable/disable test data individually for each TestPlan.
 							]]>
 						</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
 						<xs:choice>
-							<xs:element name="TextFiles" type="TextFiles"/>
+							<xs:element name="Files" type="Files"/>
 							<xs:element name="SQL_DB" type="SQL_DB"/>
 						</xs:choice>
 					</xs:complexType>
