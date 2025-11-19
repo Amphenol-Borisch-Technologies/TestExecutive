@@ -601,6 +601,12 @@ namespace ABT.Test.TestExecutive.TestExec {
             String LogFolderFinalPath = $"{testSequence.LogFolderInitialPath}_{testSequence.Event}";
             Directory.Move(testSequence.LogFolderInitialPath, LogFolderFinalPath);
 
+            foreach (TestGroup testGroup in testSequence.TestOperation.TestGroups) {
+                foreach (Method method in testGroup.Methods) {
+                    _ = method.Log.Replace(testSequence.LogFolderInitialPath, LogFolderFinalPath);
+                }
+            }
+
             using (FileStream fileStream = new FileStream($@"{LogFolderFinalPath}\{Path.GetFileName(LogFolderFinalPath)}{xml}", FileMode.CreateNew)) {
                 using (XmlTextWriter xmlTextWriter = new XmlTextWriter(fileStream, new UTF8Encoding(true))) {
                     xmlTextWriter.Formatting = Formatting.Indented;
