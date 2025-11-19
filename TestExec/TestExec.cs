@@ -603,9 +603,9 @@ namespace ABT.Test.TestExecutive.TestExec {
 
             foreach (TestGroup testGroup in testSequence.TestOperation.TestGroups) {
                 foreach (Method method in testGroup.Methods) {
-                    foreach (String uri in method.URIs) {
-                        uri.Replace(testSequence.LogFolderInitialPath, LogFolderFinalPath);
-                        uri.Replace(LogFolderFinalPath, new Uri(uri).AbsoluteUri);
+                    for (Int32 i=0; i < method.URIs.Count; i++) {
+                        String s = method.URIs[i].Replace(testSequence.LogFolderInitialPath, LogFolderFinalPath);
+                        method.URIs[i] = new Uri(s).AbsoluteUri;
                     }
                 }
             }
