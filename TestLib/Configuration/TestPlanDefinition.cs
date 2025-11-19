@@ -68,7 +68,6 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         [XmlAttribute(nameof(EntryType))] public SerialNumberEntryType EntryType { get; set; }
         [XmlAttribute(nameof(RegularEx))] public String RegularEx { get; set; } = "^.+$";
         [XmlAttribute(nameof(Format))] public String Format { get; set; } = "1 or more characters.";
-        [XmlAttribute(nameof(SupplementalData))] public Boolean SupplementalData { get; set; } = false;
         public Boolean IsEnabled() { return EntryType != SerialNumberEntryType.None; }
         public SerialNumberEntry() { }
     }

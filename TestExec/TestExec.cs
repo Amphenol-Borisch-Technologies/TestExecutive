@@ -279,14 +279,14 @@ namespace ABT.Test.TestExecutive.TestExec {
                 if (String.Equals(serialNumber, String.Empty)) return;
 
                 testSequence.SerialNumber = serialNumber;
-                if (testExecDefinition.TestData.Item is Files) testSequence.LogFolderInitialPath = GetLogFolderInitialPath();
-                if (testPlanDefinition.SerialNumberEntry.SupplementalData) {
-                    if (testExecDefinition.TestData.Item is Files) Directory.CreateDirectory($"{testSequence.LogFolderInitialPath}");
-                    if (testExecDefinition.TestData.Item is SQL_DB) {
-                        String sql_DB_Folder = $@"C:\Users\Public\Documents\ABT\Test\TestPlans\{testSequence.UUT.Number}";
-                        if (Directory.Exists(sql_DB_Folder)) Directory.Delete(sql_DB_Folder, recursive: true);
-                        Directory.CreateDirectory(sql_DB_Folder);
-                    }
+                if (testExecDefinition.TestData.Item is Files) {
+                    testSequence.LogFolderInitialPath = GetLogFolderInitialPath();
+                    Directory.CreateDirectory($"{testSequence.LogFolderInitialPath}");
+                }
+                if (testExecDefinition.TestData.Item is SQL_DB) {
+                    String sql_DB_Folder = $@"C:\Users\Public\Documents\ABT\Test\TestPlans\{testSequence.UUT.Number}";
+                    if (Directory.Exists(sql_DB_Folder)) Directory.Delete(sql_DB_Folder, recursive: true);
+                    Directory.CreateDirectory(sql_DB_Folder);
                 }
             }
 
@@ -598,13 +598,11 @@ namespace ABT.Test.TestExecutive.TestExec {
         }
 
         private void LogStopFiles() {
-            String logPath = $"{testSequence.LogFolderInitialPath}_{testSequence.Event}{xml}";
-             if (testPlanDefinition.SerialNumberEntry.SupplementalData) {
-                Directory.Move(testSequence.LogFolderInitialPath, $"{testSequence.LogFolderInitialPath}_{testSequence.Event}");
-                logPath = $@"{testSequence.LogFolderInitialPath}_{testSequence.Event}\" + Path.GetFileName(logPath);
-            }
+            String LogFolderFinalPath = $"{testSequence.LogFolderInitialPath}_{testSequence.Event}";
+            Directory.Move(testSequence.LogFolderInitialPath, LogFolderFinalPath);
+            String xmlFilePath = $@"{LogFolderFinalPath}\{Path.GetFileName(LogFolderFinalPath)}{xml}";
 
-            using (FileStream fileStream = new FileStream(logPath, FileMode.CreateNew)) {
+            using (FileStream fileStream = new FileStream(xmlFilePath, FileMode.CreateNew)) {
                 using (XmlTextWriter xmlTextWriter = new XmlTextWriter(fileStream, new UTF8Encoding(true))) {
                     xmlTextWriter.Formatting = Formatting.Indented;
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(TestSequence), LogGetOverrides());
