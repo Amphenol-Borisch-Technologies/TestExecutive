@@ -603,7 +603,10 @@ namespace ABT.Test.TestExecutive.TestExec {
 
             foreach (TestGroup testGroup in testSequence.TestOperation.TestGroups) {
                 foreach (Method method in testGroup.Methods) {
-                    method.LogString = method.LogString.Replace(testSequence.LogFolderInitialPath, $"file:///{LogFolderFinalPath.Replace(@"\", "/")}");
+                    foreach (String uri in method.URIs) {
+                        uri.Replace(testSequence.LogFolderInitialPath, LogFolderFinalPath);
+                        uri.Replace(LogFolderFinalPath, new Uri(uri).AbsoluteUri);
+                    }
                 }
             }
 
