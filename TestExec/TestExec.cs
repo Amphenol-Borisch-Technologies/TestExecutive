@@ -598,16 +598,17 @@ namespace ABT.Test.TestExecutive.TestExec {
         }
 
         private void LogStopTextFiles() {
-            using (FileStream fileStream = new FileStream($"{testSequence.LogFileBasePath}_{testSequence.Event}{xml}", FileMode.CreateNew)) {
+            String logPath = $"{testSequence.LogFileBasePath}_{testSequence.Event}{xml}";
+             if (testPlanDefinition.SerialNumberEntry.SupplementalData) {
+                Directory.Move(testSequence.LogFileBasePath, $"{testSequence.LogFileBasePath}_{testSequence.Event}");
+                logPath = $@"{testSequence.LogFileBasePath}_{testSequence.Event}\" + Path.GetFileName(logPath);
+            }
+            using (FileStream fileStream = new FileStream(logPath, FileMode.CreateNew)) {
                 using (XmlTextWriter xmlTextWriter = new XmlTextWriter(fileStream, new UTF8Encoding(true))) {
                     xmlTextWriter.Formatting = Formatting.Indented;
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(TestSequence), LogGetOverrides());
                     xmlSerializer.Serialize(xmlTextWriter, testSequence);
                 }
-            }
-            if (testPlanDefinition.SerialNumberEntry.SupplementalData) {
-                Directory.Move(testSequence.LogFileBasePath, $"{testSequence.LogFileBasePath}_{testSequence.Event}");
-                File.Move($"{testSequence.LogFileBasePath}_{testSequence.Event}{xml}", $@"{testSequence.LogFileBasePath}_{testSequence.Event}\{testSequence.LogFileBasePath}_{testSequence.Event}{xml}");
             }
         }
 
