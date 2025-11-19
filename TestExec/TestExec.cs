@@ -600,9 +600,8 @@ namespace ABT.Test.TestExecutive.TestExec {
         private void LogStopFiles() {
             String LogFolderFinalPath = $"{testSequence.LogFolderInitialPath}_{testSequence.Event}";
             Directory.Move(testSequence.LogFolderInitialPath, LogFolderFinalPath);
-            String xmlFilePath = $@"{LogFolderFinalPath}\{Path.GetFileName(LogFolderFinalPath)}{xml}";
 
-            using (FileStream fileStream = new FileStream(xmlFilePath, FileMode.CreateNew)) {
+            using (FileStream fileStream = new FileStream($@"{LogFolderFinalPath}\{Path.GetFileName(LogFolderFinalPath)}{xml}", FileMode.CreateNew)) {
                 using (XmlTextWriter xmlTextWriter = new XmlTextWriter(fileStream, new UTF8Encoding(true))) {
                     xmlTextWriter.Formatting = Formatting.Indented;
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(TestSequence), LogGetOverrides());
