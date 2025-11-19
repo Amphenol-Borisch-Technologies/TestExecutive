@@ -611,7 +611,7 @@ namespace ABT.Test.TestExecutive.TestExec {
         }
 
         private void LogStopSQL_DB() {
-            // TODO: if (testPlanDefinition.SerialNumberEntry.SupplementalData), move C:\Users\Public\Documents\ABT\Test\TestPlans\CurrentTestPlan into SQL_DB.
+            // TODO: if exists, move C:\Users\Public\Documents\ABT\Test\TestPlans\CurrentTestPlan into SQL_DB.
             using (StringWriter stringWriter = new StringWriter()) {
                 using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, new XmlWriterSettings { Encoding = new UTF8Encoding(true), Indent = true })) {
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(TestSequence), LogGetOverrides());
