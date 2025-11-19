@@ -603,6 +603,7 @@ namespace ABT.Test.TestExecutive.TestExec {
                 Directory.Move(testSequence.LogFileBasePath, $"{testSequence.LogFileBasePath}_{testSequence.Event}");
                 logPath = $@"{testSequence.LogFileBasePath}_{testSequence.Event}\" + Path.GetFileName(logPath);
             }
+
             using (FileStream fileStream = new FileStream(logPath, FileMode.CreateNew)) {
                 using (XmlTextWriter xmlTextWriter = new XmlTextWriter(fileStream, new UTF8Encoding(true))) {
                     xmlTextWriter.Formatting = Formatting.Indented;
