@@ -248,7 +248,7 @@
 					- Each TestPlan has its own, individual sub-folder under this base folder.
 					- Each TestGroup has its own, individual sub-folder under its TestPlan's folder.
 					- Each Test run's data is saved in its own sub-folder under its TestGroup's folder.
-					- Test data saved/persisted in XML textual format, plus any supplemental files.
+					- Test data saved/persisted in XML textual format, plus any optional supplemental files.
 					]]>
 				</xs:documentation>
 			</xs:annotation>

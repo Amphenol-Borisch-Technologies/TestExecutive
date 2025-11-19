@@ -1062,6 +1062,7 @@
                 SerialNumberEntry element.
                 - Required, 1 occurence.
                 - Type: xs:element.
+				- Optional attributes "RegularEx" & "Format" relevant only for EntryType="Barcode" or "Keyboard".
               ]]>
 						</xs:documentation>
 					</xs:annotation>
