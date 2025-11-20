@@ -10,7 +10,7 @@ using Tektronix.Tkdpo2k3k4k.Interop;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
-    public class MSO_3014_IVI_COM : IInstrument, IDiagnostics, IDisposable {
+    public class MSO_3014_IVI_COM_ɛ_VISA_NET : IInstrument, IDiagnostics, IDisposable {
         public String Address { get; }
         public String Detail { get; }
         public Tkdpo2k3k4kClass Tkdpo2k3k4kClass { get; }
@@ -47,13 +47,16 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             return result_3014;
         }
 
-        public MSO_3014_IVI_COM(String Address, String Detail) {
+        public MSO_3014_IVI_COM_ɛ_VISA_NET(String Address, String Detail) {
             this.Address = Address;
             this.Detail = Detail;
             InstrumentType = INSTRUMENT_TYPES.OSCILLOSCOPE_MIXED_SIGNAL;
             Tkdpo2k3k4kClass = new Tkdpo2k3k4kClass();
             Tkdpo2k3k4kClass.Initialize(ResourceName: Address, IdQuery: false, Reset: false, OptionString: String.Empty);
             UsbSession = new UsbSession(Address, AccessModes.None, timeoutMilliseconds: 20000);
+            DateTime dateTime = DateTime.Now;
+            UsbSession.FormattedIO.WriteLine($":DATE \"{dateTime:yyyy-MM-dd}\"");
+            UsbSession.FormattedIO.WriteLine($":TIME \"{dateTime:hh:mm:ss}\"");
         }
 
         public void OperationCompleteQuery() {
@@ -141,7 +144,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
 
         private String InvalidLabelMessage(String LabelString) { return $"Invalid MSO-3014 Setup label '{LabelString}'!{Environment.NewLine}  Label cannot exceed 30 characters in length and can only contain characters in set \"{ValidCharactersLabel}\"."; }
 
-        ~MSO_3014_IVI_COM() { Dispose(false); }
+        ~MSO_3014_IVI_COM_ɛ_VISA_NET() { Dispose(false); }
 
         public void Dispose() {
             Dispose(true);
