@@ -14,7 +14,7 @@
 			</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:pattern value="^(?:[A-Za-z_][A-Za-z0-9_]*)(?:\.[A-Za-z_][A-Za-z0-9_]*)*$"/>
+			<xs:pattern value="^(?:[A-Za-z_ɛ][A-Za-z0-9_ɛ]*)(?:\.[A-Za-z_ɛ][A-Za-z0-9_ɛ]*)*$"/>
 		</xs:restriction>
 	</xs:simpleType>
 
