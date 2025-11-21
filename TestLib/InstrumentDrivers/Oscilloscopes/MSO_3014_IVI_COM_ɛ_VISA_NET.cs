@@ -55,8 +55,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             Tkdpo2k3k4kClass.Initialize(ResourceName: Address, IdQuery: false, Reset: false, OptionString: String.Empty);
             UsbSession = new UsbSession(Address, AccessModes.None, timeoutMilliseconds: 20000);
             DateTime dateTime = DateTime.Now;
-            UsbSession.FormattedIO.WriteLine($":DATE \"{dateTime:yyyy-MM-dd}\"");
             UsbSession.FormattedIO.WriteLine($":TIME \"{dateTime:hh:mm:ss}\"");
+            UsbSession.FormattedIO.WriteLine($":DATE \"{dateTime:yyyy-MM-dd}\"");
         }
 
         public void OperationCompleteQuery() {
