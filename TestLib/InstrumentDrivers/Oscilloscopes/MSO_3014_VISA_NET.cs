@@ -13,6 +13,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public String Detail { get; }
         public UsbSession UsbSession { get; }
         public enum BUSES { B1, B2 }
+        public enum CHANNELS { CH1, CH2 }
         public enum DRIVES_USB { E, F }
         public INSTRUMENT_TYPES InstrumentType { get; }
         public enum SETUPS { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
