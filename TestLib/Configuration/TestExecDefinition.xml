@@ -90,10 +90,11 @@
 	- https://www.ivifoundation.org/downloads/Architecture%20Specifications/vpp43_2022-05-19.pdf.
   -->
 
-		<!--<InstrumentTestExec ID="MM1_34401A"   Detail="Agilent 34401A Digital MultiMeter"                Address="GPIB0::11::INSTR"									NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters.MM_34401A_SCPI_NET" />
-		<InstrumentTestExec ID="MSO1_3014"    Detail="Tektronix MSO3014 Mixed Signal Oscilloscope"		Address="USB0::0x0699::0x0421::C021373::INSTR"				NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes.MSO_3014_IVI_COM_ɛ_VISA_NET" />
-		<InstrumentTestExec ID="MSMU1_34980A" Detail="Agilent 34980A Multifunction Switch/Measure Unit" Address="GPIB0::2::INSTR"									NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction.MSMU_34980A_SCPI_NET" />
-		<InstrumentTestExec ID="PS1ε2_E3649A" Detail="Agilent E3649A Dual Output DC Power Supply"       Address="GPIB0::1::INSTR"									NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.PS_E3649A_SCPI_NET" />-->
-		<InstrumentTestExec ID="PS3_E3634A"   Detail="Keysight E3634A Single Output Power Supply"        Address="GPIB0::3::INSTR"									NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.PS_E3634A_SCPI_NET" />
+		<!--
+		<InstrumentTestExec ID="MM1_34401A"   Detail="Agilent 34401A Digital MultiMeter"                Address="GPIB0::11::INSTR"						NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters.MM_34401A_SCPI_NET" />
+		<InstrumentTestExec ID="MSO1_3014"    Detail="Tektronix MSO3014 Mixed Signal Oscilloscope"		Address="USB0::0x0699::0x0421::C021373::INSTR"  NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes.MSO_3014_VISA_NET" />
+		<InstrumentTestExec ID="MSMU1_34980A" Detail="Agilent 34980A Multifunction Switch/Measure Unit" Address="GPIB0::2::INSTR"						NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction.MSMU_34980A_SCPI_NET" />
+		<InstrumentTestExec ID="PS1ε2_E3649A" Detail="Agilent E3649A Dual Output DC Power Supply"       Address="GPIB0::1::INSTR"						NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.PS_E3649A_SCPI_NET" />-->
+		<InstrumentTestExec ID="PS3_E3634A"   Detail="Keysight E3634A Single Output Power Supply"       Address="GPIB0::3::INSTR"						NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.PS_E3634A_SCPI_NET" />
 	</InstrumentsTestExec>
 </TestExecDefinition>
