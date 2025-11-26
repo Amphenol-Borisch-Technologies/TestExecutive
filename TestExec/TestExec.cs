@@ -671,7 +671,7 @@ namespace ABT.Test.TestExecutive.TestExec {
                 foreach (Method method in testGroup.Methods) {
                     TestIndices.Method = method;
                     try {
-                        method.Value = await Task.Run(() => MethodRun(method));
+                        method.Value = await Task.Run(() => MethodRun(method)) ?? "Method Value is incorrectly null.";
                         method.Event = ((IEvaluate)method).Evaluate();
                         method.LogString = method.Log.ToString(); // NOTE:  XmlSerializer doesn't support [OnSerializing] attribute, so have to explicitly invoke LogConvert().
                         if (CT_EmergencyStop.IsCancellationRequested || CT_Cancel.IsCancellationRequested) {
