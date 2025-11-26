@@ -54,11 +54,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             UsbSession.FormattedIO.WriteLine($":DATE \"{dateTime:yyyy-MM-dd}\"");
         }
 
-        public void OperationCompleteQuery() {
-            UsbSession.FormattedIO.WriteLine("*OPC?");
-            if (UsbSession.FormattedIO.ReadLine().Trim().Trim('"') != "1") throw new InvalidOperationException("MSO-3014 didn't complete SCPI command!");
-        }
-
         public void EventTableEnable(BUSES Bus) {
             switch (Bus) {
                 case BUSES.B1:
@@ -74,28 +69,25 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             UsbSession.FormattedIO.WriteLine(":FPAnel:PRESS RMENU1;:*WAI");
             UsbSession.FormattedIO.WriteLine(":FPAnel:PRESS MENUOff;:*WAI");
             UsbSession.FormattedIO.WriteLine(":FPAnel:PRESS MENUOff;:*WAI");
-            OperationCompleteQuery();
         }
 
         public void EventTableSave(BUSES Bus, DRIVES_USB Drive_USB, String PathPC) {
             String pathMSO_3014 = $"\"{Drive_USB}:/{Bus}.csv\"";
-            UsbSession.FormattedIO.WriteLine($"SAVe:EVENTtable:{Bus} {pathMSO_3014}"); // Save Event Table to MSO-3014 USB drive, overwriting any existing file without warning.  Can't HARDCopy Event Tables, sadly.
-            OperationCompleteQuery();
-            Thread.Sleep(500);                                                          // USB Drive write latency.
+            UsbSession.FormattedIO.WriteLine($":SAVe:EVENTtable:{Bus} {pathMSO_3014}"); // Save Event Table to MSO-3014 USB drive, overwriting any existing file without warning.  Can't HARDCopy Event Tables, sadly.
+            Thread.Sleep(500);                                                         // USB Drive write latency.
 
-            UsbSession.FormattedIO.WriteLine($"FILESystem:READFile {pathMSO_3014}");   // Read Event Table from MSO-3014 USB drive.
+            UsbSession.FormattedIO.WriteLine($":FILESystem:READFile {pathMSO_3014}");   // Read Event Table from MSO-3014 USB drive.
             File.WriteAllBytes($@"{PathPC}", UsbSession.RawIO.Read());                 // Save read Event Table to PC, overwriting any existing file without warning.
-            OperationCompleteQuery();
-
-            UsbSession.FormattedIO.WriteLine($"FILESystem:DELEte {pathMSO_3014}");     // Delete Event Table from MSO-3014 USB drive.
-            OperationCompleteQuery();
+            UsbSession.FormattedIO.WriteLine($":FILESystem:DELEte {pathMSO_3014}");     // Delete Event Table from MSO-3014 USB drive.
         }
 
         public void ImageLandscapePNG_Save(String PathPC) {
-            UsbSession.FormattedIO.WriteLine("SAVe:IMAGe:INKSaver OFF");
-            UsbSession.FormattedIO.WriteLine("SAVe:IMAGe:LAYout LANdscape");
-            UsbSession.FormattedIO.WriteLine("SAVe:IMAGe:FILEFormat PNG");
-            UsbSession.FormattedIO.WriteLine("HARDCopy STARt");        // Ostensibly a printing command, actually works _best_ for saving a screenshot image to MSO-3014's USB drive.
+            UsbSession.FormattedIO.WriteLine(":SAVe:IMAGe:INKSaver OFF");
+            UsbSession.FormattedIO.WriteLine(":SAVe:IMAGe:LAYout LANdscape");
+            UsbSession.FormattedIO.WriteLine(":SAVe:IMAGe:FILEFormat PNG");
+            UsbSession.FormattedIO.WriteLine(":HARDCopy STARt");        // Ostensibly a printing command, actually works _best_ for saving a screenshot image to MSO-3014's USB drive.
+            UsbSession.FormattedIO.WriteLine("*OPC?");
+            if (UsbSession.FormattedIO.ReadLine().Trim().Trim('"') != "1") throw new InvalidOperationException("MSO-3014 didn't complete SCPI command 'HARDCopy STARt'.");
             File.WriteAllBytes($@"{PathPC}", UsbSession.RawIO.Read()); // Read HARDCopy image from MSO-3014's USB drive, & Save HARDCopy image to PC, overwriting any existing file without warning.
         }
 
@@ -112,16 +104,12 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
 
         public void SetupLoad(String SetupFilePath) {
             if (!File.Exists(SetupFilePath)) throw new FileNotFoundException($"MSO-3014 Setup file not found at path '{SetupFilePath}'!");
-            foreach (String mso_3014_SCPI_Command in File.ReadLines(SetupFilePath)) {
-                UsbSession.FormattedIO.WriteLine(mso_3014_SCPI_Command);
-                OperationCompleteQuery();
-            }
+            foreach (String mso_3014_SCPI_Command in File.ReadLines(SetupFilePath)) UsbSession.FormattedIO.WriteLine(mso_3014_SCPI_Command);
         }
 
         public void SetupSave(SETUPS Setup, String LabelString) {
             if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
             UsbSession.FormattedIO.WriteLine($":{Setup}:LABEL \"{LabelString}\"");
-            OperationCompleteQuery();
             UsbSession.FormattedIO.WriteLine($":{Setup}:LABEL?");
             String labelRead = UsbSession.FormattedIO.ReadLine().Trim().Trim('"');
             if (!labelRead.Equals(LabelString)) throw new ArgumentException($"MSO-3014 {Setup} not labeled correctly!{Environment.NewLine}  Should be '{LabelString}'.{Environment.NewLine}  Is '{labelRead}'.");
