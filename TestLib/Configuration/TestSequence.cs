@@ -13,7 +13,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         [XmlIgnore] public Boolean IsOperation { get; set; } = false;
         public String Computer { get; set; } = Environment.MachineName;
         public String SerialNumber { get; set; } = String.Empty;
-        public String LogFolderInitialPath { get; set; } = String.Empty;
+        public String LogInitialFolderName { get; set; } = String.Empty;
         public String Operator { get; set; } = TestLib.UserName;
         public DateTime TimeStart { get; set; }
         public DateTime TimeEnd { get; set; }

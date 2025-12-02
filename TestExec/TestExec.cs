@@ -277,17 +277,12 @@ namespace ABT.Test.TestExecutive.TestExec {
                     serialNumber = Regex.IsMatch(serialNumber, testPlanDefinition.SerialNumberEntry.RegularEx) ? serialNumber : String.Empty;
                 }
                 if (String.Equals(serialNumber, String.Empty)) return;
+                else testSequence.SerialNumber = serialNumber;
 
-                testSequence.SerialNumber = serialNumber;
-                if (testExecDefinition.TestData.Item is Files) {
-                    testSequence.LogFolderInitialPath = GetLogFolderInitialPath();
-                    Directory.CreateDirectory($"{testSequence.LogFolderInitialPath}");
-                }
-                if (testExecDefinition.TestData.Item is SQL_DB) {
-                    String sql_DB_Folder = $@"C:\Users\Public\Documents\ABT\Test\TestPlans\{testSequence.UUT.Number}";
-                    if (Directory.Exists(sql_DB_Folder)) Directory.Delete(sql_DB_Folder, recursive: true);
-                    Directory.CreateDirectory(sql_DB_Folder);
-                }
+                testSequence.LogInitialFolderName = (testExecDefinition.TestData.Item is Files) ? GetLogInitialFolderName() : GetLogFolderBase();
+
+                if (Directory.Exists(GetTemporaryLoggingFolder())) Directory.Delete(GetTemporaryLoggingFolder(), recursive: true);
+                Directory.CreateDirectory(GetTemporaryLoggingFolder());
             }
 
             FormModeReset();
@@ -570,9 +565,18 @@ namespace ABT.Test.TestExecutive.TestExec {
             }
         }
 
-        private String GetLogFolderInitialPath() {
-            String loggingFolder = $@"{((Files)testExecDefinition.TestData.Item).Folder}\{testSequence.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}";
-            String logInitialFolderName = $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}";
+        private String GetTemporaryLoggingFolder() { return $@"{testExecDefinition.TestPlansTemporaryFolder}\{testSequence.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}\{testSequence.LogInitialFolderName}"; }
+
+        private String GetPermanentLoggingBase() {
+            if (testExecDefinition.TestData.Item is Files files) return $@"{files.Folder}\{testSequence.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}";
+            else return String.Empty;
+        }
+        
+        private String GetLogFolderBase() { return $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}"; }
+        
+        private String GetLogInitialFolderName() {
+            String loggingFolder = GetPermanentLoggingBase();
+            String logInitialFolderName = GetLogFolderBase();
             String[] logFolderNames;
 
             try {
@@ -594,23 +598,24 @@ namespace ABT.Test.TestExecutive.TestExec {
 
                 if (Int32.Parse(s) > maxNumber) maxNumber = Int32.Parse(s);
             }
-            return $@"{loggingFolder}\{logInitialFolderName}_{++maxNumber}";
+            return $"{logInitialFolderName}_{++maxNumber}";
         }
 
         private void LogStopFiles() {
-            String LogFolderFinalPath = $"{testSequence.LogFolderInitialPath}_{testSequence.Event}";
-            Directory.Move(testSequence.LogFolderInitialPath, LogFolderFinalPath);
+            String permanentLoggingFolder = $@"{GetPermanentLoggingBase()}\{testSequence.LogInitialFolderName}_{testSequence.Event}";
+            Directory.Move(GetTemporaryLoggingFolder(), permanentLoggingFolder);
 
             foreach (TestGroup testGroup in testSequence.TestOperation.TestGroups) {
                 foreach (Method method in testGroup.Methods) {
                     for (Int32 i = 0; i < method.URIs.Count; i++) {
-                        String s = method.URIs[i].Replace(testSequence.LogFolderInitialPath, LogFolderFinalPath);
+                        String s = method.URIs[i].Replace(GetTemporaryLoggingFolder(), permanentLoggingFolder);
                         method.URIs[i] = new Uri(s).AbsoluteUri;
                     }
                 }
             }
 
-            using (FileStream fileStream = new FileStream($@"{LogFolderFinalPath}\{Path.GetFileName(LogFolderFinalPath)}{xml}", FileMode.CreateNew)) {
+            String permanentLogPath = $@"{permanentLoggingFolder}\{Path.GetFileName(permanentLoggingFolder)}{xml}";
+            using (FileStream fileStream = new FileStream(permanentLogPath, FileMode.CreateNew)) {
                 using (XmlTextWriter xmlTextWriter = new XmlTextWriter(fileStream, new UTF8Encoding(true))) {
                     xmlTextWriter.Formatting = Formatting.Indented;
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(TestSequence), LogGetOverrides());
@@ -620,7 +625,7 @@ namespace ABT.Test.TestExecutive.TestExec {
         }
 
         private void LogStopSQL_DB() {
-            // TODO: if exists, move C:\Users\Public\Documents\ABT\Test\TestPlans\CurrentTestPlan into SQL_DB.
+            // TODO: Move $@"{GetLogFolderBaseName}" files into SQL_DB.
             using (StringWriter stringWriter = new StringWriter()) {
                 using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, new XmlWriterSettings { Encoding = new UTF8Encoding(true), Indent = true })) {
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(TestSequence), LogGetOverrides());
