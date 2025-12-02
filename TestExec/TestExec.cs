@@ -567,7 +567,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             }
         }
 
-        private String GetTemporaryLoggingFolder() { return $@"{testExecDefinition.TestPlansTemporaryFolder}\{testSequence.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}\{testSequence.LogInitialFolderName}"; }
+        public String GetTemporaryLoggingFolder() { return $@"{testExecDefinition.TestPlansTemporaryFolder}\{testSequence.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}\{testSequence.LogInitialFolderName}"; }
 
         private String GetPermanentLoggingBase() {
             if (testExecDefinition.TestData.Item is Files files) return $@"{files.Folder}\{testSequence.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}";
