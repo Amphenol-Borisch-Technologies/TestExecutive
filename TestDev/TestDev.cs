@@ -53,11 +53,11 @@ namespace ABT.Test.TestExecutive.TestDev {
                 TestPlanDefinition testPlanDefinition;
                 foreach (String testPlanDefinitionPath in testPlanDefinitionPaths) {
                     testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(testPlanDefinitionPath);
-                    CreateDirectoryAndSetPermissions(files.Folder + "\\" + testPlanDefinition.UUT.Number);
-                    stringBuilder.AppendLine($"  {files.Folder + "\\" + testPlanDefinition.UUT.Number}");
+                    CreateDirectoryAndSetPermissions(files.Folder + @"\" + testPlanDefinition.UUT.Number);
+                    stringBuilder.AppendLine($"  {files.Folder + @"\" + testPlanDefinition.UUT.Number}");
                     foreach (TestOperation testOperation in testPlanDefinition.TestSpace.TestOperations) {
-                        CreateDirectoryAndSetPermissions(files.Folder + "\\" + testPlanDefinition.UUT.Number + "\\" + testOperation.NamespaceTrunk);
-                        stringBuilder.AppendLine($"     {files.Folder + "\\" + testPlanDefinition.UUT.Number + "\\" + testOperation.NamespaceTrunk}");
+                        CreateDirectoryAndSetPermissions(files.Folder + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk);
+                        stringBuilder.AppendLine($"     {files.Folder + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk}");
                     }
                 }
                 CustomMessageBox.Show(Title: $"TestPlan TDR Folders", Message: stringBuilder.ToString());
