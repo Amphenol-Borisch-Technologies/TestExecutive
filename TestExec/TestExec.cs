@@ -279,7 +279,9 @@ namespace ABT.Test.TestExecutive.TestExec {
                 if (String.Equals(serialNumber, String.Empty)) return;
                 else testSequence.SerialNumber = serialNumber;
 
-                testSequence.LogInitialFolderName = (testExecDefinition.TestData.Item is Files) ? GetLogInitialFolderName() : GetLogFolderBase();
+                if (testExecDefinition.TestData.Item is Files) testSequence.LogInitialFolderName =  GetLogInitialFolderName();
+                else if (testExecDefinition.TestData.Item is SQL_DB) testSequence.LogInitialFolderName = GetLogFolderBase();
+                else throw new ArgumentException($"Unknown {nameof(TestData)} item '{testExecDefinition.TestData.Item}'.");
 
                 if (Directory.Exists(GetTemporaryLoggingFolder())) Directory.Delete(GetTemporaryLoggingFolder(), recursive: true);
                 Directory.CreateDirectory(GetTemporaryLoggingFolder());
@@ -569,11 +571,11 @@ namespace ABT.Test.TestExecutive.TestExec {
 
         private String GetPermanentLoggingBase() {
             if (testExecDefinition.TestData.Item is Files files) return $@"{files.Folder}\{testSequence.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}";
-            else return String.Empty;
+            else throw new ArgumentException($"Invalid {nameof(TestData)} item '{testExecDefinition.TestData.Item}'.");
         }
-        
+
         private String GetLogFolderBase() { return $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}"; }
-        
+
         private String GetLogInitialFolderName() {
             String loggingFolder = GetPermanentLoggingBase();
             String logInitialFolderName = GetLogFolderBase();

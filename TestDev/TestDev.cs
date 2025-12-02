@@ -15,7 +15,7 @@ namespace ABT.Test.TestExecutive.TestDev {
         private void TSMI_Apps_ABT_TestChooser_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.ABT.TestChooser); }
         private void TSMI_Apps_Keysight_CommandExpert_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Keysight.CommandExpert); }
         private void TSMI_Apps_Keysight_ConnectionExpert_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Keysight.ConnectionExpert); }
-        private void TSMI_Apps_Microsoft_EventViewer_Click(object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.EventViewer, $"/c:{testExecDefinition.WindowsEventLog.Log}"); }
+        private void TSMI_Apps_Microsoft_EventViewer_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.EventViewer, $"/c:{testExecDefinition.WindowsEventLog.Log}"); }
         private void TSMI_Apps_Microsoft_SQLServerManagementStudio_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.SQLServerManagementStudio); }
         private void TSMI_Apps_Microsoft_VisualStudio_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.VisualStudio); }
         private void TSMI_Apps_Microsoft_VisualStudioCode_Click(Object sender, EventArgs e) { OpenApp(testExecDefinition.Apps.Microsoft.VisualStudioCode); }
