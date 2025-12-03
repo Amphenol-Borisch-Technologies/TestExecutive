@@ -71,7 +71,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             Tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS RMENU1;:*WAI");
             Tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS MENUOff;:*WAI");
             Tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS MENUOff;:*WAI");
-            OperationCompleteQuery();
         }
 
         public Boolean SetupExists(SETUPS Setup, String LabelString) {
@@ -83,20 +82,19 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public void SetupLoad(SETUPS Setup, String LabelString) {
             if (!SetupExists(Setup, LabelString)) throw new ArgumentException($"MSO-3014 {Setup} labled '{LabelString}' non-existent!");
             Tkdpo2k3k4kClass.WriteString($":RECAll:SETUp {(Int32)Setup}");
+            OperationCompleteQuery($":RECAll:SETUp {(Int32)Setup}");
         }
 
         public void SetupLoad(String SetupFilePath) {
             if (!File.Exists(SetupFilePath)) throw new FileNotFoundException($"MSO-3014 Setup file not found at path '{SetupFilePath}'!");
             foreach (String mso_3014_SCPI_Command in File.ReadLines(SetupFilePath)) {
                 Tkdpo2k3k4kClass.WriteString(mso_3014_SCPI_Command);
-                OperationCompleteQuery();
             }
         }
 
         public void SetupSave(SETUPS Setup, String LabelString) {
             if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
             Tkdpo2k3k4kClass.WriteString($":{Setup}:LABEL \"{LabelString}\"");
-            OperationCompleteQuery();
             Tkdpo2k3k4kClass.WriteString($":{Setup}:LABEL?");
             String labelRead = Tkdpo2k3k4kClass.ReadString().Trim().Trim('"');
             if (!labelRead.Equals(LabelString)) throw new ArgumentException($"MSO-3014 {Setup} not labeled correctly!{Environment.NewLine}  Should be '{LabelString}'.{Environment.NewLine}  Is '{labelRead}'.");
