@@ -279,7 +279,10 @@ namespace ABT.Test.TestExecutive.TestExec {
                 if (String.Equals(serialNumber, String.Empty)) return;
                 else testSequence.SerialNumber = serialNumber;
 
-                if (testExecDefinition.TestData.Item is Files) testSequence.LogInitialFolderName =  GetLogInitialFolderName();
+                if (testExecDefinition.TestData.Item is Files) {
+                    testSequence.LogInitialFolderName = GetLogInitialFolderName();
+                    _ = Directory.CreateDirectory(GetInititalLoggingFolder());
+                }
             }
 
             FormModeReset();
