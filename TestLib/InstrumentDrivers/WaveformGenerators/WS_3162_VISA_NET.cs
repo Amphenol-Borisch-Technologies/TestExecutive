@@ -245,9 +245,13 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             return (STATUSES)Enum.Parse(typeof(STATUSES), response.Substring(response.IndexOf(" ") + 1), true);
         }
         public void OperationCompleteCommand() { UsbSession.FormattedIO.WriteLine($"*OPC"); }
-        public void OperationCompleteQuery() {
+        public Byte OperationCompleteQuery() {
             UsbSession.FormattedIO.WriteLine("*OPC?");
-            if (UsbSession.FormattedIO.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command!");
+            return Byte.Parse(UsbSession.FormattedIO.ReadString().Substring(5));
+        }
+        public void OperationCompleteQuery(String scpiCommand) {
+            UsbSession.FormattedIO.WriteLine("*OPC?");
+            if (UsbSession.FormattedIO.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command '{scpiCommand}'!");
         }
         public void OutputCommand(CHANNELS Channel, OUTP Output) { UsbSession.FormattedIO.WriteLine($"{Channel}:OUTPut {Output.ToString().Replace('_', ',')}"); }
         public String OutputQuery(CHANNELS Channel) {

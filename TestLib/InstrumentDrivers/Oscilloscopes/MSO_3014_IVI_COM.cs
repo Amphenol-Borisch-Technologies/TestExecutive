@@ -1,4 +1,5 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
+using Keysight.Visa;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,11 +52,10 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             Tkdpo2k3k4kClass.Initialize(ResourceName: Address, IdQuery: false, Reset: false, OptionString: String.Empty);
         }
 
-        public void OperationCompleteQuery() {
+        public void OperationCompleteQuery(String scpiCommand) {
             Tkdpo2k3k4kClass.WriteString("*OPC?");
-            if (Tkdpo2k3k4kClass.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command!");
+            if (Tkdpo2k3k4kClass.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command '{scpiCommand}'!");
         }
-
         public void EventTableEnable(BUSES Bus) {
             switch (Bus) {
                 case BUSES.B1:

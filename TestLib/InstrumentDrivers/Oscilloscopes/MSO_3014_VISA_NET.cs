@@ -57,9 +57,9 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             UsbSession.FormattedIO.WriteLine($":TIME \"{dateTime:hh:mm:ss}\"");
             UsbSession.FormattedIO.WriteLine($":DATE \"{dateTime:yyyy-MM-dd}\"");
         }
-        public void OperationCompleteQuery() {
+        public void OperationCompleteQuery(String scpiCommand) {
             UsbSession.FormattedIO.WriteLine("*OPC?");
-            if (UsbSession.FormattedIO.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command!");
+            if (UsbSession.FormattedIO.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command '{scpiCommand}'!");
         }
 
         public void EventTableEnable(BUSES Bus) {
@@ -94,8 +94,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             UsbSession.FormattedIO.WriteLine(":SAVe:IMAGe:LAYout LANdscape");
             UsbSession.FormattedIO.WriteLine(":SAVe:IMAGe:FILEFormat PNG");
             UsbSession.FormattedIO.WriteLine(":HARDCopy STARt");        // Ostensibly a printing command, actually works _best_ for saving a screenshot image to MSO-3014's USB drive.
-            UsbSession.FormattedIO.WriteLine("*OPC?");
-            if (UsbSession.FormattedIO.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException("MSO-3014 didn't complete SCPI command 'HARDCopy STARt'.");
+            OperationCompleteQuery(":HARDCopy STARt");
             File.WriteAllBytes($@"{PathPC}", UsbSession.RawIO.Read()); // Read HARDCopy image from MSO-3014's USB drive, & Save HARDCopy image to PC, overwriting any existing file without warning.
         }
 
