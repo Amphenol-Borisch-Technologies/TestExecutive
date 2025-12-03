@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Tektronix.Tkdpo2k3k4k.Interop;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
     // NOTE: WaveStation 2000/3000 SCPI Reference Manual https://cdn.teledynelecroy.com/files/manuals/wsta_scpi_manual_reva.pdf.
