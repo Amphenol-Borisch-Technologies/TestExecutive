@@ -322,7 +322,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             InstrumentType = INSTRUMENT_TYPES.WAVEFORM_GENERATOR;
             UsbSession = new UsbSession(Address) {
                 TerminationCharacter = 0x0a,
-                TerminationCharacterEnabled = true
+                TerminationCharacterEnabled = false
             };
             ResetCommand();
             ClearStatusCommand();
