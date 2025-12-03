@@ -280,11 +280,6 @@ namespace ABT.Test.TestExecutive.TestExec {
                 else testSequence.SerialNumber = serialNumber;
 
                 if (testExecDefinition.TestData.Item is Files) testSequence.LogInitialFolderName =  GetLogInitialFolderName();
-                else if (testExecDefinition.TestData.Item is SQL_DB) testSequence.LogInitialFolderName = GetLogFolderBase();
-                else throw new ArgumentException($"Unknown {nameof(TestData)} item '{testExecDefinition.TestData.Item}'.");
-
-                if (Directory.Exists(GetTemporaryLoggingFolder())) Directory.Delete(GetTemporaryLoggingFolder(), recursive: true);
-                Directory.CreateDirectory(GetTemporaryLoggingFolder());
             }
 
             FormModeReset();
@@ -567,18 +562,14 @@ namespace ABT.Test.TestExecutive.TestExec {
             }
         }
 
-        public String GetTemporaryLoggingFolder() { return $@"{testExecDefinition.TestPlansTemporaryFolder}\{testSequence.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}\{testSequence.LogInitialFolderName}"; }
-
         private String GetPermanentLoggingBase() {
             if (testExecDefinition.TestData.Item is Files files) return $@"{files.Folder}\{testSequence.UUT.Number}\{testSequence.TestOperation.NamespaceTrunk}";
             else throw new ArgumentException($"Invalid {nameof(TestData)} item '{testExecDefinition.TestData.Item}'.");
         }
 
-        private String GetLogFolderBase() { return $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}"; }
-
         private String GetLogInitialFolderName() {
             String loggingFolder = GetPermanentLoggingBase();
-            String logInitialFolderName = GetLogFolderBase();
+            String logInitialFolderName = $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}";
             String[] logFolderNames;
 
             try {
@@ -604,13 +595,14 @@ namespace ABT.Test.TestExecutive.TestExec {
         }
 
         private void LogStopFiles() {
-            String permanentLoggingFolder = $@"{GetPermanentLoggingBase()}\{testSequence.LogInitialFolderName}_{testSequence.Event}";
-            Directory.Move(GetTemporaryLoggingFolder(), permanentLoggingFolder);
+            String initialLoggingFolder = $@"{GetPermanentLoggingBase()}\{testSequence.LogInitialFolderName}";
+            String permanentLoggingFolder = $"{initialLoggingFolder}_{testSequence.Event}";
+            Directory.Move(initialLoggingFolder, permanentLoggingFolder);
 
             foreach (TestGroup testGroup in testSequence.TestOperation.TestGroups) {
                 foreach (Method method in testGroup.Methods) {
                     for (Int32 i = 0; i < method.URIs.Count; i++) {
-                        String s = method.URIs[i].Replace(GetTemporaryLoggingFolder(), permanentLoggingFolder);
+                        String s = method.URIs[i].Replace(initialLoggingFolder, permanentLoggingFolder);
                         method.URIs[i] = new Uri(s).AbsoluteUri;
                     }
                 }
@@ -627,7 +619,6 @@ namespace ABT.Test.TestExecutive.TestExec {
         }
 
         private void LogStopSQL_DB() {
-            // TODO: Move $@"{GetLogFolderBaseName}" files into SQL_DB.
             using (StringWriter stringWriter = new StringWriter()) {
                 using (XmlWriter xmlWriter = XmlWriter.Create(stringWriter, new XmlWriterSettings { Encoding = new UTF8Encoding(true), Indent = true })) {
                     XmlSerializer xmlSerializer = new XmlSerializer(typeof(TestSequence), LogGetOverrides());

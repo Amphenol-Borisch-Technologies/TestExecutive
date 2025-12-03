@@ -14,7 +14,6 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         [XmlElement(nameof(Development))] public Development Development { get; set; }
         [XmlElement(nameof(TestExecutiveURL))] public String TestExecutiveURL { get; set; }
         [XmlElement(nameof(TestPlansFolder))] public String TestPlansFolder { get; set; }
-        [XmlElement(nameof(TestPlansTemporaryFolder))] public String TestPlansTemporaryFolder { get; set; }
         [XmlElement(nameof(WindowsEventLog))] public WindowsEventLog WindowsEventLog { get; set; }
         [XmlElement(nameof(ActiveDirectoryPermissions))] public ActiveDirectoryPermissions ActiveDirectoryPermissions { get; set; }
         [XmlElement(nameof(TestData))] public TestData TestData { get; set; }
