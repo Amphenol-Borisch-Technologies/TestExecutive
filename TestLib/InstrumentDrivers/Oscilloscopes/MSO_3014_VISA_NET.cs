@@ -48,10 +48,18 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public MSO_3014_VISA_NET(String Address, String Detail) {
             this.Address = Address;
             this.Detail = Detail;
-            UsbSession = new UsbSession(Address);
+            InstrumentType = INSTRUMENT_TYPES.OSCILLOSCOPE_MIXED_SIGNAL;
+            UsbSession = new UsbSession(Address) {
+                TerminationCharacter = 0x0a,
+                TerminationCharacterEnabled = true
+            };
             DateTime dateTime = DateTime.Now;
             UsbSession.FormattedIO.WriteLine($":TIME \"{dateTime:hh:mm:ss}\"");
             UsbSession.FormattedIO.WriteLine($":DATE \"{dateTime:yyyy-MM-dd}\"");
+        }
+        public void OperationCompleteQuery() {
+            UsbSession.FormattedIO.WriteLine("*OPC?");
+            if (UsbSession.FormattedIO.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command!");
         }
 
         public void EventTableEnable(BUSES Bus) {
@@ -87,7 +95,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             UsbSession.FormattedIO.WriteLine(":SAVe:IMAGe:FILEFormat PNG");
             UsbSession.FormattedIO.WriteLine(":HARDCopy STARt");        // Ostensibly a printing command, actually works _best_ for saving a screenshot image to MSO-3014's USB drive.
             UsbSession.FormattedIO.WriteLine("*OPC?");
-            if (UsbSession.FormattedIO.ReadLine().Trim().Trim('"') != "1") throw new InvalidOperationException("MSO-3014 didn't complete SCPI command 'HARDCopy STARt'.");
+            if (UsbSession.FormattedIO.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException("MSO-3014 didn't complete SCPI command 'HARDCopy STARt'.");
             File.WriteAllBytes($@"{PathPC}", UsbSession.RawIO.Read()); // Read HARDCopy image from MSO-3014's USB drive, & Save HARDCopy image to PC, overwriting any existing file without warning.
         }
 

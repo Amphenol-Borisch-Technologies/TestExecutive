@@ -53,7 +53,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
 
         public void OperationCompleteQuery() {
             Tkdpo2k3k4kClass.WriteString("*OPC?");
-            if (Tkdpo2k3k4kClass.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException("MSO-3014 didn't complete SCPI command!");
+            if (Tkdpo2k3k4kClass.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command!");
         }
 
         public void EventTableEnable(BUSES Bus) {

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Tektronix.Tkdpo2k3k4k.Interop;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
     // NOTE: WaveStation 2000/3000 SCPI Reference Manual https://cdn.teledynelecroy.com/files/manuals/wsta_scpi_manual_reva.pdf.
@@ -244,9 +245,9 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             return (STATUSES)Enum.Parse(typeof(STATUSES), response.Substring(response.IndexOf(" ") + 1), true);
         }
         public void OperationCompleteCommand() { UsbSession.FormattedIO.WriteLine($"*OPC"); }
-        public Byte OperationCompleteQuery() {
+        public void OperationCompleteQuery() {
             UsbSession.FormattedIO.WriteLine("*OPC?");
-            return Byte.Parse(UsbSession.FormattedIO.ReadLine().Substring(5));
+            if (UsbSession.FormattedIO.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command!");
         }
         public void OutputCommand(CHANNELS Channel, OUTP Output) { UsbSession.FormattedIO.WriteLine($"{Channel}:OUTPut {Output.ToString().Replace('_', ',')}"); }
         public String OutputQuery(CHANNELS Channel) {
@@ -315,7 +316,10 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             this.Address = Address;
             this.Detail = Detail;
             InstrumentType = INSTRUMENT_TYPES.WAVEFORM_GENERATOR;
-            UsbSession = new UsbSession(Address);
+            UsbSession = new UsbSession(Address) {
+                TerminationCharacter = 0x0a,
+                TerminationCharacterEnabled = true
+            };
             ResetCommand();
             ClearStatusCommand();
             CommandHeaderCommand(COMMAND_HEADERS.LONG);
