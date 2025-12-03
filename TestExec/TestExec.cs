@@ -567,6 +567,11 @@ namespace ABT.Test.TestExecutive.TestExec {
             else throw new ArgumentException($"Invalid {nameof(TestData)} item '{testExecDefinition.TestData.Item}'.");
         }
 
+        public String GetInititalLoggingFolder() {
+            if (testExecDefinition.TestData.Item is Files files) return $@"{GetPermanentLoggingBase()}\{testSequence.LogInitialFolderName}";
+            else throw new ArgumentException($"Invalid {nameof(TestData)} item '{testExecDefinition.TestData.Item}'.");
+        }
+
         private String GetLogInitialFolderName() {
             String loggingFolder = GetPermanentLoggingBase();
             String logInitialFolderName = $"{testSequence.UUT.Number}_{testSequence.SerialNumber}_{testSequence.TestOperation.NamespaceTrunk}";
@@ -595,7 +600,7 @@ namespace ABT.Test.TestExecutive.TestExec {
         }
 
         private void LogStopFiles() {
-            String initialLoggingFolder = $@"{GetPermanentLoggingBase()}\{testSequence.LogInitialFolderName}";
+            String initialLoggingFolder = GetInititalLoggingFolder();
             String permanentLoggingFolder = $"{initialLoggingFolder}_{testSequence.Event}";
             Directory.Move(initialLoggingFolder, permanentLoggingFolder);
 
