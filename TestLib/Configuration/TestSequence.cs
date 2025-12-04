@@ -31,7 +31,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
                     _ = method.Log.Clear();
                     method.LogString = String.Empty;
                     method.Value = null;
-                    method.URIs.Clear();
+                    method.Documents.Clear();
                 }
         }
 

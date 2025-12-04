@@ -570,7 +570,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             else throw new ArgumentException($"Invalid {nameof(TestData)} item '{testExecDefinition.TestData.Item}'.");
         }
 
-        public String GetInititalLoggingFolder() {
+        private String GetInititalLoggingFolder() {
             if (testExecDefinition.TestData.Item is Files files) return $@"{GetPermanentLoggingBase()}\{testSequence.LogInitialFolderName}";
             else throw new ArgumentException($"Invalid {nameof(TestData)} item '{testExecDefinition.TestData.Item}'.");
         }
@@ -602,6 +602,11 @@ namespace ABT.Test.TestExecutive.TestExec {
             return $"{logInitialFolderName}_{++maxNumber}";
         }
 
+        public String GetLoggingBase() {
+            if (testExecDefinition.TestData.Item is Files files) return $@"{GetInititalLoggingFolder()}\{Path.GetFileName(GetInititalLoggingFolder())}";
+            else throw new ArgumentException($"Invalid {nameof(TestData)} item '{testExecDefinition.TestData.Item}'.");
+        }
+
         private void LogStopFiles() {
             String initialLoggingFolder = GetInititalLoggingFolder();
             String permanentLoggingFolder = $"{initialLoggingFolder}_{testSequence.Event}";
@@ -609,9 +614,9 @@ namespace ABT.Test.TestExecutive.TestExec {
 
             foreach (TestGroup testGroup in testSequence.TestOperation.TestGroups) {
                 foreach (Method method in testGroup.Methods) {
-                    for (Int32 i = 0; i < method.URIs.Count; i++) {
-                        String s = method.URIs[i].Replace(initialLoggingFolder, permanentLoggingFolder);
-                        method.URIs[i] = new Uri(s).AbsoluteUri;
+                    for (Int32 i = 0; i < method.Documents.Count; i++) {
+                        String s = method.Documents[i].Replace(initialLoggingFolder, permanentLoggingFolder);
+                        method.Documents[i] = new Uri(s).AbsoluteUri;
                     }
                 }
             }

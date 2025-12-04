@@ -294,7 +294,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         public EVENTS Event { get; set; }
         [XmlIgnore] public StringBuilder Log { get; set; } = new StringBuilder();
         public String LogString { get; set; } = String.Empty;
-        public List<String> URIs { get; set; } = new List<String>();
+        public List<String> Documents { get; set; } = new List<String>();
         internal static readonly String EXPECTED = "Expected";
         internal static readonly String ACTUAL = "Actual";
 
