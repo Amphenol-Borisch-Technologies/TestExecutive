@@ -79,6 +79,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         [XmlElement(nameof(Documentation))] public List<Documentation> Documentation { get; set; }
         [XmlElement(nameof(Repository))] public List<Repository> Repository { get; set; }
         [XmlAttribute(nameof(Released))] public String Released { get; set; }
+        [XmlAttribute(nameof(WorkSpace))] public String WorkSpace { get; set; }
 
         public Development() { }
     }
