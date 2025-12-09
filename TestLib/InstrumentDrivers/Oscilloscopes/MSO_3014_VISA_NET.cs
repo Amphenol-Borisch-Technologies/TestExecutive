@@ -26,8 +26,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public SELF_TEST_RESULTS SelfTests() {
             Int32 selfTestResult;
             try {
-                UsbSession.FormattedIO.WriteLine("*TST?");
-                selfTestResult = Int32.Parse(UsbSession.FormattedIO.ReadLine().Trim().Trim('"'));
+                selfTestResult = Int32.Parse(QueryLine("*TST?"));
             } catch (Exception exception) {
                 Instruments.SelfTestFailure(this, exception);
                 return SELF_TEST_RESULTS.FAIL;
@@ -51,16 +50,32 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             InstrumentType = INSTRUMENT_TYPES.OSCILLOSCOPE_MIXED_SIGNAL;
             UsbSession = new UsbSession(Address) {
                 TerminationCharacter = 0x0a,
-                TerminationCharacterEnabled = false
+                TerminationCharacterEnabled = true
             };
             DateTime dateTime = DateTime.Now;
             UsbSession.FormattedIO.WriteLine($":TIME \"{dateTime:hh:mm:ss}\"");
             UsbSession.FormattedIO.WriteLine($":DATE \"{dateTime:yyyy-MM-dd}\"");
         }
-        public void OperationCompleteQuery(String scpiCommand) {
-            UsbSession.FormattedIO.WriteLine("*OPC?");
-            if (UsbSession.FormattedIO.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command '{scpiCommand}'!");
+
+        public String QueryLine(String scpiCommand) {
+            UsbSession.FormattedIO.WriteLine(scpiCommand);
+            UsbSession.TerminationCharacterEnabled = true;
+            return UsbSession.FormattedIO.ReadLine().Trim();
         }
+
+        public Byte[] QueryBinaryBlockOfByte(String scpiCommand) {
+            UsbSession.FormattedIO.WriteLine(scpiCommand);
+            UsbSession.TerminationCharacterEnabled = false;
+            return UsbSession.FormattedIO.ReadBinaryBlockOfByte();
+        }
+
+        public Byte[] QueryRawIO(String scpiCommand) {
+            UsbSession.FormattedIO.WriteLine(scpiCommand);
+            UsbSession.TerminationCharacterEnabled = false;
+            return UsbSession.RawIO.Read();
+        }
+
+        public void OperationCompleteQuery(String scpiCommand) { if (!QueryLine("*OPC?").Equals("1")) throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command '{scpiCommand}'!"); }
 
         public void EventTableEnable(BUSES Bus) {
             switch (Bus) {
@@ -82,25 +97,22 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public void EventTableSave(BUSES Bus, DRIVES_USB Drive_USB, String PathPC) {
             String pathMSO_3014 = $"\"{Drive_USB}:/{Bus}.csv\"";
             UsbSession.FormattedIO.WriteLine($":SAVe:EVENTtable:{Bus} {pathMSO_3014}"); // Save Event Table to MSO-3014 USB drive, overwriting any existing file without warning.  Can't HARDCopy Event Tables, sadly.
-            Thread.Sleep(500);                                                         // USB Drive write latency.
+            Thread.Sleep(500);                                                          // USB Drive write latency.
 
-            UsbSession.FormattedIO.WriteLine($":FILESystem:READFile {pathMSO_3014}");   // Read Event Table from MSO-3014 USB drive.
-            File.WriteAllBytes($@"{PathPC}", UsbSession.RawIO.Read());                 // Save read Event Table to PC, overwriting any existing file without warning.
-            UsbSession.FormattedIO.WriteLine($":FILESystem:DELEte {pathMSO_3014}");     // Delete Event Table from MSO-3014 USB drive.
+            File.WriteAllBytes($@"{PathPC}", QueryRawIO($":FILESystem:READFile {pathMSO_3014}")); // Read Event Table from MSO - 3014 USB drive & save to PC, overwriting any existing file without warning.
+            UsbSession.FormattedIO.WriteLine($":FILESystem:DELEte {pathMSO_3014}");               // Delete Event Table from MSO-3014 USB drive.
         }
 
         public void ImageLandscapePNG_Save(String PathPC) {
             UsbSession.FormattedIO.WriteLine(":SAVe:IMAGe:INKSaver OFF");
             UsbSession.FormattedIO.WriteLine(":SAVe:IMAGe:LAYout LANdscape");
             UsbSession.FormattedIO.WriteLine(":SAVe:IMAGe:FILEFormat PNG");
-            UsbSession.FormattedIO.WriteLine(":HARDCopy STARt");                   // Ostensibly a printing command, actually works _best_ for saving a screenshot image to MSO-3014's USB drive.
-            File.WriteAllBytes($@"{PathPC}", UsbSession.RawIO.Read());  // Read HARDCopy image from MSO-3014's USB drive, & Save HARDCopy image to PC, overwriting any existing file without warning.
+            File.WriteAllBytes($@"{PathPC}", QueryRawIO(":HARDCopy STARt")); // ":HARDCopy STARt" is ostensibly a printing command, but actually works _best_ for fetching a screenshot image.  Save to PC, overwriting any existing file without warning.
         }
 
         public Boolean SetupExists(SETUPS Setup, String LabelString) {
             if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
-            UsbSession.FormattedIO.WriteLine($":{Setup}:LABEL?");
-            return UsbSession.FormattedIO.ReadLine().Trim().Trim('"').Equals(LabelString);
+            return QueryLine($":{Setup}:LABEL?").Equals(LabelString);
         }
 
         public void SetupLoad(SETUPS Setup, String LabelString) {
@@ -116,9 +128,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public void SetupSave(SETUPS Setup, String LabelString) {
             if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
             UsbSession.FormattedIO.WriteLine($":{Setup}:LABEL \"{LabelString}\"");
-            UsbSession.FormattedIO.WriteLine($":{Setup}:LABEL?");
-            String labelRead = UsbSession.FormattedIO.ReadLine().Trim().Trim('"');
-            if (!labelRead.Equals(LabelString)) throw new ArgumentException($"MSO-3014 {Setup} not labeled correctly!{Environment.NewLine}  Should be '{LabelString}'.{Environment.NewLine}  Is '{labelRead}'.");
+            if (!QueryLine($":{Setup}:LABEL?").Equals(LabelString)) throw new ArgumentException($"MSO-3014 {Setup} not labeled correctly!{Environment.NewLine}  Should be '{LabelString}'.{Environment.NewLine}  Is '{labelRead}'.");
         }
 
         public Boolean ValidFileCharacters(String FileString) { return FileString.All(new HashSet<Char>(ValidCharactersFile.ToCharArray()).Contains); }
