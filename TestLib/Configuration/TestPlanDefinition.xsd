@@ -1171,18 +1171,6 @@
 								</xs:documentation>
 							</xs:annotation>
 						</xs:attribute>
-						<xs:attribute name="WorkSpace" type="ValidWindowsPath" use="required">
-							<xs:annotation>
-								<xs:documentation xml:lang="en">
-									<![CDATA[
-                    WorkSpace attribute.
-                    - Required.
-					- Folder to store files created by TestPlan.
-                    - Type: ValidWindowsPath.
-                  ]]>
-								</xs:documentation>
-							</xs:annotation>
-						</xs:attribute>
 					</xs:complexType>
 					<xs:unique name="UniqueDeveloper">
 						<xs:selector xpath="Developer"/>
@@ -1282,6 +1270,18 @@
 							</xs:annotation>
 						</xs:attribute>
 						<xs:attribute ref="Description" use="required"/>
+						<xs:attribute name="WorkFolder" type="ValidWindowsPath" use="required">
+							<xs:annotation>
+								<xs:documentation xml:lang="en">
+									<![CDATA[
+                    WorkFolder attribute.
+                    - Required.
+					- Folder to store files created by TestPlan.
+                    - Type: ValidWindowsPath.
+                  ]]>
+								</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
 						<xs:attribute name="Simulate" type="xs:boolean" use="required">
 							<xs:annotation>
 								<xs:documentation xml:lang="en">

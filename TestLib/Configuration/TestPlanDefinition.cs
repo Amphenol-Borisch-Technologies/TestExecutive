@@ -79,7 +79,6 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         [XmlElement(nameof(Documentation))] public List<Documentation> Documentation { get; set; }
         [XmlElement(nameof(Repository))] public List<Repository> Repository { get; set; }
         [XmlAttribute(nameof(Released))] public String Released { get; set; }
-        [XmlAttribute(nameof(WorkSpace))] public String WorkSpace { get; set; }
 
         public Development() { }
     }
@@ -193,6 +192,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
     public class TestSpace {
         [XmlAttribute(nameof(NamespaceRoot))] public String NamespaceRoot { get; set; }
         [XmlAttribute(nameof(Description))] public String Description { get; set; }
+        [XmlAttribute(nameof(WorkFolder))] public String WorkFolder { get; set; }
         [XmlAttribute(nameof(Simulate))] public Boolean Simulate { get; set; }
         [XmlElement(nameof(TestOperation))] public List<TestOperation> TestOperations { get; set; }
 
