@@ -1,5 +1,6 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using Keysight.Visa;
+using Microsoft.VisualBasic.Devices;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,7 @@ using System.Threading;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
-    public class MSO_3014_VISA_NET : IInstrument, IDiagnostics, IDisposable {
+    public class MSO_3014_VISA_NET : IInstrument, IDiagnostics, IDisposable, IQueryVISA_NET {
         public String Address { get; }
         public String Detail { get; }
         public UsbSession UsbSession { get; }
@@ -20,6 +21,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public readonly static String ValidCharactersFile = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=+-!@#$%^&()[]{}~‘’,";
         public readonly static String ValidCharactersLabel = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=≠+-±!@#$%^&*()[]{}<>/~‘’\"\\|:,.?µ∞∆°Ωσ";
         private Boolean _disposed = false;
+        private readonly Object _lock = new Object();
 
         public void ResetClear() { UsbSession.FormattedIO.WriteLine("*RST;*CLR"); }
 
@@ -49,7 +51,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             this.Detail = Detail;
             InstrumentType = INSTRUMENT_TYPES.OSCILLOSCOPE_MIXED_SIGNAL;
             UsbSession = new UsbSession(Address) {
-                TerminationCharacter = 0x0a,
+                TerminationCharacter = 0x0A,
                 TerminationCharacterEnabled = true
             };
             DateTime dateTime = DateTime.Now;
@@ -58,21 +60,27 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         }
 
         public String QueryLine(String scpiCommand) {
-            UsbSession.FormattedIO.WriteLine(scpiCommand);
-            UsbSession.TerminationCharacterEnabled = true;
-            return UsbSession.FormattedIO.ReadLine().Trim();
+            lock (_lock) {
+                UsbSession.TerminationCharacterEnabled = true;
+                UsbSession.FormattedIO.WriteLine(scpiCommand);
+                return UsbSession.FormattedIO.ReadLine().Trim();
+            }
         }
 
         public Byte[] QueryBinaryBlockOfByte(String scpiCommand) {
-            UsbSession.FormattedIO.WriteLine(scpiCommand);
-            UsbSession.TerminationCharacterEnabled = false;
-            return UsbSession.FormattedIO.ReadBinaryBlockOfByte();
+            lock (_lock) {
+                UsbSession.TerminationCharacterEnabled = false;
+                UsbSession.FormattedIO.WriteLine(scpiCommand);
+                return UsbSession.FormattedIO.ReadBinaryBlockOfByte();
+            }
         }
 
         public Byte[] QueryRawIO(String scpiCommand) {
-            UsbSession.FormattedIO.WriteLine(scpiCommand);
-            UsbSession.TerminationCharacterEnabled = false;
-            return UsbSession.RawIO.Read();
+            lock (_lock) {
+                UsbSession.TerminationCharacterEnabled = false;
+                UsbSession.FormattedIO.WriteLine(scpiCommand);
+                return UsbSession.RawIO.Read();
+            }
         }
 
         public void OperationCompleteQuery(String scpiCommand) { if (!QueryLine("*OPC?").Equals("1")) throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command '{scpiCommand}'!"); }

@@ -45,7 +45,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
     //  SYNC        SYNC            SIGNAL      Sends a Sync pulse upon occurrence of the specified function.
     //  WVCSV       WAVE_CSV                    Saves.CSV file to user-defined memory location.
 
-    public class WS_3162_VISA_NET : IInstrument, IDiagnostics, IDisposable {
+    public class WS_3162_VISA_NET : IInstrument, IDiagnostics, IDisposable, IQueryVISA_NET {
         public enum CHANNELS { C1, C2 }
         public enum CLOCK_SOURCE { INT, EXT }
         public enum COMMAND_HEADERS { OFF, SHORT, LONG }
@@ -65,7 +65,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             public enum QUERIES { WVTP, FRQ, PERI, AMP, OFST, HLEV, LLEV, PHSE, DUTY }
             public enum WVTP { SINE, SQUARE, RAMP, PULSE, NOISE, ARB, DC }
         }
-
         public UsbSession UsbSession;
         public String Address { get; }
         public String Detail { get; }
@@ -80,6 +79,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
                 return SELF_TEST_RESULTS.FAIL;
             }
         }
+        private readonly Object _lock = new Object();
 
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
             ResetClear();
@@ -96,7 +96,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             this.Detail = Detail;
             InstrumentType = INSTRUMENT_TYPES.WAVEFORM_GENERATOR;
             UsbSession = new UsbSession(Address) {
-                TerminationCharacter = 0x0a,
+                TerminationCharacter = 0x0A,
                 TerminationCharacterEnabled = true
             };
             ResetCommand();
@@ -107,20 +107,27 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
         }
 
         public String QueryLine(String scpiCommand) {
-            UsbSession.TerminationCharacterEnabled = true;
-            UsbSession.FormattedIO.WriteLine(scpiCommand);
-            return UsbSession.FormattedIO.ReadLine().Trim();
+            lock (_lock) {
+                UsbSession.TerminationCharacterEnabled = true;
+                UsbSession.FormattedIO.WriteLine(scpiCommand);
+                return UsbSession.FormattedIO.ReadLine().Trim();
+            }
         }
 
         public Byte[] QueryBinaryBlockOfByte(String scpiCommand) {
-            UsbSession.TerminationCharacterEnabled = false;
-            UsbSession.FormattedIO.WriteLine(scpiCommand);
-            return UsbSession.FormattedIO.ReadBinaryBlockOfByte();
+            lock (_lock) {
+                UsbSession.TerminationCharacterEnabled = false;
+                UsbSession.FormattedIO.WriteLine(scpiCommand);
+                return UsbSession.FormattedIO.ReadBinaryBlockOfByte();
+            }
         }
 
-        public Byte[] QueryRawIO() {
-            UsbSession.TerminationCharacterEnabled = false;
-            return UsbSession.RawIO.Read();
+        public Byte[] QueryRawIO(String scpiCommand) {
+            lock (_lock) {
+                UsbSession.TerminationCharacterEnabled = false;
+                UsbSession.FormattedIO.WriteLine(scpiCommand);
+                return UsbSession.RawIO.Read();
+            }
         }
 
         public void BasicWaveCommand(CHANNELS Channel, BasicWave.COMMANDS Command, Object Parameter) {

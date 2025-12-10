@@ -152,6 +152,7 @@
     <Compile Include="InstrumentDrivers\Instruments.cs" />
     <Compile Include="InstrumentDrivers\Interfaces\IDiagnostics.cs" />
     <Compile Include="InstrumentDrivers\Interfaces\IIinstrument.cs" />
+    <Compile Include="InstrumentDrivers\Interfaces\IQueryVISA_NET.cs" />
     <Compile Include="InstrumentDrivers\Interfaces\IPowerSupply.cs" />
     <Compile Include="InstrumentDrivers\Interfaces\IRelay.cs" />
     <Compile Include="InstrumentDrivers\Multifunction\MSMU_34980A_SCPI_NET.cs" />
