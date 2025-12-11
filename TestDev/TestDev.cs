@@ -58,8 +58,10 @@ namespace ABT.Test.TestExecutive.TestDev {
                     CreateDirectoryAndSetPermissions(testPlanDefinition.TestSpace.WorkFolder + @"\" + testPlanDefinition.UUT.Number);
                     stringBuilder.AppendLine($"  {testPlanDefinition.TestSpace.WorkFolder + @"\" + testPlanDefinition.UUT.Number}");
                     foreach (TestOperation testOperation in testPlanDefinition.TestSpace.TestOperations) {
-                        CreateDirectoryAndSetPermissions(files.Folder + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk);
-                        stringBuilder.AppendLine($"     {files.Folder + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk}");
+                        if (testOperation.ProductionTest) {
+                            CreateDirectoryAndSetPermissions(files.Folder + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk);
+                            stringBuilder.AppendLine($"     {files.Folder + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk}");
+                        }
                         CreateDirectoryAndSetPermissions(testPlanDefinition.TestSpace.WorkFolder + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk);
                         stringBuilder.AppendLine($"     {testPlanDefinition.TestSpace.WorkFolder + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk}");
                     }

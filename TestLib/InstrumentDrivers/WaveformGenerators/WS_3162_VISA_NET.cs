@@ -45,7 +45,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
     //  SYNC        SYNC            SIGNAL      Sends a Sync pulse upon occurrence of the specified function.
     //  WVCSV       WAVE_CSV                    Saves.CSV file to user-defined memory location.
 
-    public class WS_3162_VISA_NET : IInstrument, IDiagnostics, IDisposable, IQueryVISA_NET {
+    public class WS_3162_VISA_NET : IInstrument, IDiagnostics, IDisposable, IVISA_NET {
         public enum CHANNELS { C1, C2 }
         public enum CLOCK_SOURCE { INT, EXT }
         public enum COMMAND_HEADERS { OFF, SHORT, LONG }

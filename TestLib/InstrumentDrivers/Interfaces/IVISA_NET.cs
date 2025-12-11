@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces {
-    public interface IQueryVISA_NET {
+    public interface IVISA_NET {
         String QueryLine(String scpiCommand);
 
         Byte[] QueryBinaryBlockOfByte(String scpiCommand);

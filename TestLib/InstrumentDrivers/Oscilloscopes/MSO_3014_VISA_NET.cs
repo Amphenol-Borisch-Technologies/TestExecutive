@@ -9,7 +9,7 @@ using System.Threading;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
-    public class MSO_3014_VISA_NET : IInstrument, IDiagnostics, IDisposable, IQueryVISA_NET {
+    public class MSO_3014_VISA_NET : IInstrument, IDiagnostics, IDisposable, IVISA_NET {
         public String Address { get; }
         public String Detail { get; }
         public UsbSession UsbSession { get; }
