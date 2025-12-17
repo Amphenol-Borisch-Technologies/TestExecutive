@@ -194,6 +194,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         [XmlAttribute(nameof(Description))] public String Description { get; set; }
         [XmlAttribute(nameof(WorkFolder))] public String WorkFolder { get; set; }
         [XmlAttribute(nameof(Simulate))] public Boolean Simulate { get; set; }
+        [XmlElement(nameof(Parameter))] public List<Parameter> Parameters { get; set; }
         [XmlElement(nameof(TestOperation))] public List<TestOperation> TestOperations { get; set; }
 
         public TestSpace() { }

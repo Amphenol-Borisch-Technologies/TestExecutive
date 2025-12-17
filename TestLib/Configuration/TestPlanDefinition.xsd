@@ -1248,6 +1248,51 @@
 					</xs:annotation>
 					<xs:complexType>
 						<xs:sequence>
+							<xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation xml:lang="en">
+										<![CDATA[
+              Parameter element:
+              - Optional, 0 or more occurrences.
+              - Type: xs:string.
+            ]]>
+									</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="Name" type="xs:string" use="required">
+										<xs:annotation>
+											<xs:documentation xml:lang="en">
+												<![CDATA[
+                  Name attribute:
+                  - Required.
+                  - Type: xs:string.
+                  - Restriction: Name must be unique within it's MethodCustom.
+                      
+                  Parameter's Name of it's Name/Value pair.
+                ]]>
+											</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="Value" type="xs:string" use="required">
+										<xs:annotation>
+											<xs:documentation xml:lang="en">
+												<![CDATA[
+                  Value attribute:
+                  - Required.
+                  - Type: xs:string.
+                      
+                  Parameter's Value of it's Name/Value pair.
+                  - Values can be duplicated.
+                ]]>
+											</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+								</xs:complexType>
+								<xs:unique name="uniqueNames">
+									<xs:selector xpath="Parameter"/>
+									<xs:field xpath="@Name"/>
+								</xs:unique>
+							</xs:element>
 							<xs:element name="TestOperation" type="TestOperation" minOccurs="1" maxOccurs="unbounded">
 								<xs:unique name="UniqueClass">
 									<xs:selector xpath="TestGroup"/>
