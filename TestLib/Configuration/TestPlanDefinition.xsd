@@ -1288,10 +1288,6 @@
 										</xs:annotation>
 									</xs:attribute>
 								</xs:complexType>
-								<xs:unique name="uniqueNames">
-									<xs:selector xpath="Parameter"/>
-									<xs:field xpath="@Name"/>
-								</xs:unique>
 							</xs:element>
 							<xs:element name="TestOperation" type="TestOperation" minOccurs="1" maxOccurs="unbounded">
 								<xs:unique name="UniqueClass">
@@ -1349,5 +1345,9 @@
 				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
+			<xs:unique name="uniqueNames">
+			<xs:selector xpath="Parameter"/>
+			<xs:field xpath="@Name"/>
+		</xs:unique>
 	</xs:element>
 </xs:schema>
