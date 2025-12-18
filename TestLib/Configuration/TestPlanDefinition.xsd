@@ -1342,12 +1342,12 @@
 						<xs:selector xpath=".//TestOperation"/>
 						<xs:field xpath="@NamespaceTrunk"/>
 					</xs:unique>
+					<xs:unique name="uniqueParameterNames">
+						<xs:selector xpath="Parameter"/>
+						<xs:field xpath="@Name"/>
+					</xs:unique>
 				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
-			<xs:unique name="uniqueNames">
-			<xs:selector xpath="Parameter"/>
-			<xs:field xpath="@Name"/>
-		</xs:unique>
 	</xs:element>
 </xs:schema>
