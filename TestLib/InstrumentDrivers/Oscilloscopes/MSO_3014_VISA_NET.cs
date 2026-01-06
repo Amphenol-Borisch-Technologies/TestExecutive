@@ -57,6 +57,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             DateTime dateTime = DateTime.Now;
             UsbSession.FormattedIO.WriteLine($":TIME \"{dateTime:hh:mm:ss}\"");
             UsbSession.FormattedIO.WriteLine($":DATE \"{dateTime:yyyy-MM-dd}\"");
+            UsbSession.FormattedIO.WriteLine("DISplay:CLOCk ON");
         }
 
         public String QueryLine(String scpiCommand) {
