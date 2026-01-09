@@ -2082,11 +2082,6 @@
             "AssemblyAsmDisplayName" = "8:Ag34401_11, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_0A7304E052A591D5D540CEF49395E489"
-                    {
-                    "Name" = "8:Ag34401_11.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Ag34401_11.dll"
             "TargetName" = "8:"
@@ -2361,11 +2356,6 @@
             "AssemblyAsmDisplayName" = "8:TestChooser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64"
                 "ScatterAssemblies"
                 {
-                    "_1BFD4698B9A5FFEF7599A8CB7469EDBE"
-                    {
-                    "Name" = "8:TestChooser.exe"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:TestChooser.exe"
             "TargetName" = "8:"
@@ -2578,11 +2568,6 @@
             "AssemblyAsmDisplayName" = "8:TestDev, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64"
                 "ScatterAssemblies"
                 {
-                    "_23B775B5EE324F53A02CE167779AC222"
-                    {
-                    "Name" = "8:TestDev.exe"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:..\\TestDev\\bin\\x64\\Release\\TestDev.exe"
             "TargetName" = "8:"
@@ -2970,11 +2955,6 @@
             "AssemblyAsmDisplayName" = "8:Ag34980_2_43, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_333158985804C43ABE59B1B1B9329231"
-                    {
-                    "Name" = "8:Ag34980_2_43.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Ag34980_2_43.dll"
             "TargetName" = "8:"
@@ -3218,11 +3198,6 @@
             "AssemblyAsmDisplayName" = "8:TestLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64"
                 "ScatterAssemblies"
                 {
-                    "_3DD3AEA2CA52D46E50A89BEF04CC223B"
-                    {
-                    "Name" = "8:TestLib.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:TestLib.dll"
             "TargetName" = "8:"
@@ -3590,11 +3565,6 @@
             "AssemblyAsmDisplayName" = "8:AgE364xD_1_7, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_5880AEA50D7AF6E7865155881D3CC570"
-                    {
-                    "Name" = "8:AgE364xD_1_7.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:AgE364xD_1_7.dll"
             "TargetName" = "8:"
@@ -3765,11 +3735,6 @@
             "AssemblyAsmDisplayName" = "8:AgE363x_1_7, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_655C963680A110864608B3FA862987EF"
-                    {
-                    "Name" = "8:AgE363x_1_7.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:AgE363x_1_7.dll"
             "TargetName" = "8:"
@@ -4538,11 +4503,6 @@
             "AssemblyAsmDisplayName" = "8:TestChooser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64"
                 "ScatterAssemblies"
                 {
-                    "_898FD5B64D1E4FF4BA81AAFDCBC7B839"
-                    {
-                    "Name" = "8:TestChooser.exe"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:..\\TestChooser\\bin\\x64\\Release\\TestChooser.exe"
             "TargetName" = "8:"
@@ -5453,11 +5413,6 @@
             "AssemblyAsmDisplayName" = "8:AgSCPI99_1_0, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C83A0964174FE0BD5ABE96E40B047B9E"
-                    {
-                    "Name" = "8:AgSCPI99_1_0.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:AgSCPI99_1_0.dll"
             "TargetName" = "8:"
@@ -5721,11 +5676,6 @@
             "AssemblyAsmDisplayName" = "8:TestExec, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64"
                 "ScatterAssemblies"
                 {
-                    "_DC0F55FA25794E198CD069FB95061DEB"
-                    {
-                    "Name" = "8:TestExec.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:..\\TestExec\\bin\\x64\\Release\\TestExec.dll"
             "TargetName" = "8:"
@@ -5845,11 +5795,6 @@
             "AssemblyAsmDisplayName" = "8:Keysight.Visa, Version=18.5.0.0, Culture=neutral, PublicKeyToken=7a01cdb2a9131f73, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_E28C5B9A3D73D9785904CAFAD1C4DAEB"
-                    {
-                    "Name" = "8:Keysight.Visa.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Keysight.Visa.dll"
             "TargetName" = "8:"
@@ -6423,15 +6368,26 @@
                     "Property" = "8:_77FFD87E95504E30AD83BA54AE323C9D"
                         "Folders"
                         {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_8A482EDC968C402B9E761D59B095CAD2"
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_9CDB82FC96B442A4B8E980649EC257FD"
                             {
-                            "Name" = "8:TestExecutive"
+                            "Name" = "8:Test"
                             "AlwaysCreate" = "11:FALSE"
                             "Condition" = "8:"
                             "Transitive" = "11:FALSE"
-                            "Property" = "8:_5680E89327CC4CD781AC328A5995B27C"
+                            "Property" = "8:_A0FFF1A9166C409CA1E98CA890FE2151"
                                 "Folders"
                                 {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_3DC59E86364B4BEE9F1AC08EB97BDFB0"
+                                    {
+                                    "Name" = "8:TestExecutive"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_5680E89327CC4CD781AC328A5995B27C"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -6602,7 +6558,7 @@
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
             "Target" = "8:_898FD5B64D1E4FF4BA81AAFDCBC7B839"
-            "Folder" = "8:_8A482EDC968C402B9E761D59B095CAD2"
+            "Folder" = "8:_3DC59E86364B4BEE9F1AC08EB97BDFB0"
             "WorkingFolder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
             "Icon" = "8:_A48F8DB6C49F46C7A420887E77C8B817"
             "Feature" = "8:"
@@ -6616,7 +6572,7 @@
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
             "Target" = "8:_23B775B5EE324F53A02CE167779AC222"
-            "Folder" = "8:_8A482EDC968C402B9E761D59B095CAD2"
+            "Folder" = "8:_3DC59E86364B4BEE9F1AC08EB97BDFB0"
             "WorkingFolder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
             "Icon" = "8:_A48F8DB6C49F46C7A420887E77C8B817"
             "Feature" = "8:"
