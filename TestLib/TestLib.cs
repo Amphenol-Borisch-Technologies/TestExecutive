@@ -197,6 +197,11 @@ namespace ABT.Test.TestExecutive.TestLib {
         }
 
         public static String NotImplementedMessageEnum<T>(String enumName) where T : Enum { return $"Unimplemented Enum item '{enumName}'; switch/case must support all items in enum '{String.Join(",", Enum.GetNames(typeof(T)))}'."; }
+        public static void CopyFolderAndContentsRecursively(String sourceFolder, String destinationFolder) {
+            Directory.CreateDirectory(destinationFolder);
+            foreach (String filePath in Directory.GetFiles(sourceFolder)) File.Copy(filePath, Path.Combine(destinationFolder, Path.GetFileName(filePath)), overwrite: true);
+            foreach (String folderPath in Directory.GetDirectories(sourceFolder)) CopyFolderAndContentsRecursively(folderPath, Path.Combine(destinationFolder, Path.GetFileName(folderPath)));
+        }
 
         private static void InvalidPathError(String InvalidPath) { _ = MessageBox.Show($"Path {InvalidPath} invalid.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly); }
     }
