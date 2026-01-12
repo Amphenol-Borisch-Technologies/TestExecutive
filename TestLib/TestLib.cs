@@ -7,6 +7,8 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Contexts;
+using System.Security.AccessControl;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -197,10 +199,50 @@ namespace ABT.Test.TestExecutive.TestLib {
         }
 
         public static String NotImplementedMessageEnum<T>(String enumName) where T : Enum { return $"Unimplemented Enum item '{enumName}'; switch/case must support all items in enum '{String.Join(",", Enum.GetNames(typeof(T)))}'."; }
+
         public static void CopyFolderAndContentsRecursively(String sourceFolder, String destinationFolder) {
             Directory.CreateDirectory(destinationFolder);
             foreach (String filePath in Directory.GetFiles(sourceFolder)) File.Copy(filePath, Path.Combine(destinationFolder, Path.GetFileName(filePath)), overwrite: true);
             foreach (String folderPath in Directory.GetDirectories(sourceFolder)) CopyFolderAndContentsRecursively(folderPath, Path.Combine(destinationFolder, Path.GetFileName(folderPath)));
+        }
+
+        public static void TestPlanInstallerCustomActions(String TargetDirectory) {
+            TestPlanDefinition testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(xmlFile: $@"{TargetDirectory}\{TestPlanDefinitionBase}{xml}");
+            CreateDirectoryAndSetPermissions($@"{testPlanDefinition.TestSpace.WorkFolder}\{testPlanDefinition.UUT.Number}", @"BORISCH\Domain Users", FileSystemRights.Modify | FileSystemRights.Write);
+            foreach (TestOperation testOperation in testPlanDefinition.TestSpace.TestOperations)
+                CreateDirectoryAndSetPermissions($@"{testPlanDefinition.TestSpace.WorkFolder}\{testPlanDefinition.UUT.Number}\{testOperation.NamespaceTrunk}", @"BORISCH\Domain Users", FileSystemRights.Modify | FileSystemRights.Write);
+
+            if (TestLib.testExecDefinition.TestData.Item is Files files) {
+                CreateDirectoryAndSetPermissions($@"{files.Folder}\{testPlanDefinition.UUT.Number}", @"BORISCH\Domain Users", FileSystemRights.Modify | FileSystemRights.Write);
+                foreach (TestOperation testOperation in testPlanDefinition.TestSpace.TestOperations)
+                    if (testOperation.ProductionTest) CreateDirectoryAndSetPermissions($@"{files.Folder}\{testPlanDefinition.UUT.Number}\{testOperation.NamespaceTrunk}", @"BORISCH\Domain Users", FileSystemRights.Modify | FileSystemRights.Write);
+            }
+        }
+
+        private static void SetDirectoryPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
+            try {
+                DirectoryInfo directoryInfo = new DirectoryInfo(directory);
+                DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
+                directorySecurity.SetAccessRuleProtection(false, false);
+                directorySecurity.AddAccessRule(
+                    new FileSystemAccessRule(identity,
+                        fileSystemRights,
+                        InheritanceFlags.ObjectInherit | InheritanceFlags.ContainerInherit,
+                        PropagationFlags.None,
+                        AccessControlType.Allow));
+                directoryInfo.SetAccessControl(directorySecurity);
+            } catch (Exception exception) {
+                _ = MessageBox.Show(
+                    $"Directory:   '{directory}'.{Environment.NewLine}" +
+                    $"Identity:     '{identity}'.{Environment.NewLine}" +
+                    $"File Rights: '{fileSystemRights}'.{Environment.NewLine}{Environment.NewLine}" +
+                    $"{exception.Message}",
+                    $"Error Setting Directory Permissions", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private static void CreateDirectoryAndSetPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
+            Directory.CreateDirectory(directory);
+            SetDirectoryPermissions(directory, identity, fileSystemRights);
         }
 
         private static void InvalidPathError(String InvalidPath) { _ = MessageBox.Show($"Path {InvalidPath} invalid.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly); }
