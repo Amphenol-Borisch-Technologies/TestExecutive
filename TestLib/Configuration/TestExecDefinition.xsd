@@ -34,6 +34,23 @@
 		</xs:restriction>
 	</xs:simpleType>
 
+	<xs:simpleType name="ValidWindowsPathNoSpaces">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">
+				<![CDATA[
+				  ValidWindowsPathNoSpaces simpleType:
+				  - RegEx to validate a Windows Path name; for example, "C:\Windows" or "C:\Windows\notepad.exe".
+				  - Don't add a trailing '\' to the path; for example, "C:\Windows" instead of "C:\Windows\".
+				  - No spaces allowed in the path.
+				  - Type: xs:string.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[^ &lt;&gt;&quot;\/|?*]{1,255}" />
+		</xs:restriction>
+	</xs:simpleType>	
+	
 	<xs:simpleType name="ValidWindowsFile">
 		<xs:annotation>
 			<xs:documentation xml:lang="en">
@@ -407,24 +424,22 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="TestPlansInstallationFolderBase" type="xs:string" minOccurs="1" maxOccurs="1" >
+				<xs:element name="TestPlansInstallationFolderBase" type="ValidWindowsPath" minOccurs="1" maxOccurs="1" >
 					<xs:annotation>
 						<xs:documentation xml:lang="en">
 							<![CDATA[
 							TestPlansInstallationFolderBase element:
 							- Required, 1 occurence.
-							- Type: xs:string.
 							]]>
 						</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="TestPlansWorkFolderBase" type="xs:string" minOccurs="1" maxOccurs="1" >
+				<xs:element name="TestPlansWorkFolderBase" type="ValidWindowsPathNoSpaces" minOccurs="1" maxOccurs="1" >
 					<xs:annotation>
 						<xs:documentation xml:lang="en">
 							<![CDATA[
 							TestPlansWorkFolderBase element:
 							- Required, 1 occurence.
-							- Type: xs:string.
 							]]>
 						</xs:documentation>
 					</xs:annotation>
