@@ -55,15 +55,15 @@ namespace ABT.Test.TestExecutive.TestDev {
                     testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(testPlanDefinitionPath);
                     CreateDirectoryAndSetPermissions(files.Folder + @"\" + testPlanDefinition.UUT.Number);
                     stringBuilder.AppendLine($"  {files.Folder + @"\" + testPlanDefinition.UUT.Number}");
-                    CreateDirectoryAndSetPermissions(testPlanDefinition.TestSpace.WorkFolder + @"\" + testPlanDefinition.UUT.Number);
-                    stringBuilder.AppendLine($"  {testPlanDefinition.TestSpace.WorkFolder + @"\" + testPlanDefinition.UUT.Number}");
+                    CreateDirectoryAndSetPermissions(testExecDefinition.TestPlansWorkFolderBase + @"\" + testPlanDefinition.UUT.Number);
+                    stringBuilder.AppendLine($"  {testExecDefinition.TestPlansWorkFolderBase + @"\" + testPlanDefinition.UUT.Number}");
                     foreach (TestOperation testOperation in testPlanDefinition.TestSpace.TestOperations) {
                         if (testOperation.ProductionTest) {
                             CreateDirectoryAndSetPermissions(files.Folder + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk);
                             stringBuilder.AppendLine($"     {files.Folder + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk}");
                         }
-                        CreateDirectoryAndSetPermissions(testPlanDefinition.TestSpace.WorkFolder + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk);
-                        stringBuilder.AppendLine($"     {testPlanDefinition.TestSpace.WorkFolder + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk}");
+                        CreateDirectoryAndSetPermissions(testExecDefinition.TestPlansWorkFolderBase + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk);
+                        stringBuilder.AppendLine($"     {testExecDefinition.TestPlansWorkFolderBase + @"\" + testPlanDefinition.UUT.Number + @"\" + testOperation.NamespaceTrunk}");
                     }
                 }
                 CustomMessageBox.Show(Title: $"TestPlan Test Folders", Message: stringBuilder.ToString());

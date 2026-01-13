@@ -40,6 +40,11 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             SetDirectoryPermissions(testPlansInstallationFolderBase, readAndExecute, FileSystemRights.ReadAndExecute);
             SetDirectoryPermissions(testPlansInstallationFolderBase, fullControl, FileSystemRights.FullControl);
 
+            String testPlansWorkFolderBase = testExecDefinition.Element("TestPlansWorkFolderBase").Value;
+            Directory.CreateDirectory(testPlansWorkFolderBase);
+            SetDirectoryPermissions(testPlansWorkFolderBase, readAndExecute, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(testPlansWorkFolderBase, fullControl, FileSystemRights.FullControl);
+
             // NOTE: SetDirectoryPermissions(folder) fails, apparently because I cannot change permissions on P:\Test\TDR.
             //XElement textFiles = testExecDefinition.Element("TestData").Element("Files");
             //if (textFiles != null) {
