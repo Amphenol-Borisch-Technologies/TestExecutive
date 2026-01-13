@@ -13,6 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace ABT.Test.TestExecutive.TestLib {
     [Flags]
@@ -206,20 +207,41 @@ namespace ABT.Test.TestExecutive.TestLib {
             foreach (String folderPath in Directory.GetDirectories(sourceFolder)) CopyFolderAndContentsRecursively(folderPath, Path.Combine(destinationFolder, Path.GetFileName(folderPath)));
         }
 
-        public static void TestPlanInstallerCustomActions(String TargetDirectory) {
-            TestPlanDefinition testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(xmlFile: $@"{TargetDirectory}\{TestPlanDefinitionBase}{xml}");
-            CreateDirectoryAndSetPermissions($@"{testPlanDefinition.TestSpace.WorkFolder}\{testPlanDefinition.UUT.Number}", @"BORISCH\Domain Users", FileSystemRights.Modify | FileSystemRights.Write);
-            foreach (TestOperation testOperation in testPlanDefinition.TestSpace.TestOperations)
-                CreateDirectoryAndSetPermissions($@"{testPlanDefinition.TestSpace.WorkFolder}\{testPlanDefinition.UUT.Number}\{testOperation.NamespaceTrunk}", @"BORISCH\Domain Users", FileSystemRights.Modify | FileSystemRights.Write);
+        public static void TestPlanInstallerCustomActions(String TestPlanInstallationDirectory) {
+            // TestExecDefinition actions.
+            // NOTE: Use XDocument.Load instead of de-serialized TestLib.testExecDefinition to access TestExecDefinition.xml's Elements and Attributes, because serialization is problematic from within Microsoft Installer.
+            XElement testExecDefinition = XDocument.Load(TestExecDefinitionXML_Path).Root;
+            String readAndExecute = testExecDefinition.Element(nameof(TestExecDefinition.ActiveDirectoryPermissions)).Attribute(nameof(TestExecDefinition.ActiveDirectoryPermissions.ReadAndExecute)).Value;
+            String modifyWrite = testExecDefinition.Element(nameof(TestExecDefinition.ActiveDirectoryPermissions)).Attribute(nameof(TestExecDefinition.ActiveDirectoryPermissions.ModifyWrite)).Value;
+            String fullControl = testExecDefinition.Element(nameof(TestExecDefinition.ActiveDirectoryPermissions)).Attribute(nameof(TestExecDefinition.ActiveDirectoryPermissions.ReadAndExecute)).Value;
+            SetDirectoryPermissions(TestPlanInstallationDirectory, readAndExecute, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(TestPlanInstallationDirectory, fullControl, FileSystemRights.FullControl);
 
-            if (TestLib.testExecDefinition.TestData.Item is Files files) {
-                CreateDirectoryAndSetPermissions($@"{files.Folder}\{testPlanDefinition.UUT.Number}", @"BORISCH\Domain Users", FileSystemRights.Modify | FileSystemRights.Write);
-                foreach (TestOperation testOperation in testPlanDefinition.TestSpace.TestOperations)
-                    if (testOperation.ProductionTest) CreateDirectoryAndSetPermissions($@"{files.Folder}\{testPlanDefinition.UUT.Number}\{testOperation.NamespaceTrunk}", @"BORISCH\Domain Users", FileSystemRights.Modify | FileSystemRights.Write);
+            // TestPlanDefinition actions.
+            // NOTE: Reading TestExecDefinition.xml is risky, as it's not guaranteed to be present before a TestPlan installation is completed.  Thus far, is working.
+            XElement testPlanDefinition = XDocument.Load($@"{TestPlanInstallationDirectory}\{TestPlanDefinitionBase}{xml}").Root;
+            XElement testSpace = testPlanDefinition.Element(nameof(TestPlanDefinition.TestSpace));
+            XElement uut = testPlanDefinition.Element(nameof(TestPlanDefinition.UUT));
+            String number = uut.Attribute(nameof(TestPlanDefinition.UUT.Number)).Value;
+            String workFolder = testSpace.Attribute(nameof(TestPlanDefinition.TestSpace.WorkFolder)).Value;
+            CreateDirectoryAndSetPermissions($@"{workFolder}\{uut}\{number}", readAndExecute, FileSystemRights.Modify | FileSystemRights.Write);
+            // NOTE: Assign Modify & Write permissions to TestExecDefinition.xml's ReadAndExecute Group because the ReadAndExecute Group is defined only for permissions to execute the TestExec application.
+            // The TestPlanDefinition.xml WorkFolder permissions need to be ModifyWrite because TestPlans create folders & files in their WorkFolders during TestPlan execution.
+
+            // WorkFolder sub-folders & permissions.
+            foreach (XElement testOperation in testSpace.Elements(nameof(TestOperation)))
+                CreateDirectoryAndSetPermissions($@"{workFolder}\{number}\{testOperation.Attribute(nameof(TestOperation.NamespaceTrunk)).Value}", readAndExecute, FileSystemRights.Modify | FileSystemRights.Write);
+
+            // TDR folders, sub-folders & permissions.
+            if (testExecDefinition.Element(nameof(TestExecDefinition.TestData))?.Element(nameof(Files)) != null) {
+                XElement files = testExecDefinition.Element(nameof(TestExecDefinition.TestData)).Element(nameof(Files));
+                CreateDirectoryAndSetPermissions($@"{files.Attribute(nameof(Files.Folder)).Value}\{number}", modifyWrite, FileSystemRights.Modify | FileSystemRights.Write);
+                foreach (XElement testOperation in testSpace.Elements(nameof(TestOperation)))
+                    if (testOperation.Attribute(nameof(TestOperation.ProductionTest)).Value == "true") CreateDirectoryAndSetPermissions($@"{files.Attribute(nameof(Files.Folder)).Value}\{number}\{testOperation.Attribute(nameof(TestOperation.NamespaceTrunk)).Value}", modifyWrite, FileSystemRights.Modify | FileSystemRights.Write);
             }
         }
 
-        private static void SetDirectoryPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
+        public static void SetDirectoryPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
             try {
                 DirectoryInfo directoryInfo = new DirectoryInfo(directory);
                 DirectorySecurity directorySecurity = directoryInfo.GetAccessControl();
@@ -240,7 +262,7 @@ namespace ABT.Test.TestExecutive.TestLib {
                     $"Error Setting Directory Permissions", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private static void CreateDirectoryAndSetPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
+        public static void CreateDirectoryAndSetPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
             Directory.CreateDirectory(directory);
             SetDirectoryPermissions(directory, identity, fileSystemRights);
         }

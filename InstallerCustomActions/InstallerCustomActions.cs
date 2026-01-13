@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ABT.Test.TestExecutive.TestLib.Configuration;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Configuration.Install;
@@ -17,23 +18,37 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand)]
         public override void Install(IDictionary stateSaver) {
             base.Install(stateSaver);
-
             XElement testExecDefinition = XDocument.Load(Context.Parameters["targetdir"] + @"\TestExecDefinition.xml").Root;
-
+            // NOTE: Cannot access TestLib.TestExecDefinitionXML_Path because it may not be usable yet, as this, it's installation, hasn't yet completed.
+            // Reading TestExecDefinition.xml is also risky, as it's not guaranteed to be present before installation is completed.
+            // TODO: Resolve this by using the WiX Toolkit or other Installer besides Microsoft's Installer Project to first completely install TestLib, then reference TestLib's static readonly String paths while subsequently installing TestExec.
+            // Installers like WiX Toolkit can automatically sequence multiple installations to handle dependencies like this, whereas Microsoft's Installer Project installers cannot.
+            // - Downside is WiX has a non-trivial learning curve.
+            // Alternatively, could have separate Microsoft Installer Project installers for TestLib & TestExec, and manually install first TestLib, then TestExec.
+            // - Downside is must then have two Installer Projects to maintain, which must be installed in correct sequence.
+            // Or could define customer Context.Parameters in this Microsoft Project installer & access them from this method.
+            // - Downside is must then synchronize TestLib's static readonly String paths with the Context.Parameters, easily forgotten if changed.
+            // Currently using hard-coded string constants, which simple & straitforward.
+            // - Downside is they can only be changed via rebuilding solution.
             XElement activeDirectoryPermissions = testExecDefinition.Element("ActiveDirectoryPermissions");
-            SetDirectoryPermissions(Context.Parameters["targetdir"], activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
-            SetDirectoryPermissions(Context.Parameters["targetdir"], activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
+            String readAndExecute = activeDirectoryPermissions.Attribute("ReadAndExecute").Value;
+            String fullControl = activeDirectoryPermissions.Attribute("FullControl").Value;
+            SetDirectoryPermissions(Context.Parameters["targetdir"], readAndExecute, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(Context.Parameters["targetdir"], fullControl, FileSystemRights.FullControl);
 
-            Directory.CreateDirectory(testExecDefinition.Element("TestPlansFolder").Value);
-            SetDirectoryPermissions(testExecDefinition.Element("TestPlansFolder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
-            SetDirectoryPermissions(testExecDefinition.Element("TestPlansFolder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
+            String testPlansFolder = testExecDefinition.Element("TestPlansFolder").Value;
+            Directory.CreateDirectory(testPlansFolder);
+            SetDirectoryPermissions(testPlansFolder, readAndExecute, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(testPlansFolder, fullControl, FileSystemRights.FullControl);
 
-            // NOTE: SetDirectoryPermissions(textFiles.Attribute("Folder").Value) fails, apparently because I can't change permissions on P:\Test\TDR.
+            // NOTE: SetDirectoryPermissions(folder) fails, apparently because I cannot change permissions on P:\Test\TDR.
             //XElement textFiles = testExecDefinition.Element("TestData").Element("Files");
             //if (textFiles != null) {
-            //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ReadAndExecute").Value, FileSystemRights.ReadAndExecute);
-            //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("ModifyWrite").Value, FileSystemRights.Modify | FileSystemRights.Write);
-            //    SetDirectoryPermissions(textFiles.Attribute("Folder").Value, activeDirectoryPermissions.Attribute("FullControl").Value, FileSystemRights.FullControl);
+            //    String folder = textFiles.Attribute("Folder").Value;
+            //    String modifyWrite = activeDirectoryPermissions.Attribute("ModifyWrite").Value;
+            //    SetDirectoryPermissions(folder, readAndExecute, FileSystemRights.ReadAndExecute);
+            //    SetDirectoryPermissions(folder, modifyWrite, FileSystemRights.Modify | FileSystemRights.Write);
+            //    SetDirectoryPermissions(folder, fullControl, FileSystemRights.FullControl);
             //}
 
             String source = testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value;
