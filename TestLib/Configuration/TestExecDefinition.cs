@@ -13,7 +13,8 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
     public class TestExecDefinition {
         [XmlElement(nameof(Development))] public Development Development { get; set; }
         [XmlElement(nameof(TestExecutiveURL))] public String TestExecutiveURL { get; set; }
-        [XmlElement(nameof(TestPlansFolder))] public String TestPlansFolder { get; set; }
+        [XmlElement(nameof(TestPlansInstallationFolderBase))] public String TestPlansInstallationFolderBase { get; set; }
+        [XmlElement(nameof(TestPlansWorkFolderBase))] public String TestPlansWorkFolderBase { get; set; }
         [XmlElement(nameof(WindowsEventLog))] public WindowsEventLog WindowsEventLog { get; set; }
         [XmlElement(nameof(ActiveDirectoryPermissions))] public ActiveDirectoryPermissions ActiveDirectoryPermissions { get; set; }
         [XmlElement(nameof(TestData))] public TestData TestData { get; set; }

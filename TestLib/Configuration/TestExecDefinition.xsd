@@ -407,11 +407,22 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="TestPlansFolder" type="xs:string" minOccurs="1" maxOccurs="1" >
+				<xs:element name="TestPlansInstallationFolderBase" type="xs:string" minOccurs="1" maxOccurs="1" >
 					<xs:annotation>
 						<xs:documentation xml:lang="en">
 							<![CDATA[
-							TestPlansFolder element:
+							TestPlansInstallationFolderBase element:
+							- Required, 1 occurence.
+							- Type: xs:string.
+							]]>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TestPlansWorkFolderBase" type="xs:string" minOccurs="1" maxOccurs="1" >
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							<![CDATA[
+							TestPlansWorkFolderBase element:
 							- Required, 1 occurence.
 							- Type: xs:string.
 							]]>
