@@ -31,6 +31,7 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             // - Downside is they can only be changed via rebuilding solution.
             XElement activeDirectoryPermissions = testExecDefinition.Element("ActiveDirectoryPermissions");
             String readAndExecute = activeDirectoryPermissions.Attribute("ReadAndExecute").Value;
+            String modifyWrite = activeDirectoryPermissions.Attribute("ModifyWrite").Value;
             String fullControl = activeDirectoryPermissions.Attribute("FullControl").Value;
             SetDirectoryPermissions(Context.Parameters["targetdir"], readAndExecute, FileSystemRights.ReadAndExecute);
             SetDirectoryPermissions(Context.Parameters["targetdir"], fullControl, FileSystemRights.FullControl);
@@ -42,7 +43,9 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
 
             String testPlansWorkFolderBase = testExecDefinition.Element("TestPlansWorkFolderBase").Value;
             Directory.CreateDirectory(testPlansWorkFolderBase);
-            SetDirectoryPermissions(testPlansWorkFolderBase, readAndExecute, FileSystemRights.ReadAndExecute);
+            SetDirectoryPermissions(testPlansWorkFolderBase, readAndExecute, FileSystemRights.Modify | FileSystemRights.Write);
+            // NOTE: Assign Modify & Write permissions to TestExecDefinition.xml's ReadAndExecute Group because the ReadAndExecute Group is defined only for permissions to execute the TestExec application.
+            // The WorkFolder permissions need to be ModifyWrite because TestPlans create folders & files in their WorkFolders during TestPlan execution.
             SetDirectoryPermissions(testPlansWorkFolderBase, fullControl, FileSystemRights.FullControl);
 
             // NOTE: SetDirectoryPermissions(folder) fails, apparently because I cannot change permissions on P:\Test\TDR.

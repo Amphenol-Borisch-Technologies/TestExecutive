@@ -226,7 +226,7 @@ namespace ABT.Test.TestExecutive.TestLib {
 
             // WorkFolder sub-folders & permissions.
             // NOTE: Assign Modify & Write permissions to TestExecDefinition.xml's ReadAndExecute Group because the ReadAndExecute Group is defined only for permissions to execute the TestExec application.
-            // The TestPlanDefinition.xml WorkFolder permissions need to be ModifyWrite because TestPlans create folders & files in their WorkFolders during TestPlan execution.
+            // The WorkFolder permissions need to be ModifyWrite because TestPlans create folders & files in their WorkFolders during TestPlan execution.
             CreateDirectoryAndSetPermissions($@"{testPlansWorkFolderBase}\{number}", readAndExecute, FileSystemRights.Modify | FileSystemRights.Write);
             foreach (XElement testOperation in testSpace.Elements(nameof(TestOperation)))
                 CreateDirectoryAndSetPermissions($@"{testPlansWorkFolderBase}\{number}\{testOperation.Attribute(nameof(TestOperation.NamespaceTrunk)).Value}", readAndExecute, FileSystemRights.Modify | FileSystemRights.Write);
