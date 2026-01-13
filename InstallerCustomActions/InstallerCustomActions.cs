@@ -59,17 +59,17 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
                 SetDirectoryPermissions(testPlansWorkFolderBase, fullControl, FileSystemRights.FullControl);
             }
 
-                // NOTE: SetDirectoryPermissions(folder) fails, apparently because I cannot change permissions on P:\Test\TDR.
-                //XElement textFiles = testExecDefinition.Element("TestData").Element("Files");
-                //if (textFiles != null) {
-                //    String folder = textFiles.Attribute("Folder").Value;
-                //    String modifyWrite = activeDirectoryPermissions.Attribute("ModifyWrite").Value;
-                //    SetDirectoryPermissions(folder, readAndExecute, FileSystemRights.ReadAndExecute);
-                //    SetDirectoryPermissions(folder, modifyWrite, FileSystemRights.Modify | FileSystemRights.Write);
-                //    SetDirectoryPermissions(folder, fullControl, FileSystemRights.FullControl);
-                //}
+            // NOTE: SetDirectoryPermissions(folder) fails, apparently because I cannot change permissions on P:\Test\TDR.
+            //XElement textFiles = testExecDefinition.Element("TestData").Element("Files");
+            //if (textFiles != null) {
+            //    String folder = textFiles.Attribute("Folder").Value;
+            //    String modifyWrite = activeDirectoryPermissions.Attribute("ModifyWrite").Value;
+            //    SetDirectoryPermissions(folder, readAndExecute, FileSystemRights.ReadAndExecute);
+            //    SetDirectoryPermissions(folder, modifyWrite, FileSystemRights.Modify | FileSystemRights.Write);
+            //    SetDirectoryPermissions(folder, fullControl, FileSystemRights.FullControl);
+            //}
 
-                String source = testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value;
+            String source = testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value;
             String log = testExecDefinition.Element("WindowsEventLog").Attribute("Log").Value;
             try {
                 Boolean sourceExisted = EventLog.SourceExists(source);
