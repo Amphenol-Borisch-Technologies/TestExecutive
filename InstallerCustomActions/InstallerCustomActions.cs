@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration.Install;
 using System.Diagnostics;
@@ -42,23 +43,33 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             SetDirectoryPermissions(testPlansInstallationFolderBase, fullControl, FileSystemRights.FullControl);
 
             String testPlansWorkFolderBase = testExecDefinition.Element("TestPlansWorkFolderBase").Value;
-            Directory.CreateDirectory(testPlansWorkFolderBase);
-            SetDirectoryPermissions(testPlansWorkFolderBase, readAndExecute, FileSystemRights.Modify | FileSystemRights.Write);
-            // NOTE: Assign Modify & Write permissions to TestExecDefinition.xml's ReadAndExecute Group because the ReadAndExecute Group is defined only for permissions to execute the TestExec application.
-            // The WorkFolder permissions need to be ModifyWrite because TestPlans create folders & files in their WorkFolders during TestPlan execution.
-            SetDirectoryPermissions(testPlansWorkFolderBase, fullControl, FileSystemRights.FullControl);
+            const String programData = @"C:\ProgramData";
+            if (IsSubPath(programData, testPlansWorkFolderBase)) {
+                // Try to set permissions on each segment of the path from ProgramData to TestPlansWorkFolderBase.
+                foreach (String subPath in EnumeratePathSegments(programData, testPlansWorkFolderBase)) {
+                    Directory.CreateDirectory(subPath);
+                    SetDirectoryPermissions(subPath, readAndExecute, FileSystemRights.Modify | FileSystemRights.Write);
+                    // NOTE: Assign Modify & Write permissions to TestExecDefinition.xml's ReadAndExecute Group because the ReadAndExecute Group is defined only for permissions to execute the TestExec application.
+                    // The WorkFolder permissions need to be ModifyWrite because TestPlans create folders & files in their WorkFolders during TestPlan execution.
+                    SetDirectoryPermissions(subPath, fullControl, FileSystemRights.FullControl);
+                }
+            } else {
+                // Just set permissions on the TestPlansWorkFolderBase folder.
+                SetDirectoryPermissions(testPlansWorkFolderBase, readAndExecute, FileSystemRights.Modify | FileSystemRights.Write);
+                SetDirectoryPermissions(testPlansWorkFolderBase, fullControl, FileSystemRights.FullControl);
+            }
 
-            // NOTE: SetDirectoryPermissions(folder) fails, apparently because I cannot change permissions on P:\Test\TDR.
-            //XElement textFiles = testExecDefinition.Element("TestData").Element("Files");
-            //if (textFiles != null) {
-            //    String folder = textFiles.Attribute("Folder").Value;
-            //    String modifyWrite = activeDirectoryPermissions.Attribute("ModifyWrite").Value;
-            //    SetDirectoryPermissions(folder, readAndExecute, FileSystemRights.ReadAndExecute);
-            //    SetDirectoryPermissions(folder, modifyWrite, FileSystemRights.Modify | FileSystemRights.Write);
-            //    SetDirectoryPermissions(folder, fullControl, FileSystemRights.FullControl);
-            //}
+                // NOTE: SetDirectoryPermissions(folder) fails, apparently because I cannot change permissions on P:\Test\TDR.
+                //XElement textFiles = testExecDefinition.Element("TestData").Element("Files");
+                //if (textFiles != null) {
+                //    String folder = textFiles.Attribute("Folder").Value;
+                //    String modifyWrite = activeDirectoryPermissions.Attribute("ModifyWrite").Value;
+                //    SetDirectoryPermissions(folder, readAndExecute, FileSystemRights.ReadAndExecute);
+                //    SetDirectoryPermissions(folder, modifyWrite, FileSystemRights.Modify | FileSystemRights.Write);
+                //    SetDirectoryPermissions(folder, fullControl, FileSystemRights.FullControl);
+                //}
 
-            String source = testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value;
+                String source = testExecDefinition.Element("WindowsEventLog").Attribute("Source").Value;
             String log = testExecDefinition.Element("WindowsEventLog").Attribute("Log").Value;
             try {
                 Boolean sourceExisted = EventLog.SourceExists(source);
@@ -79,6 +90,31 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
                     $"{exception.Message}",
                     $"Error Creating or Writing Event Log & Source", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private Boolean IsSubPath(String parentPath, String childPath) {
+            var parentUri = new Uri(AppendDirectorySeparator(parentPath), UriKind.Absolute);
+            var childUri = new Uri(AppendDirectorySeparator(childPath), UriKind.Absolute);
+            return parentUri.IsBaseOf(childUri);
+        }
+
+        private String AppendDirectorySeparator(String path) {
+            if (!path.EndsWith(Path.DirectorySeparatorChar.ToString())) return path + Path.DirectorySeparatorChar;
+            return path;
+        }
+
+        private IEnumerable<String> EnumeratePathSegments(String parentPath, String childPath) {
+            String parent = Path.GetFullPath(parentPath).TrimEnd(Path.DirectorySeparatorChar);
+            String current = Path.GetFullPath(childPath).TrimEnd(Path.DirectorySeparatorChar);
+            if (!current.StartsWith(parent + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase) && !current.Equals(parent, StringComparison.OrdinalIgnoreCase)) throw new ArgumentException("childPath is not under parentPath.");
+
+            List<String> list = new List<String>();
+            while (!current.Equals(parent, StringComparison.OrdinalIgnoreCase)) {
+                list.Add(current);
+                current = Directory.GetParent(current).FullName;
+            }
+            list.Reverse();
+            return list;
         }
 
         private void SetDirectoryPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
