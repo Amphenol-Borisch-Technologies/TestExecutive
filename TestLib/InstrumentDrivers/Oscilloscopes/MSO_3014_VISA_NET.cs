@@ -1,6 +1,5 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using Keysight.Visa;
-using Microsoft.VisualBasic.Devices;
 using System;
 using System.Collections.Generic;
 using System.IO;
