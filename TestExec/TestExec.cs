@@ -313,7 +313,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             // - .Net instead provides AssemblyLoadContext which would be perfect for TestExec...but isn't available in .Net Framework.
             // - Thus this compromise.
             using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
-                openFileDialog.InitialDirectory = testExecDefinition.TestPlansFolder;
+                openFileDialog.InitialDirectory = testExecDefinition.TestPlansInstallationFolderBase;
                 openFileDialog.Filter = "TestPlan Files|*.exe";
                 if (openFileDialog.ShowDialog() == DialogResult.OK) {
                     TestChooser.TestChooser.Launch(openFileDialog.FileName, Process.GetCurrentProcess().Id);
