@@ -23,9 +23,9 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             // Reading TestExecDefinition.xml is also risky, as it's not guaranteed to be present before installation is completed.
             // TODO: Resolve this by using the WiX Toolkit or other Installer besides Microsoft's Installer Project to first completely install TestLib, then reference TestLib's static readonly String paths while subsequently installing TestExec.
             // Installers like WiX Toolkit should be able to automatically sequence multiple installations to handle dependencies like this, whereas Microsoft's Installer Project installers cannot.
-            // - Downside is WiX has a non-trivial learning curve, and WiX Toolset version 6.0 pre-compiled binaries provided by FireGiant aren't free for commercial use.
-            // - WiX Toolset version 6.0 is open source, but must be built from source, which is non-trivial.
-            // - WiX Toolset version 3.14 binaries are free for commercial use, but are old & not being actively maintained.
+            // - Downside is WiX has a non-trivial learning curve, and WiX Toolset version 6.0 pre-compiled executable binaries provided by FireGiant aren't free for commercial use.
+            // - WiX Toolset version 6.0 is open source, but executable binaries must be built from source to be cost free, which is non-trivial.
+            // - WiX Toolset version 3.14 executable binaries are free for commercial use, but are old & not being actively maintained.
             // Alternatively, could have separate Microsoft Installer Project installers for TestLib & TestExec, and manually install first TestLib, then TestExec.
             // - Downside is must then have two Installer Projects to maintain, which must be installed in correct sequence.
             // - And Custom Actions in Microsoft Installer Projects are flaky, fragile, prone to generating Error 1001s during installation.
