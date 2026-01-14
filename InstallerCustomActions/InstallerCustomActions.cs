@@ -22,13 +22,16 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
             // NOTE: Cannot access TestLib.TestExecDefinitionXML_Path because it may not be usable yet, as this, it's installation, hasn't yet completed.
             // Reading TestExecDefinition.xml is also risky, as it's not guaranteed to be present before installation is completed.
             // TODO: Resolve this by using the WiX Toolkit or other Installer besides Microsoft's Installer Project to first completely install TestLib, then reference TestLib's static readonly String paths while subsequently installing TestExec.
-            // Installers like WiX Toolkit can automatically sequence multiple installations to handle dependencies like this, whereas Microsoft's Installer Project installers cannot.
-            // - Downside is WiX has a non-trivial learning curve.
+            // Installers like WiX Toolkit should be able to automatically sequence multiple installations to handle dependencies like this, whereas Microsoft's Installer Project installers cannot.
+            // - Downside is WiX has a non-trivial learning curve, and WiX Toolset version 6.0 pre-compiled binaries provided by FireGiant aren't free for commercial use.
+            // - WiX Toolset version 6.0 is open source, but must be built from source, which is non-trivial.
+            // - WiX Toolset version 3.14 binaries are free for commercial use, but are old & not being actively maintained.
             // Alternatively, could have separate Microsoft Installer Project installers for TestLib & TestExec, and manually install first TestLib, then TestExec.
             // - Downside is must then have two Installer Projects to maintain, which must be installed in correct sequence.
+            // - And Custom Actions in Microsoft Installer Projects are flaky, fragile, prone to generating Error 1001s during installation.
             // Or could define customer Context.Parameters in this Microsoft Project installer & access them from this method.
             // - Downside is must then synchronize TestLib's static readonly String paths with the Context.Parameters, easily forgotten if changed.
-            // Currently using hard-coded string constants, which simple & straitforward.
+            // Currently using hard-coded string constants, simple & straightforward.
             // - Downside is they can only be changed via rebuilding solution.
             XElement activeDirectoryPermissions = testExecDefinition.Element("ActiveDirectoryPermissions");
             String readAndExecute = activeDirectoryPermissions.Attribute("ReadAndExecute").Value;
@@ -44,8 +47,7 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
 
             String testPlansWorkFolderBase = testExecDefinition.Element("TestPlansWorkFolderBase").Value;
             const String programData = @"C:\ProgramData";
-            if (IsSubPath(programData, testPlansWorkFolderBase)) {
-                // Try to set permissions on each segment of the path from ProgramData to TestPlansWorkFolderBase.
+            if (IsSubPath(programData, testPlansWorkFolderBase)) { // Try to set permissions on each segment of the path from ProgramData to TestPlansWorkFolderBase.
                 foreach (String subPath in EnumeratePathSegments(programData, testPlansWorkFolderBase)) {
                     Directory.CreateDirectory(subPath);
                     SetDirectoryPermissions(subPath, readAndExecute, FileSystemRights.Modify | FileSystemRights.Write);
@@ -53,8 +55,7 @@ namespace ABT.Test.TestExecutive.InstallerCustomActions {
                     // The WorkFolder permissions need to be ModifyWrite because TestPlans create folders & files in their WorkFolders during TestPlan execution.
                     SetDirectoryPermissions(subPath, fullControl, FileSystemRights.FullControl);
                 }
-            } else {
-                // Just set permissions on the TestPlansWorkFolderBase folder.
+            } else { // Just set permissions on the TestPlansWorkFolderBase folder.
                 SetDirectoryPermissions(testPlansWorkFolderBase, readAndExecute, FileSystemRights.Modify | FileSystemRights.Write);
                 SetDirectoryPermissions(testPlansWorkFolderBase, fullControl, FileSystemRights.FullControl);
             }
