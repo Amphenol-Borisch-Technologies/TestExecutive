@@ -489,6 +489,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_5AEFF0E8AA9B358E554DE5806E259EE3"
+        "OwnerKey" = "8:_C5D7DD2F6F656A8EFFAA9F9B829E894E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_5D5B4F5D6444AAE77B5D4485D8FA9B70"
         "OwnerKey" = "8:_1A867EB1D7F448D8B534ABF4CBD9FBE9"
         "MsmSig" = "8:_UNDEFINED"
@@ -3608,6 +3614,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5AEFF0E8AA9B358E554DE5806E259EE3"
+            {
+            "SourcePath" = "8:Tkdpo2k3k4k.dll"
+            "TargetName" = "8:Tkdpo2k3k4k.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:4"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5D5B4F5D6444AAE77B5D4485D8FA9B70"
             {
             "AssemblyRegister" = "3:1"
@@ -6447,7 +6473,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:TestExecutive"
         "ProductCode" = "8:{9E7CE688-EBE2-4ADE-83DE-0C2CF5443EF5}"
-        "PackageCode" = "8:{BB6415C1-7295-4FB7-B3F4-F6A5488E462E}"
+        "PackageCode" = "8:{72F1C527-BA59-4392-8F62-3008EC986CB0}"
         "UpgradeCode" = "8:{4F1CC228-B14D-4021-BCB8-14DDE00DC07D}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
