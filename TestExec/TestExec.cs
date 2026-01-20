@@ -449,7 +449,7 @@ namespace ABT.Test.TestExecutive.TestExec {
 
         #region Form Logging
         private static readonly String MessageTestEvent = "Test Event";
-        private static readonly String MessageUUT_Event = (Spaces2 + MessageTestEvent).PadRight(PaddingRight) + ": ";
+        private static readonly String MessageUUT_Event = $"{Spaces2}{MessageTestEvent}     : ";
 
         #region Public Methods
         public void LogAppend(String message) {
@@ -496,10 +496,10 @@ namespace ABT.Test.TestExecutive.TestExec {
             LogAppend($"{Spaces2}{nameof(UUT.Customer)}     : {testSequence.UUT.Customer.Name}\n");
 
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine($"{nameof(TestGroup.Methods)}:");
+            stringBuilder.AppendLine($"{nameof(TestOperation.TestGroups)} & {nameof(TestGroup.Methods)}:");
             String SPACING = Spaces2 + Spaces2; // Embedded tabs in strings (\t) seem to cause method ReplaceText() issues.
             foreach (TestGroup testGroup in testSequence.TestOperation.TestGroups) {
-                stringBuilder.AppendLine($"{Spaces2}{testGroup.Classname}, {testGroup.Description}");
+                stringBuilder.AppendLine($"{Spaces2}{testGroup.Classname}; {testGroup.Description}");
                 foreach (Method method in testGroup.Methods) stringBuilder.AppendLine($"{SPACING}{method.Name}".PadRight(PaddingRight + SPACING.Length) + $": {method.Description}");
                 stringBuilder.AppendLine();
             }
