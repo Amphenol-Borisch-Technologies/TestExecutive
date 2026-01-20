@@ -9,7 +9,14 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="ValidCSharpNamespace">
+	<xs:simpleType name="ValidCSharpIdentifierShortLength">
+		<xs:restriction base="xs:string">
+			<xs:length value="35"/>
+			<xs:pattern value="[a-zA-Z_ε][a-zA-Z0-9_ε]{1,34}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="ValidCSharpNamespace">
     <xs:annotation>
       <xs:documentation xml:lang="en">
         <![CDATA[
@@ -163,14 +170,14 @@
       <xs:element name="Event" type="xs:string" minOccurs="1" maxOccurs="1"/>
       <xs:element name="LogString" type="xs:string" minOccurs="1" maxOccurs="1"/>
     </xs:sequence>
-    <xs:attribute name="Name" type="ValidCSharpIdentifier" use="required">
+    <xs:attribute name="Name" type="ValidCSharpIdentifierShortLength" use="required">
       <xs:annotation>
         <xs:documentation xml:lang="en">
           <![CDATA[
             Name attribute:
             - Required.
             - Method Names must be unique within their TestGroup, and must also differ from their parent Classnames.
-            - Type: ValidCSharpIdentifier.
+            - Type: ValidCSharpIdentifierShortLength.
 
             Method Names are analogous to a leaf in a root/trunk/branch/leaf hierarchy.
           ]]>
@@ -549,14 +556,14 @@
       <xs:element name="MethodProcess" type="MethodProcess"/>
       <xs:element name="MethodTextual" type="MethodTextual"/>
     </xs:choice>
-    <xs:attribute name="Classname" type="ValidCSharpIdentifier" use="required">
+    <xs:attribute name="Classname" type="ValidCSharpIdentifierShortLength" use="required">
       <xs:annotation>
         <xs:documentation xml:lang="en">
           <![CDATA[
             Classname attribute:
           - Required, 1 or more occurrences.
             - Classnames must be unique within their TestOperation, and must also differ from their child Method Names.
-            - Type: ValidCSharpIdentifier.
+            - Type: ValidCSharpIdentifierShortLength.
             
             A class is analogous to a branch in a root/trunk/branch/leaf hierarchy.         
             - Note, Classnames are not Windows File names, even if both can be identically named and are often conflated.

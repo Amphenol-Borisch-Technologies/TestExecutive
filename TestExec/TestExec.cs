@@ -501,6 +501,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             foreach (TestGroup testGroup in testSequence.TestOperation.TestGroups) {
                 stringBuilder.AppendLine($"{Spaces2}{testGroup.Classname}, {testGroup.Description}");
                 foreach (Method method in testGroup.Methods) stringBuilder.AppendLine($"{SPACING}{method.Name}".PadRight(PaddingRight + SPACING.Length) + $": {method.Description}");
+                stringBuilder.AppendLine();
             }
             LogAppend(stringBuilder.ToString());
         }
