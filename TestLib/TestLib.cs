@@ -64,7 +64,15 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static readonly String TestSequenceXSD_URL = testExecDefinition.TestExecutiveURL + "/" + TestSequenceBase + xsd;
 
         public static readonly String Spaces2 = "  ";
-        public static readonly Int32 PaddingRight = 45; // NOTE: PaddingRight must be greater the maxLength of simpleType "ValidCSharpIdentifierShortLength" in TestExecDefinition.xsd & TestPlanDefinition.xsd.
+        public static readonly Int32 PaddingRight = 45;
+        // NOTE: PaddingRight must be greater than 4 + maxLength of simpleType "ValidCSharpIdentifierShortLength" in TestExecDefinition.xsd & TestPlanDefinition.xsd.
+        // - See below code from TestExec.LogStart():
+        //String SPACING = Spaces2 + Spaces2; // Embedded tabs in strings (\t) seem to cause method ReplaceText() issues.
+        //    foreach (TestGroup testGroup in testSequence.TestOperation.TestGroups) {
+        //        stringBuilder.AppendLine($"{Spaces2}{testGroup.Classname}, {testGroup.Description}");
+        //        foreach (Method method in testGroup.Methods) stringBuilder.AppendLine($"{SPACING}{method.Name}".PadRight(PaddingRight + SPACING.Length) + $": {method.Description}");
+        //        stringBuilder.AppendLine();
+        //    }
         internal static readonly String TestExecutive = nameof(TestExecutive);
 
         public static TestPlanDefinition testPlanDefinition { get; set; } = null;
