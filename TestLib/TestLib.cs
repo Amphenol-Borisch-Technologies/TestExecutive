@@ -64,7 +64,7 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static readonly String TestSequenceXSD_URL = testExecDefinition.TestExecutiveURL + "/" + TestSequenceBase + xsd;
 
         public static readonly String Spaces2 = "  ";
-        public static readonly Int32 PaddingRight = 40; // NOTE: PaddingRight must be greater the maxLength of simpleType "ValidCSharpIdentifierShortLength" in TestExecDefinition.xsd & TestPlanDefinition.xsd.
+        public static readonly Int32 PaddingRight = 45; // NOTE: PaddingRight must be greater the maxLength of simpleType "ValidCSharpIdentifierShortLength" in TestExecDefinition.xsd & TestPlanDefinition.xsd.
         internal static readonly String TestExecutive = nameof(TestExecutive);
 
         public static TestPlanDefinition testPlanDefinition { get; set; } = null;

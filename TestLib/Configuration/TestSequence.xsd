@@ -11,8 +11,8 @@
 
 	<xs:simpleType name="ValidCSharpIdentifierShortLength">
 		<xs:restriction base="xs:string">
-			<xs:length value="35"/>
-			<xs:pattern value="[a-zA-Z_ε][a-zA-Z0-9_ε]{1,34}"/>
+			<xs:length value="40"/>
+			<xs:pattern value="[a-zA-Z_ε][a-zA-Z0-9_ε]{1,39}"/>
 		</xs:restriction>
 	</xs:simpleType>
 	
