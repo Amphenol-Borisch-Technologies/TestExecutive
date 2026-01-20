@@ -12,7 +12,7 @@
 	<xs:simpleType name="ValidCSharpIdentifierShortLength">
 		<xs:restriction base="xs:string">
 			<xs:maxLength value="40"/>
-			<xs:pattern value="[a-zA-Z_ε][a-zA-Z0-9_ε]{1,39}"/>
+			<xs:pattern value="[a-zA-Z_ε][a-zA-Z0-9_ε]{0,39}"/>
 		</xs:restriction>
 	</xs:simpleType>
 	
