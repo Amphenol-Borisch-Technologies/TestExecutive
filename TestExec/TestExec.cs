@@ -488,12 +488,12 @@ namespace ABT.Test.TestExecutive.TestExec {
         private void LogStart() {
             LogAppend($"{nameof(UUT)}:");
             LogAppend($"{MessageUUT_Event}");
-            LogAppend($"{Spaces2}{nameof(TestSequence.SerialNumber)}".PadRight(PaddingRight) + $": {testSequence.SerialNumber}");
-            LogAppend($"{Spaces2}{nameof(UUT.Number)}".PadRight(PaddingRight) + $": {testSequence.UUT.Number}");
-            LogAppend($"{Spaces2}{nameof(UUT.Revision)}".PadRight(PaddingRight) + $": {testSequence.UUT.Revision}");
-            LogAppend($"{Spaces2}{nameof(UUT.Description)}".PadRight(PaddingRight) + $": {testSequence.UUT.Description}");
-            LogAppend($"{Spaces2}{nameof(UUT.Category)}".PadRight(PaddingRight) + $": {testSequence.UUT.Category}");
-            LogAppend($"{Spaces2}{nameof(UUT.Customer)}".PadRight(PaddingRight) + $": {testSequence.UUT.Customer.Name}\n");
+            LogAppend($"{Spaces2}{nameof(TestSequence.SerialNumber)} : {testSequence.SerialNumber}");
+            LogAppend($"{Spaces2}{nameof(UUT.Number)}       : {testSequence.UUT.Number}");
+            LogAppend($"{Spaces2}{nameof(UUT.Revision)}     : {testSequence.UUT.Revision}");
+            LogAppend($"{Spaces2}{nameof(UUT.Description)}  : {testSequence.UUT.Description}");
+            LogAppend($"{Spaces2}{nameof(UUT.Category)}     : {testSequence.UUT.Category}");
+            LogAppend($"{Spaces2}{nameof(UUT.Customer)}     : {testSequence.UUT.Customer.Name}\n");
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($"{nameof(TestGroup.Methods)}:");
