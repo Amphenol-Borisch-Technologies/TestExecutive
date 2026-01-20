@@ -449,7 +449,7 @@ namespace ABT.Test.TestExecutive.TestExec {
 
         #region Form Logging
         private static readonly String MessageTestEvent = "Test Event";
-        private static readonly String MessageUUT_Event = $"{Spaces2}{MessageTestEvent}     : ";
+        private static readonly String MessageUUT_Event = $"{Spaces2}{MessageTestEvent}   : ";
 
         #region Public Methods
         public void LogAppend(String message) {
