@@ -67,7 +67,11 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
                 _ = testSequence.TestOperation.TestGroups.RemoveAll(tg => tg.Classname != selectedGroup.Classname);
                 // From the selected TestOperation, retain only the selected TestGroup and all its Methods.
             }
-
+            TestLib.PaddingRight = 0;
+            foreach (TestGroup testGroup in testSequence.TestOperation.TestGroups)
+                foreach (Method method in testGroup.Methods)
+                    if (method.Name.Length > TestLib.PaddingRight) TestLib.PaddingRight = method.Name.Length;
+            TestLib.PaddingRight += TestLib.Spaces4.Length;
             DialogResult = DialogResult.OK;
         }
 

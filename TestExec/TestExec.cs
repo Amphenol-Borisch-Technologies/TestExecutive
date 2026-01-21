@@ -497,10 +497,9 @@ namespace ABT.Test.TestExecutive.TestExec {
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.AppendLine($"{nameof(TestOperation.TestGroups)} & {nameof(TestGroup.Methods)}:");
-            String SPACING = Spaces2 + Spaces2; // Embedded tabs in strings (\t) seem to cause method ReplaceText() issues.
             foreach (TestGroup testGroup in testSequence.TestOperation.TestGroups) {
                 stringBuilder.AppendLine($"{Spaces2}{testGroup.Classname}; {testGroup.Description}");
-                foreach (Method method in testGroup.Methods) stringBuilder.AppendLine($"{SPACING}{method.Name}".PadRight(PaddingRight + SPACING.Length) + $": {method.Description}");
+                foreach (Method method in testGroup.Methods) stringBuilder.AppendLine($"{Spaces4}{method.Name}".PadRight(PaddingRight) + $" : {method.Description}");
                 stringBuilder.AppendLine();
             }
             LogAppend(stringBuilder.ToString());
