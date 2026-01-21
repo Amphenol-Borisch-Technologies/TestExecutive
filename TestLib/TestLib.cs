@@ -66,6 +66,8 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static readonly String Spaces2 = "  ";
         public static readonly String Spaces4 = Spaces2 + Spaces2;
         public static Int32 PaddingRight = 60 + Spaces4.Length; // PaddingRight initialized to maxLength of simpleType "ValidCSharpIdentifierShortLength" in TestExecDefinition.xsd & TestPlanDefinition.xsd + Spaces4.Length, but calculated & reassigned in method TestExec.ButtonSelect_Click().
+        public static readonly String TRUE = true.ToString().ToLower();
+        public static readonly String FALSE = false.ToString().ToLower();
         internal static readonly String TestExecutive = nameof(TestExecutive);
 
         public static TestPlanDefinition testPlanDefinition { get; set; } = null;
