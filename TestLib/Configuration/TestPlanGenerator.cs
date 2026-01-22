@@ -8,24 +8,7 @@ using System.Windows.Forms;
 namespace ABT.Test.TestExecutive.TestLib.Configuration {
     public static class TestPlanGenerator {
 
-        public static void GenerateTestPlan(String testPlanDefinitionXML_Path) {
-            // TODO:  Soon; add option to generate method invocations to Keysight VEE.  Need this.
-            //        - Also add capability for VEE programs to access the TestExec & TestLib DLL libraries. 
-            // NOTE:  Won't add an option to generate method invocations for Python:
-            //        - I think C# is a better technical option than Python for TestPlans.
-            //          - Python is a dynamic/scripting language, not a statically typesafe compiled language.
-            //          - "The compiler is your friend."  Runtime type-errors are rare in C#, and likely caused by using C#'s dynamic typing features.
-            //        - If one avoids more advanced C# features like generics, delegates, lambda functions, interfaces, etc., C# is really no more difficult than Python.
-            //          - Both are C-style languages, so the syntax is similar.
-            //          - Microsoft Visual Studio's Intellisense and code completion make C# programming relatively easy.
-            //          - Microsoft Visual Studio Code's IntelliSense & code completion aren't as good, but are still good.
-            //          - Microsoft CoPilot is also a huge help with C# programming on both these IDEs.
-            //        - Any ease-of-development advantages Python offers are more than offset by leaving the .Net & TestExec/TestLib environment.
-            //          - .Net and TestExec/TestLib's functionalities are accessible from Python, but directly accessible from C#.
-            //        - Python has awesome libraries, but so does C#, and Keysight's VISA & SCPI libraries are equally as excellent for .Net as Python.
-            //          - Unless Python is deeply preferred, C# is as good as or better a choice, especially with Microsoft CoPilot's assistance.
-            //          - And if Python is preferred, invoking it from C#, and accessing .Net, TestExec & TestLib from Python are easily coded manually.
-            //            - No need to auto-generate such code; CoPilot can easily help with that.
+        public static void GenerateTestPlan(String testPlanDefinitionXML_Path) { 
             TestSpace testSpace = Serializing.DeserializeFromFile<TestSpace>(testPlanDefinitionXML_Path);
 
             for (Int32 testOperation = 0; testOperation < testSpace.TestOperations.Count; testOperation++) {
