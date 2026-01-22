@@ -386,11 +386,11 @@
             </xs:restriction>
           </xs:simpleType>
         </xs:attribute>
-        <xs:attribute name="Units" use="required">
+        <xs:attribute name="Unit" use="required">
           <xs:annotation>
             <xs:documentation xml:lang="en">
               <![CDATA[
-            Units attribute:
+            Unit attribute:
             - Required.
             - Type: xs:string.
                       
@@ -423,7 +423,7 @@
             - Required.
             - Type: xs:string.
                       
-            Relevant to Volt/Ampere Units.
+            Relevant to Volt/Ampere Unit.
           ]]>
             </xs:documentation>
           </xs:annotation>

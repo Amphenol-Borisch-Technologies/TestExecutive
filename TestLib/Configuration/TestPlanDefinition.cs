@@ -404,7 +404,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             stringBuilder.Append($"{nameof(HighComparator)}: {UUT.EF(GetType().GetProperty(nameof(HighComparator)).GetValue(this))}, ");
             stringBuilder.Append($"{nameof(FractionalDigits)}: {UUT.EF(GetType().GetProperty(nameof(FractionalDigits)).GetValue(this))}, ");
             stringBuilder.Append($"{nameof(UnitPrefix)}: {UUT.EF(GetType().GetProperty(nameof(UnitPrefix)).GetValue(this))}, ");
-            stringBuilder.Append($"{nameof(Units)}: {UUT.EF(GetType().GetProperty(nameof(Units)).GetValue(this))}, ");
+            stringBuilder.Append($"{nameof(Unit)}: {UUT.EF(GetType().GetProperty(nameof(Unit)).GetValue(this))}, ");
             stringBuilder.Append($"{nameof(UnitSuffix)}: {UUT.EF(GetType().GetProperty(nameof(UnitSuffix)).GetValue(this))}));");
             return stringBuilder.ToString();
         }
@@ -438,11 +438,11 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             stringBuilder.AppendLine(FormatMessage(nameof(High), $"{High:G}"));
             stringBuilder.AppendLine(FormatMessage(nameof(Value), $"{Math.Round(Double.Parse(Value), (Int32)FractionalDigits, MidpointRounding.ToEven)}"));
             stringBuilder.AppendLine(FormatMessage(nameof(Low), $"{Low:G}"));
-            String units = String.Empty;
-            if (UnitPrefix != UnitPrefixes.NONE) units += $"{Enum.GetName(typeof(UnitPrefixes), UnitPrefix)}";
-            units += $"{Enum.GetName(typeof(Units), Unit)}";
-            if (UnitSuffix != UnitSuffixes.NONE) units += $" {Enum.GetName(typeof(UnitSuffixes), UnitSuffix)}";
-            stringBuilder.AppendLine(FormatMessage(nameof(Units), units));
+            String unit = String.Empty;
+            if (UnitPrefix != UnitPrefixes.NONE) unit += $"{Enum.GetName(typeof(UnitPrefixes), UnitPrefix)}";
+            unit += $"{Enum.GetName(typeof(Units), Unit)}";
+            if (UnitSuffix != UnitSuffixes.NONE) unit += $" {Enum.GetName(typeof(UnitSuffixes), UnitSuffix)}";
+            stringBuilder.AppendLine(FormatMessage(nameof(Units), unit));
             return stringBuilder.ToString();
         }
     }
