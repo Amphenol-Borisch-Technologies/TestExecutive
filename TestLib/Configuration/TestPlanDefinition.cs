@@ -233,16 +233,16 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         public String Assertion() {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append($"if ({nameof(TestLib)}.{nameof(TestLib.testSequence)}.{nameof(TestLib.testSequence.IsOperation)}) Debug.Assert({nameof(TestIndices)}.{nameof(TestIndices.TestOperation)}.Assert(");
-            stringBuilder.Append($"{nameof(NamespaceTrunk)}: {UUT.EF(GetType().GetProperty(nameof(NamespaceTrunk)).GetValue(this))}, ");
-            stringBuilder.Append($"{nameof(ProductionTest)}: {UUT.EF(GetType().GetProperty(nameof(ProductionTest)).GetValue(this).ToString().ToLower())}, ");
+            stringBuilder.Append($"{nameof(NamespaceTrunk)}: nameof({GetType().GetProperty(nameof(NamespaceTrunk)).GetValue(this)}), ");
+            stringBuilder.Append($"{nameof(ProductionTest)}: {GetType().GetProperty(nameof(ProductionTest)).GetValue(this).ToString().ToLower()}, ");
             stringBuilder.Append($"{nameof(Description)}: {UUT.EF(GetType().GetProperty(nameof(Description)).GetValue(this))}, ");
             stringBuilder.Append($"{nameof(TestGroups)}: {UUT.EF(String.Join(UUT.DIVIDER, TestGroups.Select(tg => tg.Classname)))}));");
             return stringBuilder.ToString();
         }
 
-        public Boolean Assert(String NamespaceTrunk, String ProductionTest, String Description, String TestGroups) {
+        public Boolean Assert(String NamespaceTrunk, Boolean ProductionTest, String Description, String TestGroups) {
             Boolean boolean = String.Equals(this.NamespaceTrunk, NamespaceTrunk);
-            boolean &= this.ProductionTest == Boolean.Parse(ProductionTest);
+            boolean &= this.ProductionTest == ProductionTest;
             boolean &= String.Equals(this.Description, Description);
             boolean &= String.Equals(String.Join(UUT.DIVIDER, this.TestGroups.Select(tg => tg.Classname)).Replace("\"", ""), TestGroups);
             return boolean;
@@ -265,19 +265,19 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         public String Assertion() {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append($"Debug.Assert({nameof(TestIndices)}.{nameof(TestIndices.TestGroup)}.Assert(");
-            stringBuilder.Append($"{nameof(Classname)}: {UUT.EF(GetType().GetProperty(nameof(Classname)).GetValue(this))}, ");
+            stringBuilder.Append($"{nameof(Classname)}: nameof({GetType().GetProperty(nameof(Classname)).GetValue(this)}), ");
             stringBuilder.Append($"{nameof(Description)}: {UUT.EF(GetType().GetProperty(nameof(Description)).GetValue(this))}, ");
-            stringBuilder.Append($"{nameof(CancelNotPassed)}: {UUT.EF(GetType().GetProperty(nameof(CancelNotPassed)).GetValue(this).ToString().ToLower())}, ");
-            stringBuilder.Append($"{nameof(Independent)}: {UUT.EF(GetType().GetProperty(nameof(Independent)).GetValue(this).ToString().ToLower())}, ");
+            stringBuilder.Append($"{nameof(CancelNotPassed)}: {GetType().GetProperty(nameof(CancelNotPassed)).GetValue(this).ToString().ToLower()}, ");
+            stringBuilder.Append($"{nameof(Independent)}: {GetType().GetProperty(nameof(Independent)).GetValue(this).ToString().ToLower()}, ");
             stringBuilder.Append($"{nameof(Methods)}: {UUT.EF(String.Join(UUT.DIVIDER, Methods.Select(m => m.Name)))}));");
             return stringBuilder.ToString();
         }
 
-        public Boolean Assert(String Classname, String Description, String CancelNotPassed, String Independent, String Methods) {
+        public Boolean Assert(String Classname, String Description, Boolean CancelNotPassed, Boolean Independent, String Methods) {
             Boolean boolean = String.Equals(this.Classname, Classname);
             boolean &= String.Equals(this.Description, Description);
-            boolean &= this.CancelNotPassed == Boolean.Parse(CancelNotPassed);
-            boolean &= this.Independent == Boolean.Parse(Independent);
+            boolean &= this.CancelNotPassed == CancelNotPassed;
+            boolean &= this.Independent == Independent;
             boolean &= String.Equals(String.Join(UUT.DIVIDER, this.Methods.Select(m => m.Name)).Replace("\"", ""), Methods);
             return boolean;
         }
@@ -303,14 +303,14 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
 
         public virtual String Assertion() {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append($"{nameof(Name)}: {UUT.EF(GetType().GetProperty(nameof(Name)).GetValue(this))}, ");
+            stringBuilder.Append($"{nameof(Name)}: nameof({GetType().GetProperty(nameof(Name)).GetValue(this)}), ");
             stringBuilder.Append($"{nameof(Description)}: {UUT.EF(GetType().GetProperty(nameof(Description)).GetValue(this))}, ");
-            stringBuilder.Append($"{nameof(CancelNotPassed)}: {UUT.EF(GetType().GetProperty(nameof(CancelNotPassed)).GetValue(this).ToString().ToLower())}");
+            stringBuilder.Append($"{nameof(CancelNotPassed)}: {GetType().GetProperty(nameof(CancelNotPassed)).GetValue(this).ToString().ToLower()}");
             return stringBuilder.ToString();
         }
 
-        public Boolean Assert(String Name, String Description, String CancelNotPassed) {
-            return String.Equals(this.Name, Name) && String.Equals(this.Description, Description) && this.CancelNotPassed == Boolean.Parse(CancelNotPassed);
+        public Boolean Assert(String Name, String Description, Boolean CancelNotPassed) {
+            return String.Equals(this.Name, Name) && String.Equals(this.Description, Description) && this.CancelNotPassed == CancelNotPassed;
         }
 
         public abstract EVENTS Evaluate();
@@ -345,7 +345,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             return stringBuilder.ToString();
         }
 
-        public Boolean Assert(String Name, String Description, String CancelNotPassed, String Parameters = null) {
+        public Boolean Assert(String Name, String Description, Boolean CancelNotPassed, String Parameters = null) {
             Boolean boolean = base.Assert(Name, Description, CancelNotPassed);
             if (Parameters != null) boolean &= String.Equals(String.Join(UUT.DIVIDER, this.Parameters.Select(p => $"{p.Name}={p.Value}")).Replace("\"", ""), Parameters);
             return boolean;
@@ -398,18 +398,18 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append($"Debug.Assert((({GetType().Name}){nameof(TestIndices)}.{nameof(TestIndices.Method)}).Assert(");
             stringBuilder.Append($"{base.Assertion()}, ");
-            stringBuilder.Append($"{nameof(LowComparator)}: {UUT.EF(GetType().GetProperty(nameof(LowComparator)).GetValue(this))}, ");
+            stringBuilder.Append($"{nameof(LowComparator)}: nameof({GetType().GetProperty(nameof(LowComparator)).GetValue(this)}), ");
             stringBuilder.Append($"{nameof(Low)}: {UUT.EF(GetType().GetProperty(nameof(Low)).GetValue(this))}, ");
             stringBuilder.Append($"{nameof(High)}: {UUT.EF(GetType().GetProperty(nameof(High)).GetValue(this))}, ");
-            stringBuilder.Append($"{nameof(HighComparator)}: {UUT.EF(GetType().GetProperty(nameof(HighComparator)).GetValue(this))}, ");
+            stringBuilder.Append($"{nameof(HighComparator)}: nameof({GetType().GetProperty(nameof(HighComparator)).GetValue(this)}), ");
             stringBuilder.Append($"{nameof(FractionalDigits)}: {UUT.EF(GetType().GetProperty(nameof(FractionalDigits)).GetValue(this))}, ");
-            stringBuilder.Append($"{nameof(UnitPrefix)}: {UUT.EF(GetType().GetProperty(nameof(UnitPrefix)).GetValue(this))}, ");
-            stringBuilder.Append($"{nameof(Unit)}: {UUT.EF(GetType().GetProperty(nameof(Unit)).GetValue(this))}, ");
-            stringBuilder.Append($"{nameof(UnitSuffix)}: {UUT.EF(GetType().GetProperty(nameof(UnitSuffix)).GetValue(this))}));");
+            stringBuilder.Append($"{nameof(UnitPrefix)}: nameof({GetType().GetProperty(nameof(UnitPrefix)).GetValue(this)}), ");
+            stringBuilder.Append($"{nameof(Unit)}: nameof({GetType().GetProperty(nameof(Unit)).GetValue(this)}), ");
+            stringBuilder.Append($"{nameof(UnitSuffix)}: nameof({GetType().GetProperty(nameof(UnitSuffix)).GetValue(this)})));");
             return stringBuilder.ToString();
         }
 
-        public Boolean Assert(String Name, String Description, String CancelNotPassed, String LowComparator, String Low, String High, String HighComparator, String FractionalDigits, String UnitPrefix, String Unit, String UnitSuffix) {
+        public Boolean Assert(String Name, String Description, Boolean CancelNotPassed, String LowComparator, String Low, String High, String HighComparator, String FractionalDigits, String UnitPrefix, String Unit, String UnitSuffix) {
             Boolean boolean = base.Assert(Name, Description, CancelNotPassed);
             boolean &= this.LowComparator == (LowComparators)Enum.Parse(typeof(LowComparators), LowComparator);
             boolean &= this.Low == Double.Parse(Low);
@@ -466,7 +466,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             return stringBuilder.ToString();
         }
 
-        public Boolean Assert(String Name, String Description, String CancelNotPassed, String Folder, String File, String Parameters, String Expected) {
+        public Boolean Assert(String Name, String Description, Boolean CancelNotPassed, String Folder, String File, String Parameters, String Expected) {
             Debug.Assert(TestIndices.Method is MethodProcess);
             Boolean boolean = base.Assert(Name, Description, CancelNotPassed);
             boolean &= String.Equals(this.Folder, Folder);
@@ -499,7 +499,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             return stringBuilder.ToString();
         }
 
-        public Boolean Assert(String Name, String Description, String CancelNotPassed, String Text) {
+        public Boolean Assert(String Name, String Description, Boolean CancelNotPassed, String Text) {
             Debug.Assert(TestIndices.Method is MethodTextual);
             Boolean boolean = base.Assert(Name, Description, CancelNotPassed);
             boolean &= String.Equals(this.Text, Text);
