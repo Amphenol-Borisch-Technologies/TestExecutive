@@ -423,7 +423,7 @@
             - Required.
             - Type: xs:string.
                       
-            Relevant to Volt/Ampere Unit.
+            Relevant to VoltAmperes Unit.
           ]]>
             </xs:documentation>
           </xs:annotation>
