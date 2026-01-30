@@ -469,7 +469,6 @@ namespace ABT.Test.TestExecutive.TestExec {
                 }
             }
         }
-        public void LogError(String logMessage) { LogAppend(logMessage); }
         #endregion Public Methods
 
         #region Private Methods
