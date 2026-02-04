@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace ABT.Test.TestExecutive.TestLib.Configuration {
     public static class TestPlanGenerator {
 
-        public static void GenerateTestPlan(String testPlanDefinitionXML_Path) { 
+        public static void GenerateTestPlan(String testPlanDefinitionXML_Path) {
             TestSpace testSpace = Serializing.DeserializeFromFile<TestSpace>(testPlanDefinitionXML_Path);
 
             for (Int32 testOperation = 0; testOperation < testSpace.TestOperations.Count; testOperation++) {
