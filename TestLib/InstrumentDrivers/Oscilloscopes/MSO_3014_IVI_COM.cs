@@ -11,32 +11,32 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public String Address { get; }
         public String Detail { get; }
         public Tkdpo2k3k4kClass Tkdpo2k3k4kClass { get; }
-        public enum BUSES { B1, B2 }
-        public enum CHANNELS { CH1, CH2 }
-        public enum DRIVES_USB { E, F }
-        public INSTRUMENT_TYPES InstrumentType { get; }
-        public enum SETUPS { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
+        public enum BUS { B1, B2 }
+        public enum CHANNEL { CH1, CH2 }
+        public enum DRIVE_USB { E, F }
+        public INSTRUMENT_TYPE InstrumentType { get; }
+        public enum SETUP { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
         public readonly static String ValidCharactersFile = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=+-!@#$%^&()[]{}~‘’,";
         public readonly static String ValidCharactersLabel = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=≠+-±!@#$%^&*()[]{}<>/~‘’\"\\|:,.?µ∞∆°Ωσ";
         private Boolean _disposed = false;
 
         public void ResetClear() { Tkdpo2k3k4kClass.Reset(); }
 
-        public SELF_TEST_RESULTS SelfTests() {
+        public SELF_TEST_RESULT SelfTests() {
             Int32 TestResult = 0;
             String TestMessage = String.Empty;
             try {
                 Tkdpo2k3k4kClass.UtilityEx.SelfTest(ref TestResult, ref TestMessage);
             } catch (Exception exception) {
                 Instruments.SelfTestFailure(this, exception);
-                return SELF_TEST_RESULTS.FAIL;
+                return SELF_TEST_RESULT.FAIL;
             }
-            return (SELF_TEST_RESULTS)TestResult; // Tkdpo2k3k4kClass returns 0 for passed, 1 for fail.
+            return (SELF_TEST_RESULT)TestResult; // Tkdpo2k3k4kClass returns 0 for passed, 1 for fail.
         }
 
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
             ResetClear();
-            Boolean passed = SelfTests() is SELF_TEST_RESULTS.PASS;
+            Boolean passed = SelfTests() is SELF_TEST_RESULT.PASS;
             (Boolean Summary, List<DiagnosticsResult> Details) result_3014 = (passed, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
             if (passed) {
                 // TODO: Eventually; add verification measurements of the MSO-3014 mixed signal oscilloscope using external instrumentation.
@@ -55,16 +55,16 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             Tkdpo2k3k4kClass.WriteString("*OPC?");
             if (Tkdpo2k3k4kClass.ReadString().Trim().Trim('"') != "1") throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command '{scpiCommand}'!");
         }
-        public void EventTableEnable(BUSES Bus) {
+        public void EventTableEnable(BUS Bus) {
             switch (Bus) {
-                case BUSES.B1:
+                case BUS.B1:
                     Tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS B1;:*WAI");
                     break;
-                case BUSES.B2:
+                case BUS.B2:
                     Tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS B2;:*WAI");
                     break;
                 default:
-                    throw new NotImplementedException(NotImplementedMessageEnum<BUSES>(Enum.GetName(typeof(BUSES), Bus)));
+                    throw new NotImplementedException(NotImplementedMessageEnum<BUS>(Enum.GetName(typeof(BUS), Bus)));
             }
             Tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS BMENU7;:*WAI");
             Tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS RMENU1;:*WAI");
@@ -72,13 +72,13 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             Tkdpo2k3k4kClass.WriteString(":FPAnel:PRESS MENUOff;:*WAI");
         }
 
-        public Boolean SetupExists(SETUPS Setup, String LabelString) {
+        public Boolean SetupExists(SETUP Setup, String LabelString) {
             if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
             Tkdpo2k3k4kClass.WriteString($":{Setup}:LABEL?");
             return Tkdpo2k3k4kClass.ReadString().Trim().Trim('"').Equals(LabelString);
         }
 
-        public void SetupLoad(SETUPS Setup, String LabelString) {
+        public void SetupLoad(SETUP Setup, String LabelString) {
             if (!SetupExists(Setup, LabelString)) throw new ArgumentException($"MSO-3014 {Setup} labled '{LabelString}' non-existent!");
             Tkdpo2k3k4kClass.WriteString($":RECAll:SETUp {(Int32)Setup}");
             OperationCompleteQuery($":RECAll:SETUp {(Int32)Setup}");
@@ -91,7 +91,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             }
         }
 
-        public void SetupSave(SETUPS Setup, String LabelString) {
+        public void SetupSave(SETUP Setup, String LabelString) {
             if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
             Tkdpo2k3k4kClass.WriteString($":{Setup}:LABEL \"{LabelString}\"");
             Tkdpo2k3k4kClass.WriteString($":{Setup}:LABEL?");

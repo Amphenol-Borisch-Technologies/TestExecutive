@@ -7,34 +7,34 @@ using System.Windows.Forms;
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters {
     public class MM_34401A_SCPI_NET : IInstrument, IDiagnostics {
         public enum MMD { MIN, MAX, DEF }
-        public enum TERMINALS { Front, Rear };
+        public enum TERMINAL { Front, Rear };
         public enum PROPERTY { AmperageAC, AmperageDC, Continuity, Frequency, Fresistance, Period, Resistance, VoltageAC, VoltageDC, VoltageDiodic }
 
 
         public String Address { get; }
         public String Detail { get; }
         public Ag34401 Ag34401 { get; }
-        public INSTRUMENT_TYPES InstrumentType { get; }
+        public INSTRUMENT_TYPE InstrumentType { get; }
 
         public void ResetClear() {
             Ag34401.SCPI.RST.Command();
             Ag34401.SCPI.CLS.Command();
         }
 
-        public SELF_TEST_RESULTS SelfTests() {
+        public SELF_TEST_RESULT SelfTests() {
             Boolean result;
             try {
                 Ag34401.SCPI.TST.Query(out result);
             } catch (Exception exception) {
                 Instruments.SelfTestFailure(this, exception);
-                return SELF_TEST_RESULTS.FAIL;
+                return SELF_TEST_RESULT.FAIL;
             }
-            return result ? SELF_TEST_RESULTS.FAIL : SELF_TEST_RESULTS.PASS; // Ag34401 returns 0 for passed, 1 for fail, opposite of C#'s Convert.ToBoolean(Int32).
+            return result ? SELF_TEST_RESULT.FAIL : SELF_TEST_RESULT.PASS; // Ag34401 returns 0 for passed, 1 for fail, opposite of C#'s Convert.ToBoolean(Int32).
         }
 
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
             ResetClear();
-            Boolean passed = SelfTests() is SELF_TEST_RESULTS.PASS;
+            Boolean passed = SelfTests() is SELF_TEST_RESULT.PASS;
             (Boolean Summary, List<DiagnosticsResult> Details) result_34401A = (passed, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
             if (passed) {
                 // TODO: Eventually; add verification measurements of the 34401A multi-meter using external instrumentation.
@@ -46,7 +46,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters {
             this.Address = Address;
             this.Detail = Detail;
             Ag34401 = new Ag34401(Address);
-            InstrumentType = INSTRUMENT_TYPES.MULTI_METER;
+            InstrumentType = INSTRUMENT_TYPE.MULTI_METER;
             TerminalsSetRear();
         }
 
@@ -94,13 +94,13 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters {
         }
 
         public void TerminalsSetRear() {
-            if (TerminalsGet() == TERMINALS.Front) _ = MessageBox.Show("Please depress Keysight 34401A Front/Rear button.", "Paused, click OK to continue.", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            if (TerminalsGet() == TERMINAL.Front) _ = MessageBox.Show("Please depress Keysight 34401A Front/Rear button.", "Paused, click OK to continue.", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             Ag34401.SCPI.TRIGger.DELay.AUTO.Command(true);
         }
 
-        public TERMINALS TerminalsGet() {
+        public TERMINAL TerminalsGet() {
             Ag34401.SCPI.ROUTe.TERMinals.Query(out String terminals);
-            return String.Equals(terminals, "REAR") ? TERMINALS.Rear : TERMINALS.Front;
+            return String.Equals(terminals, "REAR") ? TERMINAL.Rear : TERMINAL.Front;
         }
     }
 }

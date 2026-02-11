@@ -158,7 +158,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             StatusTimeUpdate(null, null);
             StatusStatisticsUpdate(null, null);
             StatusCustomWrite(String.Empty, SystemColors.ControlLight);
-            StatusModeUpdate(MODES.Resetting);
+            StatusModeUpdate(MODE.Resetting);
         }
 
         private void FormModeRun() {
@@ -169,7 +169,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             ButtonRunReset(enabled: false);
             TSMI_System_SelfTests.Enabled = false;
             TSMI_UUT_Statistics.Enabled = false;
-            StatusModeUpdate(MODES.Running);
+            StatusModeUpdate(MODE.Running);
         }
 
         private void FormModeWait() {
@@ -180,7 +180,7 @@ namespace ABT.Test.TestExecutive.TestExec {
             ButtonRunReset(enabled: testSequence != null);
             TSMI_System_SelfTests.Enabled = true;
             TSMI_UUT_Statistics.Enabled = true;
-            StatusModeUpdate(MODES.Waiting);
+            StatusModeUpdate(MODE.Waiting);
         }
 
         public virtual void SystemReset() {
@@ -211,7 +211,7 @@ namespace ABT.Test.TestExecutive.TestExec {
 
         private void ButtonCancel_Clicked(Object sender, EventArgs e) {
             ButtonCancelReset(enabled: false);
-            StatusModeUpdate(MODES.Cancelling);
+            StatusModeUpdate(MODE.Cancelling);
             CTS_Cancel.Cancel();
         }
 
@@ -236,7 +236,7 @@ namespace ABT.Test.TestExecutive.TestExec {
         private void ButtonEmergencyStop_Clicked(Object sender, EventArgs e) {
             ButtonEmergencyStop.Enabled = false;
             ButtonCancelReset(enabled: false);
-            StatusModeUpdate(MODES.Emergency_Stopping);
+            StatusModeUpdate(MODE.Emergency_Stopping);
             SystemReset();
             CTS_EmergencyStop.Cancel();
         }
@@ -354,7 +354,7 @@ namespace ABT.Test.TestExecutive.TestExec {
         private void TSMI_System_SelfTestsInstruments_Click(Object sender, EventArgs e) {
             UseWaitCursor = true;
             Boolean passed = true;
-            foreach (KeyValuePair<String, Object> kvp in InstrumentDrivers) passed &= ((IInstrument)kvp.Value).SelfTests() is SELF_TEST_RESULTS.PASS;
+            foreach (KeyValuePair<String, Object> kvp in InstrumentDrivers) passed &= ((IInstrument)kvp.Value).SelfTests() is SELF_TEST_RESULT.PASS;
             if (passed) _ = MessageBox.Show(this, "SCPI VISA Instrument Self-Tests all passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             UseWaitCursor = false;
         }
@@ -420,18 +420,18 @@ namespace ABT.Test.TestExecutive.TestExec {
 
         private void StatusStatisticsUpdate(Object source, ElapsedEventArgs e) { StatusStatisticsLabel.Text = testPlanDefinition.TestSpace.StatisticsStatus(); }
 
-        private enum MODES { Resetting, Running, Cancelling, Emergency_Stopping, Waiting };
+        private enum MODE { Resetting, Running, Cancelling, Emergency_Stopping, Waiting };
 
-        private readonly Dictionary<MODES, Color> ModeColors = new Dictionary<MODES, Color>() {
-            { MODES.Resetting, EventColors[EVENTS.UNSET] },
-            { MODES.Running, EventColors[EVENTS.PASS] },
-            { MODES.Cancelling, EventColors[EVENTS.CANCEL] },
-            { MODES.Emergency_Stopping, EventColors[EVENTS.EMERGENCY_STOP] },
-            { MODES.Waiting, Color.Black }
+        private readonly Dictionary<MODE, Color> ModeColors = new Dictionary<MODE, Color>() {
+            { MODE.Resetting, EventColors[EVENTS.UNSET] },
+            { MODE.Running, EventColors[EVENTS.PASS] },
+            { MODE.Cancelling, EventColors[EVENTS.CANCEL] },
+            { MODE.Emergency_Stopping, EventColors[EVENTS.EMERGENCY_STOP] },
+            { MODE.Waiting, Color.Black }
         };
 
-        private void StatusModeUpdate(MODES mode) {
-            StatusModeLabel.Text = Enum.GetName(typeof(MODES), mode);
+        private void StatusModeUpdate(MODE mode) {
+            StatusModeLabel.Text = Enum.GetName(typeof(MODE), mode);
             StatusModeLabel.ForeColor = ModeColors[mode];
         }
 

@@ -13,25 +13,25 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         public String Address { get; }
         public String Detail { get; }
         public AgE363x AgE363x { get; }
-        public INSTRUMENT_TYPES InstrumentType { get; }
+        public INSTRUMENT_TYPE InstrumentType { get; }
 
         public void ResetClear() {
             AgE363x.SCPI.RST.Command();
             AgE363x.SCPI.CLS.Command();
         }
 
-        public SELF_TEST_RESULTS SelfTests() {
+        public SELF_TEST_RESULT SelfTests() {
             Int32 result;
             try {
                 AgE363x.SCPI.TST.Query(out result);
             } catch (Exception exception) {
                 Instruments.SelfTestFailure(this, exception);
-                return SELF_TEST_RESULTS.FAIL;
+                return SELF_TEST_RESULT.FAIL;
             }
-            return (SELF_TEST_RESULTS)result; // AgE363x returns 0 for passed, 1 for fail.
+            return (SELF_TEST_RESULT)result; // AgE363x returns 0 for passed, 1 for fail.
         }
 
-        public void OutputsOff() { AgE363x.SCPI.OUTPut.STATe.Command(Convert.ToBoolean(STATES.off)); }
+        public void OutputsOff() { AgE363x.SCPI.OUTPut.STATe.Command(Convert.ToBoolean(STATE.off)); }
 
         public RANGE RangeGet() {
             AgE363x.SCPI.SOURce.VOLTage.RANGe.Query(out String range);
@@ -56,20 +56,20 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             Thread.Sleep(500); // Allow some time for voltage to stabilize.
         }
 
-        public STATES StateGet() {
+        public STATE StateGet() {
             AgE363x.SCPI.OUTPut.STATe.Query(out Boolean state);
-            return state ? STATES.ON : STATES.off;
+            return state ? STATE.ON : STATE.off;
         }
 
-        public void StateSet(STATES State) {
-            AgE363x.SCPI.OUTPut.STATe.Command(State == STATES.ON);
+        public void StateSet(STATE State) {
+            AgE363x.SCPI.OUTPut.STATe.Command(State == STATE.ON);
             Thread.Sleep(500); // Allow some time for voltage to stabilize.        
         }
 
         #region Diagnostics
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
             ResetClear();
-            Boolean passed = SelfTests() is SELF_TEST_RESULTS.PASS;
+            Boolean passed = SelfTests() is SELF_TEST_RESULT.PASS;
             (Boolean Summary, List<DiagnosticsResult> Details) result_E3634A = (passed, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
             if (passed) {
                 Configuration.Parameter parameter = Parameters.Find(p => p.Name == "Accuracy_E3634A_VDC") ?? new Configuration.Parameter { Name = "Accuracy_E3634A_VDC", Value = "0.1" };
@@ -115,7 +115,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             this.Address = Address;
             this.Detail = Detail;
             AgE363x = new AgE363x(Address);
-            InstrumentType = INSTRUMENT_TYPES.POWER_SUPPLY;
+            InstrumentType = INSTRUMENT_TYPE.POWER_SUPPLY;
         }
     }
 }

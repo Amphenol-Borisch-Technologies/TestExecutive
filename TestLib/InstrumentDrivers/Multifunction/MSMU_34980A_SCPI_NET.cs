@@ -19,15 +19,15 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             public static readonly String M34939A = "34939A";
             public static readonly String M34952A = "34952A";
         }
-        public enum TEMPERATURE_UNITS { C, F, K }
-        public enum RELAY_STATES { opened, CLOSED }
-        public enum SLOTS { S1 = 1, S2 = 2, S3 = 3, S4 = 4, S5 = 5, S6 = 6, S7 = 7, S8 = 8 }
-        public static String GetSlot(SLOTS Slot) { return $"SLOT{(Int32)Slot}"; }
+        public enum TEMPERATURE_UNIT { C, F, K }
+        public enum RELAY_STATE { opened, CLOSED }
+        public enum SLOT { S1 = 1, S2 = 2, S3 = 3, S4 = 4, S5 = 5, S6 = 6, S7 = 7, S8 = 8 }
+        public static String GetSlot(SLOT Slot) { return $"SLOT{(Int32)Slot}"; }
 
         public String Address { get; }
         public String Detail { get; }
         public Ag34980 Ag34980 { get; }
-        public INSTRUMENT_TYPES InstrumentType { get; }
+        public INSTRUMENT_TYPE InstrumentType { get; }
         private readonly String _34980A;
 
         public void ResetClear() {
@@ -35,7 +35,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             Ag34980.SCPI.CLS.Command();
         }
 
-        public SELF_TEST_RESULTS SelfTests() {
+        public SELF_TEST_RESULT SelfTests() {
             if (DialogResult.Cancel == MessageBox.Show($"Please disconnect Address Bus DB9 & all Module/Slot terminal blocks/connectors from {Detail}/{Address}.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
                 TestLib.CTS_Cancel.Cancel();
                 TestLib.CT_Cancel.ThrowIfCancellationRequested();
@@ -46,9 +46,9 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
                 Ag34980.SCPI.TST.Query(out result);
             } catch (Exception exception) {
                 Instruments.SelfTestFailure(this, exception);
-                return SELF_TEST_RESULTS.FAIL;
+                return SELF_TEST_RESULT.FAIL;
             }
-            return (SELF_TEST_RESULTS)result; // Ag34980 returns 0 for passed, 1 for fail.
+            return (SELF_TEST_RESULT)result; // Ag34980 returns 0 for passed, 1 for fail.
         }
 
         public void OpenAll() { Ag34980.SCPI.ROUTe.OPEN.ALL.Command(null); }
@@ -56,14 +56,14 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         #region Diagnostics // NOTE: Update MODULES & Modules as necessary, along with Diagnostics region.
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
             ResetClear();
-            Boolean passed = SelfTests() is SELF_TEST_RESULTS.PASS;
+            Boolean passed = SelfTests() is SELF_TEST_RESULT.PASS;
             (Boolean Summary, List<DiagnosticsResult> Details) result_34980A = (passed, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
             if (passed) {
                 (Boolean summary, List<DiagnosticsResult> details) result_Slot;
                 Configuration.Parameter parameter = Parameters.Find(p => p.Name == "ModuleType");
                 String module = (parameter != null) ? parameter.Value : String.Empty;
 
-                foreach (SLOTS slot in Enum.GetValues(typeof(SLOTS))) {
+                foreach (SLOT slot in Enum.GetValues(typeof(SLOT))) {
                     TestLib.CT_EmergencyStop.ThrowIfCancellationRequested();
                     TestLib.CT_Cancel.ThrowIfCancellationRequested();
                     if (String.Equals(module, SystemType(slot)) || String.Equals(module, String.Empty)) {
@@ -104,13 +104,13 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             return result_34980A;
         }
 
-        public Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)> Diagnostics_34921As(List<Configuration.Parameter> Parameters) {
-            Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)> Results = new Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)>();
-            foreach (SLOTS slot in Enum.GetValues(typeof(SLOTS))) if (SystemType(slot) == Modules.M34921A) Results.Add(slot, Diagnostic_34921A(slot, Parameters));
+        public Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)> Diagnostics_34921As(List<Configuration.Parameter> Parameters) {
+            Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)> Results = new Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)>();
+            foreach (SLOT slot in Enum.GetValues(typeof(SLOT))) if (SystemType(slot) == Modules.M34921A) Results.Add(slot, Diagnostic_34921A(slot, Parameters));
             return Results;
         }
 
-        public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34921A(SLOTS Slot, List<Configuration.Parameter> Parameters) {
+        public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34921A(SLOT Slot, List<Configuration.Parameter> Parameters) {
             String S = ((Int32)Slot).ToString("D1");
             if (DialogResult.Cancel == MessageBox.Show($"Please connect BMC6030-1 diagnostic terminal block to {_34980A} SLOT {S}.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
                 TestLib.CTS_Cancel.Cancel();
@@ -227,13 +227,13 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             results.Add(new DiagnosticsResult(Label: $"{diagnostic} channel(s) {channels}: ", Message: $"{Math.Round(resistance[0], 3, MidpointRounding.ToEven)}Ω", Event: (passed_Ω ? EVENTS.PASS : EVENTS.FAIL)));
         }
 
-        public Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)> Diagnostics_34932As(List<Configuration.Parameter> Parameters) {
-            Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)> Results = new Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)>();
-            foreach (SLOTS slot in Enum.GetValues(typeof(SLOTS))) if (SystemType(slot) == Modules.M34932A) Results.Add(slot, Diagnostic_34932A(slot, Parameters));
+        public Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)> Diagnostics_34932As(List<Configuration.Parameter> Parameters) {
+            Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)> Results = new Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)>();
+            foreach (SLOT slot in Enum.GetValues(typeof(SLOT))) if (SystemType(slot) == Modules.M34932A) Results.Add(slot, Diagnostic_34932A(slot, Parameters));
             return Results;
         }
 
-        public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34932A(SLOTS Slot, List<Configuration.Parameter> Parameters) {
+        public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34932A(SLOT Slot, List<Configuration.Parameter> Parameters) {
             String S = ((Int32)Slot).ToString("D1");
             if (DialogResult.Cancel == MessageBox.Show($"Please connect BMC6030-2 diagnostic terminal block to {_34980A} SLOT {S} and Analog Busses.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
                 TestLib.CTS_Cancel.Cancel();
@@ -277,13 +277,13 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             return (Summary: passed_34932A, Details: results);
         }
 
-        public Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)> Diagnostics_34938As(List<Configuration.Parameter> Parameters) {
-            Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)> Results = new Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)>();
-            foreach (SLOTS slot in Enum.GetValues(typeof(SLOTS))) if (SystemType(slot) == Modules.M34938A) Results.Add(slot, Diagnostic_34938A(slot, Parameters));
+        public Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)> Diagnostics_34938As(List<Configuration.Parameter> Parameters) {
+            Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)> Results = new Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)>();
+            foreach (SLOT slot in Enum.GetValues(typeof(SLOT))) if (SystemType(slot) == Modules.M34938A) Results.Add(slot, Diagnostic_34938A(slot, Parameters));
             return Results;
         }
 
-        public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34938A(SLOTS Slot, List<Configuration.Parameter> Parameters) {
+        public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34938A(SLOT Slot, List<Configuration.Parameter> Parameters) {
             String S = ((Int32)Slot).ToString("D1");
             if (DialogResult.Cancel == MessageBox.Show($"Please connect BMC6030-3 diagnostic terminal block to {_34980A} SLOT {S} and Analog Busses.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
                 TestLib.CTS_Cancel.Cancel();
@@ -312,13 +312,13 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             return (Summary: passed_34938A, Details: results);
         }
 
-        public Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)> Diagnostics_34939As(List<Configuration.Parameter> Parameters) {
-            Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)> Results = new Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)>();
-            foreach (SLOTS slot in Enum.GetValues(typeof(SLOTS))) if (SystemType(slot) == Modules.M34939A) Results.Add(slot, Diagnostic_34939A(slot, Parameters));
+        public Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)> Diagnostics_34939As(List<Configuration.Parameter> Parameters) {
+            Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)> Results = new Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)>();
+            foreach (SLOT slot in Enum.GetValues(typeof(SLOT))) if (SystemType(slot) == Modules.M34939A) Results.Add(slot, Diagnostic_34939A(slot, Parameters));
             return Results;
         }
 
-        public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34939A(SLOTS Slot, List<Configuration.Parameter> Parameters) {
+        public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34939A(SLOT Slot, List<Configuration.Parameter> Parameters) {
             String S = ((Int32)Slot).ToString("D1");
             if (DialogResult.Cancel == MessageBox.Show($"Please connect BMC6030-TBD diagnostic terminal block to {_34980A} SLOT {S} and Analog Busses.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
                 TestLib.CTS_Cancel.Cancel();
@@ -347,13 +347,13 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             return (Summary: passed_34939A, Details: results);
         }
 
-        public Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)> Diagnostics_34952As(List<Configuration.Parameter> Parameters) {
-            Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)> Results = new Dictionary<SLOTS, (Boolean Summary, List<DiagnosticsResult> Details)>();
-            foreach (SLOTS slot in Enum.GetValues(typeof(SLOTS))) if (SystemType(slot) == Modules.M34952A) Results.Add(slot, Diagnostic_34952A(slot, Parameters));
+        public Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)> Diagnostics_34952As(List<Configuration.Parameter> Parameters) {
+            Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)> Results = new Dictionary<SLOT, (Boolean Summary, List<DiagnosticsResult> Details)>();
+            foreach (SLOT slot in Enum.GetValues(typeof(SLOT))) if (SystemType(slot) == Modules.M34952A) Results.Add(slot, Diagnostic_34952A(slot, Parameters));
             return Results;
         }
 
-        public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34952A(SLOTS Slot, List<Configuration.Parameter> Parameters) {
+        public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostic_34952A(SLOT Slot, List<Configuration.Parameter> Parameters) {
             String S = ((Int32)Slot).ToString("D1");
             if (DialogResult.Cancel == MessageBox.Show($"Please connect BMC6030-4 diagnostic terminal block to {_34980A} SLOT {S} and its DAC1 to Analog Busses.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
                 TestLib.CTS_Cancel.Cancel();
@@ -446,13 +446,13 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             this.Address = Address;
             this.Detail = Detail;
             Ag34980 = new Ag34980(Address);
-            InstrumentType = INSTRUMENT_TYPES.MULTI_FUNCTION;
+            InstrumentType = INSTRUMENT_TYPE.MULTI_FUNCTION;
             DateTime now = DateTime.Now;
             Ag34980.SCPI.SYSTem.DATE.Command(now.Year, now.Month, now.Day);
             Ag34980.SCPI.SYSTem.TIME.Command(now.Hour, now.Minute, Convert.ToDouble(now.Second));
-            Ag34980.SCPI.UNIT.TEMPerature.Command($"{TEMPERATURE_UNITS.F}");
+            Ag34980.SCPI.UNIT.TEMPerature.Command($"{TEMPERATURE_UNIT.F}");
             Ag34980.SCPI.IDN.Query(out String idn);
-            _34980A = idn.Split(',')[(Int32)SCPI_NET.IDN_FIELDS.Model];
+            _34980A = idn.Split(',')[(Int32)SCPI_NET.IDN_FIELD.Model];
 
         }
 
@@ -460,51 +460,51 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             Ag34980.SCPI.INSTrument.DMM.INSTalled.Query(out Boolean installed);
             return installed;
         }
-        public STATES InstrumentDMM_Get() {
+        public STATE InstrumentDMM_Get() {
             Ag34980.SCPI.INSTrument.DMM.STATe.Query(out Boolean mode);
-            return mode ? STATES.ON : STATES.off;
+            return mode ? STATE.ON : STATE.off;
         }
-        public void InstrumentDMM_Set(STATES State) { Ag34980.SCPI.INSTrument.DMM.STATe.Command(State == STATES.ON); }
-        public (Int32 Min, Int32 Max) ModuleChannels(SLOTS Slot) {
+        public void InstrumentDMM_Set(STATE State) { Ag34980.SCPI.INSTrument.DMM.STATe.Command(State == STATE.ON); }
+        public (Int32 Min, Int32 Max) ModuleChannels(SLOT Slot) {
             switch (SystemType(Slot)) {
                 case String s when s == Modules.M34921A: return (Min: 1, Max: 44);
                 case String s when s == Modules.M34939A: return (Min: 1, Max: 68);
                 case String s when s == Modules.M34952A: return (Min: 1, Max: 7);
-                default: throw new NotImplementedException(TestLib.NotImplementedMessageEnum<SLOTS>(Enum.GetName(typeof(SLOTS), Slot)));
+                default: throw new NotImplementedException(TestLib.NotImplementedMessageEnum<SLOT>(Enum.GetName(typeof(SLOT), Slot)));
             }
         }
         public void RouteCloseExclusive(String Channels) {
             ValidateChannelS(Channels);
             Ag34980.SCPI.ROUTe.CLOSe.EXCLusive.Command($"({Channels})");
         }
-        public Boolean RouteGet(String Channels, RELAY_STATES State) {
+        public Boolean RouteGet(String Channels, RELAY_STATE State) {
             ValidateChannelS(Channels);
             Boolean[] states;
-            if (State is RELAY_STATES.opened) Ag34980.SCPI.ROUTe.OPEN.Query(Channels, out states);
+            if (State is RELAY_STATE.opened) Ag34980.SCPI.ROUTe.OPEN.Query(Channels, out states);
             else Ag34980.SCPI.ROUTe.CLOSe.Query(Channels, out states);
             List<Boolean> lb = states.ToList();
             return lb.TrueForAll(b => b == true);
         }
-        public void RouteSet(String Channels, RELAY_STATES State) {
+        public void RouteSet(String Channels, RELAY_STATE State) {
             ValidateChannelS(Channels);
-            if (State is RELAY_STATES.opened) Ag34980.SCPI.ROUTe.OPEN.Command(Channels);
+            if (State is RELAY_STATE.opened) Ag34980.SCPI.ROUTe.OPEN.Command(Channels);
             else Ag34980.SCPI.ROUTe.CLOSe.Command(Channels);
         }
-        public String SystemDescriptionLong(SLOTS Slot) {
+        public String SystemDescriptionLong(SLOT Slot) {
             Ag34980.SCPI.SYSTem.CDEScription.LONG.Query((Int32)Slot, out String description);
             return description;
         }
-        public Double SystemModuleTemperature(SLOTS Slot) {
+        public Double SystemModuleTemperature(SLOT Slot) {
             Ag34980.SCPI.SYSTem.MODule.TEMPerature.Query("TRANsducer", (Int32)Slot, out Double temperature);
             return temperature;
         }
-        public String SystemType(SLOTS Slot) {
+        public String SystemType(SLOT Slot) {
             Ag34980.SCPI.SYSTem.CTYPe.Query((Int32)Slot, out String identity);
-            return identity.Split(',')[(Int32)Generic.SCPI_NET.IDN_FIELDS.Model];
+            return identity.Split(',')[(Int32)Generic.SCPI_NET.IDN_FIELD.Model];
         }
-        public TEMPERATURE_UNITS UnitsGet() {
+        public TEMPERATURE_UNIT UnitsGet() {
             Ag34980.SCPI.UNIT.TEMPerature.Query(out String[] units);
-            return (TEMPERATURE_UNITS)Enum.Parse(typeof(TEMPERATURE_UNITS), String.Join("", units).Replace("[", "").Replace("]", ""));
+            return (TEMPERATURE_UNIT)Enum.Parse(typeof(TEMPERATURE_UNIT), String.Join("", units).Replace("[", "").Replace("]", ""));
         }
         public void ValidateChannelS(String Channels) {
             if (!Regex.IsMatch(Channels, @"^@\d{4}((,|:)\d{4})*$")) { // https://regex101.com/.
@@ -537,9 +537,9 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         }
         public void ValidateChannel(String Channel) {
             Int32 slotNumber = Int32.Parse(Channel.Substring(0, 2));
-            if (!Enum.IsDefined(typeof(SLOTS), (SLOTS)slotNumber)) throw new ArgumentException($"{nameof(Channel)} '{Channel}' must have valid integer Slot in interval [{(Int32)SLOTS.S1}..{(Int32)SLOTS.S8}].");
+            if (!Enum.IsDefined(typeof(SLOT), (SLOT)slotNumber)) throw new ArgumentException($"{nameof(Channel)} '{Channel}' must have valid integer Slot in interval [{(Int32)SLOT.S1}..{(Int32)SLOT.S8}].");
             Int32 channel = Int32.Parse(Channel.Substring(2));
-            (Int32 min, Int32 max) = ModuleChannels((SLOTS)slotNumber);
+            (Int32 min, Int32 max) = ModuleChannels((SLOT)slotNumber);
             if (channel < min || max < channel) throw new ArgumentException($"{nameof(Channel)} '{Channel}' must have valid integer {nameof(Channel)} in interval [{min:D3}..{max:D3}].");
         }
         public void ValidateRange(String Range) {

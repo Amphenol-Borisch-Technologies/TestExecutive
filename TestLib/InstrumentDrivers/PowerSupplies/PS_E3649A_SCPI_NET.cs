@@ -11,45 +11,45 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         public String Address { get; }
         public String Detail { get; }
         public AgE364xD AgE364xD { get; }
-        public INSTRUMENT_TYPES InstrumentType { get; }
+        public INSTRUMENT_TYPE InstrumentType { get; }
 
         public void ResetClear() {
             AgE364xD.SCPI.RST.Command();
             AgE364xD.SCPI.CLS.Command();
         }
 
-        public SELF_TEST_RESULTS SelfTests() {
+        public SELF_TEST_RESULT SelfTests() {
             Int32 result;
             try {
                 AgE364xD.SCPI.TST.Query(out result);
             } catch (Exception exception) {
                 Instruments.SelfTestFailure(this, exception);
-                return SELF_TEST_RESULTS.FAIL;
+                return SELF_TEST_RESULT.FAIL;
             }
-            return (SELF_TEST_RESULTS)result; // AgE363x returns 0 for passed, 1 for fail.
+            return (SELF_TEST_RESULT)result; // AgE363x returns 0 for passed, 1 for fail.
         }
 
         public void OutputsOff() {
             // NOTE: Most multi-output supplies like the E3649A permit individual control of outputs,
             // but the E3649A does not; all supplies are set to the same STATE, off or ON.
-            AgE364xD.SCPI.OUTPut.STATe.Command(Convert.ToBoolean(STATES.off));
+            AgE364xD.SCPI.OUTPut.STATe.Command(Convert.ToBoolean(STATE.off));
         }
 
-        public OUTPUTS2 Selected() {
+        public OUTPUT2 Selected() {
             AgE364xD.SCPI.INSTrument.SELect.Query(out String select);
-            return select == "OUTP1" ? OUTPUTS2.OUTput1 : OUTPUTS2.OUTput2;
+            return select == "OUTP1" ? OUTPUT2.OUTput1 : OUTPUT2.OUTput2;
         }
 
-        public void Select(OUTPUTS2 Output) { AgE364xD.SCPI.INSTrument.SELect.Command($"{Output}"); }
+        public void Select(OUTPUT2 Output) { AgE364xD.SCPI.INSTrument.SELect.Command($"{Output}"); }
 
-        public (Double AmpsDC, Double VoltsDC) Get(OUTPUTS2 Output, DC DC) {
+        public (Double AmpsDC, Double VoltsDC) Get(OUTPUT2 Output, DC DC) {
             Select(Output);
             AgE364xD.SCPI.MEASure.SCALar.CURRent.DC.Query(out Double AmpsDC);
             AgE364xD.SCPI.MEASure.SCALar.VOLTage.DC.Query(out Double VoltsDC);
             return (AmpsDC, VoltsDC);
         }
 
-        public void SetOffOn(OUTPUTS2 Output, Double VoltsDC, Double AmpsDC, Double OVP) {
+        public void SetOffOn(OUTPUT2 Output, Double VoltsDC, Double AmpsDC, Double OVP) {
             Select(Output);
             AgE364xD.SCPI.OUTPut.STATe.Command(false);
             AgE364xD.SCPI.SOURce.VOLTage.PROTection.CLEar.Command();
@@ -61,23 +61,23 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             Thread.Sleep(500); // Allow some time for voltage to stabilize.
         }
 
-        public STATES StateGet(OUTPUTS2 Output) {
+        public STATE StateGet(OUTPUT2 Output) {
             Select(Output);
             AgE364xD.SCPI.OUTPut.STATe.Query(out Boolean state);
-            return state ? STATES.ON : STATES.off;
+            return state ? STATE.ON : STATE.off;
         }
 
-        public void StateSet(STATES State) {
+        public void StateSet(STATE State) {
             // NOTE: Most multi-output supplies like the E3649A permit individual control of outputs,
             // but the E3649A does not; all supplies are set to the same STATE, off or ON.
-            AgE364xD.SCPI.OUTPut.STATe.Command(State == STATES.ON);
+            AgE364xD.SCPI.OUTPut.STATe.Command(State == STATE.ON);
             Thread.Sleep(500); // Allow some time for voltage to stabilize.
         }
 
         #region Diagnostics
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
             ResetClear();
-            Boolean passed = SelfTests() is SELF_TEST_RESULTS.PASS;
+            Boolean passed = SelfTests() is SELF_TEST_RESULT.PASS;
             (Boolean Summary, List<DiagnosticsResult> Details) result_E3649A = (passed, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
             if (passed) {
                 Configuration.Parameter parameter = Parameters.Find(p => p.Name == "Accuracy_E3649A_VDC") ?? new Configuration.Parameter { Name = "Accuracy_E3649A_VDC", Value = "0.1" };
@@ -92,9 +92,9 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
                 if (DialogResult.OK == MessageBox.Show(message, "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
                     MSMU.Ag34980.SCPI.INSTrument.DMM.STATe.Command(true);
                     MSMU.Ag34980.SCPI.INSTrument.DMM.CONNect.Command();
-                    TestOutput(OUTPUTS2.OUTput1, ref MSMU, limit, ref result_E3649A);
+                    TestOutput(OUTPUT2.OUTput1, ref MSMU, limit, ref result_E3649A);
                     MessageBox.Show("Please connect BMC6030-5 to Output 2.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                    TestOutput(OUTPUTS2.OUTput2, ref MSMU, limit, ref result_E3649A);
+                    TestOutput(OUTPUT2.OUTput2, ref MSMU, limit, ref result_E3649A);
                     message =
                         $"Please disconnect BMC6030-5 from {Detail}/{Address}{Environment.NewLine}{Environment.NewLine}" +
                         $"and {MSMU.Detail}/{MSMU.Address}.{Environment.NewLine}{Environment.NewLine}";
@@ -104,7 +104,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             return result_E3649A;
         }
 
-        private void TestOutput(OUTPUTS2 outPut, ref MSMU_34980A_SCPI_NET MSMU, Double limit, ref (Boolean Summary, List<DiagnosticsResult> Details) result_E3649A) {
+        private void TestOutput(OUTPUT2 outPut, ref MSMU_34980A_SCPI_NET MSMU, Double limit, ref (Boolean Summary, List<DiagnosticsResult> Details) result_E3649A) {
             Select(outPut);
             AgE364xD.SCPI.OUTPut.STATe.Command(false);
             AgE364xD.SCPI.SOURce.VOLTage.PROTection.STATe.Command(false);
@@ -131,7 +131,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             this.Address = Address;
             this.Detail = Detail;
             AgE364xD = new AgE364xD(Address);
-            InstrumentType = INSTRUMENT_TYPES.POWER_SUPPLY;
+            InstrumentType = INSTRUMENT_TYPE.POWER_SUPPLY;
         }
     }
 }

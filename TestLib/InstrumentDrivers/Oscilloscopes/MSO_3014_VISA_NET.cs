@@ -12,11 +12,11 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public String Address { get; }
         public String Detail { get; }
         public UsbSession UsbSession { get; }
-        public enum BUSES { B1, B2 }
-        public enum CHANNELS { CH1, CH2 }
-        public enum DRIVES_USB { E, F }
-        public INSTRUMENT_TYPES InstrumentType { get; }
-        public enum SETUPS { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
+        public enum BUS { B1, B2 }
+        public enum CHANNEL { CH1, CH2 }
+        public enum DRIVE_USB { E, F }
+        public INSTRUMENT_TYPE InstrumentType { get; }
+        public enum SETUP { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
         public readonly static String ValidCharactersFile = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=+-!@#$%^&()[]{}~‘’,";
         public readonly static String ValidCharactersLabel = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=≠+-±!@#$%^&*()[]{}<>/~‘’\"\\|:,.?µ∞∆°Ωσ";
         private Boolean _disposed = false;
@@ -24,20 +24,20 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
 
         public void ResetClear() { UsbSession.FormattedIO.WriteLine("*RST;*CLR"); }
 
-        public SELF_TEST_RESULTS SelfTests() {
+        public SELF_TEST_RESULT SelfTests() {
             Int32 selfTestResult;
             try {
                 selfTestResult = Int32.Parse(QueryLine("*TST?"));
             } catch (Exception exception) {
                 Instruments.SelfTestFailure(this, exception);
-                return SELF_TEST_RESULTS.FAIL;
+                return SELF_TEST_RESULT.FAIL;
             }
-            return (SELF_TEST_RESULTS)selfTestResult;
+            return (SELF_TEST_RESULT)selfTestResult;
         }
 
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
             ResetClear();
-            Boolean passed = SelfTests() is SELF_TEST_RESULTS.PASS;
+            Boolean passed = SelfTests() is SELF_TEST_RESULT.PASS;
             (Boolean Summary, List<DiagnosticsResult> Details) result_3014 = (passed, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
             if (passed) {
                 // TODO: Eventually; add verification measurements of the MSO-3014 mixed signal oscilloscope using external instrumentation.
@@ -48,7 +48,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public MSO_3014_VISA_NET(String Address, String Detail) {
             this.Address = Address;
             this.Detail = Detail;
-            InstrumentType = INSTRUMENT_TYPES.OSCILLOSCOPE_MIXED_SIGNAL;
+            InstrumentType = INSTRUMENT_TYPE.OSCILLOSCOPE_MIXED_SIGNAL;
             UsbSession = new UsbSession(Address) {
                 TerminationCharacter = 0x0A,
                 TerminationCharacterEnabled = true
@@ -85,16 +85,16 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
 
         public void OperationCompleteQuery(String scpiCommand) { if (!QueryLine("*OPC?").Equals("1")) throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command '{scpiCommand}'!"); }
 
-        public void EventTableEnable(BUSES Bus) {
+        public void EventTableEnable(BUS Bus) {
             switch (Bus) {
-                case BUSES.B1:
+                case BUS.B1:
                     UsbSession.FormattedIO.WriteLine(":FPAnel:PRESS B1;:*WAI");
                     break;
-                case BUSES.B2:
+                case BUS.B2:
                     UsbSession.FormattedIO.WriteLine(":FPAnel:PRESS B2;:*WAI");
                     break;
                 default:
-                    throw new NotImplementedException(NotImplementedMessageEnum<BUSES>(Enum.GetName(typeof(BUSES), Bus)));
+                    throw new NotImplementedException(NotImplementedMessageEnum<BUS>(Enum.GetName(typeof(BUS), Bus)));
             }
             UsbSession.FormattedIO.WriteLine(":FPAnel:PRESS BMENU7;:*WAI");
             UsbSession.FormattedIO.WriteLine(":FPAnel:PRESS RMENU1;:*WAI");
@@ -102,7 +102,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             UsbSession.FormattedIO.WriteLine(":FPAnel:PRESS MENUOff;:*WAI");
         }
 
-        public void EventTableSave(BUSES Bus, DRIVES_USB Drive_USB, String PathPC) {
+        public void EventTableSave(BUS Bus, DRIVE_USB Drive_USB, String PathPC) {
             String pathMSO_3014 = $"\"{Drive_USB}:/{Bus}.csv\"";
             UsbSession.FormattedIO.WriteLine($":SAVe:EVENTtable:{Bus} {pathMSO_3014}"); // Save Event Table to MSO-3014 USB drive, overwriting any existing file without warning.  Can't HARDCopy Event Tables, sadly.
             Thread.Sleep(500);                                                          // USB Drive write latency.
@@ -118,12 +118,12 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             File.WriteAllBytes($@"{PathPC}", QueryRawIO(":HARDCopy STARt")); // ":HARDCopy STARt" is ostensibly a printing command, but actually works _best_ for fetching a screenshot image.  Save to PC, overwriting any existing file without warning.
         }
 
-        public Boolean SetupExists(SETUPS Setup, String LabelString) {
+        public Boolean SetupExists(SETUP Setup, String LabelString) {
             if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
             return QueryLine($":{Setup}:LABEL?").Equals(LabelString);
         }
 
-        public void SetupLoad(SETUPS Setup, String LabelString) {
+        public void SetupLoad(SETUP Setup, String LabelString) {
             if (!SetupExists(Setup, LabelString)) throw new ArgumentException($"MSO-3014 {Setup} labled '{LabelString}' non-existent!");
             UsbSession.FormattedIO.WriteLine($":RECAll:SETUp {(Int32)Setup}");
         }
@@ -133,7 +133,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             foreach (String mso_3014_SCPI_Command in File.ReadLines(SetupFilePath)) UsbSession.FormattedIO.WriteLine(mso_3014_SCPI_Command);
         }
 
-        public void SetupSave(SETUPS Setup, String LabelString) {
+        public void SetupSave(SETUP Setup, String LabelString) {
             if (!ValidLabel(LabelString)) throw new ArgumentException(InvalidLabelMessage(LabelString));
             UsbSession.FormattedIO.WriteLine($":{Setup}:LABEL \"{LabelString}\"");
             String labelRead = QueryLine($":{Setup}:LABEL?");
