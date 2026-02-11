@@ -236,7 +236,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             stringBuilder.Append($"{nameof(NamespaceTrunk)}: nameof({GetType().GetProperty(nameof(NamespaceTrunk)).GetValue(this)}), ");
             stringBuilder.Append($"{nameof(ProductionTest)}: {GetType().GetProperty(nameof(ProductionTest)).GetValue(this).ToString().ToLower()}, ");
             stringBuilder.Append($"{nameof(Description)}: {UUT.EF(GetType().GetProperty(nameof(Description)).GetValue(this))}, ");
-            stringBuilder.Append($"{nameof(TestGroups)}: {UUT.EF(String.Join(UUT.DIVIDER, TestGroups.Select(tg => "{nameof(" + tg.Classname + ")}")))}));");
+            stringBuilder.Append($"{nameof(TestGroups)}: ${UUT.EF(String.Join(UUT.DIVIDER, TestGroups.Select(tg => "{nameof(" + tg.Classname + ")}")))}));");
             return stringBuilder.ToString();
         }
 
@@ -269,7 +269,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             stringBuilder.Append($"{nameof(Description)}: {UUT.EF(GetType().GetProperty(nameof(Description)).GetValue(this))}, ");
             stringBuilder.Append($"{nameof(CancelNotPassed)}: {GetType().GetProperty(nameof(CancelNotPassed)).GetValue(this).ToString().ToLower()}, ");
             stringBuilder.Append($"{nameof(Independent)}: {GetType().GetProperty(nameof(Independent)).GetValue(this).ToString().ToLower()}, ");
-            stringBuilder.Append($"{nameof(Methods)}: {UUT.EF(String.Join(UUT.DIVIDER, Methods.Select(m => "{nameof(" + m.Name +")}")))}));");
+            stringBuilder.Append($"{nameof(Methods)}: ${UUT.EF(String.Join(UUT.DIVIDER, Methods.Select(m => "{nameof(" + m.Name +")}")))}));");
             return stringBuilder.ToString();
         }
 
