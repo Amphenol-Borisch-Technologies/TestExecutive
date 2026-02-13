@@ -24,4 +24,5 @@ The goal is not to replace large commercial platforms, but to offer a simpler op
 - Configurable test sequences
 - Sibling to TestPlan: https://github.com/Amphenol-Borisch-Technologies/TestPlan
 - Structured logging and result storage  
-- Easy to extend with new instruments or test steps  
+- Easy to extend with new instruments or test steps
+- Utilizes XML Schema Definitions to validate TestExecutive & TestPlan XML configuration files 
