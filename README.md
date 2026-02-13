@@ -1,6 +1,6 @@
 # TestExecutive
 
-TestExecutive is a lightweight, maintainable functional test framework built in C# and .NET Framework 4.8. It provides a simple, modular structure for automating instruments, executing test sequences, and logging results using VISA.NET and SCPI.
+TestExecutive is a lightweight, maintainable functional test framework built in C# and .NET Framework 4.8. It provides a simple, modular structure for automating instruments using VISA.NET and SCPI, executing test sequences, and logging results.  It utilizes extensive XML Schema Definitions to validate TestExecutive & TestPlan XML configuration files.
 
 ## Why TestExecutive Exists
 
@@ -20,9 +20,10 @@ The goal is not to replace large commercial platforms, but to offer a simpler op
 - Modular test‑step architecture  
 - C# and .NET Framework 4.8
 - VISA.NET instrument communication  
-- SCPI‑based instrument control  
+- SCPI‑based instrument control
+- XML Schema Definitions to validate TestExecutive & TestPlan XML configuration files 
 - Configurable test sequences
 - Sibling to TestPlan: https://github.com/Amphenol-Borisch-Technologies/TestPlan
 - Structured logging and result storage  
 - Easy to extend with new instruments or test steps
-- Utilizes XML Schema Definitions to validate TestExecutive & TestPlan XML configuration files 
+
