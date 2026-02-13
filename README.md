@@ -5,9 +5,7 @@ Sibling to TestPlan.
 - https://github.com/Amphenol-Borisch-Technologies/TestPlan
 
 
-# TestExecutive
-
-TestExecutive is a lightweight, maintainable functional test framework built in C# and .NET 9. It provides a simple, modular structure for automating instruments, executing test sequences, and logging results using VISA.NET and SCPI.
+TestExecutive is a lightweight, maintainable functional test framework built in C# and .NET Framework 4.8. It provides a simple, modular structure for automating instruments, executing test sequences, and logging results using VISA.NET and SCPI.
 
 ## Why TestExecutive Exists
 
@@ -26,10 +24,9 @@ The goal is not to replace large commercial platforms, but to offer a simpler op
 ## Key Features
 
 - Modular test‑step architecture  
-- C# and .NET 9  
+- C# and .NET Framework 4.8
 - VISA.NET instrument communication  
 - SCPI‑based instrument control  
-- Support for PXI or bench instruments  
 - Configurable test sequences  
 - Structured logging and result storage  
 - Easy to extend with new instruments or test steps  
