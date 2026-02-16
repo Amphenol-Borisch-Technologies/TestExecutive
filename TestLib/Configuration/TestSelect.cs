@@ -58,13 +58,11 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             Debug.Assert(TestList.SelectedItems.Count == 1);
 
             testSequence.IsOperation = TestOperations.Checked;
-            TestOperation selectedOperation = null;
-            if (testSequence.IsOperation) selectedOperation = TestLib.testPlanDefinition.TestSpace.TestOperations[TestList.SelectedItems[0].Index];
-            else selectedOperation = TestLib.testPlanDefinition.TestSpace.TestOperations.Find(nt => nt.NamespaceTrunk.Equals(TestList.SelectedItems[0].SubItems[0].Text));
+            TestOperation selectedOperation = TestLib.testPlanDefinition.TestSpace.TestOperations.Find(TO => TO.NamespaceTrunk.Equals(TestList.SelectedItems[0].SubItems[0].Text));
             testSequence.TestOperation = Serializing.DeserializeFromFile<TestOperation>(xmlFile: TestLib.TestPlanDefinitionXML_Path, xPath: $"//TestOperation[@NamespaceTrunk='{selectedOperation.NamespaceTrunk}']");
             if (!testSequence.IsOperation) {
-                TestGroup selectedGroup = selectedOperation.TestGroups.Find(tg => tg.Classname.Equals(TestList.SelectedItems[0].SubItems[1].Text));
-                _ = testSequence.TestOperation.TestGroups.RemoveAll(tg => tg.Classname != selectedGroup.Classname);
+                TestGroup selectedGroup = selectedOperation.TestGroups.Find(TG => TG.Classname.Equals(TestList.SelectedItems[0].SubItems[1].Text));
+                _ = testSequence.TestOperation.TestGroups.RemoveAll(TG => TG.Classname != selectedGroup.Classname);
                 // From the selected TestOperation, retain only the selected TestGroup and all its Methods.
             }
             TestLib.PaddingRight = 0;
