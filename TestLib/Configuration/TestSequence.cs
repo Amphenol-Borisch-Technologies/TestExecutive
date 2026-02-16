@@ -11,9 +11,9 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         public UUT UUT { get; set; } = Serializing.DeserializeFromFile<UUT>(xmlFile: TestLib.TestPlanDefinitionXML_Path);
         public TestOperation TestOperation { get; set; }
         [XmlIgnore] public Boolean IsOperation { get; set; } = false;
+        [XmlIgnore] public String LogInitialFolderName { get; set; } = String.Empty;
         public String Computer { get; set; } = Environment.MachineName;
         public String SerialNumber { get; set; } = String.Empty;
-        public String LogInitialFolderName { get; set; } = String.Empty;
         public String Operator { get; set; } = TestLib.UserName;
         public DateTime TimeStart { get; set; }
         public DateTime TimeEnd { get; set; }
