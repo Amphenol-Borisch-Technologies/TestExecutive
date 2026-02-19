@@ -113,12 +113,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Tektronix.Tkdpo2k3k4k.Interop, Version=1.5.0.0, Culture=neutral, PublicKeyToken=65cff6f5578f3c89, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>C:\Program Files\IVI Foundation\IVI\Bin\Primary Interop Assemblies\Tektronix.Tkdpo2k3k4k.Interop.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Miscellaneous\SerialNumberDialog.cs">

@@ -123,12 +123,6 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Tektronix.Tkdpo2k3k4k.Interop, Version=1.5.0.0, Culture=neutral, PublicKeyToken=65cff6f5578f3c89, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\..\..\Windows\assembly\GAC_64\Tektronix.Tkdpo2k3k4k.Interop\1.5.0.0__65cff6f5578f3c89\Tektronix.Tkdpo2k3k4k.Interop.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Serializing.cs" />
@@ -159,7 +153,6 @@
     <Compile Include="InstrumentDrivers\Multifunction\MSMU_34980A_SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\MultiMeters\MM_34401A_SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\Oscilloscopes\MSO_3014_VISA_NET.cs" />
-    <Compile Include="InstrumentDrivers\Oscilloscopes\MSO_3014_IVI_COM.cs" />
     <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3634A_SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3649A_SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\WaveformGenerators\WS_3162_VISA_NET.cs" />
