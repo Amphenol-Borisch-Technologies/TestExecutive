@@ -156,6 +156,12 @@
     <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3634A_SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3649A_SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\WaveformGenerators\WS_3162_VISA_NET.cs" />
+    <Compile Include="Miscellaneous\UUT_Connections.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Miscellaneous\UUT_Connections.Designer.cs">
+      <DependentUpon>UUT_Connections.cs</DependentUpon>
+    </Compile>
     <Compile Include="Miscellaneous\CustomMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
