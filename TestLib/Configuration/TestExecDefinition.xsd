@@ -172,16 +172,6 @@
 	</xs:complexType>
 
 	<xs:complexType name="ActiveDirectoryPermissions">
-		<xs:annotation>
-			<xs:documentation xml:lang="en">
-				<![CDATA[
-				ActiveDirectoryPermission element:
-				- Required, 1 occurence.
-            
-				.NET System.Security.AccessControl.FileSystemRights enumeration values.
-				]]>
-			</xs:documentation>
-		</xs:annotation>
 		<xs:attribute name="ReadAndExecute" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation xml:lang="en">
@@ -455,7 +445,18 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="ActiveDirectoryPermissions" type="ActiveDirectoryPermissions" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="ActiveDirectoryPermissions" type="ActiveDirectoryPermissions" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation xml:lang="en">
+							<![CDATA[
+							ActiveDirectoryPermission element:
+							- Required, 1 occurence.
+            
+							.NET System.Security.AccessControl.FileSystemRights enumeration values.
+							]]>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
 				<xs:element name="TestData" minOccurs="1" maxOccurs="1">
 					<xs:annotation>
 						<xs:documentation xml:lang="en">
