@@ -114,7 +114,8 @@ namespace ABT.Test.TestExecutive.TestDev {
         private void TestDev_Load(Object sender, EventArgs e) { TSMI_Generate_TestFolders.Enabled = (testExecDefinition.TestData.Item is Files); }
 
         private void TSMI_Validate_TestExec_Click(Object sender, EventArgs e) {
-            if (TestExecDefinitionValidator.ValidDefinition(TestExecDefinitionXML_Path)) _ = MessageBox.Show(this, "Validation passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(TestExecutiveFolder, $"TestExec Definition File|{TestExecDefinitionBase}{xml}");
+            if (dialogResult == DialogResult.OK && (TestExecDefinitionValidator.ValidDefinition(fileName))) _ = MessageBox.Show(this, "Validation passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void TSMI_Validate_TestPlans_Click(Object sender, EventArgs e) {
             (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(testExecDefinition.TestPlansInstallationFolderBase, $"TestPlan Definition File|{TestPlanDefinitionBase}{xml}");
