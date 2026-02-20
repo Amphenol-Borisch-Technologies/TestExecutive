@@ -132,6 +132,7 @@
     <Compile Include="Configuration\TestPlanDefinition.cs">
       <DependentUpon>TestPlanDefinition.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\TestExecDefinitionValidator.cs" />
     <Compile Include="Configuration\TestPlanDefinitionValidator.cs" />
     <Compile Include="Configuration\TestPlanGenerator.cs" />
     <Compile Include="Configuration\TestSelect.cs">

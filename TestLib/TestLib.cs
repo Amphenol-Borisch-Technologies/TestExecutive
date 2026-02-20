@@ -50,7 +50,7 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static readonly String TestExecDefinitionBase = "TestExecDefinition";
         public static readonly String TestExecDefinitionXML_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase + xml;
         public static readonly String TestExecDefinitionXSD_Path = TestExecutiveFolder + @"\" + TestExecDefinitionBase + xsd;
-        public static readonly TestExecDefinition testExecDefinition = Serializing.DeserializeFromFile<TestExecDefinition>(TestExecDefinitionXML_Path);
+        public static readonly TestExecDefinition testExecDefinition = TestExecDefinitionValidator.ValidDefinition(TestExecDefinitionXML_Path) ? Serializing.DeserializeFromFile<TestExecDefinition>(TestExecDefinitionXML_Path) : null;
         public static readonly String TestExecDefinitionXSD_URL = testExecDefinition.TestExecutiveURL + "/" + TestExecDefinitionBase + xsd;
 
         public static readonly String TestPlanDefinitionBase = "TestPlanDefinition";

@@ -42,7 +42,6 @@ namespace ABT.Test.TestExecutive.TestDev {
 
             CustomMessageBox.Show(Title: $"Discovering Barcode Scanner(s)", Message: stringBuilder.ToString());
         }
-        private void TSMI_Generate_Project_Click(Object sender, EventArgs e) { }
         private void TSMI_Generate_InstrumentAliases_Click(Object sender, EventArgs e) { TestPlanDefinitionAction(TestPlanGenerator.GenerateInstrumentAliases); }
         private void TSMI_Generate_TestFolders_Click(Object sender, EventArgs e) {
             if (testExecDefinition.TestData.Item is Files files) {
@@ -103,13 +102,6 @@ namespace ABT.Test.TestExecutive.TestDev {
             (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(testExecDefinition.TestPlansInstallationFolderBase, $"TestPlan Definition File|{TestPlanDefinitionBase}{xml}");
             if (dialogResult == DialogResult.OK) OpenApp(fileName);
         }
-        private void TSMI_TestDefinitions_Validate_Click(Object sender, EventArgs e) {
-            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(testExecDefinition.TestPlansInstallationFolderBase, $"TestPlan Definition File|{TestPlanDefinitionBase}{xml}");
-            if (dialogResult == DialogResult.OK) {
-                if (TestPlanDefinitionValidator.ValidDefinition(fileName)) _ = MessageBox.Show(this, "Validation passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
         private (DialogResult, String) GetTestDefinitionFile(String InitialDirectory, String Filter) {
             using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
                 openFileDialog.InitialDirectory = InitialDirectory;
@@ -120,5 +112,15 @@ namespace ABT.Test.TestExecutive.TestDev {
         }
 
         private void TestDev_Load(Object sender, EventArgs e) { TSMI_Generate_TestFolders.Enabled = (testExecDefinition.TestData.Item is Files); }
+
+        private void TSMI_Validate_TestExec_Click(Object sender, EventArgs e) {
+            if (TestExecDefinitionValidator.ValidDefinition(TestExecDefinitionXML_Path)) _ = MessageBox.Show(this, "Validation passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        private void TSMI_Validate_TestPlans_Click(Object sender, EventArgs e) {
+            (DialogResult dialogResult, String fileName) = GetTestDefinitionFile(testExecDefinition.TestPlansInstallationFolderBase, $"TestPlan Definition File|{TestPlanDefinitionBase}{xml}");
+            if (dialogResult == DialogResult.OK) {
+                if (TestPlanDefinitionValidator.ValidDefinition(fileName)) _ = MessageBox.Show(this, "Validation passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
     }
 }
