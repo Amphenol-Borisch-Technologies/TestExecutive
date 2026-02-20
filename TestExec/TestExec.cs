@@ -44,7 +44,7 @@ using static ABT.Test.TestExecutive.TestLib.TestLib;
 //        - Prefer named arguments for public methods be Capitalized/PascalCased, not uncapitalized/camelCased.
 //        - Invoking public methods with named arguments is a superb, self-documenting coding technique, improved by PascalCasing.
 // TODO:  Eventually; add documentation per https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/documentation-comments.
-// TODO:  Eventually; update to .Net 8.0 & C# 12.0 instead of .Net FrameWork 4.8 & C# 7.3.
+// TODO:  Eventually; update to .Net 11.0 & C# 14.0 instead of .Net FrameWork 4.8 & C# 7.3.
 
 namespace ABT.Test.TestExecutive.TestExec {
     /// <remarks>
