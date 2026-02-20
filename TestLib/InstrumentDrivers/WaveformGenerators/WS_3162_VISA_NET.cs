@@ -1,5 +1,4 @@
-﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic;
-using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
+﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 using Keysight.Visa;
 using System;
 using System.Collections.Generic;
@@ -7,6 +6,7 @@ using System.Data;
 using System.Linq;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
+    #region TL;DR
     // NOTE: WaveStation 2000/3000 SCPI Reference Manual https://cdn.teledynelecroy.com/files/manuals/wsta_scpi_manual_reva.pdf.
     // NOTE: Operator's Manual: WaveStation 3000 Function & Arbitrary Waveform Generator https://cdn.teledynelecroy.com/files/manuals/wavestation_3000_om.pdf.
     // TODO: Test below WaveStation 3162 commands & queries:
@@ -45,8 +45,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
     //  SWWV        SWEEP           SIGNAL      Sets instrument to sweep a waveform or retrieves Sweep Wave settings.
     //  SYNC        SYNC            SIGNAL      Sends a Sync pulse upon occurrence of the specified function.
     //  WVCSV       WAVE_CSV                    Saves.CSV file to user-defined memory location.
-
-    public class WS_3162_VISA_NET : VISA_NET, IInstrument, IDiagnostics, IDisposable, IVISA_NET {
+    #endregion TL;DR
+    public class WS_3162_VISA_NET : VISA_NET {
         public enum CHANNEL { C1, C2 }
         public enum CLOCK_SOURCE { INT, EXT }
         public enum COMMAND_HEADER { OFF, SHORT, LONG }

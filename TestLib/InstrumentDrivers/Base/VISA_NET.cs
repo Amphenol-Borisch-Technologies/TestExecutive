@@ -1,9 +1,8 @@
-﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
-using Keysight.Visa;
+﻿using Keysight.Visa;
 using System;
 using System.Collections.Generic;
 
-namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic {
+namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
     public class VISA_NET : IInstrument, IDiagnostics, IDisposable, IVISA_NET {
         public enum IDN_FIELD { Manufacturer, Model, SerialNumber, FirmwareRevision } // Example: "Keysight Technologies,E36103B,MY61001983,1.0.2-1.02".  
         private Boolean _disposed = false;

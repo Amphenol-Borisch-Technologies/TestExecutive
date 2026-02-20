@@ -86,7 +86,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
             CodeNamespace codeNamespace = new CodeNamespace($"{testPlanDefinition.TestSpace.NamespaceRoot}.{nameof(InstrumentDrivers)}");
             codeNamespace.Imports.Add(new CodeNamespaceImport($"{nameof(ABT)}.{nameof(Test)}.{TestLib.TestExecutive}.{nameof(TestLib)}"));
-            codeNamespace.Imports.Add(new CodeNamespaceImport($"{nameof(ABT)}.{nameof(Test)}.{TestLib.TestExecutive}.{nameof(TestLib)}.{nameof(InstrumentDrivers)}.{nameof(InstrumentDrivers.Generic)}"));
+            codeNamespace.Imports.Add(new CodeNamespaceImport($"{nameof(ABT)}.{nameof(Test)}.{TestLib.TestExecutive}.{nameof(TestLib)}.{nameof(InstrumentDrivers)}.{nameof(InstrumentDrivers.Base)}"));
             codeNamespace.Imports.Add(new CodeNamespaceImport($"{nameof(ABT)}.{nameof(Test)}.{TestLib.TestExecutive}.{nameof(TestLib)}.{nameof(InstrumentDrivers)}.{nameof(InstrumentDrivers.Multifunction)}"));
             codeNamespace.Imports.Add(new CodeNamespaceImport($"{nameof(ABT)}.{nameof(Test)}.{TestLib.TestExecutive}.{nameof(TestLib)}.{nameof(InstrumentDrivers)}.{nameof(InstrumentDrivers.Oscilloscopes)}"));
             codeNamespace.Imports.Add(new CodeNamespaceImport($"{nameof(ABT)}.{nameof(Test)}.{TestLib.TestExecutive}.{nameof(TestLib)}.{nameof(InstrumentDrivers)}.{nameof(InstrumentDrivers.PowerSupplies)}"));

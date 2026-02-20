@@ -1,5 +1,5 @@
 ﻿using ABT.Test.TestExecutive.TestLib.Configuration;
-using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
+using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

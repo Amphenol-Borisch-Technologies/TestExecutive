@@ -1,5 +1,4 @@
-﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic;
-using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
+﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 using Keysight.Visa;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Threading;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
-    public class MSO_3014_VISA_NET : VISA_NET, IInstrument, IDiagnostics, IDisposable, IVISA_NET {
+    public class MSO_3014_VISA_NET : VISA_NET {
         public enum BUS { B1, B2 }
         public enum CHANNEL { CH1, CH2 }
         public enum DRIVE_USB { E, F }

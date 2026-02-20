@@ -1,4 +1,4 @@
-﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
+﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction;
 using Agilent.CommandExpert.ScpiNet.AgE364xD_1_7;
 using System;

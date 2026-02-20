@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces {
+namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
     public interface IVISA_NET {
         String QueryLine(String scpiCommand);
 

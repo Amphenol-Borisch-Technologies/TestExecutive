@@ -1,5 +1,4 @@
-﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic;
-using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
+﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 using Agilent.CommandExpert.ScpiNet.Ag34980_2_43;
 using System;
 using System.Collections.Generic;

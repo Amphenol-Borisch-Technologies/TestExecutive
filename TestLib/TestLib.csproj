@@ -124,13 +124,13 @@
     <Compile Include="Configuration\TestSequence.cs">
       <DependentUpon>TestSequence.xsd</DependentUpon>
     </Compile>
-    <Compile Include="InstrumentDrivers\Generic\VISA_NET.cs" />
+    <Compile Include="InstrumentDrivers\Base\VISA_NET.cs" />
     <Compile Include="InstrumentDrivers\Instruments.cs" />
-    <Compile Include="InstrumentDrivers\Interfaces\IDiagnostics.cs" />
-    <Compile Include="InstrumentDrivers\Interfaces\IInstrument.cs" />
-    <Compile Include="InstrumentDrivers\Interfaces\IVISA_NET.cs" />
-    <Compile Include="InstrumentDrivers\Interfaces\IPowerSupply.cs" />
-    <Compile Include="InstrumentDrivers\Interfaces\IRelay.cs" />
+    <Compile Include="InstrumentDrivers\Base\IDiagnostics.cs" />
+    <Compile Include="InstrumentDrivers\Base\IInstrument.cs" />
+    <Compile Include="InstrumentDrivers\Base\IVISA_NET.cs" />
+    <Compile Include="InstrumentDrivers\Base\IPowerSupply.cs" />
+    <Compile Include="InstrumentDrivers\Base\IRelay.cs" />
     <Compile Include="InstrumentDrivers\Multifunction\MSMU_34980A_SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\Oscilloscopes\MSO_3014_VISA_NET.cs" />
     <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3634A_SCPI_NET.cs" />
