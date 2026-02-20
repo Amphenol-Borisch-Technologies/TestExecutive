@@ -57,10 +57,6 @@
     <AssemblyOriginatorKeyFile>ABT_Test.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ag34401_11">
-      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\Ag34401_11.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Ag34980_2_43">
       <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\Ag34980_2_43.dll</HintPath>
       <Private>True</Private>
@@ -72,20 +68,6 @@
     <Reference Include="AgE364xD_1_7">
       <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgE364xD_1_7.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="AgSCPI99_1_0">
-      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgSCPI99_1_0.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ivi.Driver.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\IVI Foundation\IVI\Bin\Primary Interop Assemblies\Ivi.Driver.Interop.dll</HintPath>
-    </Reference>
-    <Reference Include="Ivi.Scope.Interop, Version=3.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\IVI Foundation\IVI\Bin\Primary Interop Assemblies\Ivi.Scope.Interop.dll</HintPath>
     </Reference>
     <Reference Include="Ivi.Visa, Version=8.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -146,7 +128,11 @@
     </None>
     <None Include="ABT_Test.pfx" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts">
+      <Version>10.0.26100.7705</Version>
+    </PackageReference>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\TestExecutive\TestChooser\TestChooser.csproj">
       <Project>{6b87d429-1de2-4b67-bf1e-bcf6855397bb}</Project>
@@ -156,11 +142,6 @@
       <Project>{24d5e99e-185c-4507-81f0-132d8cb8164e}</Project>
       <Name>TestLib</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.SDK.Contracts">
-      <Version>10.0.26100.1742</Version>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="stdole">

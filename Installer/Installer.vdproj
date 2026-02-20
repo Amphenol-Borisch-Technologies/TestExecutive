@@ -147,24 +147,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_1CFC473E52BD678FF32DA5F124A33661"
-        "OwnerKey" = "8:_1A867EB1D7F448D8B534ABF4CBD9FBE9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_1CFC473E52BD678FF32DA5F124A33661"
-        "OwnerKey" = "8:_74585BABD0ECF1E2F79FCB58B2C08BE0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_1CFC473E52BD678FF32DA5F124A33661"
-        "OwnerKey" = "8:_C5D7DD2F6F656A8EFFAA9F9B829E894E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_200D82E428699E7700173D37986BE4F8"
         "OwnerKey" = "8:_1A867EB1D7F448D8B534ABF4CBD9FBE9"
         "MsmSig" = "8:_UNDEFINED"
@@ -567,18 +549,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_74585BABD0ECF1E2F79FCB58B2C08BE0"
-        "OwnerKey" = "8:_C5D7DD2F6F656A8EFFAA9F9B829E894E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_74585BABD0ECF1E2F79FCB58B2C08BE0"
-        "OwnerKey" = "8:_1A867EB1D7F448D8B534ABF4CBD9FBE9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_746369DB2BA7F29B43DE5C090558CFFF"
         "OwnerKey" = "8:_1A867EB1D7F448D8B534ABF4CBD9FBE9"
         "MsmSig" = "8:_UNDEFINED"
@@ -891,18 +861,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C5D7DD2F6F656A8EFFAA9F9B829E894E"
-        "OwnerKey" = "8:_1A867EB1D7F448D8B534ABF4CBD9FBE9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C5D7DD2F6F656A8EFFAA9F9B829E894E"
-        "OwnerKey" = "8:_3DD3AEA2CA52D46E50A89BEF04CC223B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_C6A661AA18BD5544A82A981B28CACF14"
         "OwnerKey" = "8:_1A867EB1D7F448D8B534ABF4CBD9FBE9"
         "MsmSig" = "8:_UNDEFINED"
@@ -1150,12 +1108,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C5D7DD2F6F656A8EFFAA9F9B829E894E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_C35F348CD48AB35DB400444222E40AB0"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1174,12 +1126,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_74585BABD0ECF1E2F79FCB58B2C08BE0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_40E946D4D322E2606502334788D25950"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1193,12 +1139,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_23B775B5EE324F53A02CE167779AC222"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1CFC473E52BD678FF32DA5F124A33661"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2076,11 +2016,6 @@
             "AssemblyAsmDisplayName" = "8:Ag34401_11, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_0A7304E052A591D5D540CEF49395E489"
-                    {
-                    "Name" = "8:Ag34401_11.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Ag34401_11.dll"
             "TargetName" = "8:"
@@ -2355,11 +2290,6 @@
             "AssemblyAsmDisplayName" = "8:TestChooser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64"
                 "ScatterAssemblies"
                 {
-                    "_1BFD4698B9A5FFEF7599A8CB7469EDBE"
-                    {
-                    "Name" = "8:TestChooser.exe"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:TestChooser.exe"
             "TargetName" = "8:"
@@ -2393,37 +2323,6 @@
                     }
                 }
             "SourcePath" = "8:System.IO.FileSystem.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1CFC473E52BD678FF32DA5F124A33661"
-            {
-            "AssemblyRegister" = "3:2"
-            "AssemblyIsInGAC" = "11:TRUE"
-            "AssemblyAsmDisplayName" = "8:Ivi.Driver.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=x86"
-                "ScatterAssemblies"
-                {
-                    "_1CFC473E52BD678FF32DA5F124A33661"
-                    {
-                    "Name" = "8:Ivi.Driver.Interop.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Ivi.Driver.Interop.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
@@ -2572,11 +2471,6 @@
             "AssemblyAsmDisplayName" = "8:TestDev, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64"
                 "ScatterAssemblies"
                 {
-                    "_23B775B5EE324F53A02CE167779AC222"
-                    {
-                    "Name" = "8:TestDev.exe"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:..\\TestDev\\bin\\x64\\Release\\TestDev.exe"
             "TargetName" = "8:"
@@ -2964,11 +2858,6 @@
             "AssemblyAsmDisplayName" = "8:Ag34980_2_43, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_333158985804C43ABE59B1B1B9329231"
-                    {
-                    "Name" = "8:Ag34980_2_43.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Ag34980_2_43.dll"
             "TargetName" = "8:"
@@ -3212,11 +3101,6 @@
             "AssemblyAsmDisplayName" = "8:TestLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64"
                 "ScatterAssemblies"
                 {
-                    "_3DD3AEA2CA52D46E50A89BEF04CC223B"
-                    {
-                    "Name" = "8:TestLib.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:TestLib.dll"
             "TargetName" = "8:"
@@ -3584,11 +3468,6 @@
             "AssemblyAsmDisplayName" = "8:AgE364xD_1_7, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_5880AEA50D7AF6E7865155881D3CC570"
-                    {
-                    "Name" = "8:AgE364xD_1_7.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:AgE364xD_1_7.dll"
             "TargetName" = "8:"
@@ -3739,11 +3618,6 @@
             "AssemblyAsmDisplayName" = "8:AgE363x_1_7, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_655C963680A110864608B3FA862987EF"
-                    {
-                    "Name" = "8:AgE363x_1_7.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:AgE363x_1_7.dll"
             "TargetName" = "8:"
@@ -3963,37 +3837,6 @@
                     }
                 }
             "SourcePath" = "8:System.IO.Compression.ZipFile.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_74585BABD0ECF1E2F79FCB58B2C08BE0"
-            {
-            "AssemblyRegister" = "3:2"
-            "AssemblyIsInGAC" = "11:TRUE"
-            "AssemblyAsmDisplayName" = "8:Ivi.Scope.Interop, Version=3.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=x86"
-                "ScatterAssemblies"
-                {
-                    "_74585BABD0ECF1E2F79FCB58B2C08BE0"
-                    {
-                    "Name" = "8:Ivi.Scope.Interop.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Ivi.Scope.Interop.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
@@ -4512,11 +4355,6 @@
             "AssemblyAsmDisplayName" = "8:TestChooser, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64"
                 "ScatterAssemblies"
                 {
-                    "_898FD5B64D1E4FF4BA81AAFDCBC7B839"
-                    {
-                    "Name" = "8:TestChooser.exe"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:..\\TestChooser\\bin\\x64\\Release\\TestChooser.exe"
             "TargetName" = "8:"
@@ -5358,37 +5196,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C5D7DD2F6F656A8EFFAA9F9B829E894E"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:TRUE"
-            "AssemblyAsmDisplayName" = "8:Tektronix.Tkdpo2k3k4k.Interop, Version=1.5.0.0, Culture=neutral, PublicKeyToken=65cff6f5578f3c89, processorArchitecture=x86"
-                "ScatterAssemblies"
-                {
-                    "_C5D7DD2F6F656A8EFFAA9F9B829E894E"
-                    {
-                    "Name" = "8:Tektronix.Tkdpo2k3k4k.Interop.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Tektronix.Tkdpo2k3k4k.Interop.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_C5C3A675E61A4E2AA82A04721768A897"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C6A661AA18BD5544A82A981B28CACF14"
             {
             "AssemblyRegister" = "3:1"
@@ -5427,11 +5234,6 @@
             "AssemblyAsmDisplayName" = "8:AgSCPI99_1_0, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C83A0964174FE0BD5ABE96E40B047B9E"
-                    {
-                    "Name" = "8:AgSCPI99_1_0.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:AgSCPI99_1_0.dll"
             "TargetName" = "8:"
@@ -5447,7 +5249,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -5695,11 +5497,6 @@
             "AssemblyAsmDisplayName" = "8:TestExec, Version=1.0.0.0, Culture=neutral, PublicKeyToken=69d5d3b8c136adcf, processorArchitecture=AMD64"
                 "ScatterAssemblies"
                 {
-                    "_DC0F55FA25794E198CD069FB95061DEB"
-                    {
-                    "Name" = "8:TestExec.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:..\\TestExec\\bin\\x64\\Release\\TestExec.dll"
             "TargetName" = "8:"
@@ -5819,11 +5616,6 @@
             "AssemblyAsmDisplayName" = "8:Keysight.Visa, Version=18.5.0.0, Culture=neutral, PublicKeyToken=7a01cdb2a9131f73, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_E28C5B9A3D73D9785904CAFAD1C4DAEB"
-                    {
-                    "Name" = "8:Keysight.Visa.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Keysight.Visa.dll"
             "TargetName" = "8:"

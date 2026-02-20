@@ -1,4 +1,5 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
+using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic;
 using Keysight.Visa;
 using System;
 using System.Collections.Generic;
@@ -8,82 +9,21 @@ using System.Threading;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
-    public class MSO_3014_VISA_NET : IInstrument, IDiagnostics, IDisposable, IVISA_NET {
-        public String Address { get; }
-        public String Detail { get; }
-        public UsbSession UsbSession { get; }
+    public class MSO_3014_VISA_NET : VISA_NET, IInstrument, IDiagnostics, IDisposable, IVISA_NET {
         public enum BUS { B1, B2 }
         public enum CHANNEL { CH1, CH2 }
         public enum DRIVE_USB { E, F }
-        public INSTRUMENT_TYPE InstrumentType { get; }
         public enum SETUP { SETUP1 = 1, SETUP2 = 2, SETUP3 = 3, SETUP4 = 4, SETUP5 = 5, SETUP6 = 6, SETUP7 = 7, SETUP8 = 8, SETUP9 = 9, SETUP10 = 10 }
         public readonly static String ValidCharactersFile = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=+-!@#$%^&()[]{}~‘’,";
         public readonly static String ValidCharactersLabel = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=≠+-±!@#$%^&*()[]{}<>/~‘’\"\\|:,.?µ∞∆°Ωσ";
-        private Boolean _disposed = false;
-        private readonly Object _lock = new Object();
 
-        public void ResetClear() { UsbSession.FormattedIO.WriteLine("*RST;*CLR"); }
-
-        public SELF_TEST_RESULT SelfTests() {
-            Int32 selfTestResult;
-            try {
-                selfTestResult = Int32.Parse(QueryLine("*TST?"));
-            } catch (Exception exception) {
-                Instruments.SelfTestFailure(this, exception);
-                return SELF_TEST_RESULT.FAIL;
-            }
-            return (SELF_TEST_RESULT)selfTestResult;
-        }
-
-        public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
-            ResetClear();
-            Boolean passed = SelfTests() is SELF_TEST_RESULT.PASS;
-            (Boolean Summary, List<DiagnosticsResult> Details) result_3014 = (passed, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
-            if (passed) {
-                // TODO: Eventually; add verification measurements of the MSO-3014 mixed signal oscilloscope using external instrumentation.
-            }
-            return result_3014;
-        }
-
-        public MSO_3014_VISA_NET(String Address, String Detail) {
-            this.Address = Address;
-            this.Detail = Detail;
+        public MSO_3014_VISA_NET(String Address, String Detail) : base(Address, Detail) {
             InstrumentType = INSTRUMENT_TYPE.OSCILLOSCOPE_MIXED_SIGNAL;
-            UsbSession = new UsbSession(Address) {
-                TerminationCharacter = 0x0A,
-                TerminationCharacterEnabled = true
-            };
             DateTime dateTime = DateTime.Now;
             UsbSession.FormattedIO.WriteLine($":TIME \"{dateTime:hh:mm:ss}\"");
             UsbSession.FormattedIO.WriteLine($":DATE \"{dateTime:yyyy-MM-dd}\"");
             UsbSession.FormattedIO.WriteLine("DISplay:CLOCk ON");
         }
-
-        public String QueryLine(String scpiCommand) {
-            lock (_lock) {
-                UsbSession.TerminationCharacterEnabled = true;
-                UsbSession.FormattedIO.WriteLine(scpiCommand);
-                return UsbSession.FormattedIO.ReadLine().Trim();
-            }
-        }
-
-        public Byte[] QueryBinaryBlockOfByte(String scpiCommand) {
-            lock (_lock) {
-                UsbSession.TerminationCharacterEnabled = false;
-                UsbSession.FormattedIO.WriteLine(scpiCommand);
-                return UsbSession.FormattedIO.ReadBinaryBlockOfByte();
-            }
-        }
-
-        public Byte[] QueryRawIO(String scpiCommand) {
-            lock (_lock) {
-                UsbSession.TerminationCharacterEnabled = false;
-                UsbSession.FormattedIO.WriteLine(scpiCommand);
-                return UsbSession.RawIO.Read();
-            }
-        }
-
-        public void OperationCompleteQuery(String scpiCommand) { if (!QueryLine("*OPC?").Equals("1")) throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command '{scpiCommand}'!"); }
 
         public void EventTableEnable(BUS Bus) {
             switch (Bus) {
@@ -149,23 +89,5 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public Boolean ValidLabel(String LabelString) { return ((LabelString.Length < 30) && ValidLabelCharacters(LabelString)); }
 
         private String InvalidLabelMessage(String LabelString) { return $"Invalid MSO-3014 Setup label '{LabelString}'!{Environment.NewLine}  Label cannot exceed 30 characters in length and can only contain characters in set \"{ValidCharactersLabel}\"."; }
-
-        ~MSO_3014_VISA_NET() { Dispose(false); }
-
-        public void Dispose() {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(Boolean disposing) {
-            if (!_disposed) {
-                if (disposing) {
-                    // Free managed resources here
-                }
-                // Free unmanaged resources here (if any).
-                UsbSession.Dispose();
-                _disposed = true;
-            }
-        }
     }
 }

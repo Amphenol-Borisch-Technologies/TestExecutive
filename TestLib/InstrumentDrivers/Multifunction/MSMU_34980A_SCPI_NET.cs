@@ -452,7 +452,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             Ag34980.SCPI.SYSTem.TIME.Command(now.Hour, now.Minute, Convert.ToDouble(now.Second));
             Ag34980.SCPI.UNIT.TEMPerature.Command($"{TEMPERATURE_UNIT.F}");
             Ag34980.SCPI.IDN.Query(out String idn);
-            _34980A = idn.Split(',')[(Int32)SCPI_NET.IDN_FIELD.Model];
+            _34980A = idn.Split(',')[(Int32)VISA_NET.IDN_FIELD.Model];
 
         }
 
@@ -500,7 +500,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         }
         public String SystemType(SLOT Slot) {
             Ag34980.SCPI.SYSTem.CTYPe.Query((Int32)Slot, out String identity);
-            return identity.Split(',')[(Int32)Generic.SCPI_NET.IDN_FIELD.Model];
+            return identity.Split(',')[(Int32)VISA_NET.IDN_FIELD.Model];
         }
         public TEMPERATURE_UNIT UnitsGet() {
             Ag34980.SCPI.UNIT.TEMPerature.Query(out String[] units);

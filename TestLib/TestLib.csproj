@@ -57,11 +57,6 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ag34401_11, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\ProgramData\Keysight\Command Expert\ScpiNetDrivers\Ag34401_11.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Ag34980_2_43, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\ProgramData\Keysight\Command Expert\ScpiNetDrivers\Ag34980_2_43.dll</HintPath>
@@ -76,21 +71,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgE364xD_1_7.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="AgSCPI99_1_0, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgSCPI99_1_0.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ivi.Driver.Interop, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\IVI Foundation\IVI\Bin\Primary Interop Assemblies\Ivi.Driver.Interop.dll</HintPath>
-    </Reference>
-    <Reference Include="Ivi.Scope.Interop, Version=3.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\IVI Foundation\IVI\Bin\Primary Interop Assemblies\Ivi.Scope.Interop.dll</HintPath>
     </Reference>
     <Reference Include="Ivi.Visa, Version=8.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -144,7 +124,7 @@
     <Compile Include="Configuration\TestSequence.cs">
       <DependentUpon>TestSequence.xsd</DependentUpon>
     </Compile>
-    <Compile Include="InstrumentDrivers\Generic\SCPI_NET.cs" />
+    <Compile Include="InstrumentDrivers\Generic\VISA_NET.cs" />
     <Compile Include="InstrumentDrivers\Instruments.cs" />
     <Compile Include="InstrumentDrivers\Interfaces\IDiagnostics.cs" />
     <Compile Include="InstrumentDrivers\Interfaces\IInstrument.cs" />
@@ -152,7 +132,6 @@
     <Compile Include="InstrumentDrivers\Interfaces\IPowerSupply.cs" />
     <Compile Include="InstrumentDrivers\Interfaces\IRelay.cs" />
     <Compile Include="InstrumentDrivers\Multifunction\MSMU_34980A_SCPI_NET.cs" />
-    <Compile Include="InstrumentDrivers\MultiMeters\MM_34401A_SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\Oscilloscopes\MSO_3014_VISA_NET.cs" />
     <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3634A_SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3649A_SCPI_NET.cs" />
@@ -228,5 +207,6 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

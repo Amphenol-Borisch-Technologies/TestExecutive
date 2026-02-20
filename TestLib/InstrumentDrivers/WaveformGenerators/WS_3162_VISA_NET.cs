@@ -1,4 +1,5 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
+using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic;
 using Keysight.Visa;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
     //  SYNC        SYNC            SIGNAL      Sends a Sync pulse upon occurrence of the specified function.
     //  WVCSV       WAVE_CSV                    Saves.CSV file to user-defined memory location.
 
-    public class WS_3162_VISA_NET : IInstrument, IDiagnostics, IDisposable, IVISA_NET {
+    public class WS_3162_VISA_NET : VISA_NET, IInstrument, IDiagnostics, IDisposable, IVISA_NET {
         public enum CHANNEL { C1, C2 }
         public enum CLOCK_SOURCE { INT, EXT }
         public enum COMMAND_HEADER { OFF, SHORT, LONG }
@@ -65,69 +66,14 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             public enum QUERY { WVTP, FRQ, PERI, AMP, OFST, HLEV, LLEV, PHSE, DUTY }
             public enum WVTP { SINE, SQUARE, RAMP, PULSE, NOISE, ARB, DC }
         }
-        public UsbSession UsbSession;
-        public String Address { get; }
-        public String Detail { get; }
-        public INSTRUMENT_TYPE InstrumentType { get; }
-        public SELF_TEST_RESULT SelfTests() {
-            try {
-                UsbSession.FormattedIO.WriteLine("*TST?");
-                if (TestQuery().Equals("0")) return SELF_TEST_RESULT.PASS;
-                return SELF_TEST_RESULT.FAIL;
-            } catch (Exception exception) {
-                Instruments.SelfTestFailure(this, exception);
-                return SELF_TEST_RESULT.FAIL;
-            }
-        }
-        private readonly Object _lock = new Object();
 
-        public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
-            ResetClear();
-            Boolean passed = SelfTests() is SELF_TEST_RESULT.PASS;
-            (Boolean Summary, List<DiagnosticsResult> Details) result_3162 = (passed, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
-            if (passed) {
-                // TODO: Eventually; add verification measurements of the WS-3162 waveform generator using external instrumentation.
-            }
-            return result_3162;
-        }
-
-        public WS_3162_VISA_NET(String Address, String Detail) {
-            this.Address = Address;
-            this.Detail = Detail;
+        public WS_3162_VISA_NET(String Address, String Detail) : base(Address, Detail) {
             InstrumentType = INSTRUMENT_TYPE.WAVEFORM_GENERATOR;
-            UsbSession = new UsbSession(Address) {
-                TerminationCharacter = 0x0A,
-                TerminationCharacterEnabled = true
-            };
             ResetCommand();
             ClearStatusCommand();
             CommandHeaderCommand(COMMAND_HEADER.LONG);
             ScreenSaveCommand(MINUTE.M5);
             BuzzerCommand(STATUS.ON);
-        }
-
-        public String QueryLine(String scpiCommand) {
-            lock (_lock) {
-                UsbSession.TerminationCharacterEnabled = true;
-                UsbSession.FormattedIO.WriteLine(scpiCommand);
-                return UsbSession.FormattedIO.ReadLine().Trim();
-            }
-        }
-
-        public Byte[] QueryBinaryBlockOfByte(String scpiCommand) {
-            lock (_lock) {
-                UsbSession.TerminationCharacterEnabled = false;
-                UsbSession.FormattedIO.WriteLine(scpiCommand);
-                return UsbSession.FormattedIO.ReadBinaryBlockOfByte();
-            }
-        }
-
-        public Byte[] QueryRawIO(String scpiCommand) {
-            lock (_lock) {
-                UsbSession.TerminationCharacterEnabled = false;
-                UsbSession.FormattedIO.WriteLine(scpiCommand);
-                return UsbSession.RawIO.Read();
-            }
         }
 
         public void BasicWaveCommand(CHANNEL Channel, BasicWave.COMMAND Command, Object Parameter) {
@@ -260,7 +206,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             return (STATUS)Enum.Parse(typeof(STATUS), response.Substring(response.IndexOf(" ") + 1), true);
         }
         public void ChannelParameterCopyCommand(CHANNEL ChannelSource) { UsbSession.FormattedIO.WriteLine($"PAraCoPy {(ChannelSource == CHANNEL.C1 ? CHANNEL.C2 : CHANNEL.C1)},{ChannelSource}"); }
-        public void ClearStatusCommand() { UsbSession.FormattedIO.WriteLine("*CLS"); }
         public void ClockSourceCommand(CLOCK_SOURCE ClockSource) { UsbSession.FormattedIO.WriteLine($"ROSCillator {ClockSource}"); }
         public CLOCK_SOURCE ClockSourceQuery() {
             String response = QueryLine("ROSCillator?");
@@ -276,18 +221,11 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             String response = QueryLine("Sys_CFG?");
             return (CONFIGURATION)Enum.Parse(typeof(CONFIGURATION), response.Substring(response.IndexOf(" ") + 1), true);
         }
-        public void EventStatusEnableCommand(Byte RegisterMask) { UsbSession.FormattedIO.WriteLine($"*ESE {RegisterMask}"); }
-        public Byte EventStatusEnableQuery() { return Byte.Parse(QueryLine("*ESE?").Substring(5)); }
-        public Byte EventStatusRegisterQuery() { return Byte.Parse(QueryLine("*ESR?").Substring(5)); }
-        public String IdentityQuery() { return QueryLine("*IDN?"); }
         public void InvertCommand(STATUS Status) { UsbSession.FormattedIO.WriteLine($"INVerT {Status}"); }
         public STATUS InvertQuery() {
             String response = QueryLine("INVerT?");
             return (STATUS)Enum.Parse(typeof(STATUS), response.Substring(response.IndexOf(" ") + 1), true);
         }
-        public void OperationCompleteCommand() { UsbSession.FormattedIO.WriteLine($"*OPC"); }
-        public Byte OperationCompleteQuery() { return Byte.Parse(QueryLine("*OPC?").Substring(5)); }
-        public void OperationCompleteQuery(String scpiCommand) { if (!QueryLine("*OPC?").Equals("1")) throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command '{scpiCommand}'!"); }
         public void OutputCommand(CHANNEL Channel, OUTP Output) { UsbSession.FormattedIO.WriteLine($"{Channel}:OUTPut {Output.ToString().Replace('_', ',')}"); }
         public String OutputQuery(CHANNEL Channel) { return QueryLine($"{Channel}:OUTPut?"); }
         public void ScreenSaveCommand(MINUTE Minute) {
@@ -298,26 +236,13 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             String response = QueryLine("SCreen_SaVe?");
             return response.Substring(response.IndexOf(" ") + 1);
         }
-        public void ServiceRequestEnableCommand(Byte RegisterMask) { UsbSession.FormattedIO.WriteLine($"*SRE {RegisterMask}"); }
-        public Byte ServiceRequestEnableQuery() { return Byte.Parse(QueryLine("*SRE?").Substring(5)); }
-        public Byte StatusRegisterQuery() { return Byte.Parse(QueryLine("*STB?").Substring(5)); }
         public void SynchronizeCommand(CHANNEL Channel, STATUS Status) { UsbSession.FormattedIO.WriteLine($"{Channel}:SYNC {Status}"); }
         public CHANNEL SynchronizeQuery() {
             String response = QueryLine("SYNC?");
             return (CHANNEL)Enum.Parse(typeof(CHANNEL), response.Substring(response.IndexOf(" ") + 1), true);
         }
-        public String TestQuery() { return QueryLine("*TST?").Substring(5); }
         public void VirtualKeyCommand(VIRTUAL_KEY VirtualKey) { UsbSession.FormattedIO.WriteLine($"VKEY VALUE,{VirtualKey},STATE,1"); }
 
-        public void ResetCommand() { UsbSession.FormattedIO.WriteLine("*RST"); }
-        public void WaitCommand() { UsbSession.FormattedIO.WriteLine("*WAI"); }
-        public void ResetClear() {
-            ResetCommand();
-            ClearStatusCommand();
-        }
-
         ~WS_3162_VISA_NET() { Dispose(); }
-
-        public void Dispose() { UsbSession.Dispose(); }
     }
 }
