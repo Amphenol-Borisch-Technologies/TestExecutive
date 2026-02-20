@@ -1,5 +1,5 @@
-﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
-using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic;
+﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic;
+using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Interfaces;
 using Keysight.Visa;
 using System;
 using System.Collections.Generic;

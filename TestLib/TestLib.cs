@@ -15,7 +15,8 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace ABT.Test.TestExecutive.TestLib {
-    [Flags] public enum EVENTS {
+    [Flags]
+    public enum EVENTS {
         // NOTE:  EVENTS are defined in order of criticality.
         // - EVENTS' ordering is crucial to correctly evaluating TestExec results.
         // - Reordering without consideration will break TestGroup & TestOperation evaluation logic.

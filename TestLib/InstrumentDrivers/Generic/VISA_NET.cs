@@ -2,8 +2,6 @@
 using Keysight.Visa;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using static ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator.WS_3162_VISA_NET;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic {
     public class VISA_NET : IInstrument, IDiagnostics, IDisposable, IVISA_NET {
@@ -76,7 +74,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Generic {
             String Address = ((IInstrument)Instrument).Address;
             return Identity(Address, Property);
         }
-        
+
         ~VISA_NET() { Dispose(false); }
 
         public void Dispose() {
