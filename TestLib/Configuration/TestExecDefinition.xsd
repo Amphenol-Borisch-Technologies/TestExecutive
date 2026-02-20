@@ -455,7 +455,7 @@
 						</xs:documentation>
 					</xs:annotation>
 				</xs:element>
-				<xs:element name="ActiveDirectoryPermissions" minOccurs="1" maxOccurs="1"/>
+				<xs:element name="ActiveDirectoryPermissions" type="ActiveDirectoryPermissions" minOccurs="1" maxOccurs="1"/>
 				<xs:element name="TestData" minOccurs="1" maxOccurs="1">
 					<xs:annotation>
 						<xs:documentation xml:lang="en">
