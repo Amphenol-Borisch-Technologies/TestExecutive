@@ -696,8 +696,6 @@ namespace ABT.Test.TestExecutive.TestExec {
                         }
                         return;
                     } finally {
-                        // NOTE:  Normally executes, regardless if catchable Exception occurs or returned out of try/catch blocks.
-                        // Exceptional exceptions are exempted; https://stackoverflow.com/questions/345091/will-code-in-a-finally-statement-fire-if-i-return-a-value-in-a-try-block.
                         if (CT_EmergencyStop.IsCancellationRequested) method.Event = EVENTS.EMERGENCY_STOP;
                         else if (CT_Cancel.IsCancellationRequested) method.Event = EVENTS.CANCEL;
                         // NOTE:  Both CT_Cancel.IsCancellationRequested & CT_EmergencyStop.IsCancellationRequested could be true; prioritize CT_EmergencyStop.
