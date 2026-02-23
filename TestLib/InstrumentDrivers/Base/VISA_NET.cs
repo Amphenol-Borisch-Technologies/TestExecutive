@@ -43,26 +43,26 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
             return (SelfTests() is SELF_TEST_RESULT.PASS, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
         }
 
-        public String QueryLine(String scpiCommand) {
+        public String QueryLine(String SCPI_Command) {
             lock (_lock) {
                 UsbSession.TerminationCharacterEnabled = true;
-                UsbSession.FormattedIO.WriteLine(scpiCommand);
+                UsbSession.FormattedIO.WriteLine(SCPI_Command);
                 return UsbSession.FormattedIO.ReadLine().Trim();
             }
         }
 
-        public Byte[] QueryBinaryBlockOfByte(String scpiCommand) {
+        public Byte[] QueryBinaryBlockOfByte(String SCPI_Command) {
             lock (_lock) {
                 UsbSession.TerminationCharacterEnabled = false;
-                UsbSession.FormattedIO.WriteLine(scpiCommand);
+                UsbSession.FormattedIO.WriteLine(SCPI_Command);
                 return UsbSession.FormattedIO.ReadBinaryBlockOfByte();
             }
         }
 
-        public Byte[] QueryRawIO(String scpiCommand) {
+        public Byte[] QueryRawIO(String SCPI_Command) {
             lock (_lock) {
                 UsbSession.TerminationCharacterEnabled = false;
-                UsbSession.FormattedIO.WriteLine(scpiCommand);
+                UsbSession.FormattedIO.WriteLine(SCPI_Command);
                 return UsbSession.RawIO.Read();
             }
         }

@@ -2,10 +2,10 @@
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
     public interface IVISA_NET {
-        String QueryLine(String scpiCommand);
+        String QueryLine(String SCPI_Command);
 
-        Byte[] QueryBinaryBlockOfByte(String scpiCommand);
+        Byte[] QueryBinaryBlockOfByte(String SCPI_Command);
 
-        Byte[] QueryRawIO(String scpiCommand);
+        Byte[] QueryRawIO(String SCPI_Command);
     }
 }
