@@ -124,18 +124,20 @@
     <Compile Include="Configuration\TestSequence.cs">
       <DependentUpon>TestSequence.xsd</DependentUpon>
     </Compile>
-    <Compile Include="InstrumentDrivers\Base\VISA_NET.cs" />
-    <Compile Include="InstrumentDrivers\Instruments.cs" />
+    <Compile Include="InstrumentDrivers\Base\Instrument.cs" />
+    <Compile Include="InstrumentDrivers\Base\Instruments.cs" />
     <Compile Include="InstrumentDrivers\Base\IDiagnostics.cs" />
     <Compile Include="InstrumentDrivers\Base\IInstrument.cs" />
-    <Compile Include="InstrumentDrivers\Base\IVISA_NET.cs" />
     <Compile Include="InstrumentDrivers\Base\IPowerSupply.cs" />
     <Compile Include="InstrumentDrivers\Base\IRelay.cs" />
+    <Compile Include="InstrumentDrivers\Multifunction\MSMU_34980A.cs" />
     <Compile Include="InstrumentDrivers\Multifunction\MSMU_34980A_SCPI_NET.cs" />
-    <Compile Include="InstrumentDrivers\Oscilloscopes\MSO_3014_VISA_NET.cs" />
+    <Compile Include="InstrumentDrivers\Oscilloscopes\MSO_3014.cs" />
+    <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3634A.cs" />
     <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3634A_SCPI_NET.cs" />
+    <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3649A.cs" />
     <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3649A_SCPI_NET.cs" />
-    <Compile Include="InstrumentDrivers\WaveformGenerators\WS_3162_VISA_NET.cs" />
+    <Compile Include="InstrumentDrivers\WaveformGenerators\WS_3162.cs" />
     <Compile Include="Miscellaneous\UUT_Connections.cs">
       <SubType>Form</SubType>
     </Compile>

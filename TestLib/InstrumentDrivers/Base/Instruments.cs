@@ -1,10 +1,9 @@
-﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 //using System.Diagnostics.Metrics;
 using System.Windows.Forms;
 
-namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers {
+namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
     public enum INSTRUMENT_TYPE { DIGITAL_IO, ELECTRONIC_LOAD, LOGIC_ANALYZER, MULTI_FUNCTION, MULTI_METER, OSCILLOSCOPE_ANALOG, OSCILLOSCOPE_MIXED_SIGNAL, POWER_ANALYZER, POWER_SUPPLY, SWITCHING, UNKNOWN, WAVEFORM_GENERATOR }
     [Flags] public enum INSTRUMENT_CATEGORIES { DIGITAL_INPUT = 1, DIGITAL_OUTPUT = 2, ANALOG_MEASURE = 4, ANALOG_STIMULUS = 8, SWITCHING = 16, UNKNOWN = 32 }
     public enum STATE { off = 0, ON = 1 } // NOTE: To Command an instrument off or ON, and Query it's STATE, again off or ON.

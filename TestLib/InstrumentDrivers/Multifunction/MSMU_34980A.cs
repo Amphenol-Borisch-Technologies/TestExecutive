@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
 
-    public class MSMU_34980A_SCPI_NET : IInstrument, IRelay, IDiagnostics {
+    public class MSMU_34980A : Instrument, IRelay {
         public readonly struct Modules {
             public static readonly String M34921A = "34921A";
             public static readonly String M34932A = "34932A";
@@ -23,16 +23,9 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         public enum SLOT { S1 = 1, S2 = 2, S3 = 3, S4 = 4, S5 = 5, S6 = 6, S7 = 7, S8 = 8 }
         public static String GetSlot(SLOT Slot) { return $"SLOT{(Int32)Slot}"; }
 
-        public String Address { get; }
-        public String Detail { get; }
         public Ag34980 Ag34980 { get; }
-        public INSTRUMENT_TYPE InstrumentType { get; }
         private readonly String _34980A;
 
-        public void ResetClear() {
-            Ag34980.SCPI.RST.Command();
-            Ag34980.SCPI.CLS.Command();
-        }
 
         public SELF_TEST_RESULT SelfTests() {
             if (DialogResult.Cancel == MessageBox.Show($"Please disconnect Address Bus DB9 & all Module/Slot terminal blocks/connectors from {Detail}/{Address}.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
@@ -441,11 +434,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         }
         #endregion Diagnostics
 
-        public MSMU_34980A_SCPI_NET(String Address, String Detail) {
-            this.Address = Address;
-            this.Detail = Detail;
+        public MSMU_34980A(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.MULTI_FUNCTION) {
             Ag34980 = new Ag34980(Address);
-            InstrumentType = INSTRUMENT_TYPE.MULTI_FUNCTION;
             DateTime now = DateTime.Now;
             Ag34980.SCPI.SYSTem.DATE.Command(now.Year, now.Month, now.Day);
             Ag34980.SCPI.SYSTem.TIME.Command(now.Hour, now.Minute, Convert.ToDouble(now.Second));
@@ -455,15 +445,9 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
 
         }
 
-        public Boolean InstrumentDMM_Installed() {
-            Ag34980.SCPI.INSTrument.DMM.INSTalled.Query(out Boolean installed);
-            return installed;
-        }
-        public STATE InstrumentDMM_Get() {
-            Ag34980.SCPI.INSTrument.DMM.STATe.Query(out Boolean mode);
-            return mode ? STATE.ON : STATE.off;
-        }
-        public void InstrumentDMM_Set(STATE State) { Ag34980.SCPI.INSTrument.DMM.STATe.Command(State == STATE.ON); }
+        public Boolean InstrumentDMM_Installed() { return Query(":INSTrument:DMM:INSTalled?") == "1"; }
+        public STATE InstrumentDMM_Get() { return Query(":INSTrument:DMM:STATe?") == "1" ? STATE.ON : STATE.off; }
+        public void InstrumentDMM_Set(STATE State) { Command($":INSTrument:DMM:STATe {State == STATE.ON}"); }
         public (Int32 Min, Int32 Max) ModuleChannels(SLOT Slot) {
             switch (SystemType(Slot)) {
                 case String s when s == Modules.M34921A: return (Min: 1, Max: 44);
@@ -474,7 +458,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         }
         public void RouteCloseExclusive(String Channels) {
             ValidateChannelS(Channels);
-            Ag34980.SCPI.ROUTe.CLOSe.EXCLusive.Command($"({Channels})");
+            Command($":ROUTe:CLOSe:EXCLusive ({Channels})");
         }
         public Boolean RouteGet(String Channels, RELAY_STATE State) {
             ValidateChannelS(Channels);
@@ -486,25 +470,13 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         }
         public void RouteSet(String Channels, RELAY_STATE State) {
             ValidateChannelS(Channels);
-            if (State is RELAY_STATE.opened) Ag34980.SCPI.ROUTe.OPEN.Command(Channels);
-            else Ag34980.SCPI.ROUTe.CLOSe.Command(Channels);
+            if (State is RELAY_STATE.opened) Command($":ROUTe:OPEN {Channels}");
+            else Command($":ROUTe:CLOSe {Channels}");
         }
-        public String SystemDescriptionLong(SLOT Slot) {
-            Ag34980.SCPI.SYSTem.CDEScription.LONG.Query((Int32)Slot, out String description);
-            return description;
-        }
-        public Double SystemModuleTemperature(SLOT Slot) {
-            Ag34980.SCPI.SYSTem.MODule.TEMPerature.Query("TRANsducer", (Int32)Slot, out Double temperature);
-            return temperature;
-        }
-        public String SystemType(SLOT Slot) {
-            Ag34980.SCPI.SYSTem.CTYPe.Query((Int32)Slot, out String identity);
-            return identity.Split(',')[(Int32)Instrument.IDN_FIELD.Model];
-        }
-        public TEMPERATURE_UNIT UnitsGet() {
-            Ag34980.SCPI.UNIT.TEMPerature.Query(out String[] units);
-            return (TEMPERATURE_UNIT)Enum.Parse(typeof(TEMPERATURE_UNIT), String.Join("", units).Replace("[", "").Replace("]", ""));
-        }
+        public String SystemDescriptionLong(SLOT Slot) { return Query($":SYSTem:CDEScription:LONG? {(Int32)Slot}"); }
+        public Double SystemModuleTemperature(SLOT Slot) { return Double.Parse(Query($":SYSTem:MODule:TEMPerature? TRANsducer,{(Int32)Slot}")); }
+        public String SystemType(SLOT Slot) { return Query($":SYSTem:CTYPe? {Slot}").Split(',')[(Int32)IDN_FIELD.Model]; }
+        public TEMPERATURE_UNIT UnitsGet() { return (TEMPERATURE_UNIT)Enum.Parse(typeof(TEMPERATURE_UNIT), Query(":UNIT:TEMPerature?").Replace("[", "").Replace("]", "")); }
         public void ValidateChannelS(String Channels) {
             if (!Regex.IsMatch(Channels, @"^@\d{4}((,|:)\d{4})*$")) { // https://regex101.com/.
                 StringBuilder stringBuilder = new StringBuilder();

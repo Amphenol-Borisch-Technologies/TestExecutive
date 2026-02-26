@@ -1,0 +1,246 @@
+﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+
+namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
+    #region TL;DR
+    // NOTE: WaveStation 2000/3000 SCPI Reference Manual https://cdn.teledynelecroy.com/files/manuals/wsta_scpi_manual_reva.pdf.
+    // NOTE: Operator's Manual: WaveStation 3000 Function & Arbitrary Waveform Generator https://cdn.teledynelecroy.com/files/manuals/wavestation_3000_om.pdf.
+    // TODO: Test below WaveStation 3162 commands & queries:
+    //
+    //  Short       Long            Subsystem   What It Does
+    //  --------------------------------------------------------------
+    //  *IDN?       *IDN            SYSTEM      Retrieves device identification information.
+    //  *OPC        *OPC            SYSTEM      Sets the Event Status Register(ESR) OPC bit to TRUE(1).
+    //  *CLS        *CLS            SYSTEM      Clears all status data registers
+    //  *ESE        *ESE            SYSTEM      Sets the Standard Event Status Enable register(ESE)
+    //  *ESR?       *ESR?           SYSTEM      Reads and clears the contents of the Event Status Register(ESR)
+    //  *RST        *RST            SYSTEM      Initiates a device reset.
+    //  *SRE        *SRE            SYSTEM      Sets the Service Request Enable register(SRE)
+    //  *STB?       *STB?           SYSTEM      Reads the contents of the 488.1 defined status register(STB), and the Master Summary Status(MSS)
+    //  *TST        *TST            SYSTEM      Performs an internal self-test.
+    //  *WAI        *WAI            SYSTEM      Wait to continue command.
+    //  BSWV        BASIC_WAVE      SIGNAL      Sets or retrieves basic wave parameters.
+    //  BUZZ        BUZZER          SYSTEM      Sets or retrieves buzzer status.
+    //  CHDR        COMM_HEADER                 Sets or retrieves the query return format.
+    //  INVT        INVERT          SIGNAL      Sets or retrieves the phase of the output signal.
+    //  OUTP        OUTPUT          SIGNAL      Sets or retrieves output state.
+    //  PACP        CHANNEL_COPY    SIGNAL      Copies parameters from one channel to the other
+    //  ROSC        ROSCILLATOR     SIGNAL      Sets or retrieves the clock source.
+    //  SCFG        SYSTEM_CONFIG   SYSTEM      Sets or retrieves the state used (last or default) when powering on the WaveStation.
+    //  SCSV        SCREEN_SAVE     SYSTEM      Sets screen saver on/off or retrieves screen saver status.
+    //  VKEY        VIRTUAL_KEY     SYSTEM      Sends equivalent keyboard function to device.
+
+    // TODO: Code & Test below WaveStation 3162 commands & queries:
+    //
+    //  Short       Long            Subsystem   What It Does
+    //  --------------------------------------------------------------
+    //  ARWV        ARBWAVE         SYSTEM      Sets the instrument to an arbitrary waveform or retrieves Arbitrary Waveform settings.
+    //  BTWV        BURSTWAVE       SIGNAL      Sets instrument to a burst waveform or retrieves current Burst Wave settings.
+    //  MDWV        MODULATEWAVE    SIGNAL      Sets instrument to a modulated waveform or retrieves current Modulate Wave settings.
+    //  STL         STORE_LIST      SIGNAL      Retrieves all waveform names stored in WaveStation’s device memory.
+    //  SWWV        SWEEP           SIGNAL      Sets instrument to sweep a waveform or retrieves Sweep Wave settings.
+    //  SYNC        SYNC            SIGNAL      Sends a Sync pulse upon occurrence of the specified function.
+    //  WVCSV       WAVE_CSV                    Saves.CSV file to user-defined memory location.
+    #endregion TL;DR
+    public class WS_3162 : Instrument {
+        public enum CHANNEL { C1, C2 }
+        public enum CLOCK_SOURCE { INT, EXT }
+        public enum COMMAND_HEADER { OFF, SHORT, LONG }
+        public enum CONFIGURATION { DEFAULT, LAST }
+        public enum MINUTE { OFF = 0, M1 = 1, M5 = 5, M15 = 15, M30 = 30, M60 = 60, M120 = 120, M300 = 300 }
+        public enum OUTP { ON, OFF, LOAD_50, LOAD_HZ, PLRT_NOR, PLRT_INVT }
+        public enum STATUS { OFF, ON }
+        public enum VIRTUAL_KEY {
+            KB_BURST = 17, KB_CHANNEL = 33, KB_FUNC1 = 28, KB_FUNC2 = 23, KB_FUNC3 = 18, KB_FUNC4 = 13,
+            KB_FUNC5 = 8, KB_FUNC6 = 3, KB_HELP = 12, KB_KNOB_DOWN = 176, KB_KNOB_LEFT = 177, KB_KNOB_RIGHT = 175, KB_LEFT = 44,
+            KB_MOD = 15, KB_NEGATIVE = 43, KB_NUMBER_0 = 48, KB_NUMBER_1 = 49, KB_NUMBER_2 = 50, KB_NUMBER_3 = 51, KB_NUMBER_4 = 52,
+            KB_NUMBER_5 = 53, KB_NUMBER_6 = 54, KB_NUMBER_7 = 55, KB_NUMBER_8 = 56, KB_NUMBER_9 = 57, KB_OUTPUT1 = 153, KB_OUTPUT2 = 152,
+            KB_PARAMETER = 5, KB_POINT = 46, KB_RIGHT = 40, KB_SWEEP = 16, KB_UTILITY = 11, KB_WAVES = 4
+        }
+        public class BasicWave {
+            public enum COMMAND { WVTP, FRQ, AMP, OFST, SYM, DUTY, PHSE, STDEV, MEAN, WIDTH, RISE, FALL, DLY }
+            public enum QUERY { WVTP, FRQ, PERI, AMP, OFST, HLEV, LLEV, PHSE, DUTY }
+            public enum WVTP { SINE, SQUARE, RAMP, PULSE, NOISE, ARB, DC }
+        }
+
+        public WS_3162(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.WAVEFORM_GENERATOR) {
+            ResetCommand();
+            ClearStatusCommand();
+            CommandHeaderCommand(COMMAND_HEADER.LONG);
+            ScreenSaveCommand(MINUTE.M5);
+            BuzzerCommand(STATUS.ON);
+        }
+
+        public void BasicWaveCommand(CHANNEL Channel, BasicWave.COMMAND Command, Object Parameter) {
+            BasicWave.WVTP wvtp = (BasicWave.WVTP)Enum.Parse(typeof(BasicWave.WVTP), BasicWaveQuery(Channel, BasicWave.QUERY.WVTP));
+            switch (Command) {
+                case BasicWave.COMMAND.WVTP: {
+                        if (Enum.IsDefined(typeof(BasicWave.WVTP), Parameter.ToString())) base.Command($"{Channel}:BaSic_WaVe WVTP,{Parameter}");
+                        else {
+                            BasicWave.WVTP[] waveEnum = (BasicWave.WVTP[])Enum.GetValues(typeof(BasicWave.WVTP));
+                            String waveTypes = "{ " + String.Join(", ", waveEnum.Select(wt => wt.ToString())) + " }";
+                            throw new ArgumentException($"Wavetype '{Parameter}' must be in set '{waveTypes}'.");
+                        }
+                        break;
+                    }
+                case BasicWave.COMMAND.FRQ: {
+                        if (wvtp == BasicWave.WVTP.NOISE) throw new ArgumentException("Frequency invalid for WVTP = NOISE.");
+                        if (Double.TryParse(Parameter.ToString(), out Double hertzFRQ)) {
+                            if (hertzFRQ < 1E-6 || hertzFRQ > 160E6) throw new ArgumentOutOfRangeException($"Frequency '{hertzFRQ}' must be between 1E-6 and 160E6 Hertz.");
+                            base.Command($"{Channel}:BaSic_WaVe FRQ,{hertzFRQ}HZ");
+                        } else throw new ArgumentException(nameof(Parameter), $"Frequency '{Parameter}' must be of type '{typeof(Double)}'.");
+                        break;
+                    }
+                case BasicWave.COMMAND.AMP: {
+                        if (wvtp == BasicWave.WVTP.NOISE) throw new ArgumentException("Amplifier invalid for WVTP = NOISE.");
+                        if (Double.TryParse(Parameter.ToString(), out Double voltsAMP)) {
+                            if (voltsAMP < 2E-3 || voltsAMP > 2E1) throw new ArgumentOutOfRangeException($"Amplifier voltage '{voltsAMP}' must be between 2E-3 and 2E1 Volts.");
+                            base.Command($"{Channel}:BaSic_WaVe AMP,{voltsAMP}V");
+                        } else throw new ArgumentException(nameof(Parameter), $"Amplifier voltage '{Parameter}' must be of type '{typeof(Double)}'.");
+                        break;
+                    }
+                case BasicWave.COMMAND.OFST: {
+                        if (wvtp == BasicWave.WVTP.NOISE) throw new ArgumentException("Offset invalid for WVTP = NOISE.");
+                        if (Double.TryParse(Parameter.ToString(), out Double voltsOFST)) {
+                            Double voltsAMP = Double.Parse(BasicWaveQuery(Channel, BasicWave.QUERY.AMP).Replace("V", ""));
+                            if (voltsOFST > (voltsAMP / 2)) throw new ArgumentOutOfRangeException($"Offset voltage '{voltsOFST}' must be ≤ amplitude/2 '{voltsAMP / 2}'.");
+                            if (Math.Abs(voltsOFST) + (voltsAMP / 2) > 10) throw new ArgumentOutOfRangeException($"Offset '{voltsOFST}' and amplitude '{voltsAMP}' combination must be within ± 10 Volts.");
+                            base.Command($"{Channel}:BaSic_WaVe OFST,{voltsOFST}V");
+                        } else throw new ArgumentException(nameof(Parameter), $"Offset voltage '{Parameter}' must be of type '{typeof(Double)}'.");
+                        break;
+                    }
+                case BasicWave.COMMAND.SYM: {
+                        if (wvtp != BasicWave.WVTP.RAMP) throw new ArgumentException("Symmetry invalid for WVTP ≠ RAMP.");
+                        if (Double.TryParse(Parameter.ToString(), out Double symmetry)) {
+                            if (symmetry < 0 || symmetry > 100) throw new ArgumentOutOfRangeException($"Symmetry '{symmetry}' must be between 0 and 100.");
+                            base.Command($"{Channel}:BaSic_WaVe SYM,{symmetry}");
+                        } else throw new ArgumentException(nameof(Parameter), $"Symmetry '{Parameter}' must be of type '{typeof(Double)}'.");
+                        break;
+                    }
+                case BasicWave.COMMAND.DUTY: {
+                        if (Double.TryParse(Parameter.ToString(), out Double duty)) {
+                            switch (wvtp) {
+                                case BasicWave.WVTP.PULSE:
+                                    if (duty < 0.001 || duty > 0.999) throw new ArgumentOutOfRangeException($"Duty cycle '{duty}' must be between 0.001 and 0.999 for WVTP = PULSE.");
+                                    base.Command($"{Channel}:BaSic_WaVe DUTY,{duty * 100}%");
+                                    break;
+                                case BasicWave.WVTP.SQUARE:
+                                    if (duty < 0.2 || duty > 0.8) throw new ArgumentOutOfRangeException($"Duty cycle '{duty}' must be between 0.2 and 0.8 for WVTP = SQUARE.");
+                                    base.Command($"{Channel}:BaSic_WaVe DUTY,{duty * 100}%");
+                                    break;
+                                default:
+                                    throw new ArgumentException($"Duty cycle invalid for WVTP '{wvtp}'; must be PULSE or SQUARE.");
+                            }
+                        } else throw new ArgumentException(nameof(Parameter), $"Duty cycle '{Parameter}' must be of type '{typeof(Double)}'.");
+                        break;
+                    }
+                case BasicWave.COMMAND.PHSE: {
+                        if (wvtp == BasicWave.WVTP.NOISE) throw new ArgumentException("Phase invalid for WVTP = NOISE.");
+                        if (Double.TryParse(Parameter.ToString(), out Double phaseDegrees)) {
+                            if (phaseDegrees < 0 || phaseDegrees > 360) throw new ArgumentOutOfRangeException($"Phase '{phaseDegrees}' must be between 0 and 360°.");
+                            base.Command($"{Channel}:BaSic_WaVe PHSE,{phaseDegrees}");
+                        } else throw new ArgumentException(nameof(Parameter), $"Phase '{Parameter}' must be of type '{typeof(Double)}'.");
+                        break;
+                    }
+                case BasicWave.COMMAND.STDEV: {
+                        if (wvtp != BasicWave.WVTP.NOISE) throw new ArgumentException("Standard deviation invalid for WVTP ≠ NOISE.");
+                        if (Double.TryParse(Parameter.ToString(), out Double stdevVolts)) {
+                            if (stdevVolts < 0.0005 || stdevVolts > 1.599) throw new ArgumentOutOfRangeException($"Standard deviation voltage '{stdevVolts}' must be between 0.0005 and 1.599 volts.");
+                            base.Command($"{Channel}:BaSic_WaVe STDEV,{stdevVolts}V");
+                        } else throw new ArgumentException(nameof(Parameter), $"Standard deviation '{Parameter}' must be of type '{typeof(Double)}'.");
+                        break;
+                    }
+                case BasicWave.COMMAND.MEAN: {
+                        if (wvtp != BasicWave.WVTP.NOISE) throw new ArgumentException("Mean invalid for WVTP ≠ NOISE.");
+                        if (Double.TryParse(Parameter.ToString(), out Double meanVolts)) {
+                            // TODO: if (meanVolts < 0.0005 || meanVolts > 1.599) throw new ArgumentOutOfRangeException($"Mean voltage '{meanVolts}' must be between 0.0005 and 1.599 volts.");
+                            base.Command($"{Channel}:BaSic_WaVe MEAN,{meanVolts}V");
+                        } else throw new ArgumentException(nameof(Parameter), $"Mean '{Parameter}' must be of type '{typeof(Double)}'.");
+                        break;
+                    }
+                case BasicWave.COMMAND.WIDTH: {
+                        if (wvtp != BasicWave.WVTP.PULSE) throw new ArgumentException("Width invalid for WVTP ≠ PULSE.");
+                        if (Double.TryParse(Parameter.ToString(), out Double width)) base.Command($"{Channel}:BaSic_WaVe WIDTH,{width}");
+                        else throw new ArgumentException(nameof(Parameter), $"Width '{Parameter}' must be of type '{typeof(Double)}'.");
+                        break;
+                    }
+                case BasicWave.COMMAND.RISE: {
+                        if (wvtp != BasicWave.WVTP.PULSE) throw new ArgumentException("Rise invalid for WVTP ≠ PULSE.");
+                        if (Double.TryParse(Parameter.ToString(), out Double rise)) base.Command($"{Channel}:BaSic_WaVe RISE,{rise}");
+                        else throw new ArgumentException(nameof(Parameter), $"Rise '{Parameter}' must be of type '{typeof(Double)}'.");
+                        break;
+                    }
+                case BasicWave.COMMAND.FALL: {
+                        if (wvtp != BasicWave.WVTP.PULSE) throw new ArgumentException("Fall invalid for WVTP ≠ PULSE.");
+                        if (Double.TryParse(Parameter.ToString(), out Double fall)) base.Command($"{Channel}:BaSic_WaVe FALL,{fall}");
+                        else throw new ArgumentException(nameof(Parameter), $"Fall '{Parameter}' must be of type '{typeof(Double)}'.");
+                        break;
+                    }
+                case BasicWave.COMMAND.DLY: {
+                        if (wvtp != BasicWave.WVTP.PULSE) throw new ArgumentException("Delay invalid for WVTP ≠ PULSE.");
+                        if (Double.TryParse(Parameter.ToString(), out Double delaySeconds)) {
+                            Double periodSeconds = Double.Parse(BasicWaveQuery(Channel, BasicWave.QUERY.PERI).Replace("S", ""));
+                            if (delaySeconds < 0 || delaySeconds > periodSeconds) throw new ArgumentOutOfRangeException($"Delay '{delaySeconds}' must be between 0 and '{periodSeconds}' seconds.");
+                            base.Command($"{Channel}:BaSic_WaVe DLY,{delaySeconds}S");
+                        } else throw new ArgumentException(nameof(Parameter), $"Delay '{Parameter}' must be of type '{typeof(Double)}'.");
+                        break;
+                    }
+                default: throw new ArgumentException($"BasicWaveCommand '{Command}' not coded yet.");
+            }
+        }
+        public String BasicWaveQuery(CHANNEL Channel) { return Query($"{Channel}:BaSic_WaVe?"); }
+        public String BasicWaveQuery(CHANNEL Channel, BasicWave.QUERY Query) {
+            String response = BasicWaveQuery(Channel);                  // C1:BASIC_WAVE WVTP,SQUARE,FRQ,1e+07HZ,PERI,1e-07S,AMP,1V,OFST,0.5V,HLEV,1V,LLEV,0V,PHSE,0,DUTY,50
+            response = response.Substring(response.IndexOf(' ') + 1);   // WVTP,SQUARE,FRQ,1e+07HZ,PERI,1e-07S,AMP,1V,OFST,0.5V,HLEV,1V,LLEV,0V,PHSE,0,DUTY,50
+            List<String> responses = response.Split(',').ToList();
+            return responses[responses.IndexOf(Query.ToString()) + 1];
+        }
+        public void BuzzerCommand(STATUS Status) { Command($"BUZZer {Status}"); }
+        public STATUS BuzzerQuery() {
+            String response = Query("BUZZer?");
+            return (STATUS)Enum.Parse(typeof(STATUS), response.Substring(response.IndexOf(" ") + 1), true);
+        }
+        public void ChannelParameterCopyCommand(CHANNEL ChannelSource) { Command($"PAraCoPy {(ChannelSource == CHANNEL.C1 ? CHANNEL.C2 : CHANNEL.C1)},{ChannelSource}"); }
+        public void ClockSourceCommand(CLOCK_SOURCE ClockSource) { Command($"ROSCillator {ClockSource}"); }
+        public CLOCK_SOURCE ClockSourceQuery() {
+            String response = Query("ROSCillator?");
+            return (CLOCK_SOURCE)Enum.Parse(typeof(CLOCK_SOURCE), response.Substring(response.IndexOf(" ") + 1), true);
+        }
+        public void CommandHeaderCommand(COMMAND_HEADER CommandHeader) { Command($"*Comm_HeaDeR {CommandHeader}"); }
+        public COMMAND_HEADER CommandHeaderQuery() {
+            String response = Query("*Comm_HeaDeR?");
+            return (COMMAND_HEADER)Enum.Parse(typeof(COMMAND_HEADER), response.Substring(response.IndexOf(" ") + 1), true);
+        }
+        public void ConfigurationCommand(CONFIGURATION Configuration) { Command($"Sys_CFG {Configuration}"); }
+        public CONFIGURATION ConfigurationQuery() {
+            String response = Query("Sys_CFG?");
+            return (CONFIGURATION)Enum.Parse(typeof(CONFIGURATION), response.Substring(response.IndexOf(" ") + 1), true);
+        }
+        public void InvertCommand(STATUS Status) { Command($"INVerT {Status}"); }
+        public STATUS InvertQuery() {
+            String response = Query("INVerT?");
+            return (STATUS)Enum.Parse(typeof(STATUS), response.Substring(response.IndexOf(" ") + 1), true);
+        }
+        public void OutputCommand(CHANNEL Channel, OUTP Output) { Command($"{Channel}:OUTPut {Output.ToString().Replace('_', ',')}"); }
+        public String OutputQuery(CHANNEL Channel) { return Query($"{Channel}:OUTPut?"); }
+        public void ScreenSaveCommand(MINUTE Minute) {
+            if (Minute == MINUTE.OFF) Command($"SCreen_SaVe {Minute}");
+            else Command($"SCreen_SaVe {(Int32)Minute}");
+        }
+        public String ScreenSaveQuery() {
+            String response = Query("SCreen_SaVe?");
+            return response.Substring(response.IndexOf(" ") + 1);
+        }
+        public void SynchronizeCommand(CHANNEL Channel, STATUS Status) { Command($"{Channel}:SYNC {Status}"); }
+        public CHANNEL SynchronizeQuery() {
+            String response = Query("SYNC?");
+            return (CHANNEL)Enum.Parse(typeof(CHANNEL), response.Substring(response.IndexOf(" ") + 1), true);
+        }
+        public void VirtualKeyCommand(VIRTUAL_KEY VirtualKey) { Command($"VKEY VALUE,{VirtualKey},STATE,1"); }
+
+        ~WS_3162() { Dispose(); }
+    }
+}
