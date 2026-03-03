@@ -17,11 +17,10 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         private readonly Object _lock = new Object();
         private Boolean _disposed = false;
         private Boolean _terminationCharacterEnabled;
-        private ResourceManager _resourceManager = new ResourceManager();
 
         public InstrumentDriver(String Address, String Detail, INSTRUMENT_TYPE InstrumentType) {
-
-            _iMessageBasedSession = _resourceManager.Open(Address) as IMessageBasedSession;
+            // TODO: TestExecutive to create a single instance of ResourceManager and pass it to each InstrumentDriver, instead of each InstrumentDriver creating its own temporary instance of ResourceManager.
+            _iMessageBasedSession = new ResourceManager().Open(Address) as IMessageBasedSession;
             _iMessageBasedSession.TimeoutMilliseconds = 5000;
             this.Address = Address;
             this.Detail = Detail;
