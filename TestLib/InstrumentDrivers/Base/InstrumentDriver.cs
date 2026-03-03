@@ -3,7 +3,6 @@ using Keysight.Visa;
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 
@@ -22,6 +21,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
             // TODO: TestExecutive to create a single instance of ResourceManager and pass it to each InstrumentDriver, instead of each InstrumentDriver creating its own temporary instance of ResourceManager.
             _iMessageBasedSession = new ResourceManager().Open(Address) as IMessageBasedSession;
             _iMessageBasedSession.TimeoutMilliseconds = 5000;
+            _terminationCharacterEnabled = _iMessageBasedSession.TerminationCharacterEnabled;
             this.Address = Address;
             this.Detail = Detail;
             this.InstrumentType = InstrumentType;

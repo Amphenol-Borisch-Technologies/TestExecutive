@@ -1,9 +1,17 @@
-﻿namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base.Tests;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base.Tests;
 
 [TestClass()]
-public class InstrumentTests {
+public class InstrumentDriverTests {
     [TestMethod()]
-    public void InstrumentTest() {
+    public void InstrumentDriverTest() {
         Assert.Fail();
     }
 
@@ -19,6 +27,11 @@ public class InstrumentTests {
 
     [TestMethod()]
     public void QueryTest() {
+        Assert.Fail();
+    }
+
+    [TestMethod()]
+    public void QueryTest1() {
         Assert.Fail();
     }
 
@@ -39,11 +52,6 @@ public class InstrumentTests {
 
     [TestMethod()]
     public void SelfTestsTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void DiagnosticsTest() {
         Assert.Fail();
     }
 
