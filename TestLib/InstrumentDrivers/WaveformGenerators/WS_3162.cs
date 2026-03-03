@@ -9,7 +9,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
     // NOTE: WaveStation 2000/3000 SCPI Reference Manual https://cdn.teledynelecroy.com/files/manuals/wsta_scpi_manual_reva.pdf.
     // NOTE: Operator's Manual: WaveStation 3000 Function & Arbitrary Waveform Generator https://cdn.teledynelecroy.com/files/manuals/wavestation_3000_om.pdf.
     // TODO: Test below WaveStation 3162 commands & queries:
-    //
     //  Short       Long            Subsystem   What It Does
     //  --------------------------------------------------------------
     //  *IDN?       *IDN            SYSTEM      Retrieves device identification information.
@@ -34,7 +33,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
     //  VKEY        VIRTUAL_KEY     SYSTEM      Sends equivalent keyboard function to device.
 
     // TODO: Code & Test below WaveStation 3162 commands & queries:
-    //
     //  Short       Long            Subsystem   What It Does
     //  --------------------------------------------------------------
     //  ARWV        ARBWAVE         SYSTEM      Sets the instrument to an arbitrary waveform or retrieves Arbitrary Waveform settings.
