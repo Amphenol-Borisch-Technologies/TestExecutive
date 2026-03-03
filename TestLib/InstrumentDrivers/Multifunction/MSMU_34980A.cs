@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
 
-    public class MSMU_34980A : Instrument, IRelay {
+    public class MSMU_34980A : InstrumentDriver, IRelay {
         public readonly struct Modules {
             public static readonly String M34921A = "34921A";
             public static readonly String M34932A = "34932A";

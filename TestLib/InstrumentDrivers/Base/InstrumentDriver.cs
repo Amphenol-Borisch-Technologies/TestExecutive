@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
-    public abstract class Instrument : IDisposable {
+    public abstract class InstrumentDriver : IDisposable {
         public String Address { get; }
         public String Detail { get; }
         public INSTRUMENT_TYPE InstrumentType { get; }
@@ -19,7 +19,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         private Boolean _terminationCharacterEnabled;
         private ResourceManager _resourceManager = new ResourceManager();
 
-        public Instrument(String Address, String Detail, INSTRUMENT_TYPE InstrumentType) {
+        public InstrumentDriver(String Address, String Detail, INSTRUMENT_TYPE InstrumentType) {
 
             _iMessageBasedSession = _resourceManager.Open(Address) as IMessageBasedSession;
             _iMessageBasedSession.TimeoutMilliseconds = 5000;
@@ -108,7 +108,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
             Int32 PR = 15;
             StringBuilder Message = new StringBuilder();
             Message.AppendLine($"{nameof(SelfTests)}".PadRight(PR) + $": SCPI {Test}");
-            Message.AppendLine($"{nameof(Instrument)}".PadRight(PR) + $": {GetType().Name}");
+            Message.AppendLine($"{nameof(InstrumentDriver)}".PadRight(PR) + $": {GetType().Name}");
             Message.AppendLine($"{nameof(InstrumentType)}".PadRight(PR) + $": {InstrumentType}");
             Message.AppendLine($"{nameof(Detail)}".PadRight(PR) + $": {Detail}");
             Message.AppendLine($"{nameof(Address)}".PadRight(PR) + $": {Address}");
@@ -129,7 +129,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
             return Identity.Split(',')[(Int32)Property];
         }
 
-        ~Instrument() { Dispose(false); }
+        ~InstrumentDriver() { Dispose(false); }
 
         public void Dispose() {
             Dispose(true);

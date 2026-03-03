@@ -7,7 +7,7 @@ using System.Threading;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
-    public class MSO_3014 : Instrument {
+    public class MSO_3014 : InstrumentDriver {
         public enum BUS { B1, B2 }
         public enum CHANNEL { CH1, CH2 }
         public enum DRIVE_USB { E, F }

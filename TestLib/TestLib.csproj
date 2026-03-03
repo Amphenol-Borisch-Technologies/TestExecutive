@@ -124,7 +124,7 @@
     <Compile Include="Configuration\TestSequence.cs">
       <DependentUpon>TestSequence.xsd</DependentUpon>
     </Compile>
-    <Compile Include="InstrumentDrivers\Base\Instrument.cs" />
+    <Compile Include="InstrumentDrivers\Base\InstrumentDriver.cs" />
     <Compile Include="InstrumentDrivers\Base\Instruments.cs" />
     <Compile Include="InstrumentDrivers\Base\IDiagnostics.cs" />
     <Compile Include="InstrumentDrivers\Base\IInstrument.cs" />

@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
-    public class PS_E3634A : Instrument, IPowerSupplyOutputs1 {
+    public class PS_E3634A : InstrumentDriver, IPowerSupplyOutputs1 {
         public enum RANGE { P25V, P50V }
 
         public void OutputsOff() { Command(":OUTPut:STATe 0"); }

@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
-    public class PS_E3649A : Instrument, IPowerSupplyE3649A {
+    public class PS_E3649A : InstrumentDriver, IPowerSupplyE3649A {
 
         public void OutputsOff() { Command(":OUTPut:STATe 0"); }
         // NOTE: Some multi-output supplies like the E3649A permit individual control of outputs,

@@ -45,7 +45,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
     //  SYNC        SYNC            SIGNAL      Sends a Sync pulse upon occurrence of the specified function.
     //  WVCSV       WAVE_CSV                    Saves.CSV file to user-defined memory location.
     #endregion TL;DR
-    public class WS_3162 : Instrument {
+    public class WS_3162 : InstrumentDriver {
         public enum CHANNEL { C1, C2 }
         public enum CLOCK_SOURCE { INT, EXT }
         public enum COMMAND_HEADER { OFF, SHORT, LONG }
