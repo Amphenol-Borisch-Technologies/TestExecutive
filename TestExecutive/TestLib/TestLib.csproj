@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{24D5E99E-185C-4507-81F0-132D8CB8164E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ABT.Test.TestExecutive.TestLib</RootNamespace>
+    <AssemblyName>TestLib</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>ABT_Test.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ag34980_2_43, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ProgramData\Keysight\Command Expert\ScpiNetDrivers\Ag34980_2_43.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AgE363x_1_7, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgE363x_1_7.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AgE364xD_1_7, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgE364xD_1_7.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ivi.Visa, Version=8.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\IVI Foundation\VISA\Microsoft.NET\Framework64\v4.0.30319\VISA.NET Shared Components 8.0.1\Ivi.Visa.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Keysight.Visa, Version=18.5.0.0, Culture=neutral, PublicKeyToken=7a01cdb2a9131f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\IVI Foundation\VISA\Microsoft.NET\VendorAssemblies\kt\8.0\Keysight.Visa\Keysight.Visa.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\Serializing.cs" />
+    <Compile Include="Configuration\TestExecDefinition.cs">
+      <DependentUpon>TestExecDefinition.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\TestPlanDefinition.cs">
+      <DependentUpon>TestPlanDefinition.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\TestExecDefinitionValidator.cs" />
+    <Compile Include="Configuration\TestPlanDefinitionValidator.cs" />
+    <Compile Include="Configuration\TestPlanGenerator.cs" />
+    <Compile Include="Configuration\TestSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuration\TestSelect.Designer.cs">
+      <DependentUpon>TestSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\TestSequence.cs">
+      <DependentUpon>TestSequence.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="InstrumentDrivers\Base\InstrumentDriver.cs" />
+    <Compile Include="InstrumentDrivers\Base\Instruments.cs" />
+    <Compile Include="InstrumentDrivers\Base\IDiagnostics.cs" />
+    <Compile Include="InstrumentDrivers\Base\IInstrument.cs" />
+    <Compile Include="InstrumentDrivers\Base\IPowerSupply.cs" />
+    <Compile Include="InstrumentDrivers\Base\IRelay.cs" />
+    <Compile Include="InstrumentDrivers\Multifunction\MSMU_34980A.cs" />
+    <Compile Include="InstrumentDrivers\MultiMeters\MM_34401A_SCPI_NET.cs" />
+    <Compile Include="InstrumentDrivers\Multifunction\MSMU_34980A_SCPI_NET.cs" />
+    <Compile Include="InstrumentDrivers\Oscilloscopes\MSO_3014.cs" />
+    <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3634A.cs" />
+    <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3634A_SCPI_NET.cs" />
+    <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3649A.cs" />
+    <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3649A_SCPI_NET.cs" />
+    <Compile Include="InstrumentDrivers\WaveformGenerators\WS_3162.cs" />
+    <Compile Include="Miscellaneous\UUT_Connections.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Miscellaneous\UUT_Connections.Designer.cs">
+      <DependentUpon>UUT_Connections.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Miscellaneous\CustomMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Miscellaneous\CustomMessageBox.Designer.cs">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Miscellaneous\InputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Miscellaneous\InputForm.Designer.cs">
+      <DependentUpon>InputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Miscellaneous\MessageBoxMonoSpaced.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Miscellaneous\MessageBoxMonoSpaced.Designer.cs">
+      <DependentUpon>MessageBoxMonoSpaced.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Processes\ProcessExternal.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestLib.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Configuration\TestExecDefinition.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Shared\App.config">
+      <Link>App.config</Link>
+    </None>
+    <None Include="ABT_Test.pfx" />
+    <None Include="Configuration\TestExecDefinition.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Configuration\TestPlanDefinition.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Configuration\TestSequence.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Configuration\TestSelect.resx">
+      <DependentUpon>TestSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Miscellaneous\CustomMessageBox.resx">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Miscellaneous\InputForm.resx">
+      <DependentUpon>InputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Miscellaneous\MessageBoxMonoSpaced.resx">
+      <DependentUpon>MessageBoxMonoSpaced.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
