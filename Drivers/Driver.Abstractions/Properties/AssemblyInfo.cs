@@ -1,14 +1,16 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TestLib")]
-[assembly: AssemblyDescription("https://github.com/Amphenol-Borisch-Technologies/TestExecutive")]
+[assembly: AssemblyTitle("Driver.Abstractions")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Amphenol Borisch Technologies")]
-[assembly: AssemblyProduct("TestLib")]
-[assembly: AssemblyCopyright("Copyright © Amphenol Borisch Technologies 2024")]
+[assembly: AssemblyProduct("Driver.Abstractions")]
+[assembly: AssemblyCopyright("Copyright © Amphenol Borisch Technologies 2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -18,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("24d5e99e-185c-4507-81f0-132d8cb8164e")]
+[assembly: Guid("00336cf4-e219-4959-afaf-b03fdbe88cfd")]
 
 // Version information for an assembly consists of the following four values:
 //
