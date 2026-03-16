@@ -63,11 +63,11 @@
       <DependentUpon>TestDev.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="..\Shared\ABT_Test.pfx">
+      <Link>ABT_Test.pfx</Link>
+    </None>
     <None Include="..\Shared\App.config">
       <Link>App.config</Link>
-    </None>
-    <None Include="..\TestLib\ABT_Test.pfx">
-      <Link>ABT_Test.pfx</Link>
     </None>
   </ItemGroup>
   <ItemGroup>

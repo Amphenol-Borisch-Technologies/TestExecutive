@@ -35,7 +35,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>ABT_Test.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -171,10 +172,12 @@
     <Content Include="Configuration\TestExecDefinition.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Shared\ABT_Test.pfx">
+      <Link>ABT_Test.pfx</Link>
+    </None>
     <None Include="..\Shared\App.config">
       <Link>App.config</Link>
     </None>
-    <None Include="ABT_Test.pfx" />
     <None Include="Configuration\TestExecDefinition.xsd">
       <SubType>Designer</SubType>
     </None>
