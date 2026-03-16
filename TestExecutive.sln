@@ -28,8 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Shared\TestExecutive Dependencies.docx = Shared\TestExecutive Dependencies.docx
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLib", "TestLib\TestLib.csproj", "{24D5E99E-185C-4507-81F0-132D8CB8164E}"
-EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Installer.vdproj", "{52B20422-474D-5734-629F-99A1F7DE9787}"
 	ProjectSection(ProjectDependencies) = postProject
 		{24D5E99E-185C-4507-81F0-132D8CB8164E} = {24D5E99E-185C-4507-81F0-132D8CB8164E}
@@ -47,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallerCustomActions", "I
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MS_Test", "MS_Test\MS_Test.csproj", "{FC16D2BC-CB3B-4C22-AADD-156AF2D59AEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLib", "TestLib\TestLib.csproj", "{24D5E99E-185C-4507-81F0-132D8CB8164E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,10 +66,6 @@ Global
 		{E1E886F9-03A3-44D1-8797-BC68D8E2AA23}.Debug|x64.Build.0 = Debug|x64
 		{E1E886F9-03A3-44D1-8797-BC68D8E2AA23}.Release|x64.ActiveCfg = Release|x64
 		{E1E886F9-03A3-44D1-8797-BC68D8E2AA23}.Release|x64.Build.0 = Release|x64
-		{24D5E99E-185C-4507-81F0-132D8CB8164E}.Debug|x64.ActiveCfg = Debug|x64
-		{24D5E99E-185C-4507-81F0-132D8CB8164E}.Debug|x64.Build.0 = Debug|x64
-		{24D5E99E-185C-4507-81F0-132D8CB8164E}.Release|x64.ActiveCfg = Release|x64
-		{24D5E99E-185C-4507-81F0-132D8CB8164E}.Release|x64.Build.0 = Release|x64
 		{52B20422-474D-5734-629F-99A1F7DE9787}.Debug|x64.ActiveCfg = Debug
 		{52B20422-474D-5734-629F-99A1F7DE9787}.Release|x64.ActiveCfg = Release
 		{52B20422-474D-5734-629F-99A1F7DE9787}.Release|x64.Build.0 = Release
@@ -80,6 +76,10 @@ Global
 		{FC16D2BC-CB3B-4C22-AADD-156AF2D59AEA}.Debug|x64.Build.0 = Debug|x64
 		{FC16D2BC-CB3B-4C22-AADD-156AF2D59AEA}.Release|x64.ActiveCfg = Release|x64
 		{FC16D2BC-CB3B-4C22-AADD-156AF2D59AEA}.Release|x64.Build.0 = Release|x64
+		{24D5E99E-185C-4507-81F0-132D8CB8164E}.Debug|x64.ActiveCfg = Debug|x64
+		{24D5E99E-185C-4507-81F0-132D8CB8164E}.Debug|x64.Build.0 = Debug|x64
+		{24D5E99E-185C-4507-81F0-132D8CB8164E}.Release|x64.ActiveCfg = Release|x64
+		{24D5E99E-185C-4507-81F0-132D8CB8164E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

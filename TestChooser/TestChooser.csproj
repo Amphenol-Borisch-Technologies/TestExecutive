@@ -77,7 +77,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>ABT_Test.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
@@ -95,7 +96,9 @@
     <None Include="..\Shared\App.config">
       <Link>App.config</Link>
     </None>
-    <None Include="ABT_Test.pfx" />
+    <None Include="..\TestLib\ABT_Test.pfx">
+      <Link>ABT_Test.pfx</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
@@ -118,7 +121,6 @@
     <ProjectReference Include="..\TestLib\TestLib.csproj">
       <Project>{24d5e99e-185c-4507-81f0-132d8cb8164e}</Project>
       <Name>TestLib</Name>
-      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

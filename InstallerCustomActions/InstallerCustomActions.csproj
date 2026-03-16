@@ -17,7 +17,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>ABT_Test.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -84,13 +85,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ABT_Test.pfx" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TestLib\TestLib.csproj">
-      <Project>{24d5e99e-185c-4507-81f0-132d8cb8164e}</Project>
-      <Name>TestLib</Name>
-    </ProjectReference>
+    <None Include="..\TestLib\ABT_Test.pfx">
+      <Link>ABT_Test.pfx</Link>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

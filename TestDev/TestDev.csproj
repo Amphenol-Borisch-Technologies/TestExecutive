@@ -31,7 +31,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>ABT_Test.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -65,7 +66,9 @@
     <None Include="..\Shared\App.config">
       <Link>App.config</Link>
     </None>
-    <None Include="ABT_Test.pfx" />
+    <None Include="..\TestLib\ABT_Test.pfx">
+      <Link>ABT_Test.pfx</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TestDev.resx">
@@ -78,16 +81,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TestLib\TestLib.csproj">
-      <Project>{24d5e99e-185c-4507-81f0-132d8cb8164e}</Project>
-      <Name>TestLib</Name>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
       <Version>10.0.26100.7705</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TestLib\TestLib.csproj">
+      <Project>{24d5e99e-185c-4507-81f0-132d8cb8164e}</Project>
+      <Name>TestLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

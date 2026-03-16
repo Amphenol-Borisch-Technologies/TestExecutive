@@ -54,7 +54,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>ABT_Test.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ag34980_2_43">
@@ -126,7 +127,9 @@
     <None Include="..\Shared\App.config">
       <Link>App.config</Link>
     </None>
-    <None Include="ABT_Test.pfx" />
+    <None Include="..\TestLib\ABT_Test.pfx">
+      <Link>ABT_Test.pfx</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
@@ -134,11 +137,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\TestExecutive\TestChooser\TestChooser.csproj">
+    <ProjectReference Include="..\TestChooser\TestChooser.csproj">
       <Project>{6b87d429-1de2-4b67-bf1e-bcf6855397bb}</Project>
       <Name>TestChooser</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TestExecutive\TestLib\TestLib.csproj">
+    <ProjectReference Include="..\TestLib\TestLib.csproj">
       <Project>{24d5e99e-185c-4507-81f0-132d8cb8164e}</Project>
       <Name>TestLib</Name>
     </ProjectReference>
