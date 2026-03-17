@@ -92,9 +92,9 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
 
         private Byte[] QueryBinary(String ScpiQuery, Func<Byte[]> ReadFunction) {
             lock (_lock) {
+                Command(ScpiQuery);
                 _terminationCharacterEnabled = _iMessageBasedSession.TerminationCharacterEnabled;
                 _iMessageBasedSession.TerminationCharacterEnabled = false;
-                _iMessageBasedSession.FormattedIO.WriteLine(ScpiQuery);
                 Byte[] response = ReadFunction();
                 _iMessageBasedSession.TerminationCharacterEnabled = _terminationCharacterEnabled;
                 return response;
