@@ -1,4 +1,5 @@
-﻿using Ivi.Visa;
+﻿using ABT.Test.TestExecutive.TestLib.Configuration;
+using Ivi.Visa;
 using Keysight.Visa;
 using System;
 using System.Globalization;
@@ -11,7 +12,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         public String Address { get; }
         public String Detail { get; }
         public INSTRUMENT_TYPE InstrumentType { get; }
-        public enum IDN_FIELD { Manufacturer, Model, SerialNumber, FirmwareRevision } // Example: "Keysight Technologies,E36103B,MY61001983,1.0.2-1.02".  
+        public enum IDN_FIELD { Manufacturer, Model, SerialNumber, FirmwareRevision } // Example: "Keysight Technologies,E36103B,MY61001983,1.0.2-1.02".
         private readonly IMessageBasedSession _iMessageBasedSession;
         private readonly Object _lock = new Object();
         private Boolean _disposed = false;
