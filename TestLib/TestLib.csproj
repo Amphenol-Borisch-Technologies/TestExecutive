@@ -79,9 +79,9 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Keysight.Visa, Version=18.5.0.0, Culture=neutral, PublicKeyToken=7a01cdb2a9131f73, processorArchitecture=MSIL">
+    <Reference Include="Keysight.Visa, Version=18.4.0.0, Culture=neutral, PublicKeyToken=7a01cdb2a9131f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\IVI Foundation\VISA\Microsoft.NET\VendorAssemblies\kt\8.0\Keysight.Visa\Keysight.Visa.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\Keysight\IO Libraries Suite\Keysight.Visa.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic">
       <Private>False</Private>
