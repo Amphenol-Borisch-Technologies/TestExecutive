@@ -34,7 +34,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             Ag34980.SCPI.CLS.Command();
         }
 
-        public SELF_TEST_RESULT SelfTests() {
+        public (SELF_TEST_RESULT Result, String Message) SelfTests() {
             if (DialogResult.Cancel == MessageBox.Show($"Please disconnect Address Bus DB9 & all Module/Slot terminal blocks/connectors from {Detail}/{Address}.", "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
                 TestLib.CTS_Cancel.Cancel();
                 TestLib.CT_Cancel.ThrowIfCancellationRequested();
@@ -45,9 +45,9 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
                 Ag34980.SCPI.TST.Query(out result);
             } catch (Exception exception) {
                 Instruments.SelfTestFailure(this, exception);
-                return SELF_TEST_RESULT.FAIL;
+                return (SELF_TEST_RESULT.FAIL, String.Empty);
             }
-            return (SELF_TEST_RESULT)result; // Ag34980 returns 0 for passed, 1 for fail.
+            return ((SELF_TEST_RESULT)result, String.Empty); // Ag34980 returns 0 for passed, 1 for fail.
         }
 
         public void OpenAll() { Ag34980.SCPI.ROUTe.OPEN.ALL.Command(null); }
@@ -55,7 +55,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         #region Diagnostics // NOTE: Update MODULES & Modules as necessary, along with Diagnostics region.
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
             ResetClear();
-            Boolean passed = SelfTests() is SELF_TEST_RESULT.PASS;
+            Boolean passed = SelfTests().Result is SELF_TEST_RESULT.PASS;
             (Boolean Summary, List<DiagnosticsResult> Details) result_34980A = (passed, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
             if (passed) {
                 (Boolean summary, List<DiagnosticsResult> details) result_Slot;

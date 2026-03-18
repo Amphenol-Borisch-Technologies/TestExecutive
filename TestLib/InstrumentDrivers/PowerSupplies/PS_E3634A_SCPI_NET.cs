@@ -20,15 +20,15 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             AgE363x.SCPI.CLS.Command();
         }
 
-        public SELF_TEST_RESULT SelfTests() {
+        public (SELF_TEST_RESULT Result, String Message) SelfTests() {
             Int32 result;
             try {
                 AgE363x.SCPI.TST.Query(out result);
             } catch (Exception exception) {
                 Instruments.SelfTestFailure(this, exception);
-                return SELF_TEST_RESULT.FAIL;
+                return (SELF_TEST_RESULT.FAIL, String.Empty);
             }
-            return (SELF_TEST_RESULT)result; // AgE363x returns 0 for passed, 1 for fail.
+            return ((SELF_TEST_RESULT)result, String.Empty); // AgE363x returns 0 for passed, 1 for fail.
         }
 
         public void OutputsOff() { AgE363x.SCPI.OUTPut.STATe.Command(Convert.ToBoolean(STATE.off)); }
@@ -69,7 +69,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         #region Diagnostics
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
             ResetClear();
-            Boolean passed = SelfTests() is SELF_TEST_RESULT.PASS;
+            Boolean passed = SelfTests().Result is SELF_TEST_RESULT.PASS;
             (Boolean Summary, List<DiagnosticsResult> Details) result_E3634A = (passed, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
             if (passed) {
                 Configuration.Parameter parameter = Parameters.Find(p => p.Name == "Accuracy_E3634A_VDC") ?? new Configuration.Parameter { Name = "Accuracy_E3634A_VDC", Value = "0.1" };

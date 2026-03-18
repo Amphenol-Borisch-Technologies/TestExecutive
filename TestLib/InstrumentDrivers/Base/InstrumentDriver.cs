@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
-    public abstract class InstrumentDriver : IDisposable {
+    public abstract class InstrumentDriver : IDisposable, IInstrument {
         public String Address { get; }
         public String Detail { get; }
         public INSTRUMENT_TYPE InstrumentType { get; }

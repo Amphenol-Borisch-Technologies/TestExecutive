@@ -354,7 +354,7 @@ namespace ABT.Test.TestExecutive.TestExec {
         private void TSMI_System_SelfTestsInstruments_Click(Object sender, EventArgs e) {
             UseWaitCursor = true;
             Boolean passed = true;
-            foreach (KeyValuePair<String, Object> kvp in InstrumentDrivers) passed &= ((IInstrument)kvp.Value).SelfTests() is SELF_TEST_RESULT.PASS;
+            foreach (KeyValuePair<String, Object> kvp in InstrumentDrivers) passed &= ((IInstrument)kvp.Value).SelfTests().Result is SELF_TEST_RESULT.PASS;
             if (passed) _ = MessageBox.Show(this, "SCPI VISA Instrument Self-Tests all passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             UseWaitCursor = false;
         }
