@@ -28,44 +28,59 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
             this.InstrumentType = InstrumentType;
         }
 
-        public void Command(String ScpiCommand) { Command(_iMessageBasedSession.FormattedIO.WriteLine, ScpiCommand); }
+        public void Command(String ScpiCommand) {
+            ThrowIfDisposed();
+            Command(_iMessageBasedSession.FormattedIO.WriteLine, ScpiCommand);
+        }
 
-        public void Command(Byte[] Bytes) { Command(_iMessageBasedSession.RawIO.Write, Bytes); }
+        public void Command(Byte[] Bytes) {
+            ThrowIfDisposed();
+            Command(_iMessageBasedSession.RawIO.Write, Bytes);
+        }
 
         private void Command<TParam>(Action<TParam> WriteMethod, TParam ScpiCommand) {
+            ThrowIfDisposed();
             lock (_lock) {
                 _terminationCharacterEnabled = _iMessageBasedSession.TerminationCharacterEnabled;
-                _iMessageBasedSession.TerminationCharacterEnabled = true;
-                WriteMethod(ScpiCommand);
-                _iMessageBasedSession.TerminationCharacterEnabled = _terminationCharacterEnabled;
+                try {
+                    _iMessageBasedSession.TerminationCharacterEnabled = true;
+                    WriteMethod(ScpiCommand);
+                } finally {
+                    _iMessageBasedSession.TerminationCharacterEnabled = _terminationCharacterEnabled;
+                }
             }
         }
 
         public String Query(String ScpiQuery) {
+            ThrowIfDisposed();
             lock (_lock) {
                 _terminationCharacterEnabled = _iMessageBasedSession.TerminationCharacterEnabled;
-                _iMessageBasedSession.TerminationCharacterEnabled = true;
-                _iMessageBasedSession.FormattedIO.WriteLine(ScpiQuery);
-                String s = _iMessageBasedSession.FormattedIO.ReadLine().Trim();
-                _iMessageBasedSession.TerminationCharacterEnabled = _terminationCharacterEnabled;
-                return s;
+                String s;
+                try {
+                    _iMessageBasedSession.TerminationCharacterEnabled = true;
+                    _iMessageBasedSession.FormattedIO.WriteLine(ScpiQuery);
+                    s = _iMessageBasedSession.FormattedIO.ReadLine().Trim();
+                } finally {
+                    _iMessageBasedSession.TerminationCharacterEnabled = _terminationCharacterEnabled;
+                }
+                return s.Trim();
             }
         }
 
         public T Query<T>(String ScpiQuery) {
+            ThrowIfDisposed();
             String raw = null;
             String Raw() => raw ?? (raw = Query(ScpiQuery));
-            Double d;
             switch (typeof(T)) {
                 case Type t when t.IsEnum: return (T)Enum.Parse(typeof(T), Raw(), ignoreCase: true);
                 case Type t when t == typeof(Boolean): return (T)(Object)ParseBoolean(Raw(), ScpiQuery);
                 case Type t when t == typeof(Byte): return (T)(Object)Byte.Parse(Raw(), CultureInfo.InvariantCulture);
-                case Type t when t == typeof(Double?): return (T)(Object)(Double.TryParse(Raw(), NumberStyles.Any, CultureInfo.InvariantCulture, out d) ? d : (Double?)null);
+                case Type t when t == typeof(Double): return (T)(Object)(Double.Parse(Raw(), NumberStyles.Any, CultureInfo.InvariantCulture));
                 case Type t when t == typeof(Int32): return (T)(Object)Int32.Parse(Raw(), CultureInfo.InvariantCulture);
                 case Type t when t == typeof(String): return (T)(Object)Raw();
                 case Type t when t == typeof(Boolean[]): return (T)(Object)ParseBooleans(Raw(), ScpiQuery);
                 case Type t when t == typeof(Byte[]): return (T)(Object)Raw().Split(',').Select(s => Byte.Parse(s, CultureInfo.InvariantCulture)).ToArray();
-                case Type t when t == typeof(Double[]): return (T)(Object)Raw().Split(',').Select(s => Double.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out d) ? d : (Double?)null).ToArray();
+                case Type t when t == typeof(Double[]): return (T)(Object)Raw().Split(',').Select(s => Double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture)).ToArray();
                 case Type t when t == typeof(Int32[]): return (T)(Object)Raw().Split(',').Select(s => Int32.Parse(s, CultureInfo.InvariantCulture)).ToArray();
                 case Type t when t == typeof(String[]): return (T)(Object)Raw().Split(',').Select(s => s.Trim()).ToArray();
                 default: throw new NotSupportedException($"Type '{typeof(T)}' is not yet supported for SCPI queries.");
@@ -86,24 +101,40 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
             return booleans;
         }
 
-        public Byte[] QueryBinaryBlockOfByte(String ScpiQuery) { return QueryBinary(ScpiQuery, () => _iMessageBasedSession.FormattedIO.ReadBinaryBlockOfByte()); }
+        public Byte[] QueryBinaryBlockOfByte(String ScpiQuery) {
+            ThrowIfDisposed();
+            return QueryBinary(ScpiQuery, () => _iMessageBasedSession.FormattedIO.ReadBinaryBlockOfByte());
+        }
 
-        public Byte[] QueryRawIO(String ScpiQuery) { return QueryBinary(ScpiQuery, () =>_iMessageBasedSession.RawIO.Read()); }
+        public Byte[] QueryRawIO(String ScpiQuery) {
+            ThrowIfDisposed();
+            return QueryBinary(ScpiQuery, () =>_iMessageBasedSession.RawIO.Read());
+        }
 
         private Byte[] QueryBinary(String ScpiQuery, Func<Byte[]> ReadFunction) {
+            ThrowIfDisposed();
             lock (_lock) {
                 Command(ScpiQuery);
                 _terminationCharacterEnabled = _iMessageBasedSession.TerminationCharacterEnabled;
-                _iMessageBasedSession.TerminationCharacterEnabled = false;
-                Byte[] response = ReadFunction();
-                _iMessageBasedSession.TerminationCharacterEnabled = _terminationCharacterEnabled;
+                Byte[] response;
+                try {
+                    _iMessageBasedSession.TerminationCharacterEnabled = false;
+                    response = ReadFunction();
+                }
+                finally {
+                    _iMessageBasedSession.TerminationCharacterEnabled = _terminationCharacterEnabled;
+                }
                 return response;
             }
         }
 
-        public void Clear() { lock (_lock) { _iMessageBasedSession.Clear(); } }
+        public void Clear() {
+            ThrowIfDisposed();
+            lock (_lock) { _iMessageBasedSession.Clear(); }
+        }
 
         public (SELF_TEST_RESULT Result, String Message) SelfTests() {
+            ThrowIfDisposed();
             const String Test = "*TST?";
             Int32 PR = 15;
             StringBuilder Message = new StringBuilder();
@@ -125,6 +156,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         }
 
         public String Identity(IDN_FIELD Property) {
+            ThrowIfDisposed();
             String Identity = IdentityQuery();
             return Identity.Split(',')[(Int32)Property];
         }
@@ -137,45 +169,102 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         }
 
         void Dispose(Boolean disposing) {
-            if (!_disposed) {
+            lock (_lock) {
+                if (_disposed) return;
                 if (disposing) _iMessageBasedSession?.Dispose();
                 _disposed = true;
             }
         }
 
+        private void ThrowIfDisposed() { if (_disposed) throw new ObjectDisposedException(GetType().Name); }
+
         #region SCPI99
-        public void ClearStatusCommand() { Command("*CLS"); }
+        public void ClearStatusCommand() {
+            ThrowIfDisposed();
+            Command("*CLS");
+        }
 
-        public void EventStatusEnableCommand(Byte RegisterMask) { Command($"*ESE {RegisterMask}"); }
+        public void EventStatusEnableCommand(Byte RegisterMask) {
+            ThrowIfDisposed();
+            Command($"*ESE {RegisterMask}");
+        }
 
-        public Byte EventStatusEnableQuery() { return Byte.Parse(Query("*ESE?").Substring(5)); }
+        public Byte EventStatusEnableQuery() {
+            ThrowIfDisposed(); 
+            return Byte.Parse(Query("*ESE?"), CultureInfo.InvariantCulture);
+        }
 
-        public Byte EventStatusRegisterQuery() { return Byte.Parse(Query("*ESR?").Substring(5)); }
+        public Byte EventStatusRegisterQuery() {
+            ThrowIfDisposed();
+            return Byte.Parse(Query("*ESR?"), CultureInfo.InvariantCulture);
+        }
 
-        public String IdentityQuery() { return Query("*IDN?"); }
+        protected void CheckEsr() {
+            Byte esr = Byte.Parse(Query("*ESR?"), CultureInfo.InvariantCulture);
+            const Byte ErrorMask = 0b0011_1100; // bits 2–5
+            if ((esr & ErrorMask) != 0) throw new InvalidOperationException($"{Detail} at {Address} reported SCPI error. ESR={esr}");
+        }
 
-        public void OperationCompleteCommand() { Command($"*OPC"); }
+        protected void CheckSystemError() {
+            String err = Query(":SYST:ERR?").Trim();
+            if (!err.StartsWith("0")) throw new InvalidOperationException($"{Detail} at {Address} reported system error: {err}");
+        }
 
-        public Byte OperationCompleteQuery() { return Byte.Parse(Query("*OPC?").Substring(5)); }
+        public String IdentityQuery() {
+            ThrowIfDisposed();
+            return Query("*IDN?");
+        }
 
-        public void OperationCompleteQuery(String scpiCommand) { if (!Query("*OPC?").Equals("1")) throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command '{scpiCommand}'!"); }
+        public void OperationCompleteCommand() {
+            ThrowIfDisposed();
+            Command("*OPC");
+        }
 
-        public void ServiceRequestEnableCommand(Byte RegisterMask) { Command($"*SRE {RegisterMask}"); }
+        public Byte OperationCompleteQuery() {
+            ThrowIfDisposed();
+            return Byte.Parse(Query("*OPC?"), CultureInfo.InvariantCulture);
+        }
 
-        public Byte ServiceRequestEnableQuery() { return Byte.Parse(Query("*SRE?").Substring(5)); }
+        public void OperationCompleteQuery(String scpiCommand) {
+            ThrowIfDisposed();
+            if (!Query("*OPC?").Trim().Equals("1", StringComparison.Ordinal)) throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command '{scpiCommand}'!");
+        }
 
-        public Byte StatusRegisterQuery() { return Byte.Parse(Query("*STB?").Substring(5)); }
+        public void ServiceRequestEnableCommand(Byte RegisterMask) {
+            ThrowIfDisposed();
+            Command($"*SRE {RegisterMask}");
+        }
 
-        public String TestQuery() { return Query("*TST?").Substring(5); }
+        public Byte ServiceRequestEnableQuery() {
+            ThrowIfDisposed();
+            return Byte.Parse(Query("*SRE?"), CultureInfo.InvariantCulture);
+        }
+
+        public Byte StatusRegisterQuery() {
+            ThrowIfDisposed();
+            return Byte.Parse(Query("*STB?"), CultureInfo.InvariantCulture);
+        }
+
+        public String TestQuery() {
+            ThrowIfDisposed();
+            return Query("*TST?").Trim();
+        }
 
         public void ResetClear() {
+            ThrowIfDisposed();
             ResetCommand();
             ClearStatusCommand();
         }
 
-        public void ResetCommand() { _iMessageBasedSession.FormattedIO.WriteLine("*RST"); }
+        public void ResetCommand() {
+            ThrowIfDisposed();
+            Command("*RST");
+        }
 
-        public void WaitCommand() { _iMessageBasedSession.FormattedIO.WriteLine("*WAI"); }
+        public void WaitCommand() {
+            ThrowIfDisposed();
+            Command("*WAI");
+        }
         #endregion
     }
 }
