@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
-    public class PS_E3649A : InstrumentDriver, IPowerSupplyE3649A {
+    public class Keysight_E3649A : InstrumentDriver, IPowerSupplyE3649A {
 
         public void OutputsOff() { Command(":OUTPut:STATe 0"); }
         // NOTE: Some multi-output supplies like the E3649A permit individual control of outputs,
@@ -42,6 +42,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             Thread.Sleep(500); // Allow some time for voltage to stabilize.  
         }
 
-        public PS_E3649A(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.POWER_SUPPLY) { }
+        public Keysight_E3649A(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.POWER_SUPPLY) { }
     }
 }

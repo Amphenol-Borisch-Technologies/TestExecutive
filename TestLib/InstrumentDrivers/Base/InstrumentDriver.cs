@@ -83,7 +83,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
                 case Type t when t == typeof(Double[]): return (T)(Object)Raw().Split(',').Select(s => Double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture)).ToArray();
                 case Type t when t == typeof(Int32[]): return (T)(Object)Raw().Split(',').Select(s => Int32.Parse(s, CultureInfo.InvariantCulture)).ToArray();
                 case Type t when t == typeof(String[]): return (T)(Object)Raw().Split(',').Select(s => s.Trim()).ToArray();
-                default: throw new NotSupportedException($"Type '{typeof(T)}' is not yet supported for SCPI queries.");
+                default: throw new InstrumentException($"Type '{typeof(T)}' is not yet supported for SCPI queries.", Address, Detail, ScpiQuery);
             }
         }
 
@@ -91,7 +91,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
             ScpiResponse = ScpiResponse.ToUpperInvariant();
             if (ScpiResponse == "0" || ScpiResponse == "OFF" || ScpiResponse == "FALSE") return false;
             if (ScpiResponse == "1" || ScpiResponse == "ON" || ScpiResponse == "TRUE") return true;
-            throw new FormatException($"Cannot parse '{ScpiResponse}' as Boolean in response from query {ScpiQuery}.");
+            throw new InstrumentException($"Cannot parse '{ScpiResponse}' as Boolean in response from query {ScpiQuery}.", Address, Detail, ScpiQuery);
         }
 
         private Boolean[] ParseBooleans(String ScpiResponse, String ScpiQuery) {
@@ -169,6 +169,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         }
 
         void Dispose(Boolean disposing) {
+            ThrowIfDisposed();
             lock (_lock) {
                 if (_disposed) return;
                 if (disposing) _iMessageBasedSession?.Dispose();
@@ -202,12 +203,12 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         protected void CheckEsr() {
             Byte esr = Byte.Parse(Query("*ESR?"), CultureInfo.InvariantCulture);
             const Byte ErrorMask = 0b0011_1100; // bits 2–5
-            if ((esr & ErrorMask) != 0) throw new InvalidOperationException($"{Detail} at {Address} reported SCPI error. ESR={esr}");
+            if ((esr & ErrorMask) != 0) throw new InstrumentException($"SCPI error: ESR={esr}", Address, Detail, "*ESR?");
         }
 
         protected void CheckSystemError() {
             String err = Query(":SYST:ERR?").Trim();
-            if (!err.StartsWith("0")) throw new InvalidOperationException($"{Detail} at {Address} reported system error: {err}");
+            if (!err.StartsWith("0")) throw new InstrumentException($"System error: ERR={err}", Address, Detail, ":SYST:ERR?");
         }
 
         public String IdentityQuery() {
@@ -223,11 +224,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         public Byte OperationCompleteQuery() {
             ThrowIfDisposed();
             return Byte.Parse(Query("*OPC?"), CultureInfo.InvariantCulture);
-        }
-
-        public void OperationCompleteQuery(String scpiCommand) {
-            ThrowIfDisposed();
-            if (!Query("*OPC?").Trim().Equals("1", StringComparison.Ordinal)) throw new InvalidOperationException($"{Detail}, Address '{Address}' didn't complete SCPI command '{scpiCommand}'!");
         }
 
         public void ServiceRequestEnableCommand(Byte RegisterMask) {

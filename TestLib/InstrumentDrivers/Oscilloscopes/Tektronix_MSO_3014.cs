@@ -7,7 +7,7 @@ using System.Threading;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
-    public class MSO_3014 : InstrumentDriver {
+    public class Tektronix_MSO_3014 : InstrumentDriver {
         public enum BUS { B1, B2 }
         public enum CHANNEL { CH1, CH2 }
         public enum DRIVE_USB { E, F }
@@ -15,7 +15,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
         public readonly static String ValidCharactersFile = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=+-!@#$%^&()[]{}~‘’,";
         public readonly static String ValidCharactersLabel = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._=≠+-±!@#$%^&*()[]{}<>/~‘’\"\\|:,.?µ∞∆°Ωσ";
 
-        public MSO_3014(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.OSCILLOSCOPE_MIXED_SIGNAL) {
+        public Tektronix_MSO_3014(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.OSCILLOSCOPE_MIXED_SIGNAL) {
             DateTime dateTime = DateTime.Now;
             Command($":TIME \"{dateTime:hh:mm:ss}\"");
             Command($":DATE \"{dateTime:yyyy-MM-dd}\"");

@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
-    public class PS_E3634A : InstrumentDriver, IPowerSupplyOutputs1 {
+    public class Keysight_E3634A : InstrumentDriver, IPowerSupplyOutputs1 {
         public enum RANGE { P25V, P50V }
 
         public void OutputsOff() { Command(":OUTPut:STATe 0"); }
@@ -31,6 +31,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             Thread.Sleep(500); // Allow some time for voltage to stabilize.        
         }
 
-        public PS_E3634A(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.POWER_SUPPLY) { }
+        public Keysight_E3634A(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.POWER_SUPPLY) { }
     }
 }

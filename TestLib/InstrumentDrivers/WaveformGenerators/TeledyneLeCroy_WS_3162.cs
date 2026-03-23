@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
+namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerators {
     #region TL;DR
     // NOTE: WaveStation 2000/3000 SCPI Reference Manual https://cdn.teledynelecroy.com/files/manuals/wsta_scpi_manual_reva.pdf.
     // NOTE: Operator's Manual: WaveStation 3000 Function & Arbitrary Waveform Generator https://cdn.teledynelecroy.com/files/manuals/wavestation_3000_om.pdf.
@@ -43,7 +43,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
     //  SYNC        SYNC            SIGNAL      Sends a Sync pulse upon occurrence of the specified function.
     //  WVCSV       WAVE_CSV                    Saves.CSV file to user-defined memory location.
     #endregion TL;DR
-    public class WS_3162 : InstrumentDriver {
+    public class TeledyneLeCroy_WS_3162 : InstrumentDriver {
         public enum CHANNEL { C1, C2 }
         public enum CLOCK_SOURCE { INT, EXT }
         public enum COMMAND_HEADER { OFF, SHORT, LONG }
@@ -64,7 +64,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
             public enum WVTP { SINE, SQUARE, RAMP, PULSE, NOISE, ARB, DC }
         }
 
-        public WS_3162(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.WAVEFORM_GENERATOR) {
+        public TeledyneLeCroy_WS_3162(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.WAVEFORM_GENERATOR) {
             ResetCommand();
             ClearStatusCommand();
             CommandHeaderCommand(COMMAND_HEADER.LONG);
@@ -239,6 +239,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerator {
         }
         public void VirtualKeyCommand(VIRTUAL_KEY VirtualKey) { Command($"VKEY VALUE,{VirtualKey},STATE,1"); }
 
-        ~WS_3162() { Dispose(); }
+        ~TeledyneLeCroy_WS_3162() { Dispose(); }
     }
 }

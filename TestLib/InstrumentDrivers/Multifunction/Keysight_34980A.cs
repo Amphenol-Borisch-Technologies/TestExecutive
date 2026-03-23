@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
 
-    public class MSMU_34980A : InstrumentDriver, IRelay {
+    public class Keysight_34980A : InstrumentDriver, IRelay {
         public readonly struct Modules {
             public static readonly String M34921A = "34921A";
             public static readonly String M34932A = "34932A";
@@ -24,7 +24,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
 
         public void OpenAll() { Command(":ROUTe:OPEN:ALL"); }
 
-        public MSMU_34980A(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.MULTI_FUNCTION) {
+        public Keysight_34980A(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.MULTI_FUNCTION) {
             DateTime now = DateTime.Now;
             Command($":SYSTem: DATE {now.Year},{now.Month},{now.Day}");
             Command($":SYSTem: TIME {now.Hour},{now.Minute},{Convert.ToDouble(now.Second)}");
