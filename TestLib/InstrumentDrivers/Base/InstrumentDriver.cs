@@ -169,7 +169,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         }
 
         void Dispose(Boolean disposing) {
-            ThrowIfDisposed();
             lock (_lock) {
                 if (_disposed) return;
                 if (disposing) _iMessageBasedSession?.Dispose();
