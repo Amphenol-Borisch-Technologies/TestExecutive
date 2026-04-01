@@ -9,6 +9,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         STATE StateGet();
         void StateSet(STATE State);
         (Double AmpsAC, Double VoltsAC, Double Hertz) Get();
-        void SetOffOn(Double VoltsAC, Double OVP, Double Hertz);
+        void SetOffOn(Double VoltsAC, Double Hertz);
     }
 }

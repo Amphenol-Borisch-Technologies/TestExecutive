@@ -11,21 +11,16 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         public (Double AmpsAC, Double VoltsAC, Double Hertz) GetAC() { return (Double.Parse(Query(":MEASure:SCALar:CURRent:AC?")), Double.Parse(Query(":MEASure:SCALar:VOLTage:ACDC?")), Double.Parse(Query(":MEASure:SCALar:FREQuency?"))); }
 
-        public void SetOffOn(Double VoltsAC, Double OVP, Double Hertz) {
-            ValidateRangeVoltsAC(VoltsAC, nameof(VoltsAC));
-            ValidateRangeVoltsAC(OVP, nameof(OVP));
-            if (OVP < VoltsAC) throw new ArgumentException($"{nameof(OVP)} must be ≥ {nameof(VoltsAC)}.");
+        public void SetOffOn(Double VoltsAC, Double Hertz) {
+            if (VoltsAC < (Double)RangeVoltsAC.Minimum || VoltsAC > (Double)RangeVoltsAC.Maximum) throw new ArgumentOutOfRangeException($"{VoltsAC} must be ≥ {(Int32)RangeVoltsAC.Minimum} and ≤ {(Int32)RangeVoltsAC.Maximum} VAC.");
             if (Hertz < (Double)RangeHertz.Minimum || Hertz > (Double)RangeHertz.Maximum) throw new ArgumentOutOfRangeException($"{Hertz} must be ≥ {(Int32)RangeHertz.Minimum} and ≤ {(Int32)RangeHertz.Maximum} Hertz.");
             StateSet(STATE.off, MillisecondsDelay: 0);
             Command(":OUTPut:PROTection:CLEar");
             Command(":OUTPut:COUPling:AC");
-            Command($":SOURce:VOLTage:LIMit {OVP}");
-            Command($":SOURce:FREQuency:IMMediate: {Hertz}");
-            Command($":SOURce:VOLTage:LEVel:IMMediate:AMPLitude: AC {VoltsAC}");
+            Command($":SOURce:FREQuency:IMMediate {Hertz}");
+            Command($":SOURce:VOLTage:LEVel:IMMediate:AMPLitude:AC {VoltsAC}");
             StateSet(STATE.ON, MillisecondsDelay: 500);
         }
-
-        private void ValidateRangeVoltsAC(Double VoltsAC, String NameVAC) { if (VoltsAC < (Double)RangeVoltsAC.Minimum || VoltsAC > (Double)RangeVoltsAC.Maximum) throw new ArgumentOutOfRangeException($"{NameVAC} must be ≥ {(Int32)RangeVoltsAC.Minimum} and ≤ {(Int32)RangeVoltsAC.Maximum} VAC."); }
 
         public STATE StateGet() { return Query(":OUTPut:STATe?") == "ON" ? STATE.ON : STATE.off; }
 
