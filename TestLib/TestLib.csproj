@@ -127,12 +127,14 @@
     <Compile Include="InstrumentDrivers\Base\Instruments.cs" />
     <Compile Include="InstrumentDrivers\Base\IDiagnostics.cs" />
     <Compile Include="InstrumentDrivers\Base\IInstrument.cs" />
-    <Compile Include="InstrumentDrivers\Base\IPowerSupply.cs" />
+    <Compile Include="InstrumentDrivers\Base\IPowerSupplyAC.cs" />
+    <Compile Include="InstrumentDrivers\Base\IPowerSupplyDC.cs" />
     <Compile Include="InstrumentDrivers\Base\IRelay.cs" />
     <Compile Include="InstrumentDrivers\MultiMeters\MM_34401A_SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\Multifunction\Keysight_34980A.cs" />
     <Compile Include="InstrumentDrivers\Multifunction\MSMU_34980A_SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\Oscilloscopes\Tektronix_MSO_3014.cs" />
+    <Compile Include="InstrumentDrivers\PowerSupplies\Chroma_61602.cs" />
     <Compile Include="InstrumentDrivers\PowerSupplies\Keysight_E3634A.cs" />
     <Compile Include="InstrumentDrivers\PowerSupplies\PS_E3634A_SCPI_NET.cs" />
     <Compile Include="InstrumentDrivers\PowerSupplies\Keysight_E3649A.cs" />

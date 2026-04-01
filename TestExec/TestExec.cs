@@ -197,7 +197,7 @@ namespace ABT.Test.TestExecutive.TestExec {
 
         public virtual void IPowerSuppliesOutputsOff() {
             if (testPlanDefinition.TestSpace.Simulate) return;
-            foreach (KeyValuePair<String, Object> kvp in InstrumentDrivers) if (kvp.Value is IPowerSupply iIPowerSupply) iIPowerSupply.OutputsOff();
+            foreach (KeyValuePair<String, Object> kvp in InstrumentDrivers) if (kvp.Value is IPowerSupplyDC iIPowerSupply) iIPowerSupply.OutputsOff();
         }
 
         public virtual void IRelaysOpenAll() {

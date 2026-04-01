@@ -7,7 +7,7 @@ using System.Threading;
 using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
-    public class PS_E3634A_SCPI_NET : IInstrument, IPowerSupplyOutputs1, IDiagnostics {
+    public class PS_E3634A_SCPI_NET : IInstrument, IPowerSupplyDC_Outputs1, IDiagnostics {
         public enum RANGE { P25V, P50V }
 
         public String Address { get; }
@@ -115,7 +115,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             this.Address = Address;
             this.Detail = Detail;
             AgE363x = new AgE363x(Address);
-            InstrumentType = INSTRUMENT_TYPE.POWER_SUPPLY;
+            InstrumentType = INSTRUMENT_TYPE.POWER_SUPPLY_DC;
         }
     }
 }
