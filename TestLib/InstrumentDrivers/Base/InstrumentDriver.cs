@@ -199,13 +199,13 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
             return Byte.Parse(Query("*ESR?"), CultureInfo.InvariantCulture);
         }
 
-        protected void CheckEsr() {
+        public void CheckEsr() {
             Byte esr = Byte.Parse(Query("*ESR?"), CultureInfo.InvariantCulture);
             const Byte ErrorMask = 0b0011_1100; // bits 2–5
             if ((esr & ErrorMask) != 0) throw new InstrumentException($"SCPI error: ESR={esr}", Address, Detail, "*ESR?");
         }
 
-        protected void CheckSystemError() {
+        public void CheckSystemError() {
             String err = Query(":SYST:ERR?").Trim();
             if (!err.StartsWith("0")) throw new InstrumentException($"System error: ERR={err}", Address, Detail, ":SYST:ERR?");
         }
