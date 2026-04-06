@@ -1,12 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base.Tests;
+﻿namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base.Tests;
 
 [TestClass()]
 public class InstrumentDriverTests {

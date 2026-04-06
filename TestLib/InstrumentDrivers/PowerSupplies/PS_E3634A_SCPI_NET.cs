@@ -31,7 +31,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             return ((SELF_TEST_RESULT)result, String.Empty); // AgE363x returns 0 for passed, 1 for fail.
         }
 
-        public void OutputsOff() { AgE363x.SCPI.OUTPut.STATe.Command(Convert.ToBoolean(STATE.off)); }
+        public void OutputsOff() { StateSet(STATE.off, MillisecondsDelay: 0); }
 
         public RANGE RangeGet() {
             AgE363x.SCPI.SOURce.VOLTage.RANGe.Query(out String range);
@@ -45,15 +45,14 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             return (AmpsDC, VoltsDC);
         }
 
-        public void SetOffOn(Double VoltsDC, Double AmpsDC, Double OVP) {
-            AgE363x.SCPI.OUTPut.STATe.Command(false);
+        public void SetOffOn(Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500) {
+            OutputsOff();
             AgE363x.SCPI.SOURce.VOLTage.PROTection.CLEar.Command();
             AgE363x.SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{MMD.MAXimum}");
             AgE363x.SCPI.SOURce.VOLTage.LEVel.IMMediate.AMPLitude.Command($"{VoltsDC}");
             AgE363x.SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Command($"{AmpsDC}");
             AgE363x.SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{OVP}");
-            AgE363x.SCPI.OUTPut.STATe.Command(true);
-            Thread.Sleep(500); // Allow some time for voltage to stabilize.
+            StateSet(STATE.ON, MillisecondsDelay);
         }
 
         public STATE StateGet() {
@@ -61,9 +60,9 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             return state ? STATE.ON : STATE.off;
         }
 
-        public void StateSet(STATE State) {
+        public void StateSet(STATE State, Int32 MillisecondsDelay = 500) {
             AgE363x.SCPI.OUTPut.STATe.Command(State == STATE.ON);
-            Thread.Sleep(500); // Allow some time for voltage to stabilize.        
+            Thread.Sleep(MillisecondsDelay); // Allow some time for voltage to stabilize.        
         }
 
         #region Diagnostics

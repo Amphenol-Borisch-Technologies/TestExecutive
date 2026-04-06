@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
     public class Keysight_E3649A : InstrumentDriver, IPowerSupplyDC_E3649A, ISelfTests {
 
-        public void OutputsOff() { Command(":OUTPut:STATe 0"); }
+        public void OutputsOff() { StateSet(STATE.off, MillisecondsDelay: 0); }
         // NOTE: Some multi-output supplies like the E3649A permit individual control of outputs,
         // but the E3649A does not; all supplies are set to the same STATE, off or ON.
 
@@ -20,16 +20,17 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             return (Double.Parse(Query(":MEASure:SCALar:CURRent:DC?")), Double.Parse(Query(":MEASure:SCALar:VOLTage:DC?")));
         }
 
-        public void SetOffOn(OUTPUT2 Output, Double VoltsDC, Double AmpsDC, Double OVP) {
+        public void SetOffOn(OUTPUT2 Output, Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500) {
             Select(Output);
+            OutputsOff();
             Command(":OUTPut:STATe 0");
             Command(":SOURce: VOLTage: PROTection: CLEar");
             Command($":SOURce: VOLTage: PROTection: LEVel MAXimum");
             Command($":SOURce: VOLTage: LEVel: IMMediate: AMPLitude {VoltsDC}");
             Command($":SOURce: CURRent: LEVel: IMMediate: AMPLitude {AmpsDC}");
             Command($":SOURce: VOLTage: PROTection: LEVel {OVP}");
+            StateSet(STATE.ON, MillisecondsDelay);
             Command(":OUTPut:STATe 1");
-            Thread.Sleep(500); // Allow some time for voltage to stabilize.
         }
 
         public STATE StateGet(OUTPUT2 Output) {
@@ -37,11 +38,11 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             return Query(":OUTPut:STATe?") == "1" ? STATE.ON : STATE.off;
         }
 
-        public void StateSet(STATE State) {
+        public void StateSet(STATE State, Int32 MillisecondsDelay = 500) {
             // NOTE: Some multi-output supplies like the E3649A permit individual control of outputs,
             // but the E3649A does not; all supplies are set to the same STATE, off or ON.
             Command($":OUTPut:STATe {State == STATE.ON}");
-            Thread.Sleep(500); // Allow some time for voltage to stabilize.  
+            Thread.Sleep(MillisecondsDelay); // Allow some time for voltage to stabilize.  
         }
 
         public Keysight_E3649A(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.POWER_SUPPLY_DC) { }

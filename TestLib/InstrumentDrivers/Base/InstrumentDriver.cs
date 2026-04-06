@@ -1,11 +1,8 @@
-﻿using ABT.Test.TestExecutive.TestLib.Configuration;
-using Ivi.Visa;
+﻿using Ivi.Visa;
 using Keysight.Visa;
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
     public class InstrumentDriver : IDisposable, IInstrument {
@@ -108,7 +105,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
 
         public Byte[] QueryRawIO(String ScpiQuery) {
             ThrowIfDisposed();
-            return QueryBinary(ScpiQuery, () =>_iMessageBasedSession.RawIO.Read());
+            return QueryBinary(ScpiQuery, () => _iMessageBasedSession.RawIO.Read());
         }
 
         private Byte[] QueryBinary(String ScpiQuery, Func<Byte[]> ReadFunction) {
@@ -120,8 +117,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
                 try {
                     _iMessageBasedSession.TerminationCharacterEnabled = false;
                     response = ReadFunction();
-                }
-                finally {
+                } finally {
                     _iMessageBasedSession.TerminationCharacterEnabled = _terminationCharacterEnabled;
                 }
                 return response;

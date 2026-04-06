@@ -1,8 +1,5 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerators {
     #region TL;DR

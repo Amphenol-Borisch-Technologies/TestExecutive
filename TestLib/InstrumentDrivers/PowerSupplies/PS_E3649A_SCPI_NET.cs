@@ -32,7 +32,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         public void OutputsOff() {
             // NOTE: Most multi-output supplies like the E3649A permit individual control of outputs,
             // but the E3649A does not; all supplies are set to the same STATE, off or ON.
-            AgE364xD.SCPI.OUTPut.STATe.Command(Convert.ToBoolean(STATE.off));
+            StateSet(STATE.off, MillisecondsDelay: 0);
         }
 
         public OUTPUT2 Selected() {
@@ -49,16 +49,15 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             return (AmpsDC, VoltsDC);
         }
 
-        public void SetOffOn(OUTPUT2 Output, Double VoltsDC, Double AmpsDC, Double OVP) {
+        public void SetOffOn(OUTPUT2 Output, Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500) {
             Select(Output);
-            AgE364xD.SCPI.OUTPut.STATe.Command(false);
+            OutputsOff();
             AgE364xD.SCPI.SOURce.VOLTage.PROTection.CLEar.Command();
             AgE364xD.SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{MMD.MAXimum}");
             AgE364xD.SCPI.SOURce.VOLTage.LEVel.IMMediate.AMPLitude.Command($"{VoltsDC}");
             AgE364xD.SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Command($"{AmpsDC}");
             AgE364xD.SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{OVP}");
-            AgE364xD.SCPI.OUTPut.STATe.Command(true);
-            Thread.Sleep(500); // Allow some time for voltage to stabilize.
+            StateSet(STATE.ON, MillisecondsDelay);
         }
 
         public STATE StateGet(OUTPUT2 Output) {
@@ -67,11 +66,11 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             return state ? STATE.ON : STATE.off;
         }
 
-        public void StateSet(STATE State) {
+        public void StateSet(STATE State, Int32 MillisecondsDelay = 500) {
             // NOTE: Most multi-output supplies like the E3649A permit individual control of outputs,
             // but the E3649A does not; all supplies are set to the same STATE, off or ON.
             AgE364xD.SCPI.OUTPut.STATe.Command(State == STATE.ON);
-            Thread.Sleep(500); // Allow some time for voltage to stabilize.
+            Thread.Sleep(MillisecondsDelay); // Allow some time for voltage to stabilize.
         }
 
         #region Diagnostics
