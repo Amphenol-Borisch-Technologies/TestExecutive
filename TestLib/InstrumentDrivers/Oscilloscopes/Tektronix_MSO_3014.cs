@@ -3,11 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
-    public class Tektronix_MSO_3014 : InstrumentDriver {
+    public class Tektronix_MSO_3014 : InstrumentDriver, ISelfTests {
         public enum BUS { B1, B2 }
         public enum CHANNEL { CH1, CH2 }
         public enum DRIVE_USB { E, F }
@@ -20,6 +22,27 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Oscilloscopes {
             Command($":TIME \"{dateTime:hh:mm:ss}\"");
             Command($":DATE \"{dateTime:yyyy-MM-dd}\"");
             Command("DISplay:CLOCk ON");
+        }
+        public (SELF_TEST_RESULT Result, String Message) SelfTests() {
+            ThrowIfDisposed();
+            const String Test = "*TST?";
+            Int32 PR = 15;
+            StringBuilder Message = new StringBuilder();
+            Message.AppendLine($"{nameof(SelfTests)}".PadRight(PR) + $": SCPI {Test}");
+            Message.AppendLine($"{nameof(InstrumentDriver)}".PadRight(PR) + $": {GetType().Name}");
+            Message.AppendLine($"{nameof(InstrumentType)}".PadRight(PR) + $": {InstrumentType}");
+            Message.AppendLine($"{nameof(Detail)}".PadRight(PR) + $": {Detail}");
+            Message.AppendLine($"{nameof(Address)}".PadRight(PR) + $": {Address}");
+            Message.Append($"{nameof(SELF_TEST_RESULT)}".PadRight(PR));
+            SELF_TEST_RESULT Result;
+            try {
+                Result = (SELF_TEST_RESULT)Int32.Parse(Query(Test));
+            } catch (Exception exception) {
+                Result = SELF_TEST_RESULT.EXCEPTION;
+                Message.Insert(0, $"{exception.Message}{Environment.NewLine}");
+                _ = MessageBox.Show($"{exception.Message}{Environment.NewLine}", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+            return (Result, Message.Append($": {Result}").ToString());
         }
 
         public void EventTableEnable(BUS Bus) {

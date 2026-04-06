@@ -7,7 +7,7 @@ using System.Threading;
 using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
-    public class PS_E3634A_SCPI_NET : IInstrument, IPowerSupplyDC_Outputs1, IDiagnostics {
+    public class PS_E3634A_SCPI_NET : IInstrument, IPowerSupplyDC_Outputs1, IDiagnostics, ISelfTests {
         public enum RANGE { P25V, P50V }
 
         public String Address { get; }
@@ -15,7 +15,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         public AgE363x AgE363x { get; }
         public INSTRUMENT_TYPE InstrumentType { get; }
 
-        public void ResetClear() {
+        public void ResetCommand() {
             AgE363x.SCPI.RST.Command();
             AgE363x.SCPI.CLS.Command();
         }
@@ -68,7 +68,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         #region Diagnostics
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
-            ResetClear();
+            ResetCommand();
             Boolean passed = SelfTests().Result is SELF_TEST_RESULT.PASS;
             (Boolean Summary, List<DiagnosticsResult> Details) result_E3634A = (passed, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
             if (passed) {

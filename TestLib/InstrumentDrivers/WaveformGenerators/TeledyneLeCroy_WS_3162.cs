@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerators {
     #region TL;DR
@@ -43,7 +45,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerators {
     //  SYNC        SYNC            SIGNAL      Sends a Sync pulse upon occurrence of the specified function.
     //  WVCSV       WAVE_CSV                    Saves.CSV file to user-defined memory location.
     #endregion TL;DR
-    public class TeledyneLeCroy_WS_3162 : InstrumentDriver {
+    public class TeledyneLeCroy_WS_3162 : InstrumentDriver, ISelfTests {
         public enum CHANNEL { C1, C2 }
         public enum CLOCK_SOURCE { INT, EXT }
         public enum COMMAND_HEADER { OFF, SHORT, LONG }
@@ -66,10 +68,31 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.WaveformGenerators {
 
         public TeledyneLeCroy_WS_3162(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.WAVEFORM_GENERATOR) {
             ResetCommand();
-            ClearStatusCommand();
             CommandHeaderCommand(COMMAND_HEADER.LONG);
             ScreenSaveCommand(MINUTE.M5);
             BuzzerCommand(STATUS.ON);
+        }
+
+        public (SELF_TEST_RESULT Result, String Message) SelfTests() {
+            ThrowIfDisposed();
+            const String Test = "*TST?";
+            Int32 PR = 15;
+            StringBuilder Message = new StringBuilder();
+            Message.AppendLine($"{nameof(SelfTests)}".PadRight(PR) + $": SCPI {Test}");
+            Message.AppendLine($"{nameof(InstrumentDriver)}".PadRight(PR) + $": {GetType().Name}");
+            Message.AppendLine($"{nameof(InstrumentType)}".PadRight(PR) + $": {InstrumentType}");
+            Message.AppendLine($"{nameof(Detail)}".PadRight(PR) + $": {Detail}");
+            Message.AppendLine($"{nameof(Address)}".PadRight(PR) + $": {Address}");
+            Message.Append($"{nameof(SELF_TEST_RESULT)}".PadRight(PR));
+            SELF_TEST_RESULT Result;
+            try {
+                Result = (SELF_TEST_RESULT)Int32.Parse(Query(Test));
+            } catch (Exception exception) {
+                Result = SELF_TEST_RESULT.EXCEPTION;
+                Message.Insert(0, $"{exception.Message}{Environment.NewLine}");
+                _ = MessageBox.Show($"{exception.Message}{Environment.NewLine}", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+            return (Result, Message.Append($": {Result}").ToString());
         }
 
         public void BasicWaveCommand(CHANNEL Channel, BasicWave.COMMAND Command, Object Parameter) {

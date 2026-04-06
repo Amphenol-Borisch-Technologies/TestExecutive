@@ -133,34 +133,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
             lock (_lock) { _iMessageBasedSession.Clear(); }
         }
 
-        public (SELF_TEST_RESULT Result, String Message) SelfTests() {
-            ThrowIfDisposed();
-            const String Test = "*TST?";
-            Int32 PR = 15;
-            StringBuilder Message = new StringBuilder();
-            Message.AppendLine($"{nameof(SelfTests)}".PadRight(PR) + $": SCPI {Test}");
-            Message.AppendLine($"{nameof(InstrumentDriver)}".PadRight(PR) + $": {GetType().Name}");
-            Message.AppendLine($"{nameof(InstrumentType)}".PadRight(PR) + $": {InstrumentType}");
-            Message.AppendLine($"{nameof(Detail)}".PadRight(PR) + $": {Detail}");
-            Message.AppendLine($"{nameof(Address)}".PadRight(PR) + $": {Address}");
-            Message.Append($"{nameof(SELF_TEST_RESULT)}".PadRight(PR));
-            SELF_TEST_RESULT Result;
-            try {
-                Result = (SELF_TEST_RESULT)Int32.Parse(Query(Test));
-            } catch (Exception exception) {
-                Result = SELF_TEST_RESULT.EXCEPTION;
-                Message.Insert(0, $"{exception.Message}{Environment.NewLine}");
-                _ = MessageBox.Show($"{exception.Message}{Environment.NewLine}", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-            }
-            return (Result, Message.Append($": {Result}").ToString());
-        }
-
-        public String Identity(IDN_FIELD Property) {
-            ThrowIfDisposed();
-            String Identity = IdentityQuery();
-            return Identity.Split(',')[(Int32)Property];
-        }
-
         ~InstrumentDriver() { Dispose(false); }
 
         public void Dispose() {
@@ -176,90 +148,11 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
             }
         }
 
-        private void ThrowIfDisposed() { if (_disposed) throw new ObjectDisposedException(GetType().Name); }
-
-        #region SCPI99
-        public void ClearStatusCommand() {
-            ThrowIfDisposed();
-            Command("*CLS");
-        }
-
-        public void EventStatusEnableCommand(Byte RegisterMask) {
-            ThrowIfDisposed();
-            Command($"*ESE {RegisterMask}");
-        }
-
-        public Byte EventStatusEnableQuery() {
-            ThrowIfDisposed(); 
-            return Byte.Parse(Query("*ESE?"), CultureInfo.InvariantCulture);
-        }
-
-        public Byte EventStatusRegisterQuery() {
-            ThrowIfDisposed();
-            return Byte.Parse(Query("*ESR?"), CultureInfo.InvariantCulture);
-        }
-
-        public void CheckEsr() {
-            Byte esr = Byte.Parse(Query("*ESR?"), CultureInfo.InvariantCulture);
-            const Byte ErrorMask = 0b0011_1100; // bits 2–5
-            if ((esr & ErrorMask) != 0) throw new InstrumentException($"SCPI error: ESR={esr}", Address, Detail, "*ESR?");
-        }
-
-        public void CheckSystemError() {
-            String err = Query(":SYST:ERR?").Trim();
-            if (!err.StartsWith("0")) throw new InstrumentException($"System error: ERR={err}", Address, Detail, ":SYST:ERR?");
-        }
-
-        public String IdentityQuery() {
-            ThrowIfDisposed();
-            return Query("*IDN?");
-        }
-
-        public void OperationCompleteCommand() {
-            ThrowIfDisposed();
-            Command("*OPC");
-        }
-
-        public Byte OperationCompleteQuery() {
-            ThrowIfDisposed();
-            return Byte.Parse(Query("*OPC?"), CultureInfo.InvariantCulture);
-        }
-
-        public void ServiceRequestEnableCommand(Byte RegisterMask) {
-            ThrowIfDisposed();
-            Command($"*SRE {RegisterMask}");
-        }
-
-        public Byte ServiceRequestEnableQuery() {
-            ThrowIfDisposed();
-            return Byte.Parse(Query("*SRE?"), CultureInfo.InvariantCulture);
-        }
-
-        public Byte StatusRegisterQuery() {
-            ThrowIfDisposed();
-            return Byte.Parse(Query("*STB?"), CultureInfo.InvariantCulture);
-        }
-
-        public String TestQuery() {
-            ThrowIfDisposed();
-            return Query("*TST?").Trim();
-        }
-
-        public void ResetClear() {
-            ThrowIfDisposed();
-            ResetCommand();
-            ClearStatusCommand();
-        }
+        public void ThrowIfDisposed() { if (_disposed) throw new ObjectDisposedException(GetType().Name); }
 
         public void ResetCommand() {
             ThrowIfDisposed();
             Command("*RST");
         }
-
-        public void WaitCommand() {
-            ThrowIfDisposed();
-            Command("*WAI");
-        }
-        #endregion
     }
 }

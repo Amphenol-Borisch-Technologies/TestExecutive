@@ -1,9 +1,11 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 using System;
+using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
-    public class Keysight_E3649A : InstrumentDriver, IPowerSupplyDC_E3649A {
+    public class Keysight_E3649A : InstrumentDriver, IPowerSupplyDC_E3649A, ISelfTests {
 
         public void OutputsOff() { Command(":OUTPut:STATe 0"); }
         // NOTE: Some multi-output supplies like the E3649A permit individual control of outputs,
@@ -43,5 +45,27 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         }
 
         public Keysight_E3649A(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.POWER_SUPPLY_DC) { }
+
+        public (SELF_TEST_RESULT Result, String Message) SelfTests() {
+            ThrowIfDisposed();
+            const String Test = "*TST?";
+            Int32 PR = 15;
+            StringBuilder Message = new StringBuilder();
+            Message.AppendLine($"{nameof(SelfTests)}".PadRight(PR) + $": SCPI {Test}");
+            Message.AppendLine($"{nameof(InstrumentDriver)}".PadRight(PR) + $": {GetType().Name}");
+            Message.AppendLine($"{nameof(InstrumentType)}".PadRight(PR) + $": {InstrumentType}");
+            Message.AppendLine($"{nameof(Detail)}".PadRight(PR) + $": {Detail}");
+            Message.AppendLine($"{nameof(Address)}".PadRight(PR) + $": {Address}");
+            Message.Append($"{nameof(SELF_TEST_RESULT)}".PadRight(PR));
+            SELF_TEST_RESULT Result;
+            try {
+                Result = (SELF_TEST_RESULT)Int32.Parse(Query(Test));
+            } catch (Exception exception) {
+                Result = SELF_TEST_RESULT.EXCEPTION;
+                Message.Insert(0, $"{exception.Message}{Environment.NewLine}");
+                _ = MessageBox.Show($"{exception.Message}{Environment.NewLine}", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+            return (Result, Message.Append($": {Result}").ToString());
+        }
     }
 }

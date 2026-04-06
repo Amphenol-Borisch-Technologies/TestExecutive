@@ -119,7 +119,7 @@ namespace ABT.Test.TestExecutive.TestLib {
             if (!testPlanDefinition.TestSpace.Simulate) {
                 foreach (KeyValuePair<String, Object> kvp in instrumentDrivers)
                     if (kvp.Value is IInstrument iInstrument) try {
-                            iInstrument.ResetClear();
+                            iInstrument.ResetCommand();
                         } catch {
                             _ = MessageBox.Show($"{iInstrument.Detail}{Environment.NewLine}" +
                                 $"{iInstrument.Address}{Environment.NewLine}{Environment.NewLine}" +

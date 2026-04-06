@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
 
-    public class Keysight_34980A : InstrumentDriver, IRelay {
+    public class Keysight_34980A : InstrumentDriver, IRelay, ISelfTests {
         public readonly struct Modules {
             public static readonly String M34921A = "34921A";
             public static readonly String M34932A = "34932A";
@@ -30,6 +31,34 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             Command($":SYSTem: TIME {now.Hour},{now.Minute},{Convert.ToDouble(now.Second)}");
             Command(":UNIT: TEMPerature F");
             _34980A = Identity(IDN_FIELD.Model);
+        }
+
+        public String Identity(IDN_FIELD Property) {
+            ThrowIfDisposed();
+            String Identity = Query("*IDN?");
+            return Identity.Split(',')[(Int32)Property];
+        }
+
+        public (SELF_TEST_RESULT Result, String Message) SelfTests() {
+            ThrowIfDisposed();
+            const String Test = "*TST?";
+            Int32 PR = 15;
+            StringBuilder Message = new StringBuilder();
+            Message.AppendLine($"{nameof(SelfTests)}".PadRight(PR) + $": SCPI {Test}");
+            Message.AppendLine($"{nameof(InstrumentDriver)}".PadRight(PR) + $": {GetType().Name}");
+            Message.AppendLine($"{nameof(InstrumentType)}".PadRight(PR) + $": {InstrumentType}");
+            Message.AppendLine($"{nameof(Detail)}".PadRight(PR) + $": {Detail}");
+            Message.AppendLine($"{nameof(Address)}".PadRight(PR) + $": {Address}");
+            Message.Append($"{nameof(SELF_TEST_RESULT)}".PadRight(PR));
+            SELF_TEST_RESULT Result;
+            try {
+                Result = (SELF_TEST_RESULT)Int32.Parse(Query(Test));
+            } catch (Exception exception) {
+                Result = SELF_TEST_RESULT.EXCEPTION;
+                Message.Insert(0, $"{exception.Message}{Environment.NewLine}");
+                _ = MessageBox.Show($"{exception.Message}{Environment.NewLine}", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+            return (Result, Message.Append($": {Result}").ToString());
         }
 
         public Boolean InstrumentDMM_Installed() { return Query(":INSTrument:DMM:INSTalled?") == "1"; }

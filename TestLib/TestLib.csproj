@@ -122,6 +122,7 @@
     <Compile Include="Configuration\TestSequence.cs">
       <DependentUpon>TestSequence.xsd</DependentUpon>
     </Compile>
+    <Compile Include="InstrumentDrivers\Base\ISelfTests.cs" />
     <Compile Include="InstrumentDrivers\Base\InstrumentDriver.cs" />
     <Compile Include="InstrumentDrivers\Base\InstrumentException.cs" />
     <Compile Include="InstrumentDrivers\Base\Instruments.cs" />

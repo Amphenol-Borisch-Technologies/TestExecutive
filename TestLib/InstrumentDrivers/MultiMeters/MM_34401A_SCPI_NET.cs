@@ -7,7 +7,7 @@
 
 //namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.MultiMeters {
 
-//        public class MM_34401A_SCPI_NET : IInstrument, IDiagnostics {
+//        public class MM_34401A_SCPI_NET : IInstrument, IDiagnostics, ISelfTests {
 //            public enum MMD { MIN, MAX, DEF }
 //            public enum TERMINAL { Front, Rear };
 //            public enum PROPERTY { AmperageAC, AmperageDC, Continuity, Frequency, Fresistance, Period, Resistance, VoltageAC, VoltageDC, VoltageDiodic }

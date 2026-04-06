@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
 
-    public class MSMU_34980A_SCPI_NET : IInstrument, IRelay, IDiagnostics {
+    public class MSMU_34980A_SCPI_NET : IInstrument, IRelay, IDiagnostics, ISelfTests {
         public readonly struct Modules {
             public static readonly String M34921A = "34921A";
             public static readonly String M34932A = "34932A";
@@ -29,7 +29,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         public INSTRUMENT_TYPE InstrumentType { get; }
         private readonly String _34980A;
 
-        public void ResetClear() {
+        public void ResetCommand() {
             Ag34980.SCPI.RST.Command();
             Ag34980.SCPI.CLS.Command();
         }
@@ -54,7 +54,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
 
         #region Diagnostics // NOTE: Update MODULES & Modules as necessary, along with Diagnostics region.
         public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
-            ResetClear();
+            ResetCommand();
             Boolean passed = SelfTests().Result is SELF_TEST_RESULT.PASS;
             (Boolean Summary, List<DiagnosticsResult> Details) result_34980A = (passed, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
             if (passed) {

@@ -186,13 +186,13 @@ namespace ABT.Test.TestExecutive.TestExec {
         public virtual void SystemReset() {
             if (testPlanDefinition.TestSpace.Simulate) return;
             IPowerSuppliesOutputsOff();
-            IInstrumentsResetClear();
+            IInstrumentsResetCommand();
             IRelaysOpenAll();
         }
 
-        public virtual void IInstrumentsResetClear() {
+        public virtual void IInstrumentsResetCommand() {
             if (testPlanDefinition.TestSpace.Simulate) return;
-            foreach (KeyValuePair<String, Object> kvp in InstrumentDrivers) if (kvp.Value is IInstrument iInstrument) iInstrument.ResetClear();
+            foreach (KeyValuePair<String, Object> kvp in InstrumentDrivers) if (kvp.Value is IInstrument iInstrument) iInstrument.ResetCommand();
         }
 
         public virtual void IPowerSuppliesOutputsOff() {
@@ -354,7 +354,7 @@ namespace ABT.Test.TestExecutive.TestExec {
         private void TSMI_System_SelfTestsInstruments_Click(Object sender, EventArgs e) {
             UseWaitCursor = true;
             Boolean passed = true;
-            foreach (KeyValuePair<String, Object> kvp in InstrumentDrivers) passed &= ((IInstrument)kvp.Value).SelfTests().Result is SELF_TEST_RESULT.PASS;
+            foreach (KeyValuePair<String, Object> kvp in InstrumentDrivers) passed &= ((ISelfTests)kvp.Value).SelfTests().Result is SELF_TEST_RESULT.PASS;
             if (passed) _ = MessageBox.Show(this, "SCPI VISA Instrument Self-Tests all passed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             UseWaitCursor = false;
         }
