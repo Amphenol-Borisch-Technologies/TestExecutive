@@ -46,6 +46,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             CodeNamespace codeNamespace = new CodeNamespace(testSpace.NamespaceRoot + "." + testSpace.TestOperations[testOperation].NamespaceTrunk);
             codeNamespace.Imports.Add(new CodeNamespaceImport($"{nameof(System)}"));
             codeNamespace.Imports.Add(new CodeNamespaceImport($"{nameof(System)}.{nameof(System.Diagnostics)}"));
+            codeNamespace.Imports.Add(new CodeNamespaceImport($"{nameof(System)}.{nameof(System.Reflection)}"));
             codeNamespace.Imports.Add(new CodeNamespaceImport($"{nameof(ABT)}.{nameof(Test)}.{TestLib.TestExecutive}.{nameof(TestLib)}"));
             codeNamespace.Imports.Add(new CodeNamespaceImport($"{nameof(ABT)}.{nameof(Test)}.{TestLib.TestExecutive}.{nameof(TestLib)}.{nameof(Configuration)}"));
             codeNamespace.Imports.Add(new CodeNamespaceImport($"static {nameof(ABT)}.{nameof(Test)}.{TestLib.TestExecutive}.{nameof(TestLib)}.{nameof(TestLib)}"));

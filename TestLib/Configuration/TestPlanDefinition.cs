@@ -265,7 +265,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
         public String Assertion() {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append($"Debug.Assert({nameof(TestIndices)}.{nameof(TestIndices.TestGroup)}.Assert(");
-            stringBuilder.Append($"{nameof(Classname)}: nameof({GetType().GetProperty(nameof(Classname)).GetValue(this)}), ");
+            stringBuilder.Append($"{nameof(Classname)}: MethodBase.GetCurrentMethod().DeclaringType.Name), ");
             stringBuilder.Append($"{nameof(Description)}: {UUT.EF(GetType().GetProperty(nameof(Description)).GetValue(this))}, ");
             stringBuilder.Append($"{nameof(CancelNotPassed)}: {GetType().GetProperty(nameof(CancelNotPassed)).GetValue(this).ToString().ToLower()}, ");
             stringBuilder.Append($"{nameof(Independent)}: {GetType().GetProperty(nameof(Independent)).GetValue(this).ToString().ToLower()}, ");
@@ -303,7 +303,7 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
 
         public virtual String Assertion() {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append($"{nameof(Name)}: nameof({GetType().GetProperty(nameof(Name)).GetValue(this)}), ");
+            stringBuilder.Append($"{nameof(Name)}: MethodBase.GetCurrentMethod().Name), ");
             stringBuilder.Append($"{nameof(Description)}: {UUT.EF(GetType().GetProperty(nameof(Description)).GetValue(this))}, ");
             stringBuilder.Append($"{nameof(CancelNotPassed)}: {GetType().GetProperty(nameof(CancelNotPassed)).GetValue(this).ToString().ToLower()}");
             return stringBuilder.ToString();
