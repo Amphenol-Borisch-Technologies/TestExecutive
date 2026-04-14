@@ -56,8 +56,8 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
                                 //   - XML editing integrated with Visual Studio is incredibly convenient.
                                 //   - As a multi-purpose editor, can develop C# .Net applications.  Plus many other languages.
                                 #endregion TLDR
-                                low = Double.Parse(xmlReader.GetAttribute(nameof(MethodInterval.Low)));
-                                high = Double.Parse(xmlReader.GetAttribute(nameof(MethodInterval.High)));
+                                low = XmlConvert.ToDouble(xmlReader.GetAttribute(nameof(MethodInterval.Low)));
+                                high = XmlConvert.ToDouble(xmlReader.GetAttribute(nameof(MethodInterval.High)));
                                 if (low > high) {
                                     validDefinition = false;
                                     stringBuilder.AppendLine($"{nameof(MethodInterval)}'s {nameof(MethodInterval.Low)} > {nameof(MethodInterval.High)}:");
