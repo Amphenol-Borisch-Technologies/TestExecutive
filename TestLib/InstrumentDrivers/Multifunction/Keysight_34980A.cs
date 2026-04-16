@@ -28,7 +28,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
         public Keysight_34980A(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.MULTI_FUNCTION) {
             DateTime now = DateTime.Now;
             Command($":SYSTem: DATE {now.Year},{now.Month},{now.Day}");
-            Command($":SYSTem: TIME {now.Hour},{now.Minute},{Convert.ToDouble(now.Second)}");
+            Command($":SYSTem: TIME {now.Hour},{now.Minute},{System.Convert.ToDouble(now.Second)}");
             Command(":UNIT: TEMPerature F");
             _34980A = Identity(IDN_FIELD.Model);
         }
@@ -132,7 +132,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction {
             if (channels[0][1].Equals('9') || channels[1][1].Equals('9')) throw new ArgumentException($"{nameof(Range)} '{Range}' cannot include ABus #9##.");
             ValidateChannel(channels[0]);
             ValidateChannel(channels[1]);
-            if (Convert.ToInt32(channels[0]) >= Convert.ToInt32(channels[1])) throw new ArgumentException($"{nameof(Range)} '{Range}' start {nameof(channels)} '{channels[0]}' must be < end {nameof(Range)} '{channels[1]}'.");
+            if (System.Convert.ToInt32(channels[0]) >= System.Convert.ToInt32(channels[1])) throw new ArgumentException($"{nameof(Range)} '{Range}' start {nameof(channels)} '{channels[0]}' must be < end {nameof(Range)} '{channels[1]}'.");
         }
     }
 }

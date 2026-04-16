@@ -13,10 +13,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         public enum QUERY { ASTS, AUXA, AUXB, DLY, ERR, FAULT, FOLD, HOLD, ID, IMAX, IOUT, ISET, OUT, OVSET, ROM, SRQ, STS, UNMASK, VMAX, VOUT, VSET }
 
-        public void OutputsOff() { StateSet(STATE.off, MillisecondsDelay: 0); }
-
-        public (Double AmpsDC, Double VoltsDC) Get(DC DC) { return (Double.Parse(Query("ISET?")), Double.Parse(Query("VSET?"))); }
-
         public void Command(COMMAND Command, String arg="") {
             switch (Command) {
                 case COMMAND.AUXA:
@@ -51,60 +47,66 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         public T Query<T>(QUERY Query) {
             String response = base.Query($"{Query}?").Substring($"{Query} ".Length); // Response is in the format "QUERY value", so remove the "QUERY " part to get just the value.
             switch (Query) {
-                case QUERY.ASTS:   return (T)(Object)Convert<ASTS>(response);
-                case QUERY.AUXA:   return (T)(Object)Convert<STATE>(response);
-                case QUERY.AUXB:   return (T)(Object)Convert<STATE>(response);
-                case QUERY.DLY:    return (T)(Object)Convert<Double>(response);
-                case QUERY.ERR:    return (T)(Object)Convert<Byte>(response);
-                case QUERY.FAULT:  return (T)(Object)Convert<ASTS>(response);
-                case QUERY.FOLD:   return (T)(Object)Convert<FOLD>(response);
-                case QUERY.HOLD:   return (T)(Object)Convert<STATE>(response);
-                case QUERY.ID:     return (T)(Object)Convert<String>(response);
-                case QUERY.IMAX:   return (T)(Object)Convert<Double>(response);
-                case QUERY.IOUT:   return (T)(Object)Convert<Double>(response);
-                case QUERY.ISET:   return (T)(Object)Convert<Double>(response);
-                case QUERY.OUT:    return (T)(Object)Convert<STATE>(response);
-                case QUERY.OVSET:  return (T)(Object)Convert<Double>(response);
-                case QUERY.ROM:    return (T)(Object)Convert<String>(response);
-                case QUERY.SRQ:    return (T)(Object)Convert<STATE>(response);
-                case QUERY.STS:    return (T)(Object)Convert<ASTS>(response);
-                case QUERY.UNMASK: return (T)(Object)Convert<ASTS>(response);
-                case QUERY.VMAX:   return (T)(Object)Convert<Double>(response);
-                case QUERY.VOUT:   return (T)(Object)Convert<Double>(response);
-                case QUERY.VSET:   return (T)(Object)Convert<Double>(response);
+                case QUERY.ASTS:
+                case QUERY.FAULT:
+                case QUERY.STS:
+                case QUERY.UNMASK:
+                    return (T)(Object)Convert<ASTS>(response);
+                case QUERY.AUXA:
+                case QUERY.AUXB:
+                case QUERY.HOLD:
+                case QUERY.OUT:
+                case QUERY.SRQ:
+                    return (T)(Object)Convert<STATE>(response);
+                case QUERY.DLY:
+                case QUERY.IMAX:
+                case QUERY.IOUT:
+                case QUERY.ISET:
+                case QUERY.OVSET:
+                case QUERY.VMAX:
+                case QUERY.VOUT:
+                case QUERY.VSET:
+                    return (T)(Object)Convert<Double>(response);
+                case QUERY.ERR:
+                    return (T)(Object)Convert<Byte>(response);
+                case QUERY.FOLD:
+                    return (T)(Object)Convert<FOLD>(response);
+                case QUERY.ID:
+                case QUERY.ROM:
+                    return (T)(Object)Convert<String>(response);
                 default: throw new NotImplementedException(NotImplementedMessageEnum<QUERY>(Enum.GetName(typeof(QUERY), Query)));
             }
         }
 
         public void SetOff(Double VoltsDC, Double AmpsDC, Double OVP) {
-            OutputsOff();
-            Command($"OVSET {OVP}");
-            Command($"VSET {VoltsDC}");
-            Command($"ISET {AmpsDC}");
+            StateSet(STATE.off, MillisecondsDelay: 0);
+            Command(COMMAND.OVSET, OVP.ToString());
+            Command(COMMAND.VSET, VoltsDC.ToString());
+            Command(COMMAND.ISET, AmpsDC.ToString());
         }
+
+        public void OutputsOff() { Command(COMMAND.OUT, STATE.off.ToString()); }
+
+        public (Double AmpsDC, Double VoltsDC) Get(DC DC) { return (Query<Double>(QUERY.ISET), Query<Double>(QUERY.VSET)); }
 
         public void SetOffOn(Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500) {
             SetOff(VoltsDC, AmpsDC, OVP);
             StateSet(STATE.ON, MillisecondsDelay);
         }
 
-        public STATE StateGet() { return Query("OUT?") == "1" ? STATE.ON : STATE.off; }
+        public STATE StateGet() { return Query<STATE>(QUERY.OUT); }
 
         public void StateSet(STATE State, Int32 MillisecondsDelay = 500) {
-            Command($"OUT {State}");
+            Command(COMMAND.OUT, State.ToString());
             Thread.Sleep(MillisecondsDelay); // Allow some time for voltage to stabilize.
         }
 
-        public String ASTS_Query() { return ((ASTS)Query<UInt16>("ASTS?")).ToString(); }
-
-        public void ClearCommand() { Command("CLR"); }
-
-        public new void ResetCommand() { Command("RST"); }
+        public new void ResetCommand() { Command(COMMAND.RST); }
 
         public Sorensen_XFR_GPIB(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.POWER_SUPPLY_DC) {
-            ClearCommand();
+            Command(COMMAND.CLR);
             ResetCommand();
-            SetOff(VoltsDC: 0, AmpsDC: 0, OVP: Query<Double>("VMAX?"));
+            SetOff(VoltsDC: 0, AmpsDC: 0, OVP: Query<Double>(QUERY.VMAX));
         }
     }
 }
