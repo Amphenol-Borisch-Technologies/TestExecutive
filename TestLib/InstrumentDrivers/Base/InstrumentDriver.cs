@@ -67,31 +67,35 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         public T Query<T>(String ScpiQuery) {
             ThrowIfDisposed();
             String raw = null;
-            String Raw() => raw ?? (raw = Query(ScpiQuery));
+            return Convert<T>(raw ?? Query(ScpiQuery), ScpiQuery);
+        }
+
+        public T Convert<T>(String ScpiResponse, String ScpiQuery = "") {
+            ThrowIfDisposed();
             switch (typeof(T)) {
-                case Type t when t.IsEnum: return (T)Enum.Parse(typeof(T), Raw(), ignoreCase: true);
-                case Type t when t == typeof(Boolean): return (T)(Object)ParseBoolean(Raw(), ScpiQuery);
-                case Type t when t == typeof(Byte): return (T)(Object)Byte.Parse(Raw(), CultureInfo.InvariantCulture);
-                case Type t when t == typeof(Double): return (T)(Object)(Double.Parse(Raw(), NumberStyles.Any, CultureInfo.InvariantCulture));
-                case Type t when t == typeof(Int32): return (T)(Object)Int32.Parse(Raw(), CultureInfo.InvariantCulture);
-                case Type t when t == typeof(String): return (T)(Object)Raw();
-                case Type t when t == typeof(Boolean[]): return (T)(Object)ParseBooleans(Raw(), ScpiQuery);
-                case Type t when t == typeof(Byte[]): return (T)(Object)Raw().Split(',').Select(s => Byte.Parse(s, CultureInfo.InvariantCulture)).ToArray();
-                case Type t when t == typeof(Double[]): return (T)(Object)Raw().Split(',').Select(s => Double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture)).ToArray();
-                case Type t when t == typeof(Int32[]): return (T)(Object)Raw().Split(',').Select(s => Int32.Parse(s, CultureInfo.InvariantCulture)).ToArray();
-                case Type t when t == typeof(String[]): return (T)(Object)Raw().Split(',').Select(s => s.Trim()).ToArray();
-                default: throw new InstrumentException($"Type '{typeof(T)}' is not yet supported for SCPI queries.", Address, Detail, ScpiQuery);
+                case Type t when t.IsEnum: return (T)Enum.Parse(typeof(T), ScpiResponse, ignoreCase: true);
+                case Type t when t == typeof(Boolean): return (T)(Object)ParseBoolean(ScpiResponse, ScpiQuery);
+                case Type t when t == typeof(Byte): return (T)(Object)Byte.Parse(ScpiResponse, CultureInfo.InvariantCulture);
+                case Type t when t == typeof(Double): return (T)(Object)(Double.Parse(ScpiResponse, NumberStyles.Any, CultureInfo.InvariantCulture));
+                case Type t when t == typeof(Int32): return (T)(Object)Int32.Parse(ScpiResponse, CultureInfo.InvariantCulture);
+                case Type t when t == typeof(String): return (T)(Object)ScpiResponse;
+                case Type t when t == typeof(Boolean[]): return (T)(Object)ParseBooleans(ScpiResponse, ScpiQuery);
+                case Type t when t == typeof(Byte[]): return (T)(Object)ScpiResponse.Split(',').Select(s => Byte.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+                case Type t when t == typeof(Double[]): return (T)(Object)ScpiResponse.Split(',').Select(s => Double.Parse(s, NumberStyles.Any, CultureInfo.InvariantCulture)).ToArray();
+                case Type t when t == typeof(Int32[]): return (T)(Object)ScpiResponse.Split(',').Select(s => Int32.Parse(s, CultureInfo.InvariantCulture)).ToArray();
+                case Type t when t == typeof(String[]): return (T)(Object)ScpiResponse.Split(',').Select(s => s.Trim()).ToArray();
+                default: throw new InstrumentException($"Type '{typeof(T)}' is not yet supported for SCPI responses.", Address, Detail, ScpiResponse);
             }
         }
 
-        private Boolean ParseBoolean(String ScpiResponse, String ScpiQuery) {
+        private Boolean ParseBoolean(String ScpiResponse, String ScpiQuery="") {
             ScpiResponse = ScpiResponse.ToUpperInvariant();
             if (ScpiResponse == "0" || ScpiResponse == "OFF" || ScpiResponse == "FALSE") return false;
             if (ScpiResponse == "1" || ScpiResponse == "ON" || ScpiResponse == "TRUE") return true;
             throw new InstrumentException($"Cannot parse '{ScpiResponse}' as Boolean in response from query {ScpiQuery}.", Address, Detail, ScpiQuery);
         }
 
-        private Boolean[] ParseBooleans(String ScpiResponse, String ScpiQuery) {
+        private Boolean[] ParseBooleans(String ScpiResponse, String ScpiQuery="") {
             String[] parts = ScpiResponse.Split(',').Select(ba => ba.Trim().ToUpperInvariant()).ToArray();
             Boolean[] booleans = new Boolean[parts.Length];
             for (Int32 i = 0; i < parts.Length; i++) booleans[i] = ParseBoolean(parts[i], ScpiQuery);
