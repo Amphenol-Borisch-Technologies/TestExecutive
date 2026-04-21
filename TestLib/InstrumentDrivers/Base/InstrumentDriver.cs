@@ -9,7 +9,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         public String Address { get; }
         public String Detail { get; }
         public INSTRUMENT_TYPE InstrumentType { get; }
-        public enum IDN_FIELD { Manufacturer, Model, SerialNumber, FirmwareRevision } // Example: "Keysight Technologies,E36103B,MY61001983,1.0.2-1.02".
         private readonly IMessageBasedSession _iMessageBasedSession;
         private readonly Object _lock = new Object();
         private Boolean _disposed = false;
@@ -88,14 +87,14 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
             }
         }
 
-        private Boolean ParseBoolean(String ScpiResponse, String ScpiQuery="") {
+        private Boolean ParseBoolean(String ScpiResponse, String ScpiQuery = "") {
             ScpiResponse = ScpiResponse.ToUpperInvariant();
             if (ScpiResponse == "0" || ScpiResponse == "OFF" || ScpiResponse == "FALSE") return false;
             if (ScpiResponse == "1" || ScpiResponse == "ON" || ScpiResponse == "TRUE") return true;
             throw new InstrumentException($"Cannot parse '{ScpiResponse}' as Boolean in response from query {ScpiQuery}.", Address, Detail, ScpiQuery);
         }
 
-        private Boolean[] ParseBooleans(String ScpiResponse, String ScpiQuery="") {
+        private Boolean[] ParseBooleans(String ScpiResponse, String ScpiQuery = "") {
             String[] parts = ScpiResponse.Split(',').Select(ba => ba.Trim().ToUpperInvariant()).ToArray();
             Boolean[] booleans = new Boolean[parts.Length];
             for (Int32 i = 0; i < parts.Length; i++) booleans[i] = ParseBoolean(parts[i], ScpiQuery);

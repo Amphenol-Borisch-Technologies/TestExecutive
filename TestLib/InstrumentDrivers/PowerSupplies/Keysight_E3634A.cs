@@ -13,7 +13,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         public RANGE RangeGet() { return (RANGE)Enum.Parse(typeof(RANGE), Query(":SOURce:VOLTage:RANGe?")); }
         public void RangeSet(RANGE Range) { Command($":SOURce:VOLTage:RANGe {Range}"); }
 
-        public (Double AmpsDC, Double VoltsDC) Get(DC DC) { return (Double.Parse(Query(":MEASure:CURRent:DC?")), Double.Parse(Query(":MEASure:VOLTage:DC?"))); }
+        public (Double AmpsDC, Double VoltsDC) Get() { return (Double.Parse(Query(":MEASure:CURRent:DC?")), Double.Parse(Query(":MEASure:VOLTage:DC?"))); }
 
         public void SetOffOn(Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500) {
             OutputsOff();

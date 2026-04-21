@@ -6,6 +6,7 @@ using System.Windows.Forms;
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
     public enum INSTRUMENT_TYPE { DIGITAL_IO, ELECTRONIC_LOAD, LOGIC_ANALYZER, MULTI_FUNCTION, MULTI_METER, OSCILLOSCOPE_ANALOG, OSCILLOSCOPE_MIXED_SIGNAL, POWER_ANALYZER, POWER_SUPPLY_AC, POWER_SUPPLY_DC, SWITCHING, UNKNOWN, WAVEFORM_GENERATOR }
     [Flags] public enum INSTRUMENT_CATEGORIES { DIGITAL_INPUT = 1, DIGITAL_OUTPUT = 2, ANALOG_MEASURE = 4, ANALOG_STIMULUS = 8, SWITCHING = 16, UNKNOWN = 32 }
+    public enum IDN_FIELD { Manufacturer, Model, SerialNumber, FirmwareRevision } // Example: "Keysight Technologies,E36103B,MY61001983,1.0.2-1.02".
     public enum STATE { off = 0, ON = 1 } // NOTE: To Command an instrument off or ON, and Query it's STATE, again off or ON.
     public enum LOGIC { low = 0, HIGH = 1 } // NOTE: For digital logic.
     public enum BOOLEAN { zero = 0, ONE = 1 } // NOTE: For Boolean algebra if ever needed.  Consistent convention for lower-cased inactive states off/low/zero as 0th states in enums, UPPER-CASED active ON/HIGH/ONE as 1st states.

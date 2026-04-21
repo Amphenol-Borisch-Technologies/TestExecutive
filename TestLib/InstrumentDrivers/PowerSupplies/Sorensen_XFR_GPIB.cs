@@ -1,19 +1,19 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
-using static ABT.Test.TestExecutive.TestLib.TestLib;
 using System;
 using System.Threading;
+using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
     public class Sorensen_XFR_GPIB : InstrumentDriver, IPowerSupplyDC_Outputs1 {
         [Flags] public enum ASTS : UInt16 { NONE = 0, CV = 1, CC = 2, unused = 4, OV = 8, OT = 16, SD = 32, FOLD = 64, ERR = 128, PON = 256, REM = 512, ACF = 1024, OPF = 2048, SNSP = 4096, ALL = 8191 }
 
-        public enum FOLD { OFF=0, CV=1, CC=2 }
+        public enum FOLD { OFF = 0, CV = 1, CC = 2 }
 
         public enum COMMAND { AUXA, AUXB, CLR, DLY, FOLD, HOLD, IMAX, ISET, MASK, OUT, OVSET, RST, SRQ, TRG, UNMASK, VMAX, VSET }
 
         public enum QUERY { ASTS, AUXA, AUXB, DLY, ERR, FAULT, FOLD, HOLD, ID, IMAX, IOUT, ISET, OUT, OVSET, ROM, SRQ, STS, UNMASK, VMAX, VOUT, VSET }
 
-        public void Command(COMMAND Command, String arg="") {
+        public void Command(COMMAND Command, String arg = "") {
             switch (Command) {
                 case COMMAND.AUXA:
                 case COMMAND.AUXB:
@@ -39,6 +39,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
                     break;
                 case COMMAND.MASK:
                 case COMMAND.UNMASK:
+                    // TODO:  COMMAND.MASK, COMMAND.UNMASK with arg as a comma-separated list of ASTS flags.
                     break;
                 default: throw new NotImplementedException(NotImplementedMessageEnum<COMMAND>(Enum.GetName(typeof(COMMAND), Command)));
             }
@@ -87,7 +88,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         public void OutputsOff() { Command(COMMAND.OUT, STATE.off.ToString()); }
 
-        public (Double AmpsDC, Double VoltsDC) Get(DC DC) { return (Query<Double>(QUERY.ISET), Query<Double>(QUERY.VSET)); }
+        public (Double AmpsDC, Double VoltsDC) Get() { return (Query<Double>(QUERY.ISET), Query<Double>(QUERY.VSET)); }
 
         public void SetOffOn(Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500) {
             SetOff(VoltsDC, AmpsDC, OVP);

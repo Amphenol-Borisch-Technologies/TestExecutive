@@ -1,134 +1,34 @@
-﻿namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base.Tests;
+﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 
-[TestClass()]
-public class InstrumentDriverTests {
-    [TestMethod()]
-    public void InstrumentDriverTest() {
-        Assert.Fail();
-    }
+namespace ABT.Test.TestExecutive.MS_Test.InstrumentDrivers.Base {
 
-    [TestMethod()]
-    public void CommandTest() {
-        Assert.Fail();
-    }
+    [TestClass()]
+    public class InstrumentDriverTests {
+        private static InstrumentDriver? _instrumentDriver;
+        private const String address = "GPIB0::5::INSTR";
+        private const String detail = "Sorensen XFR30-40";
+        private const INSTRUMENT_TYPE instrumentType = INSTRUMENT_TYPE.POWER_SUPPLY_DC;
 
-    [TestMethod()]
-    public void CommandTest1() {
-        Assert.Fail();
-    }
+        [TestInitialize]
+        public void Setup() { _instrumentDriver = new(Address: address, Detail: detail, instrumentType); }
 
-    [TestMethod()]
-    public void QueryTest() {
-        Assert.Fail();
-    }
+        [TestMethod]
+        public void InstrumentDriverTest() {
+            Assert.IsNotNull(_instrumentDriver);
+            Assert.AreEqual(address, _instrumentDriver.Address);
+            Assert.AreEqual(detail, _instrumentDriver.Detail);
+            Assert.AreEqual(instrumentType, _instrumentDriver.InstrumentType);
+            Assert.IsInstanceOfType(_instrumentDriver, typeof(InstrumentDriver));
+            Assert.IsInstanceOfType(_instrumentDriver, typeof(IDisposable));
+            Assert.IsInstanceOfType(_instrumentDriver, typeof(Object));
+        }
 
-    [TestMethod()]
-    public void QueryTest1() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void QueryBinaryBlockOfByteTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void QueryRawIOTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void ClearTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void SelfTestsTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void IdentityTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void DisposeTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void ClearStatusCommandTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void EventStatusEnableCommandTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void EventStatusEnableQueryTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void EventStatusRegisterQueryTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void IdentityQueryTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void OperationCompleteCommandTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void OperationCompleteQueryTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void OperationCompleteQueryTest1() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void ServiceRequestEnableCommandTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void ServiceRequestEnableQueryTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void StatusRegisterQueryTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void TestQueryTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void ResetClearTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void ResetCommandTest() {
-        Assert.Fail();
-    }
-
-    [TestMethod()]
-    public void WaitCommandTest() {
-        Assert.Fail();
+        [TestMethod()]
+        public void ThrowIfDisposedTest() {
+            InstrumentDriver instrumentDriver = new(Address: address, Detail: detail, instrumentType);
+            instrumentDriver.ThrowIfDisposed();
+            instrumentDriver.Dispose();
+            Assert.ThrowsException<ObjectDisposedException>(() => instrumentDriver.ThrowIfDisposed());
+        }
     }
 }

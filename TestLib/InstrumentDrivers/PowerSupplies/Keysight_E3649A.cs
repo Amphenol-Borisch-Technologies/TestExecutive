@@ -15,7 +15,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         public void Select(OUTPUT2 Output) { Command($":INSTrument:SELect? {Output}"); }
 
-        public (Double AmpsDC, Double VoltsDC) Get(OUTPUT2 Output, DC DC) {
+        public (Double AmpsDC, Double VoltsDC) Get(OUTPUT2 Output) {
             Select(Output);
             return (Double.Parse(Query(":MEASure:SCALar:CURRent:DC?")), Double.Parse(Query(":MEASure:SCALar:VOLTage:DC?")));
         }
