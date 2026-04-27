@@ -1,11 +1,12 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
     public class Sorensen_XFR_GPIB : InstrumentDriver, IPowerSupplyDC_Outputs1 {
-        [Flags] public enum ASTS : UInt16 { NONE = 0, CV = 1, CC = 2, unused = 4, OV = 8, OT = 16, SD = 32, FOLD = 64, ERR = 128, PON = 256, REM = 512, ACF = 1024, OPF = 2048, SNSP = 4096, ALL = 8191 }
+        [Flags] public enum ASTS { NONE = 0, CV = 1, CC = 2, unused = 4, OV = 8, OT = 16, SD = 32, FOLD = 64, ERR = 128, PON = 256, REM = 512, ACF = 1024, OPF = 2048, SNSP = 4096, ALL = 8191 }
 
         public enum FOLD { OFF = 0, CV = 1, CC = 2 }
 
@@ -19,6 +20,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
                 case COMMAND.AUXB:
                 case COMMAND.HOLD:
                 case COMMAND.OUT:
+                case COMMAND.SRQ:
                     base.Command($"{Command} {Enum.Parse(typeof(STATE), arg)}");
                     break;
                 case COMMAND.CLR:
@@ -45,6 +47,40 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             }
         }
 
+        public static String ASTS_FlagsToMnemonics(Int32 ASTS_Flags) {
+            if ((ASTS_Flags & ~(Int32)ASTS.ALL) != 0) throw new ArgumentOutOfRangeException(nameof(ASTS_Flags), $"Value {ASTS_Flags} contains bits not defined in {nameof(ASTS)}.");
+
+            ASTS astsFlags = (ASTS)ASTS_Flags;
+            if (astsFlags == ASTS.NONE || astsFlags == ASTS.ALL) return astsFlags.ToString(); // Special cases.
+            if ((astsFlags & ASTS.unused) == ASTS.unused) throw new ArgumentException($"Value {ASTS_Flags} cannot have the {nameof(ASTS.unused)} flag set.", nameof(ASTS_Flags));
+            if ((astsFlags & ASTS.NONE) == ASTS.NONE) throw new ArgumentException($"Value {ASTS_Flags} cannot have the {nameof(ASTS.NONE)} flag set.", nameof(ASTS_Flags));
+            if ((astsFlags & ASTS.ALL) == ASTS.ALL) throw new ArgumentException($"Value {ASTS_Flags} cannot have the {nameof(ASTS.ALL)} flag set.", nameof(ASTS_Flags));
+
+            List<String> astsMnemonics = new List<String>();
+            foreach (ASTS astsFlag in Enum.GetValues(typeof(ASTS))) {
+                if (astsFlag == ASTS.NONE || astsFlag == ASTS.unused || astsFlag == ASTS.ALL) continue; // Skip special cases.
+                if ((astsFlags & astsFlag) == astsFlag) astsMnemonics.Add(astsFlag.ToString());
+            }
+            return astsMnemonics.Count > 0 ? String.Join(",", astsMnemonics) : nameof(ASTS.NONE);
+        }
+
+        public static String ASTS_MnemonicsToFlags(String ASTS_Mnemonics) {
+            if (String.IsNullOrWhiteSpace(ASTS_Mnemonics)) throw new ArgumentException("Value cannot be null, empty, or whitespace.", nameof(ASTS_Mnemonics));
+            ASTS_Mnemonics = ASTS_Mnemonics.ToUpper().Replace(" ", ","); // Allow either spaces or commas as separators, but convert spaces to commas for consistent splitting.
+            if (ASTS_Mnemonics.Contains(nameof(ASTS.unused).ToUpper())) throw new ArgumentException($"Value {ASTS_Mnemonics} cannot contain the {nameof(ASTS.unused)} flag.", nameof(ASTS_Mnemonics));
+            if (ASTS_Mnemonics.Contains(nameof(ASTS.NONE)) && !ASTS_Mnemonics.Equals(nameof(ASTS.NONE))) throw new ArgumentException($"Value {ASTS_Mnemonics} cannot contain the {nameof(ASTS.NONE)} flag.", nameof(ASTS_Mnemonics));
+            if (ASTS_Mnemonics.Contains(nameof(ASTS.ALL)) && !ASTS_Mnemonics.Equals(nameof(ASTS.ALL))) throw new ArgumentException($"Value {ASTS_Mnemonics} cannot contain the {nameof(ASTS.ALL)} flag.", nameof(ASTS_Mnemonics));
+
+            String[] astsMnemonics = ASTS_Mnemonics.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            if (astsMnemonics.Length == 1 && Enum.TryParse(astsMnemonics[0], out ASTS singleASTSFlag) && (singleASTSFlag == ASTS.NONE || singleASTSFlag == ASTS.ALL)) return singleASTSFlag.ToString(); // Special cases.
+            Int32 astsFlags = 0;
+            foreach (String astsMnemonic in astsMnemonics) {
+                if (!Enum.TryParse(astsMnemonic, out ASTS astsFlag)) throw new ArgumentException($"Value {astsMnemonic} is not a valid {nameof(ASTS)} mnemonic.", nameof(ASTS_Mnemonics));
+                astsFlags |= (Int32)astsFlag;
+            }
+            return astsFlags.ToString();
+        }
+
         public T Query<T>(QUERY Query) {
             String response = base.Query($"{Query}?").Substring($"{Query} ".Length); // Response is in the format "QUERY value", so remove the "QUERY " part to get just the value.
             switch (Query) {
@@ -52,7 +88,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
                 case QUERY.FAULT:
                 case QUERY.STS:
                 case QUERY.UNMASK:
-                    return (T)(Object)Convert<ASTS>(response);
+                    return (T)(Object)Convert<Int32>(response);
                 case QUERY.AUXA:
                 case QUERY.AUXB:
                 case QUERY.HOLD:

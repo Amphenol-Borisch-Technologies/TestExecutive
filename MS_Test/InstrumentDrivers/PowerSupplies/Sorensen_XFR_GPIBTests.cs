@@ -22,10 +22,10 @@ public class Sorensen_XFR_GPIBTests {
     }
 
     [DataTestMethod()]
-    //[DataRow(QUERY.ASTS)]
-    //[DataRow(QUERY.FAULT)]
-    //[DataRow(QUERY.STS)]
-    //[DataRow(QUERY.UNMASK)]
+    [DataRow(QUERY.ASTS)]
+    [DataRow(QUERY.FAULT)]
+    [DataRow(QUERY.STS)]
+    [DataRow(QUERY.UNMASK)]
     [DataRow(QUERY.AUXA)]
     [DataRow(QUERY.AUXB)]
     [DataRow(QUERY.HOLD)]
@@ -39,10 +39,10 @@ public class Sorensen_XFR_GPIBTests {
     [DataRow(QUERY.VMAX)]
     [DataRow(QUERY.VOUT)]
     [DataRow(QUERY.VSET)]
-    //[DataRow(QUERY.ERR)]
-    //[DataRow(QUERY.FOLD)]
-    //[DataRow(QUERY.ID)]
-    //[DataRow(QUERY.ROM)]
+    [DataRow(QUERY.ERR)]
+    [DataRow(QUERY.FOLD)]
+    [DataRow(QUERY.ID)]
+    [DataRow(QUERY.ROM)]
     public void QueryTest(QUERY Query) {
         Assert.IsNotNull(_XFR_GPIB);
         _XFR_GPIB.Command(COMMAND.OUT, STATE.off.ToString());
@@ -54,6 +54,7 @@ public class Sorensen_XFR_GPIBTests {
             case QUERY.FAULT:
             case QUERY.STS:
             case QUERY.UNMASK:
+                Assert.IsTrue(_XFR_GPIB.Query<Int32>(Query) >= 0 && _XFR_GPIB.Query<Int32>(Query) <= 8191);
                 break;
             case QUERY.AUXA:
             case QUERY.AUXB:
@@ -92,11 +93,20 @@ public class Sorensen_XFR_GPIBTests {
                 Assert.AreEqual(0D, _XFR_GPIB.Query<Double>(Query));
                 break;
             case QUERY.ERR:
+                _XFR_GPIB.Query<Byte>(Query); // Clear any existing error.
+                Assert.AreEqual(0, _XFR_GPIB.Query<Byte>(Query));
                 break;
             case QUERY.FOLD:
+                _XFR_GPIB.Command($"{Query} {FOLD.OFF}");
+                Assert.AreEqual(FOLD.OFF, _XFR_GPIB.Query<FOLD>(Query));
+                _XFR_GPIB.Command($"{Query} {FOLD.CC}");
+                Assert.AreEqual(FOLD.CC, _XFR_GPIB.Query<FOLD>(Query));
+                _XFR_GPIB.Command($"{Query} {FOLD.CV}");
+                Assert.AreEqual(FOLD.CV, _XFR_GPIB.Query<FOLD>(Query));
                 break;
             case QUERY.ID:
             case QUERY.ROM:
+                Assert.IsFalse(String.IsNullOrEmpty(_XFR_GPIB.Query<String>(Query)));
                 break;
             default: throw new NotImplementedException(NotImplementedMessageEnum<QUERY>(Enum.GetName(typeof(QUERY), Query)));
         }
