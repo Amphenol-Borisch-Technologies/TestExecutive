@@ -43,9 +43,9 @@ public class Sorensen_XFR_GPIBTests {
             case COMMAND.OUT:
             case COMMAND.SRQ:
                 _XFR_GPIB.Command($"{Command} {STATE.ON}");
-                Assert.AreEqual(STATE.ON, _XFR_GPIB.Query<STATE>(Command.ToString()));
+                Assert.AreEqual(STATE.ON, _XFR_GPIB.Query<STATE>((QUERY)Enum.Parse(typeof(QUERY), Command.ToString())));
                 _XFR_GPIB.Command($"{Command} {STATE.off}");
-                Assert.AreEqual(STATE.off, _XFR_GPIB.Query<STATE>(Command.ToString()));
+                Assert.AreEqual(STATE.off, _XFR_GPIB.Query<STATE>((QUERY)Enum.Parse(typeof(QUERY), Command.ToString())));
                 break;
             case COMMAND.CLR:
             case COMMAND.RST:
@@ -56,25 +56,25 @@ public class Sorensen_XFR_GPIBTests {
                 break;
             case COMMAND.DLY:
                 _XFR_GPIB.Command($"{Command} 20");
-                Assert.AreEqual(20D, _XFR_GPIB.Query<Double>(Command.ToString()));
+                Assert.AreEqual(20D, _XFR_GPIB.Query<Double>((QUERY)Enum.Parse(typeof(QUERY), Command.ToString())));
                 _XFR_GPIB.Command($"{Command} 0.5");
-                Assert.AreEqual(0.5D, _XFR_GPIB.Query<Double>(Command.ToString()));
+                Assert.AreEqual(0.5D, _XFR_GPIB.Query<Double>((QUERY)Enum.Parse(typeof(QUERY), Command.ToString())));
                 break;
             case COMMAND.OVSET:
             case COMMAND.IMAX:
             case COMMAND.VMAX:
-                Double originalValue = _XFR_GPIB.Query<Double>(Command.ToString());
+                Double originalValue = _XFR_GPIB.Query<Double>((QUERY)Enum.Parse(typeof(QUERY), Command.ToString()));
                 _XFR_GPIB.Command($"{Command} {originalValue - 1}");
-                Assert.AreEqual(originalValue - 1, _XFR_GPIB.Query<Double>(Command.ToString()));
+                Assert.AreEqual(originalValue - 1, _XFR_GPIB.Query<Double>((QUERY)Enum.Parse(typeof(QUERY), Command.ToString())));
                 _XFR_GPIB.Command($"{Command} {originalValue}");
-                Assert.AreEqual(originalValue, _XFR_GPIB.Query<Double>(Command.ToString()));
+                Assert.AreEqual(originalValue, _XFR_GPIB.Query<Double>((QUERY)Enum.Parse(typeof(QUERY), Command.ToString())));
                 break;
             case COMMAND.ISET:
             case COMMAND.VSET:
                 _XFR_GPIB.Command($"{Command} 1");
-                Assert.AreEqual(1D, _XFR_GPIB.Query<Double>(Command.ToString()));
+                Assert.AreEqual(1D, _XFR_GPIB.Query<Double>((QUERY)Enum.Parse(typeof(QUERY), Command.ToString())));
                 _XFR_GPIB.Command($"{Command} 0");
-                Assert.AreEqual(0D, _XFR_GPIB.Query<Double>(Command.ToString()));
+                Assert.AreEqual(0D, _XFR_GPIB.Query<Double>((QUERY)Enum.Parse(typeof(QUERY), Command.ToString())));
                 break;
             case COMMAND.FOLD:
                 _XFR_GPIB.Command(COMMAND.FOLD, FOLD.OFF.ToString());
@@ -85,13 +85,19 @@ public class Sorensen_XFR_GPIBTests {
                 Assert.AreEqual(FOLD.CV, _XFR_GPIB.Query<FOLD>(QUERY.FOLD));
                 break;
             case COMMAND.MASK:
+                _XFR_GPIB.Command(COMMAND.MASK, $"{ASTS.CV}, {ASTS.CC}, {ASTS.OV}, {ASTS.OT}, {ASTS.SD}, {ASTS.FOLD}, {ASTS.ERR}, {ASTS.ACF}, {ASTS.OPF}, {ASTS.SNSP}");
+                Assert.AreEqual($"{ASTS.NONE}", _XFR_GPIB.Query<String>(QUERY.UNMASK));
+                Assert.AreEqual((Int32)ASTS.NONE, _XFR_GPIB.Query<Int32>(QUERY.UNMASK));
+                _XFR_GPIB.Command(COMMAND.MASK, $"{ASTS.ALL}");
+                break;
             case COMMAND.UNMASK:
-                _XFR_GPIB.Command($"{Command} {ASTS.ALL}");
-                Assert.AreEqual(ASTS.ALL, _XFR_GPIB.Query<ASTS>(Command.ToString()));
-                Assert.AreEqual((Int32)ASTS.ALL, _XFR_GPIB.Query<Int32>(Command.ToString()));
-                _XFR_GPIB.Command($"{Command} {ASTS.NONE}");
-                Assert.AreEqual(ASTS.NONE, _XFR_GPIB.Query<ASTS>(Command.ToString()));
-                Assert.AreEqual((Int32)ASTS.NONE, _XFR_GPIB.Query<Int32>(Command.ToString()));
+                _XFR_GPIB.Command(COMMAND.UNMASK, $"{ASTS.CV}, {ASTS.CC}");
+                Assert.AreEqual($"{ASTS.CV}, {ASTS.CC}", _XFR_GPIB.Query<String>(QUERY.UNMASK));
+                Assert.AreEqual((Int32)(ASTS.CV | ASTS.CC), _XFR_GPIB.Query<Int32>(QUERY.UNMASK));
+                _XFR_GPIB.Command(COMMAND.UNMASK, $"{ASTS.NONE}");
+                Assert.AreEqual(ASTS.NONE.ToString(), _XFR_GPIB.Query<String>(QUERY.UNMASK));
+                Assert.AreEqual((Int32)ASTS.NONE, _XFR_GPIB.Query<Int32>(QUERY.UNMASK));
+                _XFR_GPIB.Command(COMMAND.UNMASK, $"{ASTS.NONE}");
                 break;
             default: throw new NotImplementedException(NotImplementedMessageEnum<COMMAND>(Enum.GetName(typeof(COMMAND), Command)));
         }

@@ -53,7 +53,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             ASTS astsFlags = (ASTS)ASTS_Flags;
             if (astsFlags == ASTS.NONE || astsFlags == ASTS.ALL) return astsFlags.ToString(); // Special cases.
             if ((astsFlags & ASTS.unused) == ASTS.unused) throw new ArgumentException($"Value {ASTS_Flags} cannot have the {nameof(ASTS.unused)} flag set.", nameof(ASTS_Flags));
-            if ((astsFlags & ASTS.NONE) == ASTS.NONE) throw new ArgumentException($"Value {ASTS_Flags} cannot have the {nameof(ASTS.NONE)} flag set.", nameof(ASTS_Flags));
             if ((astsFlags & ASTS.ALL) == ASTS.ALL) throw new ArgumentException($"Value {ASTS_Flags} cannot have the {nameof(ASTS.ALL)} flag set.", nameof(ASTS_Flags));
 
             List<String> astsMnemonics = new List<String>();
@@ -61,7 +60,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
                 if (astsFlag == ASTS.NONE || astsFlag == ASTS.unused || astsFlag == ASTS.ALL) continue; // Skip special cases.
                 if ((astsFlags & astsFlag) == astsFlag) astsMnemonics.Add(astsFlag.ToString());
             }
-            return astsMnemonics.Count > 0 ? String.Join(",", astsMnemonics) : nameof(ASTS.NONE);
+            return astsMnemonics.Count > 0 ? String.Join(", ", astsMnemonics) : nameof(ASTS.NONE);
         }
 
         public static String ASTS_MnemonicsToFlags(String ASTS_Mnemonics) {
