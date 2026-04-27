@@ -41,7 +41,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
                     break;
                 case COMMAND.MASK:
                 case COMMAND.UNMASK:
-                    // TODO:  COMMAND.MASK, COMMAND.UNMASK with arg as a comma-separated list of ASTS flags.
+                    base.Command($"{Command} {arg}");
                     break;
                 default: throw new NotImplementedException(NotImplementedMessageEnum<COMMAND>(Enum.GetName(typeof(COMMAND), Command)));
             }
@@ -88,7 +88,9 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
                 case QUERY.FAULT:
                 case QUERY.STS:
                 case QUERY.UNMASK:
-                    return (T)(Object)Convert<Int32>(response);
+                    if (typeof(T) == typeof(Int32)) return (T)(Object)Convert<Int32>(response);
+                    if (typeof(T) == typeof(String)) return (T)(Object)ASTS_FlagsToMnemonics(Convert<Int32>(response));
+                    throw new NotImplementedException($"Query {Query} cannot be converted to type {typeof(T).Name}.");
                 case QUERY.AUXA:
                 case QUERY.AUXB:
                 case QUERY.HOLD:
