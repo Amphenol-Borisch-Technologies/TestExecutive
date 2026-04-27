@@ -5,7 +5,11 @@ using System.Threading;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
-    public class Sorensen_XFR_GPIB : InstrumentDriver, IPowerSupplyDC_Outputs1 {
+    public class Sorensen_XFR_XHR_GPIB : InstrumentDriver, IPowerSupplyDC_Outputs1 {
+        // NOTE: Includes all non-calibration commands & queries defined in:
+        // - "Sorensen Internal GPIB Interface for XHR/XFR Series Programmable DC Power Supplies Operation Manual GPIB-XHR, GPIB-XFR & GPIB-XFR3", TM-GPRF-01XN, February 2009 Revision B.
+        // NOTE: Excludes all calibration commands & queries.
+
         [Flags] public enum ASTS { NONE = 0, CV = 1, CC = 2, unused = 4, OV = 8, OT = 16, SD = 32, FOLD = 64, ERR = 128, PON = 256, REM = 512, ACF = 1024, OPF = 2048, SNSP = 4096, ALL = 8191 }
 
         public enum FOLD { OFF = 0, CV = 1, CC = 2 }
@@ -141,7 +145,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         public new void ResetCommand() { Command(COMMAND.RST); }
 
-        public Sorensen_XFR_GPIB(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.POWER_SUPPLY_DC) {
+        public Sorensen_XFR_XHR_GPIB(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.POWER_SUPPLY_DC) {
             Command(COMMAND.CLR);
             ResetCommand();
             SetOff(VoltsDC: 0, AmpsDC: 0, OVP: Query<Double>(QUERY.VMAX));
