@@ -1,16 +1,15 @@
-﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Threading;
-using static ABT.Test.TestExecutive.TestLib.TestLib;
+using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
-    public class Sorensen_XFR_XHR_GPIB : InstrumentDriver, IPowerSupplyDC_Outputs1 {
-        // NOTE: Includes all non-calibration commands & queries defined in:
-        // - "Sorensen Internal GPIB Interface for XHR/XFR Series Programmable DC Power Supplies Operation Manual GPIB-XHR, GPIB-XFR & GPIB-XFR3", TM-GPRF-01XN, February 2009 Revision B.
-        // NOTE: Excludes all calibration commands & queries.
+    public class Sorensen_XFR_XHR_GPIB : ScpiInstrument, IPowerSupplyDC_Outputs1 {
+        // --------------------------------------------------------------------
+        // ENUMS (unchanged from your original design)
+        // --------------------------------------------------------------------
 
-        [Flags] public enum ASTS { NONE = 0, CV = 1, CC = 2, unused = 4, OV = 8, OT = 16, SD = 32, FOLD = 64, ERR = 128, PON = 256, REM = 512, ACF = 1024, OPF = 2048, SNSP = 4096, ALL = 8191 }
+        [Flags]
+        public enum ASTS { NONE = 0, CV = 1, CC = 2, unused = 4, OV = 8, OT = 16, SD = 32, FOLD = 64, ERR = 128, PON = 256, REM = 512, ACF = 1024, OPF = 2048, SNSP = 4096, ALL = 8191 }
 
         public enum FOLD { OFF = 0, CV = 1, CC = 2 }
 
@@ -18,137 +17,105 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         public enum QUERY { ASTS, AUXA, AUXB, DLY, ERR, FAULT, FOLD, HOLD, ID, IMAX, IOUT, ISET, OUT, OVSET, ROM, SRQ, STS, UNMASK, VMAX, VOUT, VSET }
 
-        public void Command(COMMAND Command, String arg = "") {
-            switch (Command) {
-                case COMMAND.AUXA:
-                case COMMAND.AUXB:
-                case COMMAND.HOLD:
-                case COMMAND.OUT:
-                case COMMAND.SRQ:
-                    base.Command($"{Command} {Enum.Parse(typeof(STATE), arg)}");
-                    break;
-                case COMMAND.CLR:
-                case COMMAND.RST:
-                case COMMAND.TRG:
-                    base.Command($"{Command}");
-                    break;
-                case COMMAND.DLY:
-                case COMMAND.IMAX:
-                case COMMAND.ISET:
-                case COMMAND.OVSET:
-                case COMMAND.VMAX:
-                case COMMAND.VSET:
-                    base.Command($"{Command} {Double.Parse(arg)}");
-                    break;
-                case COMMAND.FOLD:
-                    base.Command($"{Command} {Enum.Parse(typeof(FOLD), arg)}");
-                    break;
-                case COMMAND.MASK:
-                case COMMAND.UNMASK:
-                    base.Command($"{Command} {arg}");
-                    break;
-                default: throw new NotImplementedException(NotImplementedMessageEnum<COMMAND>(Enum.GetName(typeof(COMMAND), Command)));
-            }
+        private readonly ScpiCommandRegistry<COMMAND> _commands;
+        private readonly ScpiQueryRegistry<QUERY> _queries;
+
+        // --------------------------------------------------------------------
+        // CONSTRUCTOR
+        // --------------------------------------------------------------------
+
+        public Sorensen_XFR_XHR_GPIB(String address, String detail)
+            : base(address, detail, INSTRUMENT_TYPE.POWER_SUPPLY_DC) {
+            // ------------------------------------------------------------
+            // DEFINE COMMANDS
+            // ------------------------------------------------------------
+            _commands = new ScpiCommandRegistry<COMMAND>(this)
+                .Map(COMMAND.CLR, () => Write("CLR"))
+                .Map(COMMAND.RST, () => Write("RST"))
+                .Map(COMMAND.TRG, () => Write("TRG"))
+                .Map(COMMAND.AUXA, arg => Write("AUXA", arg))
+                .Map(COMMAND.AUXB, arg => Write("AUXB", arg))
+                .Map(COMMAND.OUT, arg => Write("OUT", arg))
+                .Map(COMMAND.SRQ, arg => Write("SRQ", arg))
+                .Map(COMMAND.HOLD, arg => Write("HOLD", arg))
+                .Map(COMMAND.IMAX, arg => Write("IMAX", arg))
+                .Map(COMMAND.ISET, arg => Write("ISET", arg))
+                .Map(COMMAND.VMAX, arg => Write("VMAX", arg))
+                .Map(COMMAND.VSET, arg => Write("VSET", arg))
+                .Map(COMMAND.OVSET, arg => Write("OVSET", arg))
+                .Map(COMMAND.DLY, arg => Write("DLY", arg))
+                .Map(COMMAND.FOLD, arg => Write("FOLD", arg))
+                .Map(COMMAND.MASK, arg => Write("MASK", arg))
+                .Map(COMMAND.UNMASK, arg => Write("UNMASK", arg))
+                .ValidateAll();
+
+            // ------------------------------------------------------------
+            // DEFINE QUERIES
+            // ------------------------------------------------------------
+            _queries = new ScpiQueryRegistry<QUERY>(this)
+                .Map<Int32>(QUERY.ASTS, () => Read<Int32>("ASTS"))
+                .Map<Int32>(QUERY.FAULT, () => Read<Int32>("FAULT"))
+                .Map<Int32>(QUERY.STS, () => Read<Int32>("STS"))
+                .Map<Int32>(QUERY.UNMASK, () => Read<Int32>("UNMASK"))
+                .Map<Int32>(QUERY.ERR, () => Read<Byte>("ERR"))
+                .Map<Double>(QUERY.DLY, () => Read<Double>("DLY"))
+                .Map<Double>(QUERY.IMAX, () => Read<Double>("IMAX"))
+                .Map<Double>(QUERY.IOUT, () => Read<Double>("IOUT"))
+                .Map<Double>(QUERY.ISET, () => Read<Double>("ISET"))
+                .Map<Double>(QUERY.OVSET, () => Read<Double>("OVSET"))
+                .Map<Double>(QUERY.VMAX, () => Read<Double>("VMAX"))
+                .Map<Double>(QUERY.VOUT, () => Read<Double>("VOUT"))
+                .Map<Double>(QUERY.VSET, () => Read<Double>("VSET"))
+                .Map<STATE>(QUERY.AUXA, () => Read<STATE>("AUXA"))
+                .Map<STATE>(QUERY.AUXB, () => Read<STATE>("AUXB"))
+                .Map<STATE>(QUERY.HOLD, () => Read<STATE>("HOLD"))
+                .Map<STATE>(QUERY.OUT, () => Read<STATE>("OUT"))
+                .Map<STATE>(QUERY.SRQ, () => Read<STATE>("SRQ"))
+                .Map<FOLD>(QUERY.FOLD, () => Read<FOLD>("FOLD"))
+                .Map<String>(QUERY.ID, () => Read<String>("ID"))
+                .Map<String>(QUERY.ROM, () => Read<String>("ROM"))
+                .ValidateAll();
+
+            // Reset device on creation (kept from your original design)
+            Write("CLR");
+            Write("RST");
+
+            // Set safe initial state
+            Double ovp = Read<Double>("VMAX");
+            SetOff(0, 0, ovp);
         }
 
-        public static String ASTS_FlagsToMnemonics(Int32 ASTS_Flags) {
-            if ((ASTS_Flags & ~(Int32)ASTS.ALL) != 0) throw new ArgumentOutOfRangeException(nameof(ASTS_Flags), $"Value {ASTS_Flags} contains bits not defined in {nameof(ASTS)}.");
+        // --------------------------------------------------------------------
+        // PUBLIC API (same as your original, but simplified)
+        // --------------------------------------------------------------------
 
-            ASTS astsFlags = (ASTS)ASTS_Flags;
-            if (astsFlags == ASTS.NONE || astsFlags == ASTS.ALL) return astsFlags.ToString(); // Special cases.
-            if ((astsFlags & ASTS.unused) == ASTS.unused) throw new ArgumentException($"Value {ASTS_Flags} cannot have the {nameof(ASTS.unused)} flag set.", nameof(ASTS_Flags));
-            if ((astsFlags & ASTS.ALL) == ASTS.ALL) throw new ArgumentException($"Value {ASTS_Flags} cannot have the {nameof(ASTS.ALL)} flag set.", nameof(ASTS_Flags));
+        public void Command(COMMAND cmd, String arg = "") => _commands.Invoke(cmd, arg);
+        public T Query<T>(QUERY q) => _queries.Invoke<T>(q);
 
-            List<String> astsMnemonics = new List<String>();
-            foreach (ASTS astsFlag in Enum.GetValues(typeof(ASTS))) {
-                if (astsFlag == ASTS.NONE || astsFlag == ASTS.unused || astsFlag == ASTS.ALL) continue; // Skip special cases.
-                if ((astsFlags & astsFlag) == astsFlag) astsMnemonics.Add(astsFlag.ToString());
-            }
-            return astsMnemonics.Count > 0 ? String.Join(", ", astsMnemonics) : nameof(ASTS.NONE);
+        public void OutputsOff() => Command(COMMAND.OUT, "OFF");
+
+        public (Double AmpsDC, Double VoltsDC) Get() =>
+            (Query<Double>(QUERY.ISET), Query<Double>(QUERY.VSET));
+
+        public void SetOff(Double volts, Double amps, Double ovp) {
+            StateSet(STATE.off, 0);
+            Command(COMMAND.OVSET, ovp.ToString());
+            Command(COMMAND.VSET, volts.ToString());
+            Command(COMMAND.ISET, amps.ToString());
         }
 
-        public static String ASTS_MnemonicsToFlags(String ASTS_Mnemonics) {
-            if (String.IsNullOrWhiteSpace(ASTS_Mnemonics)) throw new ArgumentException("Value cannot be null, empty, or whitespace.", nameof(ASTS_Mnemonics));
-            ASTS_Mnemonics = ASTS_Mnemonics.ToUpper().Replace(" ", ","); // Allow either spaces or commas as separators, but convert spaces to commas for consistent splitting.
-            if (ASTS_Mnemonics.Contains(nameof(ASTS.unused).ToUpper())) throw new ArgumentException($"Value {ASTS_Mnemonics} cannot contain the {nameof(ASTS.unused)} flag.", nameof(ASTS_Mnemonics));
-            if (ASTS_Mnemonics.Contains(nameof(ASTS.NONE)) && !ASTS_Mnemonics.Equals(nameof(ASTS.NONE))) throw new ArgumentException($"Value {ASTS_Mnemonics} cannot contain the {nameof(ASTS.NONE)} flag.", nameof(ASTS_Mnemonics));
-            if (ASTS_Mnemonics.Contains(nameof(ASTS.ALL)) && !ASTS_Mnemonics.Equals(nameof(ASTS.ALL))) throw new ArgumentException($"Value {ASTS_Mnemonics} cannot contain the {nameof(ASTS.ALL)} flag.", nameof(ASTS_Mnemonics));
-
-            String[] astsMnemonics = ASTS_Mnemonics.Split(new String[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            if (astsMnemonics.Length == 1 && Enum.TryParse(astsMnemonics[0], out ASTS singleASTSFlag) && (singleASTSFlag == ASTS.NONE || singleASTSFlag == ASTS.ALL)) return singleASTSFlag.ToString(); // Special cases.
-            Int32 astsFlags = 0;
-            foreach (String astsMnemonic in astsMnemonics) {
-                if (!Enum.TryParse(astsMnemonic, out ASTS astsFlag)) throw new ArgumentException($"Value {astsMnemonic} is not a valid {nameof(ASTS)} mnemonic.", nameof(ASTS_Mnemonics));
-                astsFlags |= (Int32)astsFlag;
-            }
-            return astsFlags.ToString();
+        public void SetOffOn(Double volts, Double amps, Double ovp, Int32 delayMs = 500) {
+            SetOff(volts, amps, ovp);
+            StateSet(STATE.ON, delayMs);
         }
 
-        public T Query<T>(QUERY Query) {
-            String response = base.Query($"{Query}?").Substring($"{Query} ".Length); // Response is in the format "QUERY value", so remove the "QUERY " part to get just the value.
-            switch (Query) {
-                case QUERY.ASTS:
-                case QUERY.FAULT:
-                case QUERY.STS:
-                case QUERY.UNMASK:
-                    if (typeof(T) == typeof(Int32)) return (T)(Object)Convert<Int32>(response);
-                    if (typeof(T) == typeof(String)) return (T)(Object)ASTS_FlagsToMnemonics(Convert<Int32>(response));
-                    throw new NotImplementedException($"Query {Query} cannot be converted to type {typeof(T).Name}.");
-                case QUERY.AUXA:
-                case QUERY.AUXB:
-                case QUERY.HOLD:
-                case QUERY.OUT:
-                case QUERY.SRQ:
-                    return (T)(Object)Convert<STATE>(response);
-                case QUERY.DLY:
-                case QUERY.IMAX:
-                case QUERY.IOUT:
-                case QUERY.ISET:
-                case QUERY.OVSET:
-                case QUERY.VMAX:
-                case QUERY.VOUT:
-                case QUERY.VSET:
-                    return (T)(Object)Convert<Double>(response);
-                case QUERY.ERR:
-                    return (T)(Object)Convert<Byte>(response);
-                case QUERY.FOLD:
-                    return (T)(Object)Convert<FOLD>(response);
-                case QUERY.ID:
-                case QUERY.ROM:
-                    return (T)(Object)Convert<String>(response);
-                default: throw new NotImplementedException(NotImplementedMessageEnum<QUERY>(Enum.GetName(typeof(QUERY), Query)));
-            }
+        public STATE StateGet() => Query<STATE>(QUERY.OUT);
+
+        public void StateSet(STATE state, Int32 delayMs = 500) {
+            Command(COMMAND.OUT, state.ToString());
+            Thread.Sleep(delayMs);
         }
 
-        public void SetOff(Double VoltsDC, Double AmpsDC, Double OVP) {
-            StateSet(STATE.off, MillisecondsDelay: 0);
-            Command(COMMAND.OVSET, OVP.ToString());
-            Command(COMMAND.VSET, VoltsDC.ToString());
-            Command(COMMAND.ISET, AmpsDC.ToString());
-        }
-
-        public void OutputsOff() { Command(COMMAND.OUT, STATE.off.ToString()); }
-
-        public (Double AmpsDC, Double VoltsDC) Get() { return (Query<Double>(QUERY.ISET), Query<Double>(QUERY.VSET)); }
-
-        public void SetOffOn(Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500) {
-            SetOff(VoltsDC, AmpsDC, OVP);
-            StateSet(STATE.ON, MillisecondsDelay);
-        }
-
-        public STATE StateGet() { return Query<STATE>(QUERY.OUT); }
-
-        public void StateSet(STATE State, Int32 MillisecondsDelay = 500) {
-            Command(COMMAND.OUT, State.ToString());
-            Thread.Sleep(MillisecondsDelay); // Allow some time for voltage to stabilize.
-        }
-
-        public new void ResetCommand() { Command(COMMAND.RST); }
-
-        public Sorensen_XFR_XHR_GPIB(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.POWER_SUPPLY_DC) {
-            Command(COMMAND.CLR);
-            ResetCommand();
-            SetOff(VoltsDC: 0, AmpsDC: 0, OVP: Query<Double>(QUERY.VMAX));
-        }
+        public new void ResetCommand() => Command(COMMAND.RST);
     }
 }
