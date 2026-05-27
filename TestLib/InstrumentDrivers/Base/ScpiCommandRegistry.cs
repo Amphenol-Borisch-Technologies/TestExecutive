@@ -43,7 +43,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
 
         public ScpiCommandRegistry<TEnum> ValidateAll() {
             var enumValues = Enum.GetValues(typeof(TEnum)).Cast<TEnum>();
-
             var missing = enumValues.Where(e => !_handlers.ContainsKey(e)).ToList();
 
             if (missing.Any()) throw new InvalidOperationException($"SCPI command handlers are missing for the following enum values: {String.Join(", ", missing)}");

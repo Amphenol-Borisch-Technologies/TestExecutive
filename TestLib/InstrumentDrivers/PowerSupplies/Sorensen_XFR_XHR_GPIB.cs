@@ -4,10 +4,6 @@ using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
     public class Sorensen_XFR_XHR_GPIB : ScpiInstrument, IPowerSupplyDC_Outputs1 {
-        // --------------------------------------------------------------------
-        // ENUMS (unchanged from your original design)
-        // --------------------------------------------------------------------
-
         [Flags]
         public enum ASTS { NONE = 0, CV = 1, CC = 2, unused = 4, OV = 8, OT = 16, SD = 32, FOLD = 64, ERR = 128, PON = 256, REM = 512, ACF = 1024, OPF = 2048, SNSP = 4096, ALL = 8191 }
 
@@ -20,15 +16,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         private readonly ScpiCommandRegistry<COMMAND> _commands;
         private readonly ScpiQueryRegistry<QUERY> _queries;
 
-        // --------------------------------------------------------------------
-        // CONSTRUCTOR
-        // --------------------------------------------------------------------
-
         public Sorensen_XFR_XHR_GPIB(String address, String detail)
             : base(address, detail, INSTRUMENT_TYPE.POWER_SUPPLY_DC) {
-            // ------------------------------------------------------------
-            // DEFINE COMMANDS
-            // ------------------------------------------------------------
             _commands = new ScpiCommandRegistry<COMMAND>(this)
                 .Map(COMMAND.CLR, () => Write("CLR"))
                 .Map(COMMAND.RST, () => Write("RST"))
@@ -49,9 +38,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
                 .Map(COMMAND.UNMASK, arg => Write("UNMASK", arg))
                 .ValidateAll();
 
-            // ------------------------------------------------------------
-            // DEFINE QUERIES
-            // ------------------------------------------------------------
             _queries = new ScpiQueryRegistry<QUERY>(this)
                 .Map<Int32>(QUERY.ASTS, () => Read<Int32>("ASTS"))
                 .Map<Int32>(QUERY.FAULT, () => Read<Int32>("FAULT"))
