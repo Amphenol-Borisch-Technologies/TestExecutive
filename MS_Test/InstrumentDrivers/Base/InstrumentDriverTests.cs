@@ -28,7 +28,7 @@ namespace ABT.Test.TestExecutive.MS_Test.InstrumentDrivers.Base {
             InstrumentDriver instrumentDriver = new(Address: address, Detail: detail, instrumentType);
             instrumentDriver.ThrowIfDisposed();
             instrumentDriver.Dispose();
-            Assert.ThrowsException<ObjectDisposedException>(() => instrumentDriver.ThrowIfDisposed());
+            Assert.ThrowsExactly<ObjectDisposedException>(() => instrumentDriver.ThrowIfDisposed());
         }
     }
 }
