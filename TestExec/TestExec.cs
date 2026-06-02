@@ -136,9 +136,10 @@ namespace ABT.Test.TestExecutive.TestExec {
 
         #region Form Miscellaneous
         private String GetUserPrincipal() {
-            String UserName;
+            String UserName = null;
             try { UserName = UserPrincipal.Current.DisplayName; } // NOTE:  UserPrincipal.Current.DisplayName requires a connected/active Domain session for Active Directory PCs.
-            catch { UserName = InputForm.Show(Title: "Enter your full name for test data.", SystemIcons.Question); }
+            catch { }
+            if (string.IsNullOrEmpty(UserName)) UserName = InputForm.Show(Title: "Enter your full name for test data.", SystemIcons.Question);
             UserName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UserName);
             return UserName;
         }
