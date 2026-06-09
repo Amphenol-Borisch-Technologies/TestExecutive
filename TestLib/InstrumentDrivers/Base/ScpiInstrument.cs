@@ -15,7 +15,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
             Command(command);
         }
 
-        protected void Write(String command, object arg) {
+        protected void Write(String command, Object arg) {
             if (arg == null)
                 throw new ArgumentNullException(nameof(arg));
 

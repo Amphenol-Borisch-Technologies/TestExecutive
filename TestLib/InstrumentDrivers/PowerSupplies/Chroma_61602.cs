@@ -1,7 +1,6 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 using System;
 using System.Threading;
-using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
     public class Chroma_61602 : InstrumentDriver, IPowerSupplyAC {

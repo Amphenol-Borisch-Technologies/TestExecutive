@@ -157,7 +157,7 @@ public class Sorensen_XFR_XHR_GPIB_old_Tests {
                 break;
             case QUERY.IOUT:
             case QUERY.VOUT:
-                Assert.IsTrue(_XFR_XHR_GPIB.Query<Double>(Query) < 0.1);
+                Assert.IsLessThan(_XFR_XHR_GPIB.Query<Double>(Query), 0.1);
                 break;
             case QUERY.OVSET:
             case QUERY.IMAX:
