@@ -16,7 +16,7 @@ public class Sorensen_XFR_XHR_GPIB_old_Tests {
     [ClassInitialize]
     public static void Setup(TestContext testcontext) { _XFR_XHR_GPIB = new Sorensen_XFR_XHR_GPIB_old(Address: address, Detail: detail); }
 
-    [DataTestMethod()]
+    [TestMethod()]
     [DataRow(COMMAND.AUXA)]
     [DataRow(COMMAND.AUXB)]
     [DataRow(COMMAND.HOLD)]
@@ -103,7 +103,7 @@ public class Sorensen_XFR_XHR_GPIB_old_Tests {
         }
     }
 
-    [DataTestMethod()]
+    [TestMethod()]
     [DataRow(QUERY.ASTS)]
     [DataRow(QUERY.FAULT)]
     [DataRow(QUERY.STS)]

@@ -21,7 +21,7 @@
 	<ActiveDirectoryPermissions ReadAndExecute="BORISCH\Domain Users" ModifyWrite="BORISCH\Test - TDR Administrators" FullControl="BORISCH\Test - TestExecutive Administrators"/>
 
 	<TestData>
-		<Files Folder="P:\Test\TDR" />
+		<Files Folder="C:\Users\Raytheon\TDR" />
 		<!--<SQL_DB ConnectionString="Server=ABT002780\SQLEXPRESS;Database=TestData;Integrated Security=true;" />-->
 	</TestData>
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.13.35919.96
+# Visual Studio Version 18
+VisualStudioVersion = 18.6.11822.322 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestExec", "TestExec\TestExec.csproj", "{314614CB-6E17-4B74-A9F9-CE4699F78C9B}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -20,6 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDev", "TestDev\TestDev.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
+		Shared\ABT_Test.pfx = Shared\ABT_Test.pfx
 		Shared\Amphenol.ico = Shared\Amphenol.ico
 		Shared\App.config = Shared\App.config
 		Shared\App.xsd = Shared\App.xsd
