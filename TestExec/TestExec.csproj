@@ -57,9 +57,25 @@
     <AssemblyOriginatorKeyFile>..\Shared\ABT_Test.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ag33500B_33600A_2_09, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\Ag33500B_33600A_2_09.dll</HintPath>
+    </Reference>
+    <Reference Include="Ag3466x_2_08, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\Ag3466x_2_08.dll</HintPath>
+    </Reference>
     <Reference Include="Ag34980_2_43">
       <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\Ag34980_2_43.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="AgE3610XB_1_0_0_1_00, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgE3610XB_1_0_0_1_00.dll</HintPath>
+    </Reference>
+    <Reference Include="AgE36200_1_0_0_1_0_2_1_00, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgE36200_1_0_0_1_0_2_1_00.dll</HintPath>
     </Reference>
     <Reference Include="AgE363x_1_7">
       <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgE363x_1_7.dll</HintPath>
@@ -69,6 +85,14 @@
       <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgE364xD_1_7.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="AgEL30000_1_2_5_1_0_6_17_114, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgEL30000_1_2_5_1_0_6_17_114.dll</HintPath>
+    </Reference>
+    <Reference Include="AgSCPI99_1_0, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgSCPI99_1_0.dll</HintPath>
+    </Reference>
     <Reference Include="Ivi.Visa, Version=8.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\..\Program Files\IVI Foundation\VISA\Microsoft.NET\Framework64\v4.0.30319\VISA.NET Shared Components 8.0.1\Ivi.Visa.dll</HintPath>
@@ -77,6 +101,10 @@
     <Reference Include="Keysight.Visa, Version=18.4.0.0, Culture=neutral, PublicKeyToken=7a01cdb2a9131f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\..\Program Files\Keysight\IO Libraries Suite\Keysight.Visa.dll</HintPath>
+    </Reference>
+    <Reference Include="MccDaq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=a37eefcf5c6ca10a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Measurement Computing\DAQ\MccDaq.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />

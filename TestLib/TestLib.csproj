@@ -57,10 +57,22 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ag33500B_33600A_2_09">
+      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\Ag33500B_33600A_2_09.dll</HintPath>
+    </Reference>
+    <Reference Include="Ag3466x_2_08">
+      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\Ag3466x_2_08.dll</HintPath>
+    </Reference>
     <Reference Include="Ag34980_2_43, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\ProgramData\Keysight\Command Expert\ScpiNetDrivers\Ag34980_2_43.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="AgE3610XB_1_0_0_1_00">
+      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgE3610XB_1_0_0_1_00.dll</HintPath>
+    </Reference>
+    <Reference Include="AgE36200_1_0_0_1_0_2_1_00">
+      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgE36200_1_0_0_1_0_2_1_00.dll</HintPath>
     </Reference>
     <Reference Include="AgE363x_1_7, Version=0.0.0.0, Culture=neutral, PublicKeyToken=344b812ea93ad2d2, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -72,6 +84,12 @@
       <HintPath>C:\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgE364xD_1_7.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="AgEL30000_1_2_5_1_0_6_17_114">
+      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgEL30000_1_2_5_1_0_6_17_114.dll</HintPath>
+    </Reference>
+    <Reference Include="AgSCPI99_1_0">
+      <HintPath>..\..\..\..\..\..\..\..\ProgramData\Keysight\Command Expert\ScpiNetDrivers\AgSCPI99_1_0.dll</HintPath>
+    </Reference>
     <Reference Include="Ivi.Visa, Version=7.2.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\IVI Foundation\visa\Microsoft.NET\Framework32\v2.0.50727\VISA.NET Shared Components 7.2.0\Ivi.Visa.dll</HintPath>
@@ -79,6 +97,10 @@
     <Reference Include="Keysight.Visa, Version=18.4.0.0, Culture=neutral, PublicKeyToken=7a01cdb2a9131f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\..\Program Files\Keysight\IO Libraries Suite\Keysight.Visa.dll</HintPath>
+    </Reference>
+    <Reference Include="MccDaq, Version=3.0.0.0, Culture=neutral, PublicKeyToken=a37eefcf5c6ca10a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Measurement Computing\DAQ\MccDaq.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic">
       <Private>False</Private>
@@ -174,6 +196,17 @@
     </Compile>
     <Compile Include="Processes\ProcessExternal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SCPI_VISA_Instruments\EL_34143A.cs" />
+    <Compile Include="SCPI_VISA_Instruments\Keysight.cs" />
+    <Compile Include="SCPI_VISA_Instruments\MM_34461A.cs" />
+    <Compile Include="SCPI_VISA_Instruments\PS_E3610xB.cs" />
+    <Compile Include="SCPI_VISA_Instruments\PS_E36234A.cs" />
+    <Compile Include="SCPI_VISA_Instruments\SCPI99.cs" />
+    <Compile Include="SCPI_VISA_Instruments\SCPI_VISA_Instrument.cs" />
+    <Compile Include="SCPI_VISA_Instruments\WG_33509B.cs" />
+    <Compile Include="Switching\RelayForms.cs" />
+    <Compile Include="Switching\USB_ERB24\UE24.cs" />
+    <Compile Include="Switching\USB_ERB24\UE24_RelayClasses.cs" />
     <Compile Include="TestLib.cs" />
   </ItemGroup>
   <ItemGroup>

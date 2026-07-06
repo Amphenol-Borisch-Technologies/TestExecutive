@@ -114,8 +114,9 @@ namespace ABT.Test.TestExecutive.TestExec {
             InitializeComponent();
             Icon = icon; // NOTE:  https://stackoverflow.com/questions/40933304/how-to-create-an-icon-for-visual-studio-with-just-mspaint-and-visual-studio
             TestPlanDefinitionXML_Path = testPlanFolder + @"\" + TestPlanDefinitionBase + xml;
-            if (TestPlanDefinitionValidator.ValidDefinition(TestPlanDefinitionXML_Path)) testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(xmlFile: $"{TestPlanDefinitionXML_Path}");
-            else throw new ArgumentException($"Invalid XML '{TestPlanDefinitionXML_Path}'; doesn't comply with XSD '{TestPlanDefinitionXSD_Path}'.");
+            // TODO: if (TestPlanDefinitionValidator.ValidDefinition(TestPlanDefinitionXML_Path)) testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(xmlFile: $"{TestPlanDefinitionXML_Path}");
+            //else throw new ArgumentException($"Invalid XML '{TestPlanDefinitionXML_Path}'; doesn't comply with XSD '{TestPlanDefinitionXSD_Path}'.");
+            testPlanDefinition = Serializing.DeserializeFromFile<TestPlanDefinition>(xmlFile: $"{TestPlanDefinitionXML_Path}");
             InstrumentDrivers = GetInstrumentDriversTestPlanDefinition();
             UserName = GetUserPrincipal();
 
