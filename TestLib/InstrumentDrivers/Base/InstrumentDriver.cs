@@ -59,7 +59,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
                 } finally {
                     _iMessageBasedSession.TerminationCharacterEnabled = _terminationCharacterEnabled;
                 }
-                return s.Trim();
+                return s.Replace(ScpiQuery.Replace("?", "").Trim(), "").Trim();
             }
         }
 

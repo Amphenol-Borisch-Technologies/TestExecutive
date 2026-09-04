@@ -1,6 +1,7 @@
-﻿using System;
+﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
+using Microsoft.VisualBasic.Devices;
+using System;
 using System.Threading;
-using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
     public class Sorensen_XFR_XHR_GPIB : ScpiInstrument, IPowerSupplyDC_Outputs1 {
