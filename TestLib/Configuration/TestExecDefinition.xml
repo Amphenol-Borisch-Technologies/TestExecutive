@@ -92,6 +92,6 @@
 	- https://www.ivifoundation.org/downloads/Architecture%20Specifications/vpp43_2022-05-19.pdf.
   -->
 		<InstrumentTestExec ID="MSMU1_34980A" Detail="Keysight 34980A Multifunction Switch/Measure Unit"  Address="GPIB0::2::INSTR"	NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Multifunction.MSMU_34980A_SCPI_NET" />
-		<InstrumentTestExec ID="PS1_E3632A"   Detail="Keysight E3632A Single Output Power Supply"         Address="GPIB0::5::INSTR"	NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.PS_E3632A_SCPI_NET" />
+		<!--<InstrumentTestExec ID="PS1_E3632A"   Detail="Keysight E3632A Single Output Power Supply"         Address="GPIB0::5::INSTR"	NameSpacedClassName="ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.PS_E3632A_SCPI_NET" />-->
 	</InstrumentsTestExec>
 </TestExecDefinition>
