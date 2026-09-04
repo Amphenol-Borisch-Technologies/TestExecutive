@@ -161,16 +161,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TestChooser\TestChooser.csproj">
-      <Project>{6b87d429-1de2-4b67-bf1e-bcf6855397bb}</Project>
-      <Name>TestChooser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TestLib\TestLib.csproj">
-      <Project>{24d5e99e-185c-4507-81f0-132d8cb8164e}</Project>
-      <Name>TestLib</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <COMReference Include="stdole">
       <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
       <VersionMajor>2</VersionMajor>
@@ -180,6 +170,16 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TestChooser\TestChooser.csproj">
+      <Project>{6b87d429-1de2-4b67-bf1e-bcf6855397bb}</Project>
+      <Name>TestChooser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestLib\TestLib.csproj">
+      <Project>{24d5e99e-185c-4507-81f0-132d8cb8164e}</Project>
+      <Name>TestLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

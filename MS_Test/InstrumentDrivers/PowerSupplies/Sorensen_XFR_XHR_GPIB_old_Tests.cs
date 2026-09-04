@@ -1,6 +1,6 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies;
-using static ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.Sorensen_XFR_XHR_GPIB_old;
+using static ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.Sorensen_XFR_XHR_GPIB;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.MS_Test.InstrumentDrivers.Base;
@@ -8,13 +8,13 @@ namespace ABT.Test.TestExecutive.MS_Test.InstrumentDrivers.Base;
 [TestClass()]
 public class Sorensen_XFR_XHR_GPIB_old_Tests {
     public TestContext TestContext { get; set; }
-    private static Sorensen_XFR_XHR_GPIB_old? _XFR_XHR_GPIB;
+    private static Sorensen_XFR_XHR_GPIB? _XFR_XHR_GPIB;
     private const String address = "GPIB0::5::INSTR";
     private const String detail = "Sorensen XFR30-40";
     private const INSTRUMENT_TYPE instrumentType = INSTRUMENT_TYPE.POWER_SUPPLY_DC;
 
     [ClassInitialize]
-    public static void Setup(TestContext testcontext) { _XFR_XHR_GPIB = new Sorensen_XFR_XHR_GPIB_old(Address: address, Detail: detail); }
+    public static void Setup(TestContext testcontext) { _XFR_XHR_GPIB = new Sorensen_XFR_XHR_GPIB(Address: address, Detail: detail); }
 
     [TestMethod()]
     [DataRow(COMMAND.AUXA)]
