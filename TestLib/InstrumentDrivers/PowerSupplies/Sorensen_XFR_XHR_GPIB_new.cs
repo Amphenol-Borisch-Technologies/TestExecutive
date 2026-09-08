@@ -68,7 +68,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         public void Command(COMMAND cmd, String arg = "") => _commands.Invoke(cmd, arg);
         public T Query<T>(QUERY q) => _queries.Invoke<T>(q);
 
-        public void OutputsOff() => _commands.Invoke(COMMAND.OUT, STATE.off.ToString());
+        public void OutputsOff() => _commands.Invoke(COMMAND.OUT, ((Int32)STATE.off).ToString());
 
         public (Double AmpsDC, Double VoltsDC) Get() => (Query<Double>(QUERY.ISET), _queries.Invoke<Double>(QUERY.VSET));
 
@@ -87,7 +87,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         public STATE StateGet() => _queries.Invoke<STATE>(QUERY.OUT);
 
         public void StateSet(STATE state, Int32 delayMs = 500) {
-            _commands.Invoke(COMMAND.OUT, state.ToString());
+            _commands.Invoke(COMMAND.OUT, ((Int32)state).ToString());
             Thread.Sleep(delayMs);
         }
 

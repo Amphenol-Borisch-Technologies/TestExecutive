@@ -1,16 +1,17 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies;
+using System.Diagnostics;
 using static ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.Sorensen_XFR_XHR_GPIB;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 
 namespace ABT.Test.TestExecutive.MS_Test.InstrumentDrivers.Base;
 
 [TestClass()]
-public class Sorensen_XFR_XHR_GPIB_old_Tests {
+public class Sorensen_XFR_XHR_GPIB_Tests {
     public TestContext TestContext { get; set; }
     private static Sorensen_XFR_XHR_GPIB? _XFR_XHR_GPIB;
-    private const String address = "GPIB0::5::INSTR";
-    private const String detail = "Sorensen XFR30-40";
+    private const String address = "GPIB0::12::INSTR";
+    private const String detail = "Sorensen XFR40-70";
     private const INSTRUMENT_TYPE instrumentType = INSTRUMENT_TYPE.POWER_SUPPLY_DC;
 
     [ClassInitialize]
@@ -42,9 +43,9 @@ public class Sorensen_XFR_XHR_GPIB_old_Tests {
             case COMMAND.HOLD:
             case COMMAND.OUT:
             case COMMAND.SRQ:
-                _XFR_XHR_GPIB.Command($"{Command} {STATE.ON}");
+                _XFR_XHR_GPIB.Command($"{Command} {(Int32)STATE.ON}");
                 Assert.AreEqual(STATE.ON, _XFR_XHR_GPIB.Query<STATE>((QUERY)Enum.Parse(typeof(QUERY), Command.ToString())));
-                _XFR_XHR_GPIB.Command($"{Command} {STATE.off}");
+                _XFR_XHR_GPIB.Command($"{Command} {(Int32)STATE.off}");
                 Assert.AreEqual(STATE.off, _XFR_XHR_GPIB.Query<STATE>((QUERY)Enum.Parse(typeof(QUERY), Command.ToString())));
                 break;
             case COMMAND.CLR:
@@ -127,7 +128,7 @@ public class Sorensen_XFR_XHR_GPIB_old_Tests {
     [DataRow(QUERY.ROM)]
     public void QueryTest(QUERY Query) {
         Assert.IsNotNull(_XFR_XHR_GPIB);
-        _XFR_XHR_GPIB.Command(COMMAND.OUT, STATE.off.ToString());
+        _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.off).ToString());
         _XFR_XHR_GPIB.Command(COMMAND.VSET, 0.ToString());
         _XFR_XHR_GPIB.Command(COMMAND.ISET, 0.ToString());
         _XFR_XHR_GPIB.Command(COMMAND.OVSET, _XFR_XHR_GPIB.Query<Double>(QUERY.VMAX).ToString());
@@ -157,7 +158,9 @@ public class Sorensen_XFR_XHR_GPIB_old_Tests {
                 break;
             case QUERY.IOUT:
             case QUERY.VOUT:
-                Assert.IsLessThan(_XFR_XHR_GPIB.Query<Double>(Query), 0.1);
+                Double d = _XFR_XHR_GPIB.Query<Double>(Query);
+                Console.WriteLine($"QueryTest: {Query} = {d}");
+                Assert.IsLessThan(0.1, d);
                 break;
             case QUERY.OVSET:
             case QUERY.IMAX:
@@ -189,7 +192,9 @@ public class Sorensen_XFR_XHR_GPIB_old_Tests {
                 break;
             case QUERY.ID:
             case QUERY.ROM:
-                Assert.IsFalse(String.IsNullOrEmpty(_XFR_XHR_GPIB.Query<String>(Query)));
+                String s = _XFR_XHR_GPIB.Query<String>(Query);
+                Console.WriteLine($"QueryTest: {Query} = {s}");
+                Assert.IsFalse(String.IsNullOrEmpty(s));
                 break;
             default: throw new NotImplementedException(NotImplementedMessageEnum<QUERY>(Enum.GetName(typeof(QUERY), Query)));
         }
@@ -203,7 +208,7 @@ public class Sorensen_XFR_XHR_GPIB_old_Tests {
         Assert.AreEqual(0.2D, _XFR_XHR_GPIB.Query<Double>(QUERY.ISET));
         Assert.AreEqual(10D, _XFR_XHR_GPIB.Query<Double>(QUERY.OVSET));
         Assert.AreEqual(STATE.off, _XFR_XHR_GPIB.Query<STATE>(QUERY.OUT));
-        _XFR_XHR_GPIB.Command(COMMAND.OUT, STATE.ON.ToString());
+        _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.ON).ToString());
         Assert.AreEqual(STATE.ON, _XFR_XHR_GPIB.Query<STATE>(QUERY.OUT));
         _XFR_XHR_GPIB.SetOff(VoltsDC: 0D, AmpsDC: 0D, OVP: _XFR_XHR_GPIB.Query<Double>(QUERY.VMAX));
         Assert.AreEqual(0, _XFR_XHR_GPIB.Query<Double>(QUERY.ISET));
@@ -215,13 +220,13 @@ public class Sorensen_XFR_XHR_GPIB_old_Tests {
     [TestMethod()]
     public void OutputsOffTest() {
         Assert.IsNotNull(_XFR_XHR_GPIB);
-        _XFR_XHR_GPIB.Command(COMMAND.OUT, STATE.off.ToString());
+        _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.off).ToString());
         _XFR_XHR_GPIB.Command(COMMAND.VSET, 0.ToString());
         _XFR_XHR_GPIB.Command(COMMAND.ISET, 0.ToString());
         Assert.AreEqual(STATE.off, _XFR_XHR_GPIB.Query<STATE>(QUERY.OUT));
         Assert.AreEqual(0D, _XFR_XHR_GPIB.Query<Double>(QUERY.VSET));
         Assert.AreEqual(0D, _XFR_XHR_GPIB.Query<Double>(QUERY.ISET));
-        _XFR_XHR_GPIB.Command(COMMAND.OUT, STATE.ON.ToString());
+        _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.ON).ToString());
         Assert.AreEqual(STATE.ON, _XFR_XHR_GPIB.Query<STATE>(QUERY.OUT));
         _XFR_XHR_GPIB.OutputsOff();
         Assert.AreEqual(STATE.off, _XFR_XHR_GPIB.Query<STATE>(QUERY.OUT));
@@ -230,7 +235,7 @@ public class Sorensen_XFR_XHR_GPIB_old_Tests {
     [TestMethod()]
     public void GetTest() {
         Assert.IsNotNull(_XFR_XHR_GPIB);
-        _XFR_XHR_GPIB.Command(COMMAND.OUT, STATE.off.ToString());
+        _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.off).ToString());
         _XFR_XHR_GPIB.Command(COMMAND.VSET, 1.ToString());
         _XFR_XHR_GPIB.Command(COMMAND.ISET, 1.ToString());
         Assert.AreEqual((1D, 1D), _XFR_XHR_GPIB.Get());
@@ -242,7 +247,7 @@ public class Sorensen_XFR_XHR_GPIB_old_Tests {
     [TestMethod()]
     public void SetOffOnTest() {
         Assert.IsNotNull(_XFR_XHR_GPIB);
-        _XFR_XHR_GPIB.Command(COMMAND.OUT, STATE.off.ToString());
+        _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.off).ToString());
         _XFR_XHR_GPIB.Command(COMMAND.VSET, 0.ToString());
         _XFR_XHR_GPIB.Command(COMMAND.ISET, 0.ToString());
         _XFR_XHR_GPIB.Command(COMMAND.OVSET, 10D.ToString());
@@ -255,30 +260,30 @@ public class Sorensen_XFR_XHR_GPIB_old_Tests {
         Assert.AreEqual(5D, _XFR_XHR_GPIB.Query<Double>(QUERY.VSET));
         Assert.AreEqual(0.2D, _XFR_XHR_GPIB.Query<Double>(QUERY.ISET));
         Assert.AreEqual(15D, _XFR_XHR_GPIB.Query<Double>(QUERY.OVSET));
-        _XFR_XHR_GPIB.Command(COMMAND.OUT, STATE.off.ToString());
+        _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.off).ToString());
         _XFR_XHR_GPIB.SetOffOn(VoltsDC: 0D, AmpsDC: 0D, OVP: _XFR_XHR_GPIB.Query<Double>(QUERY.VMAX), MillisecondsDelay: 0);
         Assert.AreEqual(STATE.ON, _XFR_XHR_GPIB.Query<STATE>(QUERY.OUT));
         Assert.AreEqual(0D, _XFR_XHR_GPIB.Query<Double>(QUERY.VSET));
         Assert.AreEqual(0D, _XFR_XHR_GPIB.Query<Double>(QUERY.ISET));
         Assert.AreEqual(_XFR_XHR_GPIB.Query<Double>(QUERY.VMAX), _XFR_XHR_GPIB.Query<Double>(QUERY.OVSET));
-        _XFR_XHR_GPIB.Command(COMMAND.OUT, STATE.off.ToString());
+        _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.off).ToString());
     }
 
     [TestMethod()]
     public void StateGetTest() {
         Assert.IsNotNull(_XFR_XHR_GPIB);
-        _XFR_XHR_GPIB.Command(COMMAND.OUT, STATE.off.ToString());
+        _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.off).ToString());
         Assert.AreEqual(STATE.off, _XFR_XHR_GPIB.StateGet());
-        _XFR_XHR_GPIB.Command(COMMAND.OUT, STATE.ON.ToString());
+        _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.ON).ToString());
         Assert.AreEqual(STATE.ON, _XFR_XHR_GPIB.StateGet());
-        _XFR_XHR_GPIB.Command(COMMAND.OUT, STATE.off.ToString());
+        _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.off).ToString());
         Assert.AreEqual(STATE.off, _XFR_XHR_GPIB.StateGet());
     }
 
     [TestMethod()]
     public void StateSetTest() {
         Assert.IsNotNull(_XFR_XHR_GPIB);
-        _XFR_XHR_GPIB.Command(COMMAND.OUT, STATE.off.ToString());
+        _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.off).ToString());
         Assert.AreEqual(STATE.off, _XFR_XHR_GPIB.Query<STATE>(QUERY.OUT));
         _XFR_XHR_GPIB.StateSet(STATE.ON);
         Assert.AreEqual(STATE.ON, _XFR_XHR_GPIB.Query<STATE>(QUERY.OUT));

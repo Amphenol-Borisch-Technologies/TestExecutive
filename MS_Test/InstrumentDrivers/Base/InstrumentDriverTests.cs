@@ -5,8 +5,8 @@ namespace ABT.Test.TestExecutive.MS_Test.InstrumentDrivers.Base {
     [TestClass()]
     public class InstrumentDriverTests {
         private static InstrumentDriver? _instrumentDriver;
-        private const String address = "GPIB0::5::INSTR";
-        private const String detail = "Sorensen XFR30-40";
+        private const String address = "GPIB0::12::INSTR";
+        private const String detail = "Sorensen XFR40-70";
         private const INSTRUMENT_TYPE instrumentType = INSTRUMENT_TYPE.POWER_SUPPLY_DC;
 
         [TestInitialize]

@@ -25,7 +25,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
                 case COMMAND.HOLD:
                 case COMMAND.OUT:
                 case COMMAND.SRQ:
-                    base.Command($"{Command} {Enum.Parse(typeof(STATE), arg)}");
+                    base.Command($"{Command} {(Int32)Enum.Parse(typeof(STATE), arg)}");
                     break;
                 case COMMAND.CLR:
                 case COMMAND.RST:
@@ -85,7 +85,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         }
 
         public T Query<T>(QUERY Query) {
-            String response = base.Query($"{Query}?").Substring($"{Query} ".Length); // Response is in the format "QUERY value", so remove the "QUERY " part to get just the value.
+            String response = base.Query($"{Query}?");
             switch (Query) {
                 case QUERY.ASTS:
                 case QUERY.FAULT:
@@ -127,7 +127,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             Command(COMMAND.ISET, AmpsDC.ToString());
         }
 
-        public void OutputsOff() { Command(COMMAND.OUT, STATE.off.ToString()); }
+        public void OutputsOff() { Command(COMMAND.OUT, ((Int32)STATE.off).ToString()); }
 
         public (Double AmpsDC, Double VoltsDC) Get() { return (Query<Double>(QUERY.ISET), Query<Double>(QUERY.VSET)); }
 
@@ -139,7 +139,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         public STATE StateGet() { return Query<STATE>(QUERY.OUT); }
 
         public void StateSet(STATE State, Int32 MillisecondsDelay = 500) {
-            Command(COMMAND.OUT, State.ToString());
+            Command(COMMAND.OUT, ((Int32)State).ToString());
             Thread.Sleep(MillisecondsDelay); // Allow some time for voltage to stabilize.
         }
 
