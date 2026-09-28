@@ -39,10 +39,10 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         }
         public void RangeSet(RANGE Range) { AgE363x.SCPI.SOURce.VOLTage.RANGe.Command($"{Range}"); }
 
-        public (Double AmperesDC, Double VoltsDC) Get() {
-            AgE363x.SCPI.MEASure.CURRent.DC.Query(out Double AmperesDC);
+        public (Double VoltsDC, Double AmperesDC) Get() {
             AgE363x.SCPI.MEASure.VOLTage.DC.Query(out Double VoltsDC);
-            return (AmperesDC, VoltsDC);
+            AgE363x.SCPI.MEASure.CURRent.DC.Query(out Double AmperesDC);
+            return (VoltsDC, AmperesDC);
         }
 
         public void SetOffOn(Double VoltsDC, Double AmperesDC, Double OVP, Int32 MillisecondsDelay = 500) {

@@ -36,7 +36,7 @@ namespace ABT.TestSpace.TestExec.Switching.USB_ERB24 {
         //  - https://www.mccdaq.com/PDFs/Manuals/usb-erb24.pdf.
 
         public Dictionary<UE, MccBoard> USB_ERB24s;
-        private readonly static UE24 _only = new UE24();
+        private static readonly UE24 _only = new UE24();
         public static UE24 Only { get { return _only; } }
         static UE24() { }
         // Singleton pattern requires explicit static constructor to tell C# compiler not to mark type as beforefieldinit.

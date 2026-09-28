@@ -1,6 +1,5 @@
 ﻿using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base;
 using ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies;
-using System.Diagnostics;
 using static ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies.Sorensen_XFR_XHR_GPIB;
 using static ABT.Test.TestExecutive.TestLib.TestLib;
 

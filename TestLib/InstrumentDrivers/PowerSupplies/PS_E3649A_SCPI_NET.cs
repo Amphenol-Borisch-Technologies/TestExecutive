@@ -42,11 +42,11 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         public void Select(OUTPUT2 Output) { AgE364xD.SCPI.INSTrument.SELect.Command($"{Output}"); }
 
-        public (Double AmperesDC, Double VoltsDC) Get(OUTPUT2 Output) {
+        public (Double VoltsDC, Double AmperesDC) Get(OUTPUT2 Output) {
             Select(Output);
-            AgE364xD.SCPI.MEASure.SCALar.CURRent.DC.Query(out Double AmperesDC);
             AgE364xD.SCPI.MEASure.SCALar.VOLTage.DC.Query(out Double VoltsDC);
-            return (AmperesDC, VoltsDC);
+            AgE364xD.SCPI.MEASure.SCALar.CURRent.DC.Query(out Double AmperesDC);
+            return (VoltsDC, AmperesDC);
         }
 
         public void SetOffOn(OUTPUT2 Output, Double VoltsDC, Double AmperesDC, Double OVP, Int32 MillisecondsDelay = 500) {

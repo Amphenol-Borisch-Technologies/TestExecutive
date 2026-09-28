@@ -70,7 +70,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         public void OutputsOff() => _commands.Invoke(COMMAND.OUT, ((Int32)STATE.off).ToString());
 
-        public (Double AmperesDC, Double VoltsDC) Get() => (Query<Double>(QUERY.ISET), _queries.Invoke<Double>(QUERY.VSET));
+        public (Double, Double ) Get() => (Query<Double>(QUERY.VSET), _queries.Invoke<Double>(QUERY.ISET));
 
         public void SetOff(Double VoltsDC, Double AmperesDC, Double OVP) {
             StateSet(STATE.off, 0);
