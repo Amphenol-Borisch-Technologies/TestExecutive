@@ -11,7 +11,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         public void OutputsOff() { StateSet(STATE.off, MillisecondsDelay: 0); }
 
-        public (Double AmpsAC, Double VoltsAC, Double Hertz) GetAC() { return (Double.Parse(Query(":MEASure:SCALar:CURRent:AC?")), Double.Parse(Query(":MEASure:SCALar:VOLTage:ACDC?")), Double.Parse(Query(":MEASure:SCALar:FREQuency?"))); }
+        public (Double AmperesAC, Double VoltsAC, Double Hertz) GetAC() { return (Double.Parse(Query(":MEASure:SCALar:CURRent:AC?")), Double.Parse(Query(":MEASure:SCALar:VOLTage:ACDC?")), Double.Parse(Query(":MEASure:SCALar:FREQuency?"))); }
 
         public void SetOffOn(Double VoltsAC, Double Hertz, Int32 MillisecondsDelay = 500) {
             if (VoltsAC < (Double)RangeVoltsAC.Minimum || VoltsAC > (Double)RangeVoltsAC.Maximum) throw new ArgumentOutOfRangeException($"{VoltsAC} must be ≥ {(Int32)RangeVoltsAC.Minimum} and ≤ {(Int32)RangeVoltsAC.Maximum} VAC.");

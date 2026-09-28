@@ -41,8 +41,8 @@ namespace ABT.TestSpace.TestExec.SCPI_VISA_Instruments {
             VoltageSenseModeSet(SVI, KelvinSense);
             switch (LoadMeasure) {
                 case LOAD_MEASURE.CURR:
-                    ((AgEL30000)SVI.Instrument).SCPI.MEASure.SCALar.CURRent.DC.Query(null, out Double[] ampsDC);
-                    return ampsDC[0];
+                    ((AgEL30000)SVI.Instrument).SCPI.MEASure.SCALar.CURRent.DC.Query(null, out Double[] amperesDC);
+                    return amperesDC[0];
                 case LOAD_MEASURE.POW:
                     ((AgEL30000)SVI.Instrument).SCPI.MEASure.SCALar.POWer.DC.Query(null, out Double[] watts);
                     return watts[0];
@@ -57,9 +57,9 @@ namespace ABT.TestSpace.TestExec.SCPI_VISA_Instruments {
         public static Double Get(SCPI_VISA_Instrument SVI, PS_DC DC, CHANNEL Channel, SENSE_MODE KelvinSense) {
             VoltageSenseModeSet(SVI, KelvinSense);
             switch (DC) {
-                case PS_DC.Amps:
-                    ((AgEL30000)SVI.Instrument).SCPI.MEASure.SCALar.CURRent.DC.Query(Channels[Channel], out Double[] ampsDC);
-                    return ampsDC[(Int32)(Channel)];
+                case PS_DC.Amperes:
+                    ((AgEL30000)SVI.Instrument).SCPI.MEASure.SCALar.CURRent.DC.Query(Channels[Channel], out Double[] amperesDC);
+                    return amperesDC[(Int32)(Channel)];
                 case PS_DC.Volts:
                     ((AgEL30000)SVI.Instrument).SCPI.MEASure.SCALar.VOLTage.DC.Query(Channels[Channel], out Double[] voltsDC);
                     return voltsDC[(Int32)(Channel)];
@@ -78,8 +78,8 @@ namespace ABT.TestSpace.TestExec.SCPI_VISA_Instruments {
             Double delta = 0.01;
             switch (LoadMode) {
                 case LOAD_MODE.CURR:
-                    ((AgEL30000)SVI.Instrument).SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Query(null, null, out Double ampsDC);
-                    return SCPI99.IsCloseEnough(LoadValue, ampsDC, delta);
+                    ((AgEL30000)SVI.Instrument).SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Query(null, null, out Double amperesDC);
+                    return SCPI99.IsCloseEnough(LoadValue, amperesDC, delta);
                 case LOAD_MODE.POW:
                     ((AgEL30000)SVI.Instrument).SCPI.SOURce.POWer.LEVel.IMMediate.AMPLitude.Query(null, null, out Double[] watts);
                     return SCPI99.IsCloseEnough(LoadValue, watts[0], delta);

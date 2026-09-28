@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
-    public enum DC { Amps, Volts }
+    public enum DC { Amperes, Volts }
     public enum OUTPUT2 { OUTput1, OUTput2 };
     public enum OUTPUT3 { OUTput1, OUTput2, OUTput3 };
     public enum MMD { MINimum, MAXimum, DEFault }
@@ -11,22 +11,22 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
     public interface IPowerSupplyDC_Outputs1 : IPowerSupplyDC {
         STATE StateGet();
         void StateSet(STATE State, Int32 MillisecondsDelay = 500);
-        (Double AmpsDC, Double VoltsDC) Get();
-        void SetOffOn(Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500);
+        (Double AmperesDC, Double VoltsDC) Get();
+        void SetOffOn(Double VoltsDC, Double AmperesDC, Double OVP, Int32 MillisecondsDelay = 500);
     }
 
     public interface IPowerSupplyDC_Outputs2 : IPowerSupplyDC {
         STATE StateGet(OUTPUT2 Output);
         void StateSet(OUTPUT2 Output, STATE State, Int32 MillisecondsDelay = 500);
-        (Double AmpsDC, Double VoltsDC) Get(OUTPUT2 Output);
-        void SetOffOn(OUTPUT2 Output, Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500);
+        (Double AmperesDC, Double VoltsDC) Get(OUTPUT2 Output);
+        void SetOffOn(OUTPUT2 Output, Double VoltsDC, Double AmperesDC, Double OVP, Int32 MillisecondsDelay = 500);
     }
 
     public interface IPowerSupplyDC_Outputs3 : IPowerSupplyDC {
         STATE StateGet(OUTPUT3 Output);
         void StateSet(OUTPUT3 Output, STATE State, Int32 MillisecondsDelay = 500);
-        (Double AmpsDC, Double VoltsDC) Get(OUTPUT3 Output);
-        void SetOffOn(OUTPUT3 Output, Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500);
+        (Double AmperesDC, Double VoltsDC) Get(OUTPUT3 Output);
+        void SetOffOn(OUTPUT3 Output, Double VoltsDC, Double AmperesDC, Double OVP, Int32 MillisecondsDelay = 500);
     }
 
     public interface IPowerSupplyDC_E3649A : IPowerSupplyDC {
@@ -34,7 +34,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         void StateSet(STATE State, Int32 MillisecondsDelay = 500);
         // NOTE: Some multi-output supplies like the E3649A permit individual control of outputs,
         // but the E3649A does not; all supplies are set to the same STATE, off or ON.
-        (Double AmpsDC, Double VoltsDC) Get(OUTPUT2 Output);
-        void SetOffOn(OUTPUT2 Output, Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500);
+        (Double AmperesDC, Double VoltsDC) Get(OUTPUT2 Output);
+        void SetOffOn(OUTPUT2 Output, Double VoltsDC, Double AmperesDC, Double OVP, Int32 MillisecondsDelay = 500);
     }
 }

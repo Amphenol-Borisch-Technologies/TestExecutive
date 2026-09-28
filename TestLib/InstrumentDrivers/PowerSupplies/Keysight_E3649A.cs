@@ -15,19 +15,19 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         public void Select(OUTPUT2 Output) { Command($":INSTrument:SELect? {Output}"); }
 
-        public (Double AmpsDC, Double VoltsDC) Get(OUTPUT2 Output) {
+        public (Double AmperesDC, Double VoltsDC) Get(OUTPUT2 Output) {
             Select(Output);
             return (Double.Parse(Query(":MEASure:SCALar:CURRent:DC?")), Double.Parse(Query(":MEASure:SCALar:VOLTage:DC?")));
         }
 
-        public void SetOffOn(OUTPUT2 Output, Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500) {
+        public void SetOffOn(OUTPUT2 Output, Double VoltsDC, Double AmperesDC, Double OVP, Int32 MillisecondsDelay = 500) {
             Select(Output);
             OutputsOff();
             Command(":OUTPut:STATe 0");
             Command(":SOURce: VOLTage: PROTection: CLEar");
             Command($":SOURce: VOLTage: PROTection: LEVel MAXimum");
             Command($":SOURce: VOLTage: LEVel: IMMediate: AMPLitude {VoltsDC}");
-            Command($":SOURce: CURRent: LEVel: IMMediate: AMPLitude {AmpsDC}");
+            Command($":SOURce: CURRent: LEVel: IMMediate: AMPLitude {AmperesDC}");
             Command($":SOURce: VOLTage: PROTection: LEVel {OVP}");
             StateSet(STATE.ON, MillisecondsDelay);
             Command(":OUTPut:STATe 1");

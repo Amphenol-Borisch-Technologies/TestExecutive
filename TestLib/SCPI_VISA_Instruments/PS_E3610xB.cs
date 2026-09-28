@@ -20,17 +20,17 @@ namespace ABT.TestSpace.TestExec.SCPI_VISA_Instruments {
 
         public const Boolean LoadOrStimulus = true;
 
-        public static Boolean CurrentAmplitudeIs(SCPI_VISA_Instrument SVI, Double AmpsDC, Double Delta) {
-            return SCPI99.IsCloseEnough(CurrentAmplitudeGet(SVI), AmpsDC, Delta);
+        public static Boolean CurrentAmplitudeIs(SCPI_VISA_Instrument SVI, Double AmperesDC, Double Delta) {
+            return SCPI99.IsCloseEnough(CurrentAmplitudeGet(SVI), AmperesDC, Delta);
         }
 
         public static Double CurrentAmplitudeGet(SCPI_VISA_Instrument SVI) {
-            ((AgE3610XB)SVI.Instrument).SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Query(null, out Double ampsDC);
-            return ampsDC;
+            ((AgE3610XB)SVI.Instrument).SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Query(null, out Double amperesDC);
+            return amperesDC;
         }
 
-        public static void CurrentAmplitudeSet(SCPI_VISA_Instrument SVI, Double AmpsDC) {
-            ((AgE3610XB)SVI.Instrument).SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Command(AmpsDC);
+        public static void CurrentAmplitudeSet(SCPI_VISA_Instrument SVI, Double AmperesDC) {
+            ((AgE3610XB)SVI.Instrument).SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Command(AmperesDC);
         }
 
         public static Double CurrentProtectionDelayGet(SCPI_VISA_Instrument SVI) {
@@ -63,9 +63,9 @@ namespace ABT.TestSpace.TestExec.SCPI_VISA_Instruments {
 
         public static Double Get(SCPI_VISA_Instrument SVI, PS_DC DC) {
             switch (DC) {
-                case PS_DC.Amps:
-                    ((AgE3610XB)SVI.Instrument).SCPI.MEASure.CURRent.DC.Query(out Double ampsDC);
-                    return ampsDC;
+                case PS_DC.Amperes:
+                    ((AgE3610XB)SVI.Instrument).SCPI.MEASure.CURRent.DC.Query(out Double amperesDC);
+                    return amperesDC;
                 case PS_DC.Volts:
                     ((AgE3610XB)SVI.Instrument).SCPI.MEASure.VOLTage.DC.Query(out Double voltsDC);
                     return voltsDC;
@@ -93,7 +93,7 @@ namespace ABT.TestSpace.TestExec.SCPI_VISA_Instruments {
             ((AgE3610XB)SVI.Instrument).SCPI.SYSTem.RWLock.Command();
         }
 
-        public static void Set(SCPI_VISA_Instrument SVI, STATE State, Double VoltsDC, Double AmpsDC, SENSE_MODE KelvinSense = SENSE_MODE.INTernal, Double DelaySecondsCurrentProtection = 0, Double DelaySecondsSettling = 0) {
+        public static void Set(SCPI_VISA_Instrument SVI, STATE State, Double VoltsDC, Double AmperesDC, SENSE_MODE KelvinSense = SENSE_MODE.INTernal, Double DelaySecondsCurrentProtection = 0, Double DelaySecondsSettling = 0) {
             VoltageProtectionStateSet(SVI, STATE.off);
             CurrentProtectionStateSet(SVI, STATE.off);
             VoltageProtectionTrippedClear(SVI);
@@ -101,7 +101,7 @@ namespace ABT.TestSpace.TestExec.SCPI_VISA_Instruments {
 
             VoltageSenseModeSet(SVI, KelvinSense);
             VoltageAmplitudeSet(SVI, VoltsDC);
-            CurrentAmplitudeSet(SVI, AmpsDC);
+            CurrentAmplitudeSet(SVI, AmperesDC);
 
             VoltageProtectionSet(SVI, VoltsDC * 1.10);
             CurrentProtectionDelaySet(SVI, DelaySecondsCurrentProtection);

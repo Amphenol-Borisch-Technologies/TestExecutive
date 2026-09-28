@@ -39,18 +39,18 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         }
         public void RangeSet(RANGE Range) { AgE363x.SCPI.SOURce.VOLTage.RANGe.Command($"{Range}"); }
 
-        public (Double AmpsDC, Double VoltsDC) Get() {
-            AgE363x.SCPI.MEASure.CURRent.DC.Query(out Double AmpsDC);
+        public (Double AmperesDC, Double VoltsDC) Get() {
+            AgE363x.SCPI.MEASure.CURRent.DC.Query(out Double AmperesDC);
             AgE363x.SCPI.MEASure.VOLTage.DC.Query(out Double VoltsDC);
-            return (AmpsDC, VoltsDC);
+            return (AmperesDC, VoltsDC);
         }
 
-        public void SetOffOn(Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500) {
+        public void SetOffOn(Double VoltsDC, Double AmperesDC, Double OVP, Int32 MillisecondsDelay = 500) {
             OutputsOff();
             AgE363x.SCPI.SOURce.VOLTage.PROTection.CLEar.Command();
             AgE363x.SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{MMD.MAXimum}");
             AgE363x.SCPI.SOURce.VOLTage.LEVel.IMMediate.AMPLitude.Command($"{VoltsDC}");
-            AgE363x.SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Command($"{AmpsDC}");
+            AgE363x.SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Command($"{AmperesDC}");
             AgE363x.SCPI.SOURce.VOLTage.PROTection.LEVel.Command($"{OVP}");
             StateSet(STATE.ON, MillisecondsDelay);
         }

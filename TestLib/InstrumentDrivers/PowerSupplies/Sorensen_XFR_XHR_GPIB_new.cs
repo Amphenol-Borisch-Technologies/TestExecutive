@@ -70,18 +70,18 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         public void OutputsOff() => _commands.Invoke(COMMAND.OUT, ((Int32)STATE.off).ToString());
 
-        public (Double AmpsDC, Double VoltsDC) Get() => (Query<Double>(QUERY.ISET), _queries.Invoke<Double>(QUERY.VSET));
+        public (Double AmperesDC, Double VoltsDC) Get() => (Query<Double>(QUERY.ISET), _queries.Invoke<Double>(QUERY.VSET));
 
-        public void SetOff(Double volts, Double amps, Double ovp) {
+        public void SetOff(Double VoltsDC, Double AmperesDC, Double OVP) {
             StateSet(STATE.off, 0);
-            _commands.Invoke(COMMAND.OVSET, ovp.ToString());
-            _commands.Invoke(COMMAND.VSET, volts.ToString());
-            _commands.Invoke(COMMAND.ISET, amps.ToString());
+            _commands.Invoke(COMMAND.OVSET, OVP.ToString());
+            _commands.Invoke(COMMAND.VSET, VoltsDC.ToString());
+            _commands.Invoke(COMMAND.ISET, AmperesDC.ToString());
         }
 
-        public void SetOffOn(Double volts, Double amps, Double ovp, Int32 delayMs = 500) {
-            SetOff(volts, amps, ovp);
-            StateSet(STATE.ON, delayMs);
+        public void SetOffOn(Double VoltsDC, Double AmperesDC, Double OVP, Int32 MillisecondsDelay = 500) {
+            SetOff(VoltsDC, AmperesDC, OVP);
+            StateSet(STATE.ON, MillisecondsDelay);
         }
 
         public STATE StateGet() => _queries.Invoke<STATE>(QUERY.OUT);

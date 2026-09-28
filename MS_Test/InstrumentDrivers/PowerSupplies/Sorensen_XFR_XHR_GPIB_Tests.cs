@@ -203,14 +203,14 @@ public class Sorensen_XFR_XHR_GPIB_Tests {
     [TestMethod()]
     public void SetOffTest() {
         Assert.IsNotNull(_XFR_XHR_GPIB);
-        _XFR_XHR_GPIB.SetOff(VoltsDC: 5D, AmpsDC: 0.2D, OVP: 10D);
+        _XFR_XHR_GPIB.SetOff(VoltsDC: 5D, AmperesDC: 0.2D, OVP: 10D);
         Assert.AreEqual(5D, _XFR_XHR_GPIB.Query<Double>(QUERY.VSET));
         Assert.AreEqual(0.2D, _XFR_XHR_GPIB.Query<Double>(QUERY.ISET));
         Assert.AreEqual(10D, _XFR_XHR_GPIB.Query<Double>(QUERY.OVSET));
         Assert.AreEqual(STATE.off, _XFR_XHR_GPIB.Query<STATE>(QUERY.OUT));
         _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.ON).ToString());
         Assert.AreEqual(STATE.ON, _XFR_XHR_GPIB.Query<STATE>(QUERY.OUT));
-        _XFR_XHR_GPIB.SetOff(VoltsDC: 0D, AmpsDC: 0D, OVP: _XFR_XHR_GPIB.Query<Double>(QUERY.VMAX));
+        _XFR_XHR_GPIB.SetOff(VoltsDC: 0D, AmperesDC: 0D, OVP: _XFR_XHR_GPIB.Query<Double>(QUERY.VMAX));
         Assert.AreEqual(0, _XFR_XHR_GPIB.Query<Double>(QUERY.ISET));
         Assert.AreEqual(0D, _XFR_XHR_GPIB.Query<Double>(QUERY.VSET));
         Assert.AreEqual(_XFR_XHR_GPIB.Query<Double>(QUERY.VMAX), _XFR_XHR_GPIB.Query<Double>(QUERY.OVSET));
@@ -255,13 +255,13 @@ public class Sorensen_XFR_XHR_GPIB_Tests {
         Assert.AreEqual(0D, _XFR_XHR_GPIB.Query<Double>(QUERY.VSET));
         Assert.AreEqual(0D, _XFR_XHR_GPIB.Query<Double>(QUERY.ISET));
         Assert.AreEqual(10D, _XFR_XHR_GPIB.Query<Double>(QUERY.OVSET));
-        _XFR_XHR_GPIB.SetOffOn(VoltsDC: 5D, AmpsDC: 0.2D, OVP: 15D, MillisecondsDelay: 0);
+        _XFR_XHR_GPIB.SetOffOn(VoltsDC: 5D, AmperesDC: 0.2D, OVP: 15D, MillisecondsDelay: 0);
         Assert.AreEqual(STATE.ON, _XFR_XHR_GPIB.Query<STATE>(QUERY.OUT));
         Assert.AreEqual(5D, _XFR_XHR_GPIB.Query<Double>(QUERY.VSET));
         Assert.AreEqual(0.2D, _XFR_XHR_GPIB.Query<Double>(QUERY.ISET));
         Assert.AreEqual(15D, _XFR_XHR_GPIB.Query<Double>(QUERY.OVSET));
         _XFR_XHR_GPIB.Command(COMMAND.OUT, ((Int32)STATE.off).ToString());
-        _XFR_XHR_GPIB.SetOffOn(VoltsDC: 0D, AmpsDC: 0D, OVP: _XFR_XHR_GPIB.Query<Double>(QUERY.VMAX), MillisecondsDelay: 0);
+        _XFR_XHR_GPIB.SetOffOn(VoltsDC: 0D, AmperesDC: 0D, OVP: _XFR_XHR_GPIB.Query<Double>(QUERY.VMAX), MillisecondsDelay: 0);
         Assert.AreEqual(STATE.ON, _XFR_XHR_GPIB.Query<STATE>(QUERY.OUT));
         Assert.AreEqual(0D, _XFR_XHR_GPIB.Query<Double>(QUERY.VSET));
         Assert.AreEqual(0D, _XFR_XHR_GPIB.Query<Double>(QUERY.ISET));

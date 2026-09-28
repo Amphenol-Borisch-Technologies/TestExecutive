@@ -23,16 +23,16 @@ namespace ABT.TestSpace.TestExec.SCPI_VISA_Instruments {
         public static Boolean IsPS_E36234A(SCPI_VISA_Instrument SVI) { return (SVI.Instrument.GetType() == typeof(AgE36200)); }
 
         public static Double CurrentAmplitudeGet(SCPI_VISA_Instrument SVI, CHANNEL Channel) {
-            ((AgE36200)SVI.Instrument).SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Query(null, Channels[Channel], out Double[] ampsDC);
-            return ampsDC[(Int32)Channel];
+            ((AgE36200)SVI.Instrument).SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Query(null, Channels[Channel], out Double[] amperesDC);
+            return amperesDC[(Int32)Channel];
         }
 
-        public static Boolean CurrentAmplitudeIs(SCPI_VISA_Instrument SVI, Double AmpsDC, Double Delta, CHANNEL Channel) {
-            return SCPI99.IsCloseEnough(CurrentAmplitudeGet(SVI, Channel), AmpsDC, Delta);
+        public static Boolean CurrentAmplitudeIs(SCPI_VISA_Instrument SVI, Double AmperesDC, Double Delta, CHANNEL Channel) {
+            return SCPI99.IsCloseEnough(CurrentAmplitudeGet(SVI, Channel), AmperesDC, Delta);
         }
 
-        public static void CurrentAmplitudeSet(SCPI_VISA_Instrument SVI, Double AmpsDC, CHANNEL Channel) {
-            ((AgE36200)SVI.Instrument).SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Command(AmpsDC, Channels[Channel]);
+        public static void CurrentAmplitudeSet(SCPI_VISA_Instrument SVI, Double AmperesDC, CHANNEL Channel) {
+            ((AgE36200)SVI.Instrument).SCPI.SOURce.CURRent.LEVel.IMMediate.AMPLitude.Command(AmperesDC, Channels[Channel]);
         }
 
         public static Double CurrentProtectionAmplitudeGet(SCPI_VISA_Instrument SVI, CHANNEL Channel) {
@@ -75,9 +75,9 @@ namespace ABT.TestSpace.TestExec.SCPI_VISA_Instruments {
         public static Double Get(SCPI_VISA_Instrument SVI, PS_DC DC, CHANNEL Channel, SENSE_MODE KelvinSense) {
             VoltageSenseModeSet(SVI, KelvinSense, Channel);
             switch (DC) {
-                case PS_DC.Amps:
-                    ((AgE36200)SVI.Instrument).SCPI.MEASure.SCALar.CURRent.DC.Query(Channels[Channel], out Double[] ampsDC);
-                    return ampsDC[(Int32)(Channel)];
+                case PS_DC.Amperes:
+                    ((AgE36200)SVI.Instrument).SCPI.MEASure.SCALar.CURRent.DC.Query(Channels[Channel], out Double[] amperesDC);
+                    return amperesDC[(Int32)(Channel)];
                 case PS_DC.Volts:
                     ((AgE36200)SVI.Instrument).SCPI.MEASure.SCALar.VOLTage.DC.Query(Channels[Channel], out Double[] voltsDC);
                     return voltsDC[(Int32)(Channel)];
@@ -130,8 +130,8 @@ namespace ABT.TestSpace.TestExec.SCPI_VISA_Instruments {
             ((AgE36200)SVI.Instrument).SCPI.SOURce.VOLTage.SLEW.FALLing.IMMediate.Command(SlewRateFalling, Channels[Channel]);
         }
 
-        public static void Set(SCPI_VISA_Instrument SVI, STATE State, Double VoltsDC, Double AmpsDC, Double VoltageProtectionAmplitude, CHANNEL Channel, SENSE_MODE KelvinSense, Double DelaySecondsCurrentProtection = 0, Double DelaySecondsSettling = 0) {
-            Set(SVI, PS_DC.Amps, AmpsDC, Channel, KelvinSense);
+        public static void Set(SCPI_VISA_Instrument SVI, STATE State, Double VoltsDC, Double AmperesDC, Double VoltageProtectionAmplitude, CHANNEL Channel, SENSE_MODE KelvinSense, Double DelaySecondsCurrentProtection = 0, Double DelaySecondsSettling = 0) {
+            Set(SVI, PS_DC.Amperes, AmperesDC, Channel, KelvinSense);
             Set(SVI, PS_DC.Volts, VoltsDC, Channel, KelvinSense);
             
             CurrentProtectionDelaySet(SVI, DelaySecondsCurrentProtection, Channel);
@@ -147,7 +147,7 @@ namespace ABT.TestSpace.TestExec.SCPI_VISA_Instruments {
         public static void Set(SCPI_VISA_Instrument SVI, PS_DC DC, Double Amplitude, CHANNEL Channel, SENSE_MODE KelvinSense) {
             VoltageSenseModeSet(SVI, KelvinSense, Channel);
             switch (DC) {
-                case PS_DC.Amps:
+                case PS_DC.Amperes:
                     CurrentProtectionStateSet(SVI, STATE.off, Channel);
                     CurrentProtectionTrippedClear(SVI, Channel);
                     CurrentAmplitudeSet(SVI, Amplitude, Channel);

@@ -13,8 +13,8 @@ using Agilent.CommandExpert.ScpiNet.AgSCPI99_1_0;
 // NOTE:  Unlike all other classes in namespace ABT.TestSpace.TestExec.SCPI_VISA_Instruments, classes in SCPI_VISA utilize only VISA Addresses,
 // not Instrument objects contained in their SCPI_VISA_Instrument objects.
 namespace ABT.TestSpace.TestExec.SCPI_VISA_Instruments {
-    public enum PS_DC { Amps, Volts }
-    public enum PS_AC { Amps, Volts }
+    public enum PS_DC { Amperes, Volts }
+    public enum PS_AC { Amperes, Volts }
     public enum SENSE_MODE { EXTernal, INTernal }
     public enum STATE { off, ON }
     // Consistent convention for lower-cased inactive states off/low/zero as 1st states in enums, UPPER-CASED active ON/HIGH/ONE as 2nd states.

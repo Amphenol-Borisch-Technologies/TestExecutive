@@ -120,19 +120,19 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             }
         }
 
-        public void SetOff(Double VoltsDC, Double AmpsDC, Double OVP) {
+        public void SetOff(Double VoltsDC, Double AmperesDC, Double OVP) {
             StateSet(STATE.off, MillisecondsDelay: 0);
             Command(COMMAND.OVSET, OVP.ToString());
             Command(COMMAND.VSET, VoltsDC.ToString());
-            Command(COMMAND.ISET, AmpsDC.ToString());
+            Command(COMMAND.ISET, AmperesDC.ToString());
         }
 
         public void OutputsOff() { Command(COMMAND.OUT, ((Int32)STATE.off).ToString()); }
 
-        public (Double AmpsDC, Double VoltsDC) Get() { return (Query<Double>(QUERY.ISET), Query<Double>(QUERY.VSET)); }
+        public (Double AmperesDC, Double VoltsDC) Get() { return (Query<Double>(QUERY.ISET), Query<Double>(QUERY.VSET)); }
 
-        public void SetOffOn(Double VoltsDC, Double AmpsDC, Double OVP, Int32 MillisecondsDelay = 500) {
-            SetOff(VoltsDC, AmpsDC, OVP);
+        public void SetOffOn(Double VoltsDC, Double AmperesDC, Double OVP, Int32 MillisecondsDelay = 500) {
+            SetOff(VoltsDC, AmperesDC, OVP);
             StateSet(STATE.ON, MillisecondsDelay);
         }
 
@@ -148,7 +148,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         public Sorensen_XFR_XHR_GPIB(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.POWER_SUPPLY_DC) {
             Command(COMMAND.CLR);
             ResetCommand();
-            SetOff(VoltsDC: 0, AmpsDC: 0, OVP: Query<Double>(QUERY.VMAX));
+            SetOff(VoltsDC: 0, AmperesDC: 0, OVP: Query<Double>(QUERY.VMAX));
         }
     }
 }
