@@ -143,7 +143,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             Thread.Sleep(MillisecondsDelay); // Allow some time for voltage to stabilize.
         }
 
-        public new void ResetCommand() { Command(COMMAND.RST); }
+        public override void ResetCommand() { Command(COMMAND.RST); }
 
         public Sorensen_XFR_XHR_GPIB(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.POWER_SUPPLY_DC) {
             Command(COMMAND.CLR);

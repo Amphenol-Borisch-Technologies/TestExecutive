@@ -149,7 +149,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
 
         public void ThrowIfDisposed() { if (_disposed) throw new ObjectDisposedException(GetType().Name); }
 
-        public void ResetCommand() {
+        public virtual void ResetCommand() {
             ThrowIfDisposed();
             Command("*RST");
         }

@@ -91,7 +91,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             Thread.Sleep(delayMs);
         }
 
-        public new void ResetCommand() {
+        public override void ResetCommand() {
             _commands.Invoke(COMMAND.CLR);
             _commands.Invoke(COMMAND.RST);
             SetOff(0, 0, _queries.Invoke<Double>(QUERY.VMAX));
