@@ -8,8 +8,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         private readonly ScpiInstrument _instrument;
         private readonly Dictionary<TEnum, Func<Object>> _handlers;
 
-        public ScpiQueryRegistry(ScpiInstrument instrument) {
-            _instrument = instrument ?? throw new ArgumentNullException(nameof(instrument));
+        public ScpiQueryRegistry(ScpiInstrument scpiInstrument) {
+            _instrument = scpiInstrument ?? throw new ArgumentNullException(nameof(scpiInstrument));
             _handlers = new Dictionary<TEnum, Func<Object>>();
         }
 
@@ -17,11 +17,11 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         // PUBLIC API: MAP QUERY TO HANDLER
         // ------------------------------------------------------------
 
-        public ScpiQueryRegistry<TEnum> Map<T>(TEnum query, Func<T> handler) {
-            if (handler == null) throw new ArgumentNullException(nameof(handler));
+        public ScpiQueryRegistry<TEnum> Map<T>(TEnum Query, Func<T> Handler) {
+            if (Handler == null) throw new ArgumentNullException(nameof(Handler));
 
             // Wrap handler<T> into Func<object>
-            _handlers[query] = () => handler();
+            _handlers[Query] = () => Handler();
             return this;
         }
 
@@ -29,15 +29,15 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         // INVOCATION
         // ------------------------------------------------------------
 
-        public T Invoke<T>(TEnum query) {
-            if (!_handlers.TryGetValue(query, out var handler)) throw new NotImplementedException($"No SCPI query handler registered for '{query}'. Instrument: {_instrument.Address} ({_instrument.Detail})");
+        public T Invoke<T>(TEnum Query) {
+            if (!_handlers.TryGetValue(Query, out var handler)) throw new NotImplementedException($"No SCPI query handler registered for '{Query}'. Instrument: {_instrument.Address} ({_instrument.Detail})");
 
             Object value = handler();
 
             try {
                 return (T)value;
             } catch (InvalidCastException) {
-                throw new InvalidCastException($"SCPI query '{query}' returned a value of type '{value?.GetType().Name}', which cannot be cast to '{typeof(T).Name}'.");
+                throw new InvalidCastException($"SCPI query '{Query}' returned a value of type '{value?.GetType().Name}', which cannot be cast to '{typeof(T).Name}'.");
             }
         }
 
@@ -56,8 +56,8 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.Base {
         // OPTIONAL CHECKER
         // ------------------------------------------------------------
 
-        public Boolean IsRegistered(TEnum query) {
-            return _handlers.ContainsKey(query);
+        public Boolean IsRegistered(TEnum Query) {
+            return _handlers.ContainsKey(Query);
         }
     }
 }

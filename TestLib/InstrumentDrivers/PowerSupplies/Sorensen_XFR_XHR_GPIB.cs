@@ -18,14 +18,14 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         public enum QUERY { ASTS, AUXA, AUXB, DLY, ERR, FAULT, FOLD, HOLD, ID, IMAX, IOUT, ISET, OUT, OVSET, ROM, SRQ, STS, UNMASK, VMAX, VOUT, VSET }
 
-        public void Command(COMMAND Command, String arg = "") {
+        public void Command(COMMAND Command, String Arguments = "") {
             switch (Command) {
                 case COMMAND.AUXA:
                 case COMMAND.AUXB:
                 case COMMAND.HOLD:
                 case COMMAND.OUT:
                 case COMMAND.SRQ:
-                    base.Command($"{Command} {(Int32)Enum.Parse(typeof(STATE), arg)}");
+                    base.Command($"{Command} {(Int32)Enum.Parse(typeof(STATE), Arguments)}");
                     break;
                 case COMMAND.CLR:
                 case COMMAND.RST:
@@ -38,14 +38,14 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
                 case COMMAND.OVSET:
                 case COMMAND.VMAX:
                 case COMMAND.VSET:
-                    base.Command($"{Command} {Double.Parse(arg)}");
+                    base.Command($"{Command} {Double.Parse(Arguments)}");
                     break;
                 case COMMAND.FOLD:
-                    base.Command($"{Command} {Enum.Parse(typeof(FOLD), arg)}");
+                    base.Command($"{Command} {Enum.Parse(typeof(FOLD), Arguments)}");
                     break;
                 case COMMAND.MASK:
                 case COMMAND.UNMASK:
-                    base.Command($"{Command} {arg}");
+                    base.Command($"{Command} {Arguments}");
                     break;
                 default: throw new NotImplementedException(NotImplementedMessageEnum<COMMAND>(Enum.GetName(typeof(COMMAND), Command)));
             }
@@ -143,12 +143,16 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             Thread.Sleep(MillisecondsDelay); // Allow some time for voltage to stabilize.
         }
 
-        public override void ResetCommand() { Command(COMMAND.RST); }
+        public override void ResetCommand() {
+            ThrowIfDisposed();
+            _ = Query<Byte>(QUERY.ERR); // Clear any existing errors in the error queue.  Don't care what the error is, just want to clear it.
+            Command(COMMAND.CLR);
+            Command(COMMAND.RST);
+            SetOff(VoltsDC: 0, AmperesDC: 0, OVP: Query<Double>(QUERY.VMAX));
+        }
 
         public Sorensen_XFR_XHR_GPIB(String Address, String Detail) : base(Address, Detail, INSTRUMENT_TYPE.POWER_SUPPLY_DC) {
-            Command(COMMAND.CLR);
             ResetCommand();
-            SetOff(VoltsDC: 0, AmperesDC: 0, OVP: Query<Double>(QUERY.VMAX));
         }
     }
 }

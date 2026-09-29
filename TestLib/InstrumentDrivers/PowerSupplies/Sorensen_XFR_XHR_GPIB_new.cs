@@ -14,8 +14,7 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
         private readonly ScpiCommandRegistry<COMMAND> _commands;
         private readonly ScpiQueryRegistry<QUERY> _queries;
 
-        public Sorensen_XFR_XHR_GPIB_new(String address, String detail)
-            : base(address, detail, INSTRUMENT_TYPE.POWER_SUPPLY_DC) {
+        public Sorensen_XFR_XHR_GPIB_new(String address, String detail) : base(address, detail, INSTRUMENT_TYPE.POWER_SUPPLY_DC) {
             _commands = new ScpiCommandRegistry<COMMAND>(this)
                 .Map(COMMAND.CLR, () => Write("CLR"))
                 .Map(COMMAND.RST, () => Write("RST"))
@@ -59,18 +58,16 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
                 .Map<String>(QUERY.ID, () => Read<String>("ID"))
                 .Map<String>(QUERY.ROM, () => Read<String>("ROM"))
                 .ValidateAll();
+
+            ResetCommand();
         }
 
-        // --------------------------------------------------------------------
-        // PUBLIC API (same as your original, but simplified)
-        // --------------------------------------------------------------------
-
-        public void Command(COMMAND cmd, String arg = "") => _commands.Invoke(cmd, arg);
-        public T Query<T>(QUERY q) => _queries.Invoke<T>(q);
+        public void Command(COMMAND Command, String Arguments = "") => _commands.Invoke(Command, Arguments);
+        public T Query<T>(QUERY Query) => _queries.Invoke<T>(Query);
 
         public void OutputsOff() => _commands.Invoke(COMMAND.OUT, ((Int32)STATE.off).ToString());
 
-        public (Double, Double ) Get() => (Query<Double>(QUERY.VSET), _queries.Invoke<Double>(QUERY.ISET));
+        public (Double VoltsDC, Double AmperesDC) Get() => (Query<Double>(QUERY.VSET), _queries.Invoke<Double>(QUERY.ISET));
 
         public void SetOff(Double VoltsDC, Double AmperesDC, Double OVP) {
             StateSet(STATE.off, 0);
@@ -86,15 +83,17 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
 
         public STATE StateGet() => _queries.Invoke<STATE>(QUERY.OUT);
 
-        public void StateSet(STATE state, Int32 delayMs = 500) {
-            _commands.Invoke(COMMAND.OUT, ((Int32)state).ToString());
-            Thread.Sleep(delayMs);
+        public void StateSet(STATE State, Int32 MillisecondsDelay = 500) {
+            _commands.Invoke(COMMAND.OUT, ((Int32)State).ToString());
+            Thread.Sleep(MillisecondsDelay);
         }
 
         public override void ResetCommand() {
+            ThrowIfDisposed();
+            _ = _queries.Invoke<Byte>(QUERY.ERR); // Clear any existing errors in the error queue.  Don't care what the error is, just want to clear it.
             _commands.Invoke(COMMAND.CLR);
             _commands.Invoke(COMMAND.RST);
-            SetOff(0, 0, _queries.Invoke<Double>(QUERY.VMAX));
+            SetOff(VoltsDC: 0, AmperesDC: 0, OVP: _queries.Invoke<Double>(QUERY.VMAX));
         }
     }
 }

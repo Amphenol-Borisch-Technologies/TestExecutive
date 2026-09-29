@@ -211,6 +211,5 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             }
             return (Result, Message.Append($": {Result}").ToString());
         }
-
     }
 }
