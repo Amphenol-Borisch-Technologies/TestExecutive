@@ -7,7 +7,7 @@ using System.Threading;
 using System.Windows.Forms;
 
 namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
-    public class PS_E3632A_SCPI_NET : IInstrument, IPowerSupplyDC_Outputs1, IDiagnostics, ISelfTests {
+    public class PS_E3632A_SCPI_NET : IInstrument, IPowerSupplyDC_Outputs1, ISelfTests {
         public enum RANGE { P15V, P30V }
 
         public String Address { get; }
@@ -64,51 +64,6 @@ namespace ABT.Test.TestExecutive.TestLib.InstrumentDrivers.PowerSupplies {
             AgE363x.SCPI.OUTPut.STATe.Command(State == STATE.ON);
             Thread.Sleep(MillisecondsDelay); // Allow some time for voltage to stabilize.        
         }
-
-        #region Diagnostics
-        public (Boolean Summary, List<DiagnosticsResult> Details) Diagnostics(List<Configuration.Parameter> Parameters) {
-            ResetCommand();
-            Boolean passed = SelfTests().Result is SELF_TEST_RESULT.PASS;
-            (Boolean Summary, List<DiagnosticsResult> Details) result_E3634A = (passed, new List<DiagnosticsResult>() { new DiagnosticsResult(Label: "SelfTest", Message: String.Empty, Event: passed ? EVENTS.PASS : EVENTS.FAIL) });
-            if (passed) {
-                Configuration.Parameter parameter = Parameters.Find(p => p.Name == "Accuracy_E3634A_VDC") ?? new Configuration.Parameter { Name = "Accuracy_E3634A_VDC", Value = "0.1" };
-                Double limit = Convert.ToDouble(parameter.Value);
-
-                MSMU_34980A_SCPI_NET MSMU = ((MSMU_34980A_SCPI_NET)(TestLib.InstrumentDrivers["MSMU1_34980A"]));
-
-                String message =
-                    $"Please connect BMC6030-5 from {Detail}/{Address}{Environment.NewLine}{Environment.NewLine}" +
-                    $"to {MSMU.Detail}/{MSMU.Address}.{Environment.NewLine}{Environment.NewLine}" +
-                    "Click Cancel if desired.";
-                if (DialogResult.OK == MessageBox.Show(message, "Information", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly)) {
-                    MSMU.Ag34980.SCPI.INSTrument.DMM.STATe.Command(true);
-                    MSMU.Ag34980.SCPI.INSTrument.DMM.CONNect.Command();
-                    AgE363x.SCPI.OUTPut.STATe.Command(false);
-                    AgE363x.SCPI.SOURce.VOLTage.PROTection.STATe.Command(false);
-                    AgE363x.SCPI.SOURce.CURRent.PROTection.STATe.Command(false);
-                    AgE363x.SCPI.SOURce.VOLTage.LEVel.IMMediate.AMPLitude.Command("MINimum");
-                    AgE363x.SCPI.SOURce.VOLTage.LEVel.IMMediate.STEP.INCRement.Command(1D);
-                    AgE363x.SCPI.OUTPut.STATe.Command(true);
-
-                    Boolean passed_E3634A = true, passed_VDC;
-                    for (Int32 vdcApplied = 0; vdcApplied < 50; vdcApplied++) {
-                        Thread.Sleep(millisecondsTimeout: 500);
-                        MSMU.Ag34980.SCPI.MEASure.SCALar.VOLTage.DC.Query("AUTO", $"{MMD.MAXimum}", ch_list: null, out Double[] vdcMeasured);
-                        passed_VDC = Math.Abs(vdcMeasured[0] - vdcApplied) <= limit;
-                        passed_E3634A &= passed_VDC;
-                        result_E3634A.Details.Add(new DiagnosticsResult(Label: "OUTput: ", Message: $"Applied {vdcApplied}VDC, measured {Math.Round(vdcMeasured[0], 3, MidpointRounding.ToEven)}VDC", Event: (passed_VDC ? EVENTS.PASS : EVENTS.FAIL)));
-                        AgE363x.SCPI.SOURce.VOLTage.LEVel.IMMediate.AMPLitude.Command("UP");
-                    }
-                    result_E3634A.Summary &= passed_E3634A;
-                    message =
-                        $"Please disconnect BMC6030-5 from {Detail}/{Address}{Environment.NewLine}{Environment.NewLine}" +
-                        $"and {MSMU.Detail}/{MSMU.Address}.{Environment.NewLine}{Environment.NewLine}";
-                    MessageBox.Show(message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                }
-            }
-            return result_E3634A;
-        }
-        #endregion Diagnostics
 
         public PS_E3632A_SCPI_NET(String Address, String Detail) {
             this.Address = Address;
