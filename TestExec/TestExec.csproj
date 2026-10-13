@@ -95,8 +95,7 @@
     </Reference>
     <Reference Include="Ivi.Visa, Version=8.0.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\IVI Foundation\VISA\Microsoft.NET\Framework64\v4.0.30319\VISA.NET Shared Components 8.0.1\Ivi.Visa.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\IVI Foundation\visa\Microsoft.NET\Framework32\v4.0.30319\VISA.NET Shared Components 8.0.1\Ivi.Visa.dll</HintPath>
     </Reference>
     <Reference Include="Keysight.Visa, Version=18.4.0.0, Culture=neutral, PublicKeyToken=7a01cdb2a9131f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
