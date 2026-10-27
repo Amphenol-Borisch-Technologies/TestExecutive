@@ -440,6 +440,20 @@ namespace ABT.Test.TestExecutive.TestLib.Configuration {
             stringBuilder.AppendLine(FormatMessage(nameof(UNIT), unit));
             return stringBuilder.ToString();
         }
+
+        public readonly struct Interval {
+            public readonly Double Low;
+            public readonly Double High;
+            public Interval(Double Low, Double High) { this.Low = Low; this.High = High; }
+        }
+
+        public readonly struct IntervalPair {
+            public readonly Interval IntervalLow;
+            public readonly Interval IntervalHigh;
+            public IntervalPair(Interval IntervalLow, Interval IntervalHigh) { this.IntervalLow = IntervalLow; this.IntervalHigh = IntervalHigh; }
+        }
+
+        public Interval GetInterval() { return new Interval(Low, High); }
     }
 
     public class MethodProcess : Method, IAssertion, IEvaluate, IFormat {

@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Security.AccessControl;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -79,6 +80,16 @@ namespace ABT.Test.TestExecutive.TestLib {
         public static CancellationTokenSource CTS_EmergencyStop { get; set; } = null;
         public static CancellationToken CT_Cancel { get; set; }
         public static CancellationToken CT_EmergencyStop { get; set; }
+
+        public static TestPlanDefinition GetTestPlanDefinition() { return testPlanDefinition; }
+
+        public static Configuration.TestSpace GetTestSpace() { return GetTestPlanDefinition().TestSpace; }
+
+        public static TestOperation GetTestOperation(String NamespaceTrunk) { return GetTestSpace().TestOperations.Single(testOperation => testOperation.NamespaceTrunk == NamespaceTrunk); }
+
+        public static TestGroup GetTestGroup(String NamespaceTrunk, String Classname) { return GetTestOperation(NamespaceTrunk).TestGroups.Single(testGroup => testGroup.Classname == Classname); }
+
+        public static Method GetMethod(String NamespaceTrunk, String Classname, String Name) { return GetTestGroup(NamespaceTrunk, Classname).Methods.Single(method => method.Name == Name); }
 
         public static String FormatMessage(String Label, String Message) { return $"{Spaces2}{Label}".PadRight(PaddingRight) + $": {Message}"; }
 
@@ -265,6 +276,7 @@ namespace ABT.Test.TestExecutive.TestLib {
                     $"Error Setting Directory Permissions", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         public static void CreateDirectoryAndSetPermissions(String directory, String identity, FileSystemRights fileSystemRights) {
             Directory.CreateDirectory(directory);
             SetDirectoryPermissions(directory, identity, fileSystemRights);
