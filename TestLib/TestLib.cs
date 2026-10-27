@@ -85,11 +85,15 @@ namespace ABT.Test.TestExecutive.TestLib {
 
         public static Configuration.TestSpace GetTestSpace() { return GetTestPlanDefinition().TestSpace; }
 
+        public static String GetParameter(String Name) { return GetTestSpace().Parameters.Single(p => p.Name.Equals(Name)).Value; }
+
         public static TestOperation GetTestOperation(String NamespaceTrunk) { return GetTestSpace().TestOperations.Single(testOperation => testOperation.NamespaceTrunk == NamespaceTrunk); }
 
         public static TestGroup GetTestGroup(String NamespaceTrunk, String Classname) { return GetTestOperation(NamespaceTrunk).TestGroups.Single(testGroup => testGroup.Classname == Classname); }
 
         public static Method GetMethod(String NamespaceTrunk, String Classname, String Name) { return GetTestGroup(NamespaceTrunk, Classname).Methods.Single(method => method.Name == Name); }
+
+        public static T GetMethod<T>(String NamespaceTrunk, String Classname, String Name) where T : Method { return (T)GetMethod(NamespaceTrunk, Classname, Name); }
 
         public static String FormatMessage(String Label, String Message) { return $"{Spaces2}{Label}".PadRight(PaddingRight) + $": {Message}"; }
 
